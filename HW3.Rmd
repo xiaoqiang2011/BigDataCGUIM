@@ -20,7 +20,9 @@ NBA1415<-fetch_NBAPlayerStatistics("14-15")
 ```{r echo=T}
 MaxPoint<-aggregate(TotalPoints~Team,NBA1415,max)
 NBA1415MaxPoint<-merge(NBA1415,MaxPoint)
-NBA1415MaxPoint[order(NBA1415MaxPoint$TotalPoints,decreasing = T),c("Team","Name","TotalPoints")]
+output<-NBA1415MaxPoint[order(NBA1415MaxPoint$TotalPoints,decreasing = T),c("Team","Name","TotalPoints")]
+library(knitr)
+kable(output, digits=2)
 ```
 
 ## 各隊得分王

@@ -30,38 +30,201 @@ body {
 <p>計算依據為出戰分鐘數最多的球員</p>
 <pre class="sourceCode r"><code class="sourceCode r">MaxPoint&lt;-<span class="kw">aggregate</span>(TotalPoints~Team,NBA1415,max)
 NBA1415MaxPoint&lt;-<span class="kw">merge</span>(NBA1415,MaxPoint)
-NBA1415MaxPoint[<span class="kw">order</span>(NBA1415MaxPoint$TotalPoints,<span class="dt">decreasing =</span> T),<span class="kw">c</span>(<span class="st">&quot;Team&quot;</span>,<span class="st">&quot;Name&quot;</span>,<span class="st">&quot;TotalPoints&quot;</span>)]</code></pre>
-<pre><code>##    Team             Name TotalPoints
-## 11  HOU     James Harden        2217
-## 10  GSW    Stephen Curry        1900
-## 21  OKL Russel Westbrook        1886
-## 6   CLE     Lebron James        1740
-## 25  POR   Damian Lillard        1720
-## 19  NOR    Anthony Davis        1656
-## 13  LAC       Chris Paul        1564
-## 7   DAL      Monta Ellis        1513
-## 29  UTA   Gordon Hayward        1463
-## 5   CHI        Pau Gasol        1446
-## 26  SAC         Rudy Gay        1432
-## 22  ORL   Nikola Vucevic        1428
-## 15  MEM       Marc Gasol        1413
-## 18  MIN   Andrew Wiggins        1387
-## 30  WAS        John Wall        1385
-## 24  PHO     Eric Bledsoe        1377
-## 16  MIA      Dwyane Wade        1331
-## 28  TOR       Kyle Lowry        1244
-## 3   BRO      Brook Lopez        1236
-## 1   ATL     Paul Millsap        1218
-## 8   DEN        Ty Lawson        1143
-## 9   DET   Andre Drummond        1130
-## 2   BOS    Isaiah Thomas        1101
-## 4   CHA     Al Jefferson        1080
-## 27  SAN       Tim Duncan        1070
-## 17  MIL  Khris Middleton        1055
-## 20  NYK  Carmelo Anthony         966
-## 12  IND       C.j. Miles         942
-## 23  PHI Robert Covington         927
-## 14  LAL      Jordan Hill         841</code></pre>
+output&lt;-NBA1415MaxPoint[<span class="kw">order</span>(NBA1415MaxPoint$TotalPoints,<span class="dt">decreasing =</span> T),<span class="kw">c</span>(<span class="st">&quot;Team&quot;</span>,<span class="st">&quot;Name&quot;</span>,<span class="st">&quot;TotalPoints&quot;</span>)]
+<span class="kw">library</span>(knitr)
+<span class="kw">kable</span>(output, <span class="dt">digits=</span><span class="dv">2</span>)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">Team</th>
+<th align="left">Name</th>
+<th align="right">TotalPoints</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">11</td>
+<td align="left">HOU</td>
+<td align="left">James Harden</td>
+<td align="right">2217</td>
+</tr>
+<tr class="even">
+<td align="left">10</td>
+<td align="left">GSW</td>
+<td align="left">Stephen Curry</td>
+<td align="right">1900</td>
+</tr>
+<tr class="odd">
+<td align="left">21</td>
+<td align="left">OKL</td>
+<td align="left">Russel Westbrook</td>
+<td align="right">1886</td>
+</tr>
+<tr class="even">
+<td align="left">6</td>
+<td align="left">CLE</td>
+<td align="left">Lebron James</td>
+<td align="right">1740</td>
+</tr>
+<tr class="odd">
+<td align="left">25</td>
+<td align="left">POR</td>
+<td align="left">Damian Lillard</td>
+<td align="right">1720</td>
+</tr>
+<tr class="even">
+<td align="left">19</td>
+<td align="left">NOR</td>
+<td align="left">Anthony Davis</td>
+<td align="right">1656</td>
+</tr>
+<tr class="odd">
+<td align="left">13</td>
+<td align="left">LAC</td>
+<td align="left">Chris Paul</td>
+<td align="right">1564</td>
+</tr>
+<tr class="even">
+<td align="left">7</td>
+<td align="left">DAL</td>
+<td align="left">Monta Ellis</td>
+<td align="right">1513</td>
+</tr>
+<tr class="odd">
+<td align="left">29</td>
+<td align="left">UTA</td>
+<td align="left">Gordon Hayward</td>
+<td align="right">1463</td>
+</tr>
+<tr class="even">
+<td align="left">5</td>
+<td align="left">CHI</td>
+<td align="left">Pau Gasol</td>
+<td align="right">1446</td>
+</tr>
+<tr class="odd">
+<td align="left">26</td>
+<td align="left">SAC</td>
+<td align="left">Rudy Gay</td>
+<td align="right">1432</td>
+</tr>
+<tr class="even">
+<td align="left">22</td>
+<td align="left">ORL</td>
+<td align="left">Nikola Vucevic</td>
+<td align="right">1428</td>
+</tr>
+<tr class="odd">
+<td align="left">15</td>
+<td align="left">MEM</td>
+<td align="left">Marc Gasol</td>
+<td align="right">1413</td>
+</tr>
+<tr class="even">
+<td align="left">18</td>
+<td align="left">MIN</td>
+<td align="left">Andrew Wiggins</td>
+<td align="right">1387</td>
+</tr>
+<tr class="odd">
+<td align="left">30</td>
+<td align="left">WAS</td>
+<td align="left">John Wall</td>
+<td align="right">1385</td>
+</tr>
+<tr class="even">
+<td align="left">24</td>
+<td align="left">PHO</td>
+<td align="left">Eric Bledsoe</td>
+<td align="right">1377</td>
+</tr>
+<tr class="odd">
+<td align="left">16</td>
+<td align="left">MIA</td>
+<td align="left">Dwyane Wade</td>
+<td align="right">1331</td>
+</tr>
+<tr class="even">
+<td align="left">28</td>
+<td align="left">TOR</td>
+<td align="left">Kyle Lowry</td>
+<td align="right">1244</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">BRO</td>
+<td align="left">Brook Lopez</td>
+<td align="right">1236</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">ATL</td>
+<td align="left">Paul Millsap</td>
+<td align="right">1218</td>
+</tr>
+<tr class="odd">
+<td align="left">8</td>
+<td align="left">DEN</td>
+<td align="left">Ty Lawson</td>
+<td align="right">1143</td>
+</tr>
+<tr class="even">
+<td align="left">9</td>
+<td align="left">DET</td>
+<td align="left">Andre Drummond</td>
+<td align="right">1130</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">BOS</td>
+<td align="left">Isaiah Thomas</td>
+<td align="right">1101</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="left">CHA</td>
+<td align="left">Al Jefferson</td>
+<td align="right">1080</td>
+</tr>
+<tr class="odd">
+<td align="left">27</td>
+<td align="left">SAN</td>
+<td align="left">Tim Duncan</td>
+<td align="right">1070</td>
+</tr>
+<tr class="even">
+<td align="left">17</td>
+<td align="left">MIL</td>
+<td align="left">Khris Middleton</td>
+<td align="right">1055</td>
+</tr>
+<tr class="odd">
+<td align="left">20</td>
+<td align="left">NYK</td>
+<td align="left">Carmelo Anthony</td>
+<td align="right">966</td>
+</tr>
+<tr class="even">
+<td align="left">12</td>
+<td align="left">IND</td>
+<td align="left">C.j. Miles</td>
+<td align="right">942</td>
+</tr>
+<tr class="odd">
+<td align="left">23</td>
+<td align="left">PHI</td>
+<td align="left">Robert Covington</td>
+<td align="right">927</td>
+</tr>
+<tr class="even">
+<td align="left">14</td>
+<td align="left">LAL</td>
+<td align="left">Jordan Hill</td>
+<td align="right">841</td>
+</tr>
+</tbody>
+</table>
 <h2>各隊得分王</h2>
 <p>計算依據為全季總得分最多的球員</p>
 
