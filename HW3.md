@@ -1,13 +1,20 @@
 Untitled
 ================
 
-各隊最辛苦的球員
-----------------
+``` r
+#install.packages("SportsAnalytics")
+library(SportsAnalytics)
+NBA1415<-fetch_NBAPlayerStatistics("14-15")
+```
 
-計算依據為出戰分鐘數最多的球員
+各隊得分王
+----------
+
+計算依據為全季總得分最多的球員
 
 ``` r
 MaxPoint<-aggregate(TotalPoints~Team,NBA1415,max)
+#tapply(NBA1415$TotalPoints,NBA1415$Team,max)
 NBA1415MaxPoint<-merge(NBA1415,MaxPoint)
 output<-NBA1415MaxPoint[order(NBA1415MaxPoint$TotalPoints,decreasing = T),c("Team","Name","TotalPoints")]
 library(knitr)
@@ -47,7 +54,7 @@ kable(output, digits=2)
 | 23  | PHI  | Robert Covington |          927|
 | 14  | LAL  | Jordan Hill      |          841|
 
-各隊得分王
-----------
+其他題目
+--------
 
-計算依據為全季總得分最多的球員
+其他說明

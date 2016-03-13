@@ -26,9 +26,13 @@ body {
 <body>
 
 <h1 id="untitled">Untitled</h1>
-<h2>各隊最辛苦的球員</h2>
-<p>計算依據為出戰分鐘數最多的球員</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(&quot;SportsAnalytics&quot;)</span>
+<span class="kw">library</span>(SportsAnalytics)
+NBA1415&lt;-<span class="kw">fetch_NBAPlayerStatistics</span>(<span class="st">&quot;14-15&quot;</span>)</code></pre>
+<h2>各隊得分王</h2>
+<p>計算依據為全季總得分最多的球員</p>
 <pre class="sourceCode r"><code class="sourceCode r">MaxPoint&lt;-<span class="kw">aggregate</span>(TotalPoints~Team,NBA1415,max)
+<span class="co">#tapply(NBA1415$TotalPoints,NBA1415$Team,max)</span>
 NBA1415MaxPoint&lt;-<span class="kw">merge</span>(NBA1415,MaxPoint)
 output&lt;-NBA1415MaxPoint[<span class="kw">order</span>(NBA1415MaxPoint$TotalPoints,<span class="dt">decreasing =</span> T),<span class="kw">c</span>(<span class="st">&quot;Team&quot;</span>,<span class="st">&quot;Name&quot;</span>,<span class="st">&quot;TotalPoints&quot;</span>)]
 <span class="kw">library</span>(knitr)
@@ -225,8 +229,8 @@ output&lt;-NBA1415MaxPoint[<span class="kw">order</span>(NBA1415MaxPoint$TotalPo
 </tr>
 </tbody>
 </table>
-<h2>各隊得分王</h2>
-<p>計算依據為全季總得分最多的球員</p>
+<h2>其他題目</h2>
+<p>其他說明</p>
 
 </body>
 </html>
