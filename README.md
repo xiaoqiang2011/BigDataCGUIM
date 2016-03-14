@@ -13,5 +13,6 @@
 ##每次來電腦教室都要設定的Git
 請參考GitSetting 檔案
 
+![text](HW3_files/figure-markdown_github/pressure-1.png)
 
 
