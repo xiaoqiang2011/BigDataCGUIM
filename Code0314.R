@@ -87,7 +87,8 @@ library(SportsAnalytics)
 NBA1415<-fetch_NBAPlayerStatistics("14-15")
 San<-subset(NBA1415,Team=='SAN')
 San
-San[order(San$GamesPlayed,decreasing = T),"Name"]
+San[order(San$GamesPlayed,decreasing = T),
+    c("Name","GamesPlayed")]
 
 #24
 str(iris)
@@ -108,7 +109,7 @@ str_trim("Hello World   ")
 
 #29
 #字串連接
-paste("Hello", "World", sep='')
+paste("Hello", "World", sep='-')
 paste0("Hello", "World")
 paste0("Hello", "it's me", "I was wondering if after all these years","You'd like to meet, to go over everything")
 paste(c("Hello", "World"), sep='')
