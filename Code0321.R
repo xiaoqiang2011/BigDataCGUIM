@@ -53,8 +53,35 @@ NBA1415DT[,list(Team,Name,TotalPoints)]
 NBA1415[,c("Team","Name","TotalPoints")]
 
 NBA1415DT[,list(mean(TotalPoints),sum(TotalPoints))] 
+mean(NBA1415$TotalPoints)
+sum(NBA1415$TotalPoints)
+NBA1415DT[,list(TotalPointsAvg=mean(TotalPoints),TotalPointsSum=sum(TotalPoints))] 
 
-NBA1415DT[,list(Team,mean(TotalPoints)),by=Team] 
+NBA1415DT[,list(mean(TotalPoints),sum(TotalPoints)),by=Team] 
+
+NBA1415DT[,list(mean(TotalPoints),sum(TotalPoints),sd(TotalPoints)),by=list(Team,Position)] 
+
+NBA1415DT[,list(ThreePerc=round(sum(ThreesMade)/sum(ThreesAttempted),digits = 2)),
+          by=list(Team,Position)] [order(ThreePerc,decreasing = T)]
+
+NBA1415DT[,list(ThreePerc=round(sum(ThreesMade)/sum(ThreesAttempted),digits = 2),
+                ThreeMadeTotal=sum(ThreesMade),ThreeAttTotal=sum(ThreesAttempted)),
+          by=list(Team,Position)] [order(ThreePerc,decreasing = T)]
+
+NBA1415DT[,list(TotalPointsAvg=mean(TotalPoints),
+                TotalPointsSum=sum(TotalPoints),
+                TotalPointsSd=sd(TotalPoints),
+                Max=max(TotalPoints),
+                Count=.N,.I),by=list(Team,Position)] 
+
+NBA1415DT[,ThreePerc:=round(sum(ThreesMade)/sum(ThreesAttempted),digits = 2)] 
+NBA1415DT[,c("FreeThrowsPerc","FieldGoalsPerc"):=
+              list(round(sum(FreeThrowsMade)/sum(FreeThrowsAttempted),digits = 2),
+                   round(sum(FieldGoalsMade)/sum(FieldGoalsAttempted),digits = 2))] 
+
+NBA1415DT[,':=' (FreeThrowsPerc=round(sum(FreeThrowsMade)/sum(FreeThrowsAttempted),digits = 2),
+                 FieldGoalsPerc=round(sum(FieldGoalsMade)/sum(FieldGoalsAttempted),digits = 2))] 
+NBA1415DT[,.SD]
 
 
 
