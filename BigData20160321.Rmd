@@ -1,15 +1,54 @@
 ---
 title: "大數據分析方法"
-subtitle: "資料處理與函數"
-author: "曾意儒 Yi-Ju Tseng, Assistant Prof"
-job: "Deaprtment of Information Management, Chang Gung University"
-highlighter : highlight.js
+author: "曾意儒 Yi-Ju Tseng, 長庚大學資管系"
 date: "March 21, 2016"
 output: ioslides_presentation
+subtitle: 資料處理與函數
+highlighter: highlight.js
 ---
 
+##記得先把NBA14-15的資料讀進來
+```{r results='hide',message=FALSE,cache=T}
+if (!require('SportsAnalytics')){
+    install.packages("SportsAnalytics")
+    library(SportsAnalytics)
+}
+NBA1415<-fetch_NBAPlayerStatistics("14-15")
+NBA1415
+```
 
-## 複習
+##複習 Vector組合
+```{r}
+x<-1:3
+y<-10:12
+cbind(x, y) #組合Column列
+rbind(x, y) #組合Row行
+```
+##複習 表格資料
+```{r}
+head(NBA1415,3) #表格前三行
+nrow(NBA1415) #表格有幾行Row
+ncol(NBA1415) #表格有幾列Column
+```
+##複習 Subset (數字)
+```{r}
+NBA1415[1:3,] # 取前三行
+NBA1415[,2] # 取第二列
+```
+##複習 Subset (條件)
+```{r}
+# 取列名為Name的那一列Column, 同 NBA1415$Name
+head(NBA1415[,"Name"])
+# 取Team是SAN的所有行Row, 同 subset(NBA1415, Team=="SAN")
+head(NBA1415[NBA1415$Team=="SAN",])
+```
+
+##複習 字串比對
+```{r}
+grep("Tim",NBA1415$Name) #回傳符合條件的row index
+head(grepl("Tim",NBA1415$Name)) #回傳T or F
+NBA1415[grep("Tim",NBA1415$Name),] #搭配subset
+```
 
 ##每次開始前
 - 打開GitHub桌面版
@@ -17,25 +56,24 @@ output: ioslides_presentation
 - **Clone**上次交的作業回本機端(存到桌面)
 + 提示：左上角的+號，選**Clone**
 - 點兩下*Clone回來的資料夾*裡面的**.Rproj**
-
+<img src="fig/Clone.png" width="800px">
 
 ##Debugging
 
->
+`>`
 
 可以執行程式碼
 
-+
+`+`
 
 你之前的程式碼沒打完（不知道是哪裡沒打完的話，按Esc砍掉重練）
 
 
-##Debugging 2
-- R的錯誤訊息
-    - Message：有可能的錯誤通知，程式會繼續執行
-    - Warning：有錯誤，但是不會影響太多，程式還是會繼續執行
-    - Error：有錯，而且無法繼續執行程式
-    - Condition：可能會發生的情況
+##Debugging R的錯誤訊息
+- Message：有可能的錯誤通知，程式會繼續執行
+- Warning：有錯誤，但是不會影響太多，程式會繼續執行
+- Error：有錯，而且無法繼續執行程式
+- Condition：可能會發生的情況
 ```{r}
 log(-1)
 ```
@@ -44,14 +82,6 @@ mena(NA)
 ```
    
 ##從上次的解答開始
-記得先把NBA14-15的資料讀進來
-```{r results='hide',message=FALSE}
-if (!require('SportsAnalytics')){
-    install.packages("SportsAnalytics")
-    library(SportsAnalytics)
-}
-NBA1415<-fetch_NBAPlayerStatistics("14-15")
-```
 ```{r}
 for(i in 1:nrow(NBA1415)){
     if(NBA1415[i,"GamesPlayed"]>70&NBA1415[i,"TotalPoints"]>1500){
@@ -88,10 +118,10 @@ San[order(San$TotalPoints,decreasing = T)[1],
 ```
 如果要得到每隊最高分的球員名單呢？
 
-##我們還是用for+unique()試試看好了
-NBA14-15球季，每隊最高分的球員名單
+##還是用for+unique() 取每隊最高分的球員名單
+
 ```{r}
-unique(NBA1415$Team)
+unique(NBA1415$Team) #取不重複的隊名
 for(team in unique(NBA1415$Team)){
     selectTeam<-subset(NBA1415,Team==team)
     print(selectTeam[order(selectTeam$TotalPoints,decreasing = T)[1],
@@ -104,9 +134,8 @@ for(team in unique(NBA1415$Team)){
 FinalOutput<-NULL
 for(team in unique(NBA1415$Team)){
     selectTeam<-subset(NBA1415,Team==team)
-    FinalOutput<-rbind(FinalOutput,
-                       selectTeam[
-                           order(selectTeam$TotalPoints,decreasing = T)[1],
+    FinalOutput<-rbind(FinalOutput,selectTeam
+                       [order(selectTeam$TotalPoints,decreasing = T)[1],
                                c("Name","Team","TotalPoints")])
 }
 FinalOutput
@@ -119,7 +148,7 @@ FinalOutput
 ##apply()
 有類似for迴圈的功能
 
-- apply(Data, MARGIN, FUN,….)
+- apply(Data, MARGIN, FUN,…)
     - Data：矩陣（Matrix），Data Frame
     - MARGIN：1=row, 2=column
     - FUN：函數
@@ -131,6 +160,8 @@ apply(NBA1415,2,max)
 
 ##apply()範例2
 NBA1415球季，出場數、出場總分鐘數、總分的最大值各是多少
+
+apply(Data, MARGIN, FUN,…)
 ```{r}
 apply(NBA1415[,c("GamesPlayed","TotalMinutesPlayed","TotalPoints")]
       ,2,mean)
@@ -147,7 +178,7 @@ apply(NBA1415[,c("GamesPlayed","TotalMinutesPlayed","TotalPoints")]
 ##sapply(): Simplify
 - 如果回傳的list裡面，每個欄位長度都是1，回傳向量
 - 如果回傳的list裡面，每個欄位長度都一樣，回傳矩陣
-- sapply(Data, FUN…)
+- sapply(Data, FUN,…)
     - Data：矩陣（Matrix），Data Frame，**List**，**向量**
     - FUN：函數
     - …：函數要用的參數
@@ -169,9 +200,8 @@ apply(NBA1415[,c("GamesPlayed","TotalMinutesPlayed","TotalPoints")]
 ```
 
 ##lapply(): List
-- For List
-- C code
-- lapply(Data, FUN…)
+- For List，用C寫的
+- lapply(Data, FUN,…)
     - Data：矩陣（Matrix），Data Frame，List
     - FUN：函數
     - …：函數要用的參數
@@ -181,6 +211,8 @@ lapply(iris, mean)
 
 ##lapply()範例2
 NBA1415球季，出場數、出場總分鐘數、總分的平均值各是多少
+
+lapply(Data, FUN,…)
 ```{r}
 lapply(NBA1415[,c("GamesPlayed","TotalMinutesPlayed","TotalPoints")],
        mean)
@@ -297,7 +329,7 @@ complete.cases(x) #可使用在data frame，取出所有欄位都不是NA的row
     - R Markdown—knitr—>Markdown
     - Markdown—markdown—>HTML
 - 用來撰寫可以重複執行/動態的 R語言執行報告
-- 報告格式：Slides, PDF, HTML. Word,…
+- 報告格式：Slides, PDF, HTML, Word,…
 - 又要交作業了....
 
 ##R Markdown 元件
@@ -308,7 +340,7 @@ complete.cases(x) #可使用在data frame，取出所有欄位都不是NA的row
 ![example](fig/RChunks.png)
 
 ##Step 1 開啟新的R Markdown 檔案
-如果跳出是否要安裝Packages，選**要**
+如果跳出是否要安裝Packages，選 **要**
 
 ![example](fig/NewMarkdown.png)
 
@@ -322,35 +354,38 @@ complete.cases(x) #可使用在data frame，取出所有欄位都不是NA的row
 ![example](fig/RChunks.png)
 
 ## 自動生成的.md檔案在GitHub上的樣子
+自己試試看
 
 ## R Code Chunk的參數
 - eval：要不要執行並顯示在輸出的Markdown檔案內
 - echo：要不要一起顯示程式碼以及執行結果
+- result：要不要顯示程式執行結果
 - warning, error, message：要不要顯示錯誤訊息
 - cache：是否要暫存結果
+
 
 ##Homework 3
 分析NBA 2014到2015球季
 
-- 各隊最辛苦的球員（出戰分鐘數TotalMinutesPlayed 最多）
+- 各隊最辛苦的球員（TotalMinutesPlayed最多）
 - 各隊得分王（TotalPoints最多）
 - 各隊最有效率的球員（總得分/出戰分鐘數 最高）
 - 各隊三分球出手最準的球員（ThreesMade/ThreesAttempted 最高）
 
 ## Homework 3 詳細要求與配分1
-- Title: NBA 2014-2015球季 各隊分析 (5 pt)
-- 把資料讀進來的程式碼 (5 pt)
-- 次標題1：各隊最辛苦的球員 (20 pt)
-    - 標題 (2)，說明 (3)，程式碼 (5) 和結果 (10)
-    - 結果要包括隊名 (2) 與球員姓名 (3) 與總出場數 (3)，按照總出場數排序(大到小) (2)
+- Title: NBA 2014-2015球季 各隊分析 (`5 pt`)
+- 把資料讀進來的程式碼 (`5 pt`)
+- 次標題1：各隊最辛苦的球員 (`20 pt`)
+    - 標題 (`2`)，說明 (`3`)，程式碼 (`5`) 和結果 (`10`)
+    - 結果要包括隊名 (`2`) 與球員姓名 (`3`) 與總出場數 (`3`)，按照總出場數排序(大到小) (`2`)
     
 ## Homework 3 詳細要求與配分2
-- 次標題2：各隊得分王 (20 pt)
+- 次標題2：各隊得分王 (`20 pt`)
     - 程式碼和結果，輸出要包括隊名與球員姓名與總分，按照總分排序
-- 次標題3：各隊最有效率的球員 (25 pt)
-    - 程式碼和結果，輸出要包括隊名與球員姓名與效率計算結果 (8)，按照效率計算結果排序
-- 次標題4：各隊三分球出手最準的球員 (25 pt)
-    - 程式碼和結果，輸出要包括隊名與球員姓名與三分球命中率 (8)，按照三分球命中率排序
+- 次標題3：各隊最有效率的球員 (`25 pt`)
+    - 程式碼和結果，輸出要包括隊名與球員姓名與效率計算結果 (`8`)，按照效率計算結果排序
+- 次標題4：各隊三分球出手最準的球員 (`25 pt`)
+    - 程式碼和結果，輸出要包括隊名與球員姓名與三分球命中率 (`8`)，按照三分球命中率排序
     
 ##作業範例 — R Markdown
 ![example](fig/HWRChunks.png)
@@ -550,6 +585,7 @@ http://bit.ly/1U3pVoI
 The `read.table`, `read.csv` 是最常見的，會用這些就好
 
 有以下參數：
+
 - `file`, 檔名
 - `header`, 是否有欄位名稱（表頭）（T/F）
 - `sep`, 分隔符號
@@ -558,185 +594,52 @@ The `read.table`, `read.csv` 是最常見的，會用這些就好
 - `skip`, 要跳過幾行？
 - `stringsAsFactors`, 要不要輸入成'Factor'（有序因子）
 
+##從網路上下載檔案 download.file
+使用RCurl Package
+
+download.file(URL, destfile=儲存檔名, method=?)
+
+method = "curl"-->For **https**
+```{r results='hide',message=FALSE, warning=F,cache=T}
+if (!require('RCurl')){
+    install.packages("RCurl")
+    library(RCurl)
+}
+download.file("https://raw.githubusercontent.com/yijutseng/
+              BigDataCGUIM/master/files/opendata10401.csv", 
+              destfile = "open.csv", method = "curl")
+```
 
 ## read.csv使用範例
-
-```r
-data <- read.table('')
+完全不用給參數
+```{r}
+data <- read.csv('open.csv')
+data
 ```
 
-R will automatically
-
-- skip lines that begin with a #
-- figure out how many rows there are (and how much memory needs to be allocated)
-- figure what type of variable is in each column of the table
-Telling R all these things directly makes R run faster and more efficiently.
-- `read.csv` is identical to read.table except that the default separator is a comma.
-
-## Reading in Larger Datasets with read.table
-
-With much larger datasets, doing the following things will make your life easier and will prevent R from choking.
-
-- Read the help page for read.table, which contains many hints
-- Make a rough calculation of the memory required to store your dataset. If the dataset is larger than the amount of RAM on your computer, you can probably stop right here.
-- Set `comment.char = ""` if there are no commented lines in your file.
-
-## Reading in Larger Datasets with read.table
-
-- Use the `colClasses` argument. Specifying this option instead of using the default can make ’read.table’ run MUCH faster, often twice as fast. In order to use this option, you have to know the class of each column in your data frame. If all of the columns are “numeric”, for example, then you can just set `colClasses = "numeric"`. A quick an dirty way to figure out the classes of each column is the following:
+## 也可以讀Excel檔案
+要安裝xlsx 套件
 
 ```r
-initial <- read.table("datatable.txt", nrows = 100)
+if (!require('xlsx')){
+    install.packages("xlsx")
+    library(xlsx)
+}
+ExcelData <- read.xlsx("data.xlsx",sheetIndex=1,header=TRUE)
+head(ExcelData)
+```
+
+##讀檔的時候R會自動
+
+- 跳過#開頭的任何行（Row）
+- 判斷要讀幾行
+- 判斷每個列（Column）的類別
+- 把欄位包起來的符號
+
+如果讀取時已指定**Column類別**以及**把欄位包起來的符號**，會快很多
+
+```{r}
+initial <- read.csv("open.csv", nrows = 100)
 classes <- sapply(initial, class)
-tabAll <- read.table("datatable.txt",
-                     colClasses = classes)
-```
-
-- Set `nrows`. This doesn’t make R run faster but it helps with memory usage. A mild overestimate is okay. You can use the Unix tool `wc` to calculate the number of lines in a file.
-
-
-## Know Thy System
-
-In general, when using R with larger datasets, it’s useful to know a few things about your system.
-
-- How much memory is available?
-- What other applications are in use?
-- Are there other users logged into the same system? 
-- What operating system?
-- Is the OS 32 or 64 bit?
-
-
-## Calculating Memory Requirements
-
-I have a data frame with 1,500,000 rows and 120 columns, all of which are numeric data. Roughly, how much memory is required to store this data frame?
-
-
-1,500,000 × 120 × 8 bytes/numeric 
-
-  = 1440000000 bytes
-  
-  = 1440000000 / $2^{20}$ bytes/MB  
-  
-  = 1,373.29 MB
-  
-  = 1.34 GB                     
-
-## Textual Formats
-
-- `dumping` and dputing are useful because the resulting textual format is edit-able, and in the case of corruption, potentially recoverable.
-- `Unlike` writing out a table or csv file, `dump` and `dput` preserve the _metadata_ (sacrificing some readability), so that another user doesn’t have to specify it all over again.
-- `Textual` formats can work much better with version control programs like subversion or git which can only track changes meaningfully in text files
-- Textual formats can be longer-lived; if there is corruption somewhere in the file, it can be easier to fix the problem
-- Textual formats adhere to the “Unix philosophy” 
-- Downside: The format is not very space-efficient
-
-
-## dput-ting R Objects
-
-Another way to pass data around is by deparsing the R object with dput and reading it back in using `dget`.
-
-```r
-> y <- data.frame(a = 1, b = "a")
-> dput(y)
-structure(list(a = 1,
-               b = structure(1L, .Label = "a",
-                             class = "factor")),
-          .Names = c("a", "b"), row.names = c(NA, -1L),
-          class = "data.frame")
-> dput(y, file = "y.R")
-> new.y <- dget("y.R")
-> new.y
-   a  b 
-1  1  a
-```
-
-
-## Dumping R Objects
-
-Multiple objects can be deparsed using the dump function and read back in using `source`.
-
-```r
-> x <- "foo"
-> y <- data.frame(a = 1, b = "a")
-> dump(c("x", "y"), file = "data.R") 
-> rm(x, y)
-> source("data.R")
-> y
-  a  b 
-1 1  a
-> x
-[1] "foo"
-```
-
-
-## Interfaces to the Outside World
-
-Data are read in using _connection_ interfaces. Connections can be made to files (most common) or to other more exotic things.
-
-- `file`, opens a connection to a file
-- `gzfile`, opens a connection to a file compressed with gzip
-- `bzfile`, opens a connection to a file compressed with bzip2 
-- `url`, opens a connection to a webpage
-
-
-## File Connections
-
-```r
-> str(file)
-function (description = "", open = "", blocking = TRUE,
-          encoding = getOption("encoding"))
-```
-
-- `description` is the name of the file 
-- `open` is a code indicating
-  - “r” read only
-  - “w” writing (and initializing a new file)
-  - “a” appending
-  - “rb”, “wb”, “ab” reading, writing, or appending in binary mode (Windows)
-
-
-## Connections
-
-In general, connections are powerful tools that let you navigate files or other external objects. In practice, we often don’t need to deal with the connection interface directly.
-
-```r
-con <- file("foo.txt", "r")
-data <- read.csv(con)
-close(con)
-```
-
-is the same as
-
-```r
-data <- read.csv("foo.txt")
-```
-
-
-## Reading Lines of a Text File
-
-```r
-> con <- gzfile("words.gz") 
-> x <- readLines(con, 10) 
-> x
- [1] "1080"     "10-point" "10th"     "11-point"
- [5] "12-point" "16-point" "18-point" "1st"
- [9] "2"        "20-point"
-```
-
-`writeLines` takes a character vector and writes each element one line at a time to a text file.
-
-## Reading Lines of a Text File
-
-`readLines` can be useful for reading in lines of webpages
-
-```r
-## This might take time
-con <- url("http://www.jhsph.edu", "r")
-x <- readLines(con)
-> head(x)
-[1] "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">"
-[2] ""
-[3] "<html>"
-[4] "<head>"
-[5] "\t<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8
+tabAll <- read.csv("open.csv", colClasses = classes)
 ```
