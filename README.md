@@ -10,11 +10,11 @@
 
 * 2016/03/14 課程預計使用程式碼
 * 2016/03/21 課程預計使用程式碼
+
+或是投影片.Rmd檔
+
 * 2016/03/28 課程預計使用程式碼
 
 ##每次來電腦教室都要設定的Git
 請參考GitSetting 檔案
-
-![text](HW3_files/figure-markdown_github/pressure-1.png)
-
 
