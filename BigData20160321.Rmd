@@ -377,7 +377,7 @@ complete.cases(x) #可使用在data frame，取出所有欄位都不是NA的row
 - 把資料讀進來的程式碼 (`5 pt`)
 - 次標題1：各隊最辛苦的球員 (`20 pt`)
     - 標題 (`2`)，說明 (`3`)，程式碼 (`5`) 和結果 (`10`)
-    - 結果要包括隊名 (`2`) 與球員姓名 (`3`) 與總出場數 (`3`)，按照總出場數排序(大到小) (`2`)
+    - 結果要包括隊名 (`2`) 與球員姓名 (`3`) 與總出場分鐘數 (`3`)，按照總出場分鐘數排序(大到小) (`2`)
     
 ## Homework 3 詳細要求與配分2
 - 次標題2：各隊得分王 (`20 pt`)
@@ -605,8 +605,7 @@ if (!require('RCurl')){
     install.packages("RCurl")
     library(RCurl)
 }
-download.file("https://raw.githubusercontent.com/yijutseng/
-              BigDataCGUIM/master/files/opendata10401.csv", 
+download.file("https://raw.githubusercontent.com/yijutseng/BigDataCGUIM/master/files/opendata10401.csv", 
               destfile = "open.csv", method = "curl")
 ```
 

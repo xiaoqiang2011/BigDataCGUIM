@@ -1,12 +1,10 @@
 ---
 title: "大數據分析方法"
-subtitle: "資料讀取與處理"
-author: "曾意儒 Yi-Ju Tseng, Assistant Prof"
-job: "Deaprtment of Information Management, Chang Gung University"
-highlighter : highlight.js
+author: "曾意儒 Yi-Ju Tseng, 長庚大學資管系"
 date: "April 11, 2016"
 output: ioslides_presentation
-
+subtitle: "Analytic Graphics"
+highlighter: highlight.js
 ---
 
 
