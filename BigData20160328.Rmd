@@ -2,10 +2,31 @@
 title: "大數據分析方法"
 author: "曾意儒 Yi-Ju Tseng, 長庚大學資管系"
 date: "March 28, 2016"
-output: beamer_presentation
+output: ioslides_presentation
 subtitle: 資料讀取與處理
 highlighter: highlight.js
 ---
+
+## 講課速度
+- 在課堂上反應聽不懂的部分
+- 留言反應：交作業的時候，或至[意見回饋區](http://goo.gl/forms/YauEmm8g4b)，會在下次上課用新的範例講解
+- 有很多重要的功能會在分析新資料時重複用到
+
+## 作業問題
+閱讀錯誤訊息
+```
+# Error: could not find function "fetch_NBAPlayerStatistics"
+# 找不到"fetch_NBAPlayerStatistics" function
+# 原因：沒安裝或沒讀入SportsAnalytics package
+```
+```
+# Error in library(knitr): there is no package called 'knitr'
+# 找不到"knitr" package
+# 原因：沒安裝knitr package
+```
+- Windows編碼：在GitHub上顯示是正確的話，就複製貼上.....
+- [R Markdown小抄](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+
 
 ## 作業範例裡的merge()-1
 - By default the data frames are merged on the columns with names they both have
@@ -130,7 +151,6 @@ https://github.com/yijutseng/BigDataCGUIM
 ## .md, .R... URL
 https://github.com/yijutseng/BigDataCGUIM
 <img src="Fig/FileURL.png" width="600px">
-
 
 ##每次開始前
 - 打開GitHub桌面版
@@ -423,8 +443,7 @@ totalPage$datetime <- as.POSIXct(totalPage$created_time,
                                  tz = "GMT") #2016-01-16T15:05:36+0000
 totalPage$dateTPE <- format(totalPage$datetime, "%Y-%m-%d", 
                             tz = "Asia/Taipei") #2016-01-16
-totalPage$weekdays <-weekdays(format(totalPage$datetime, "%m/%d/%Y", 
-                            tz = "Asia/Taipei"))
+totalPage$weekdays <-weekdays(as.Date(totalPage$dateTPE))
 ```
 
 
@@ -436,7 +455,7 @@ aggregate(要算平均的欄位名稱~date,totalPage,mean)
 
 ```{r eval=FALSE}
 #加分題
-totalPage$id #post_id
+post_id<-totalPage$id #post_id
 getPost(post_id,token,n.comments = xxx)
 ```
     
@@ -452,9 +471,12 @@ getPost(post_id,token,n.comments = xxx)
 - 次標題：粉絲留言頻率（加分題）
 - 程式碼、結果、討論（加分題）
 
-##Homework 4 作業繳交
+## Homework 4 作業繳交
 http://goo.gl/forms/1lgqWKG02O
 <img src="Fig/HW4.png" width="600px">
+
+## Homework 4 作業範例
+
 
 ## Other Useful Methods in Rfacebook Packages
 - getUser()
