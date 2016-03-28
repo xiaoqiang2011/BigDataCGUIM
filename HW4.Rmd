@@ -46,6 +46,7 @@ PostCount<-aggregate(id~dateTPE,totalPage,length)
 library(knitr)
 kable(head(PostCount[order(PostCount$id,decreasing = T),]))
 ```
+
 討論討論～～～～2016/01/23（週六）的發文數最多，一共有三篇，ooooxxx，
 2016/01/01和2016/01/14居次，01/14是來膜子發行日oooxxx
 

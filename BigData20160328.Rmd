@@ -476,7 +476,7 @@ http://goo.gl/forms/1lgqWKG02O
 <img src="Fig/HW4.png" width="600px">
 
 ## Homework 4 作業範例
-
+https://github.com/yijutseng/BigDataCGUIM/blob/master/HW4.Rmd
 
 ## Other Useful Methods in Rfacebook Packages
 - getUser()
