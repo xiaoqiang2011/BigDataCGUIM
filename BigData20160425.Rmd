@@ -1,0 +1,340 @@
+---
+title: "大數據分析方法"
+author: "曾意儒 Yi-Ju Tseng, 長庚大學資管系"
+date: "April 25, 2016"
+output: ioslides_presentation
+subtitle: "探索性分析 Exploratory Analysis: 圖形分析 - 2"
+highlighter: highlight.js
+---
+
+## Homework 5
+- 分組名單
+- 期末報告題目
+- 預計分析資料
+    - 資料來源
+    - 資料格式
+- 預計分析議題
+    - 假設
+    - 預計得到的結果
+    - 分析結果可以解決什麼問題
+- 5/2 (一) 11:59pm
+- http://goo.gl/forms/8UgvNQlHVp
+
+## 靈感！？
+- [R Blogger](http://www.r-bloggers.com/)
+- [Data Man的資料視覺化筆記](https://www.facebook.com/imDataMan/)
+- [Data USA](http://datausa.io/)
+- [Randy Olson Twitter](https://twitter.com/randal_olson)
+- [Washington Post Information Graphics](http://postgraphics.tumblr.com/)
+- [Washington Post | FlowingData](https://flowingdata.com/tag/washington-post/)
+- [New York Times | FlowingData](https://flowingdata.com/tag/new-york-times/)
+    
+## 期中考
+- 考卷
+- 答案
+
+## 演講
+- 大數據在台灣金融行業的應用分享
+- 講師：王葆華
+- 台灣雲端行動科技公司 與 寶科資訊 負責人
+
+## 上課用程式碼
+
+
+# Plotting System--Base
+
+## 探索圖範例：又是大家熟悉的NBA...
+
+```{r message=FALSE,warning=FALSE}
+#讀入SportsAnalytics package
+if (!require('SportsAnalytics')){
+    install.packages("SportsAnalytics")
+    library(SportsAnalytics)
+}
+#擷取2014-2015年球季球員資料
+NBA1415<-fetch_NBAPlayerStatistics("14-15")
+```
+
+
+## Simple Summaries of Data - 1
+
+One dimension
+
+* Five-number summary
+* Boxplots 箱型圖
+* Histograms 直方圖
+* Density plot 密度圖
+* Barplot 條狀圖
+
+
+## Five Number Summary
+
+```{r}
+#總得分數
+summary(NBA1415$TotalPoints)
+```
+
+
+
+## Boxplot 箱型圖
+
+```{r}
+#用總得分數畫箱形圖， col = "blue" 顏色藍色
+boxplot(NBA1415$TotalPoints, col = "blue")
+```
+
+
+
+## Histogram 直方圖
+
+```{r,fig.height=3.5}
+#用總得分數畫直方圖， col = "green" 顏色綠色
+hist(NBA1415$TotalPoints, col = "green")
+```
+
+
+
+## Histogram 直方圖
+
+```{r,fig.height=3.5}
+hist(NBA1415$TotalPoints, col = "green")
+#將總得分數實際的"值"標在直方圖下
+rug(NBA1415$TotalPoints)
+```
+
+
+
+## Histogram 直方圖
+
+```{r,fig.height=3.5}
+#breaks = 100 表示將總得分數分為100組
+hist(NBA1415$TotalPoints, col = "green", breaks = 100)
+rug(NBA1415$TotalPoints)
+```
+
+
+
+## 層層疊 -1
+
+```{r}
+boxplot(NBA1415$TotalPoints, col = "blue")
+#在值等於500的地方畫一條橫線
+abline(h = 500)
+```
+
+
+
+
+## 層層疊 -1
+
+```{r,fig.height=3.5}
+hist(NBA1415$TotalPoints, col = "green")
+#在值等於500的地方畫一條直線， lwd = 2: 寬度為2
+abline(v = 500, lwd = 2)
+#在中位數的地方畫一條直線， lwd = :4 寬度為4，顏色為magenta
+abline(v = median(NBA1415$TotalPoints), col = "magenta", lwd = 4)
+```
+
+
+
+## Barplot 條狀圖
+
+```{r}
+#col = "wheat"小麥色，標題：main = "Number of Palyers in Each Team"
+barplot(table(NBA1415$Team), 
+        col = "wheat", main = "Number of Palyers in Each Team")
+```
+
+
+
+## Simple Summaries of Data - 2
+
+Two dimensions
+
+* Multiple/overlayed 1-D plots (Lattice/ggplot2)
+* Scatterplots
+* Smooth scatterplots
+
+$> 2$ dimensions
+
+* Overlayed/multiple 2-D plots; coplots
+* Use color, size, shape to add dimensions
+* Spinning plots
+* Actual 3-D plots (not that useful)
+
+
+
+
+## Multiple Boxplots
+
+```{r,fig.width=8,fig.height=3.5}
+#預計要做圖的'值'（TotalPoints） ~ 分組依據（Team）
+boxplot(TotalPoints ~ Team, data = NBA1415, col = "red")
+```
+
+
+
+## Multiple Histograms
+
+```{r,fig.width=8,fig.height=3.5}
+par(mfrow = c(2, 1), mar = c(4, 4, 2, 1)) #一張圖裡面有2x1個子圖
+hist(subset(NBA1415, Team == "SAN")$TotalPoints, col = "green")
+hist(subset(NBA1415, Team == "GSW")$TotalPoints, col = "green")
+```
+
+
+
+## Scatterplot
+
+```{r,fig.height=3}
+par(mfrow = c(1, 1)) #一張圖裡面只有一個子圖
+#畫x為TotalMinutesPlayed, y為TotalPoints的散佈圖
+plot(NBA1415$TotalMinutesPlayed, NBA1415$TotalPoints)
+#畫一條橫線h = 500，寬度lwd = 2，樣式lty = 2（虛線）
+abline(h = 500, lwd = 2, lty = 2)
+```
+
+
+
+## Scatterplot - Using Color
+
+```{r,fig.height=3}
+#col=NBA1415$Team 用隊伍名稱著色，意指不同隊伍的球員不同色
+plot(NBA1415$TotalMinutesPlayed, NBA1415$TotalPoints,col=NBA1415$Team)
+abline(h = 500, lwd = 2, lty = 2)
+```
+
+
+
+## Multiple Scatterplots
+
+```{r,fig.height=3.5,fig.width=8}
+par(mfrow = c(1, 2), mar = c(5, 4, 2, 1)) #一張圖裡面有1x2個子圖
+with(subset(NBA1415, Team == "SAN"), 
+     plot(TotalMinutesPlayed, TotalPoints, main = "SAN"))
+with(subset(NBA1415, Team == "GSW"), 
+     plot(TotalMinutesPlayed, TotalPoints, main = "GSW"))
+```
+
+
+
+## Summary
+
+* Exploratory plots are "quick and dirty"
+
+* Let you summarize the data (usually graphically) and highlight any broad features
+
+* Explore basic questions and hypotheses (and perhaps rule them out)
+
+* Suggest modeling strategies for the "next step"
+
+
+## Further resources
+
+* [R Graph Gallery](http://gallery.r-enthusiasts.com/)
+* [R Graph Gallery](http://www.r-graph-gallery.com/all-graphs/)
+* [R Bloggers](http://www.r-bloggers.com/)
+* [Interactive visualizations with R](http://ouzor.github.io/blog/2014/11/21/interactive-visualizations.html)
+
+
+# Plotting System -Lattice
+
+## The Lattice Plotting System
+包括以下Packaes:
+
+- *lattice*: 包括畫圖相關的函數functions: `xyplot`, `bwplot`, `levelplot`
+
+- *grid*: *lattice* package 的基礎
+
+- 一個函數畫完圖，不能再加標記和文字等
+
+
+
+## Lattice Functions
+
+- `xyplot`: 畫散佈圖 scatterplots 
+- `bwplot`: 畫盒鬚圖box-and-whiskers plots (“boxplots”)
+- `histogram`: 直方圖 histograms
+- `stripplot`: 盒鬚圖＋點
+- `dotplot`:  dots on "violin strings"
+- `splom`: 散佈圖的矩陣
+- `levelplot`, `contourplot`: for plotting "image" data
+
+
+
+## Lattice Functions
+
+Lattice functions 通常第一個參數是 formula 
+```r
+xyplot(y ~ x | f * g, data)
+```
+- We use the *formula notation* here, hence the `~`.
+
+- `y~x`: y-axis~x-axis
+
+- f,g are _conditioning variables_ 
+    — optional
+    - `*`:  an interaction between two variables
+
+- 第二個參數是資料`data`
+
+- If no other arguments are passed, there are defaults that can be used.
+
+
+## Simple Lattice Plot
+
+```{r,fig.height=3.5}
+library(lattice)
+library(datasets)
+## Simple scatterplot
+xyplot(Ozone ~ Wind, data = airquality) # y~x
+```
+
+
+
+## Simple Lattice Plot
+
+```{r,fig.width=8,fig.height=3.5}
+library(datasets)
+library(lattice)
+## Convert 'Month' to a factor variable
+airquality <- transform(airquality, Month = factor(Month)) 
+xyplot(Ozone ~ Wind | Month, #y~x | 分組依據
+       data = airquality, layout = c(5, 1)) # 5 rows, 1 column
+```
+
+## Lattice Behavior
+
+```{r,fig.height=3.5,fig.width=5}
+p <- xyplot(Ozone ~ Wind, data = airquality)  ## Nothing happens!
+print(p)  ## Plot appears
+```
+```{r,eval=FALSE}
+xyplot(Ozone ~ Wind, data = airquality)  ## Auto-printing
+```
+
+
+## Lattice Panel Functions
+
+- Lattice functions have a **panel function** which controls what
+  happens inside each panel of the plot.
+
+- The *lattice* package comes with default panel functions, but you
+  can supply your own if you want to customize what happens in each
+  panel
+
+- Panel functions receive the x/y coordinates of the data points
+  in their panel (along with any optional arguments) `optional`
+
+
+
+## Summary
+
+* Lattice plots 用一個單一函數畫圖 (e.g. `xyplot`)
+
+* 空白和邊緣都有預設值
+
+* 想看一種圖在不同情況下的差異的時候，很適合
+
+
+
