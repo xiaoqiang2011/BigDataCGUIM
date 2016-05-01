@@ -484,7 +484,7 @@ qplot(displ, hwy, data = mpg)
 
 - `plot`其實有很多參數，但都有預設值
 
-- 用`?par`去看這些餐度的意義，還有怎麼設定
+- 用`?par`去看這些參數的意義，還有怎麼設定
 
 
 
@@ -581,8 +581,9 @@ par("mfrow")
 ## Base Plot with Annotation
 
 ```{r,fig.height=3.5}
-library(datasets)
-with(airquality, plot(Wind, Ozone))
+library(datasets) #為了使用airquality資料集(在此package內)
+#等於plot(airquality$Wind, airquality$Ozone)
+with(airquality, plot(Wind, Ozone)) #x軸：Wind, y軸：Ozone
 ## Add a title
 title(main = "Ozone and Wind in New York City")  
 ```
@@ -592,8 +593,10 @@ title(main = "Ozone and Wind in New York City")
 ## Base Plot with Annotation
 
 ```{r,fig.height=3}
+#main='圖表標題'
 with(airquality, plot(Wind, Ozone, 
                       main = "Ozone and Wind in NYC"))
+#五月點變成藍色
 with(subset(airquality, Month == 5), 
      points(Wind, Ozone, col = "blue"))
 ```
@@ -646,6 +649,19 @@ with(airquality, {
 	mtext("Ozone and Weather in New York City", outer = TRUE)
 })
 ```
+
+
+
+## Summary
+
+* Plots in the base plotting system are created by calling successive R functions to "build up" a plot
+
+* Plotting occurs in two stages:
+    - Creation of a plot
+    - Annotation of a plot (adding lines, points, text, legends)
+
+* The base plotting system is very flexible and offers a high degree of control over plotting
+
 
 
 
@@ -837,180 +853,5 @@ with(subset(NBA1415, Team == "GSW"), plot(TotalMinutesPlayed, TotalPoints, main 
 * [R Graph Gallery](http://www.r-graph-gallery.com/all-graphs/)
 * [R Bloggers](http://www.r-bloggers.com/)
 * [Interactive visualizations with R](http://ouzor.github.io/blog/2014/11/21/interactive-visualizations.html)
-
-
-
-
-
-# Plotting System -Lattice
-
-## The Lattice Plotting System
-包括以下Packaes:
-
-- *lattice*: 包括畫圖相關的函數functions: `xyplot`, `bwplot`, `levelplot`
-
-- *grid*: *lattice* package 的基礎
-
-- 一個函數畫完圖，不能再加標記和文字等
-
-
-
-## Lattice Functions
-
-- `xyplot`: 畫散佈圖 scatterplots 
-- `bwplot`: 畫盒鬚圖box-and-whiskers plots (“boxplots”)
-- `histogram`: 直方圖 histograms
-- `stripplot`: 盒鬚圖＋點
-- `dotplot`:  dots on "violin strings"
-- `splom`: 散佈圖的矩陣
-- `levelplot`, `contourplot`: for plotting "image" data
-
-
-
-## Lattice Functions
-
-Lattice functions 通常第一個參數是 formula 
-```r
-xyplot(y ~ x | f * g, data)
-```
-- We use the *formula notation* here, hence the `~`.
-
-- `y~x`: y-axis~x-axis
-
-- f,g are _conditioning variables_ 
-    — optional
-    - `*`:  an interaction between two variables
-
-- 第二個參數是資料`data`
-
-- If no other arguments are passed, there are defaults that can be used.
-
-
-## Simple Lattice Plot
-
-```{r,fig.height=3.5}
-library(lattice)
-library(datasets)
-## Simple scatterplot
-xyplot(Ozone ~ Wind, data = airquality)
-```
-
-
-
-## Simple Lattice Plot
-
-```{r,fig.width=8,fig.height=3.5}
-library(datasets)
-library(lattice)
-## Convert 'Month' to a factor variable
-airquality <- transform(airquality, Month = factor(Month)) 
-xyplot(Ozone ~ Wind | Month, data = airquality, layout = c(5, 1))
-```
-
-## Lattice Behavior
-
-```{r,fig.height=3.5,fig.width=5}
-p <- xyplot(Ozone ~ Wind, data = airquality)  ## Nothing happens!
-print(p)  ## Plot appears
-```
-```{r,eval=FALSE}
-xyplot(Ozone ~ Wind, data = airquality)  ## Auto-printing
-```
-
-
-
-## Lattice Panel Functions
-
-- Lattice functions have a **panel function** which controls what
-  happens inside each panel of the plot.
-
-- The *lattice* package comes with default panel functions, but you
-  can supply your own if you want to customize what happens in each
-  panel
-
-- Panel functions receive the x/y coordinates of the data points
-  in their panel (along with any optional arguments)
-
-
-
-
-## Lattice Panel Functions
-
-```{r,fig.height=3.5,fig.width=8}
-set.seed(10)
-x <- rnorm(100)
-f <- rep(0:1, each = 50)
-y <- x + f - f * x+ rnorm(100, sd = 0.5)
-f <- factor(f, labels = c("Group 1", "Group 2"))
-xyplot(y ~ x | f, layout = c(2, 1))  ## Plot with 2 panels
-```
-
-
-
-## Lattice Panel Functions
-
-```{r,fig.height=3}
-## Custom panel function
-xyplot(y ~ x | f, panel = function(x, y, ...) {
-       panel.xyplot(x, y, ...)  
-    ## First call the default panel function for 'xyplot'
-       panel.abline(h = median(y), lty = 2) 
-       ## Add a horizontal line at the median
-})
-```
-
-
-
-## Lattice Panel Functions: Regression line
-
-```{r,fig.height=3}
-## Custom panel function
-xyplot(y ~ x | f, panel = function(x, y, ...) {
-               panel.xyplot(x, y, ...)  
-    ## First call default panel function
-               panel.lmline(x, y, col = 2)  
-               ## Overlay a simple linear regression line
-       })
-```
-
-
-
-## Many Panel Lattice Plot: Example from MAACS
-
-* Study: Mouse Allergen and Asthma Cohort Study (MAACS)
-
-* Study subjects: Children with asthma living in Baltimore City, many
-  allergic to mouse allergen
-
-* Design: Observational study, baseline home visit + every 3 months for a year.
-
-* Question: How does indoor airborne mouse allergen vary over time and
-  across subjects?
-
-
-[Ahluwalia et al., *Journal of Allergy and Clinical Immunology*, 2013](http://www.ncbi.nlm.nih.gov/pubmed/23810154)
-
-
-
-## Many Panel Lattice Plot
-
-```{r,echo=FALSE,cache=TRUE,fig.width=8}
-library(lattice)
-env <- readRDS("maacs_env.rds")
-env <- transform(env, MxNum = factor(MxNum))
-xyplot(log2(airmus) ~ VisitNum | MxNum, data = env, strip = FALSE, pch = 20, xlab = "Visit Number", ylab = expression(Log[2] * "Airborne Mouse Allergen"), main = "Mouse Allergen and Asthma Cohort Study (Baltimore City)")
-```
-
-
-
-## Summary
-
-* Lattice plots 用一個單一函數畫圖 (e.g. `xyplot`)
-
-* 空白和邊緣都有預設值
-
-* 想看一種圖在不同情況下的差異的時候，很適合
-
-* 使用Panel functions可以調整圖的細節
 
 
