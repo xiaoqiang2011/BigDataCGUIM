@@ -613,7 +613,7 @@ choroplethr_wdi(code="SP.POP.TOTL", year=2014,
 ## Taiwan?
 - 還沒有好用的package可用
 - 只好自己從頭來了
-- 下載台灣的地圖資料 [DIVA-GIS](http://www.diva-gis.org/gdata)
+- 下載台灣的地圖資料 [政府資料開放平台](http://data.gov.tw/node/7441)
 - 將下載的`TWN_adm`解壓縮，放到專案資料夾內
 - in `shapefile` [Wiki](https://zh.wikipedia.org/zh-tw/Shapefile)
 - 空間資料開放格式
@@ -634,8 +634,9 @@ if (!require('rgeos')){
 if (!require('maptools')){
     install.packages("maptools");library(maptools)
 }
-tw_shp <- readShapeSpatial("TWN_adm/TWN_adm2.shp")
+tw_new <- readShapeSpatial("Taiwan/Town_MOI_1041215.shp")
 names(tw_shp) #看tw_shp中各個資料的名字
+names(tw_new)
 ```
 
 ## 處理shapefile-1
@@ -643,23 +644,23 @@ names(tw_shp) #看tw_shp中各個資料的名字
 - fortify: 將shapefile物件轉為data.frame
 - [參考資料](http://www.r-bloggers.com/mapping-with-ggplot-create-a-nice-choropleth-map-in-r/)
 ```{r, warning=F,message=F, fig.height=3}
-print(tw_shp$NAME_2)
-tw_shp.df <- fortify(tw_shp, region = "ID_2")
+print(tw_new$Town_ID)
+tw_new.df <- fortify(tw_new, region = "T_UID")
 ```
 
 ## 處理shapefile-2
 - [參考資料](http://www.r-bloggers.com/mapping-with-ggplot-create-a-nice-choropleth-map-in-r/)
 ```{r, warning=F,message=F, fig.height=3}
-head(tw_shp.df)
+head(tw_new.df)
 ```
 
 ## 做一個假資料來畫
 ```{r, warning=F,message=F, fig.height=3}
 #做一個假資料來畫
-mydata<-data.frame(NAME_2=tw_shp$NAME_2, id=tw_shp$ID_2,
-                   prevalence=1:length(tw_shp$NAME_2))
+mydata<-data.frame(NAME_2=tw_new$T_Name, id=tw_new$T_UID,
+                   prevalence=1:length(tw_new$T_UID))
 head(mydata)
-final.plot<-merge(tw_shp.df,mydata,by="id",all.x=T)
+final.plot<-merge(tw_new.df,mydata,by="id",all.x=T)
 head(final.plot)
 ```
 
@@ -667,12 +668,12 @@ head(final.plot)
 ```{r, warning=F,message=F, fig.height=3}
 library(RColorBrewer) #配色用brewer.pal( 9 , "Reds" )
 twmap<-ggplot() +
-    geom_polygon(data = final.plot, 
+    geom_polygon(data = ≈, 
                  aes(x = long, y = lat, group = group, 
                      fill = prevalence), 
                  color = "black", size = 0.25) + 
     coord_map()+
-    scale_fill_gradientn( colours = brewer.pal(9,"Reds"))+
+    scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
     theme_void()+
     labs(title="Prevalence of X in Taiwan")
 ```
