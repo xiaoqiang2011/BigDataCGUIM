@@ -62,6 +62,19 @@ https://sheethub.com/
 
 - 作業的複雜程度與組員人數盡量成正比，會斟酌加減分
 
+
+## 上課用程式碼
+[Rmd下載](https://github.com/yijutseng/BigDataCGUIM/blob/master/BigData20160509.Rmd)
+
+按Raw，右鍵另存新檔
+
+投影片下載：
+
+[Html下載](https://raw.githubusercontent.com/yijutseng/BigDataCGUIM/master/BigData20160509.html)
+
+按右鍵，另存新檔
+
+
 # ggplot2 還能畫更多圖
 
 ## Choropleth map `面量圖`
