@@ -1,0 +1,38 @@
+---
+title: "大數據分析方法"
+author: "曾意儒 Yi-Ju Tseng, 長庚大學資管系"
+date: "May 16, 2016"
+output: ioslides_presentation
+subtitle: "Clustering"
+highlighter: highlight.js
+---
+
+
+## 上課用程式碼
+[Rmd下載](https://github.com/yijutseng/BigDataCGUIM/blob/master/BigData20160516.Rmd)
+
+按Raw，右鍵另存新檔
+
+投影片下載：
+
+[Html下載](https://raw.githubusercontent.com/yijutseng/BigDataCGUIM/master/BigData20160516.html)
+
+按右鍵，另存新檔
+
+
+# Machine Learning 機器學習
+
+## 什麼是Machine Learning？
+- Learning from data
+
+## 基礎的Machine Learning Models
+
+## 參考資料
+- 台大資工林軒田教授（田神）：
+    - [Machine Learning Foundations](www.coursera.org/course/ntumlone)
+    - [Machine Learning Techniques](www.coursera.org/course/ntumltwo)
+
+
+
+
+
