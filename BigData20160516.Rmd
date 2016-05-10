@@ -7,6 +7,30 @@ subtitle: "Machine Learning and Data Mining"
 highlighter: highlight.js
 ---
 
+# ggplot2 複習
+
+## 基本架構
+- Data `ggplot(Data)`
+- Geometries `geom_line()`, `geom_bar()`
+- Aesthetic properties `ggplot(Data,aes(x=1, y=1, color='black'))`
+- Scale mappings `scale_fill_continuous()`, `scale_fill_grey()`
+- Stats `stat_density2d()`
+
+## Geoms: 1 Variable
+<img src="Fig/gg1.png" height="400px">
+
+## Geoms: 2 Variables
+<img src="Fig/gg3.png" width="400px">
+
+## Geoms: 2 Variables
+<img src="Fig/gg4.png" width="400px">
+
+## Geoms: Graphical Primitives
+<img src="Fig/gg2.png" height="400px">
+
+## 參考資料
+[ggplot2 Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+
 # Clustering
 
 ## Clustering

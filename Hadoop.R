@@ -10,7 +10,7 @@ RHadoop
 http://unix.stackexchange.com/questions/271514/setting-persistent-environment-variable-in-centos-7-issue
 
 rmr2
-install.packages(c("methods","Rcpp", "RJSONIO", "digest", "functional", "reshape2","stringr", "plyr", "caTools","quickcheck","testthat"))
+install.packages(c("methods","Rcpp", "RJSONIO", "digest", "functional", "reshape2","stringr", "plyr", "caTools","quickcheck","testthat"), dependencies=TRUE, repos='http://cran.rstudio.com/')
 
 sudo R CMD INSTALL rmr2_2.3.0.tar.gz
 
