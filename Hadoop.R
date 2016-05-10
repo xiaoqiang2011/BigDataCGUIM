@@ -38,7 +38,7 @@ sudo HADOOP_CMD=/usr/bin/hadoop R CMD INSTALL rhdfs_1.0.8.tar.gz
 
 R 指令
 Sys.setenv(HADOOP_CMD="/usr/bin/hadoop")
-Sys.setenv(HADOOP_STREAMING=“/opt/…..")
+Sys.setenv(HADOOP_STREAMING="/opt/cloudera/parecels/CDH-5.4.5.1.cdh5.4.5.p0.7/jars/hadoop-streaming-2.6.0-mr1-cdh5.4.5.jar")
                 
 http://192.168.128.11:8787/
 
