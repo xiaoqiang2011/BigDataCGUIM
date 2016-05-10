@@ -9,8 +9,8 @@ https://github.com/RevolutionAnalytics/RHadoop/wiki/Installing-RHadoop-on-RHEL
 RHadoop
 http://unix.stackexchange.com/questions/271514/setting-persistent-environment-variable-in-centos-7-issue
 export HADOOP_STREAMING=/opt/cloudera/parcels/CDH-5.4.5-1.cdh5.4.5.p0.7/lib/hadoop-mapreduce/hadoop-streaming-2.6.0-cdh5.4.5.jar
+
 echo export HADOOP_CMD="/usr/bin/hadoop">/etc/profile.d/hadoopenv.sh
-echo export HADOOP_STREAMING="/opt/cloudera/parcels/CDH-5.4.5.1.cdh5.4.5.p0.7/jars/hadoop-streaming-2.6.0-mr1-cdh5.4.5.jar"> /etc/profile.d/hadoopenv.sh
 echo export HADOOP_STREAMING="/opt/cloudera/parcels/CDH-5.4.5-1.cdh5.4.5.p0.7/lib/hadoop-mapreduce/hadoop-streaming-2.6.0-cdh5.4.5.jar" > /etc/profile.d/hadoopenv.sh
 chmod 0755 /etc/profile.d/hadoopenv.sh
 
@@ -38,11 +38,27 @@ install.packages("rJava",
                  dependencies=TRUE, repos='http://cran.rstudio.com/')
 sudo HADOOP_CMD=/usr/bin/hadoop R CMD INSTALL rhdfs_1.0.8.tar.gz
 
-R 指令
-Sys.setenv(HADOOP_HOME="/usr/bin/hadoop")
+https://community.cloudera.com/t5/CDH-Manual-Installation/How-to-resolve-quot-Permission-denied-quot-errors-in-CDH/ta-p/36141
+
+sudo -u hdfs hadoop fs -mkdir /user/root
+sudo -u hdfs hadoop fs -chown root /user/root
+
+
+sudo -u hdfs hadoop fs -mkdir /user/user01
+sudo -u hdfs hadoop fs -chown user01 /user/user01
+
+
+
+#R 指令, 每次執行
 Sys.setenv(HADOOP_CMD="/usr/bin/hadoop")
-Sys.setenv(HADOOP_STREAMING="/opt/cloudera/parcels/CDH-5.4.5.1.cdh5.4.5.p0.7/jars/hadoop-streaming-2.6.0-mr1-cdh5.4.5.jar")
 Sys.setenv(HADOOP_STREAMING="/opt/cloudera/parcels/CDH-5.4.5-1.cdh5.4.5.p0.7/lib/hadoop-mapreduce/hadoop-streaming-2.6.0-cdh5.4.5.jar")
+library(rmr2)
+#test mapreduce
+small.ints = to.dfs(1:100)
+out<-mapreduce(
+    input = small.ints, 
+    map = function(k, v) cbind(v, v^2))
+head(from.dfs(out))
 
 
 http://192.168.128.11:8787/
