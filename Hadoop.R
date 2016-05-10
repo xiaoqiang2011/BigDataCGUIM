@@ -1,12 +1,43 @@
-install.packages(c("methods","Rcpp", "RJSONIO", "digest", "functional", "reshape2",
-                   "stringr", "plyr", "caTools","quickcheck","testthat"),
-                 dependencies=TRUE, repos='http://cran.rstudio.com/')
+https://bigdatastudy.hackpad.com/ep/pad/static/IADMBeqF0vV
 
-install.packages(c("dplyr","R.methodsS3","Hmisc", "stats", "memoise", "lazyeval", "rjson"),
-                 dependencies=TRUE, repos='http://cran.rstudio.com/')
+sudo yum install epel-release
+sudo yum update
+sudo yum install R
 
+https://github.com/RevolutionAnalytics/RHadoop/wiki/Installing-RHadoop-on-RHEL
 
+RHadoop
+http://unix.stackexchange.com/questions/271514/setting-persistent-environment-variable-in-centos-7-issue
 
-rJAVA?
+rmr2
+install.packages(c("methods","Rcpp", "RJSONIO", "digest", "functional", "reshape2","stringr", "plyr", "caTools","quickcheck","testthat"))
 
 sudo R CMD INSTALL rmr2_2.3.0.tar.gz
+
+export HADOOP_CMD=/usr/bin/hadoop
+
+find / -name hadoop-streaming-*.jar
+export HADOOP_STREAMING=/opt/….
+
+plyrmr
+install.packages(c("dplyr","R.methodsS3","Hmisc", "stats", "memoise", "lazyeval","rjson"), dependencies=TRUE, repos='http://cran.rstudio.com/')
+
+sudo R CMD INSTALL plyrmr
+
+JAVA JDK 1.8.0_91 下載 安裝
+
+export JAVA_HOME=/usr/java/jdk1.8.0_91
+
+R CMD javareconf
+install.packages("rJava",
+                 dependencies=TRUE, repos='http://cran.rstudio.com/')
+sudo HADOOP_CMD=/usr/bin/hadoop R CMD INSTALL rhdfs_1.0.8.tar.gz
+
+R 指令
+Sys.setenv(HADOOP_CMD="/usr/bin/hadoop")
+Sys.setenv(HADOOP_STREAMING=“/opt/…..")
+                 
+                 https://www.rstudio.com/products/rstudio/download-server/
+                     
+                     wget https://download2.rstudio.org/rstudio-server-rhel-0.99.896-x86_64.rpm
+                 sudo yum install --nogpgcheck rstudio-server-rhel-0.99.896-x86_64.rpm
