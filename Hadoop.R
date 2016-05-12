@@ -8,7 +8,6 @@ https://github.com/RevolutionAnalytics/RHadoop/wiki/Installing-RHadoop-on-RHEL
 
 RHadoop
 http://unix.stackexchange.com/questions/271514/setting-persistent-environment-variable-in-centos-7-issue
-export HADOOP_STREAMING=/opt/cloudera/parcels/CDH-5.4.5-1.cdh5.4.5.p0.7/lib/hadoop-mapreduce/hadoop-streaming-2.6.0-cdh5.4.5.jar
 
 echo export HADOOP_CMD="/usr/bin/hadoop">/etc/profile.d/hadoopenv.sh
 echo export HADOOP_STREAMING="/opt/cloudera/parcels/CDH-5.4.5-1.cdh5.4.5.p0.7/lib/hadoop-mapreduce/hadoop-streaming-2.6.0-cdh5.4.5.jar" > /etc/profile.d/hadoopenv.sh
@@ -31,7 +30,7 @@ sudo R CMD INSTALL plyrmr
 
 JAVA JDK 1.8.0_91 下載 安裝
 
-export JAVA_HOME=/usr/java/jdk1.8.0_91
+echo export JAVA_HOME="/usr/java/jdk1.8.0_91">/etc/profile.d/hadoopenv.sh
 
 R CMD javareconf
 install.packages("rJava",
