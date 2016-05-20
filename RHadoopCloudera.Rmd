@@ -157,6 +157,7 @@ head(from.dfs(out))
 ```
 wget https://download2.rstudio.org/rstudio-server-rhel-0.99.896-x86_64.rpm
 sudo yum install --nogpgcheck rstudio-server-rhel-0.99.896-x86_64.rpm
+
 ```
 
 打開瀏覽器，輸入`http://localhost:8787/`，就能進入RStudio Server了！

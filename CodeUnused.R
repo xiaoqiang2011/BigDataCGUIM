@@ -244,3 +244,23 @@ newsDataToDFNew <- function(json){
     return(df)
 }
 
+EndDate<-as.POSIXct("2016/05/30")
+TimeList<-seq(from=Sys.time(),to = EndDate,by="5 sec")
+TimeList<-as.character(TimeList)
+while(TRUE){
+    if(as.character(Sys.time()) %in% TimeList){
+        ##Do your things here
+        print(paste0("Time matched at: ",Sys.time()))
+        Sys.sleep(1)
+    }
+    if(Sys.time()>EndDate){
+        break;
+    }
+}
+
+
+
+
+    
+    
+    
