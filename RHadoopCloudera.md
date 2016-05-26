@@ -147,15 +147,13 @@ install.packages("rJava",dependencies=TRUE, repos='http://cran.rstudio.com/')
 
 ``` r
 Sys.setenv(HADOOP_CMD="/usr/bin/hadoop")
-Sys.setenv(HADOOP_STREAMING=
-    "/opt/cloudera/parcels/CDH-5.4.5-1.cdh5.4.5.p0.7/lib/hadoop-mapreduce/
-    hadoop-streaming-2.6.0-cdh5.4.5.jar")
+Sys.setenv(HADOOP_STREAMING="/opt/cloudera/parcels/CDH-5.4.5-1.cdh5.4.5.p0.7/lib/hadoop-mapreduce/hadoop-streaming-2.6.0-cdh5.4.5.jar")
 library(rmr2)
 #test mapreduce
 small.ints = to.dfs(1:100)
 out<-mapreduce(
     input = small.ints, 
-    map = function(k, v) cbind(v, v^2))
+    map = function(., v) cbind(v, v^2))
 head(from.dfs(out))
 ```
 
@@ -176,3 +174,21 @@ head(from.dfs(out))
 打開瀏覽器，輸入`http://localhost:8787/`，就能進入RStudio Server了！
 
 測完收工～
+
+RHadoop MapReduce: easy word count
+----------------------------------
+
+``` r
+Debate<-readLines("RepDebateMiami.txt")
+DebateSplit<-unlist(strsplit(tolower(Debate),split = ' |\\.|\\,|\\?'))
+#table(DebateSplit)
+```
+
+``` r
+DebateSplitDFS = to.dfs(DebateSplit)
+result = mapreduce(
+    input = DebateSplitDFS,
+    map = function(.,v) keyval(v, 1),
+    reduce = function(k,vv) keyval(k, sum(vv)))
+head(result)
+```
