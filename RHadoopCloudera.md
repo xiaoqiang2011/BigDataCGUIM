@@ -179,7 +179,7 @@ RHadoop MapReduce: easy word count
 ----------------------------------
 
 ``` r
-Debate<-readLines("RepDebateMiami.txt")
+Debate<-readLines("https://raw.githubusercontent.com/yijutseng/BigDataCGUIM/master/RepDebateMiami.txt")
 DebateSplit<-unlist(strsplit(tolower(Debate),split = ' |\\.|\\,|\\?'))
 #table(DebateSplit)
 ```
