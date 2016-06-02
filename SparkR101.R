@@ -1,3 +1,5 @@
+## http://www.r-bloggers.com/combining-hadoop-spark-r-sparkr-and-shiny-and-it-works/
+## https://spark.apache.org/docs/1.6.0/sparkr.html
 library(SparkR,lib.loc="/usr/local/spark/R/lib")
 
 sc<-sparkR.init(sparkHome ='/usr/local/spark')
