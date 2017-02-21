@@ -7,37 +7,63 @@ font-family: 'Microsoft JhengHei'
 
 R Markdown
 ========================================================
-
-
-R Markdown files are designed to be used in three ways:
-
-For communicating to decision makers, who want to focus on the conclusions, not the code behind the analysis.
-
-For collaborating with other data scientists (including future you!), who are interested in both your conclusions, and how you reached them (i.e. the code).
-
-As an environment in which to do data science, as a modern day lab notebook where you can capture not only what you did, but also what you were thinking
-
 ```{r echo=FALSE}
 knitr::include_graphics("figures/bandThree2.png")
 ```
 
+投影片和書都是以R Markdown為基礎編寫而成
+
 R Markdown
 ========================================================
 - 用來"溝通"：資料分析的最後一步
-- 包含程式碼與分析結果，可與其他資料科學家分享
-- 可重現分析結果的文件
+- 包含**程式碼**與**分析結果**，可與其他資料科學家分享
+- 可重現分析結果的文件 （分析/實驗再現性高）
 - 支援各種輸出格式：Slides, PDF, HTML. Word,…
 
+R Markdown
+========================================================
 - http://rmarkdown.rstudio.com/
 - R + Markdown (基於Markdown文件)
-- 用來撰寫可以重複執行/動態的 R語言執行報告
 - 所有寫在**R Code Chunks**的R程式碼都會執行，並將結果輸出
-- 輸出成.md檔，放上GitHub
+- 輸出選擇：
+    - 文件：HTML, PDF, Word
+    - 投影片：HTML, PDF
+    - Shiny
+    - 模板：放上GitHub使用的.md檔
 
+
+R Markdown - New File
+========================================================
+```{r echo=FALSE}
+knitr::include_graphics("figures/RM.png")
+```
+
+R Markdown - 輸出文件
+========================================================
+```{r echo=FALSE}
+knitr::include_graphics("figures/RMDoc.png")
+```
+
+R Markdown - 輸出投影片
+========================================================
+```{r echo=FALSE}
+knitr::include_graphics("figures/RMPre.png")
+```
+
+R Markdown - 輸出模板（GitHub）
+========================================================
+```{r echo=FALSE}
+knitr::include_graphics("figures/RMTem.png")
+```
+
+
+R Markdown & Markdown 
+========================================================
 **R Markdown** (.Rmd) —knitr—> **Markdown** (.md)
 
 **Markdown** (.md) —markdown—> **HTML**
 
+邊寫完.Rmd檔後，按下**knit**按鈕，輸出PDF/HTML/Markdown
 
 Markdown 基本語言
 ========================================================
@@ -65,39 +91,66 @@ R Markdown @RStudio
 ========================================================
 Step 1 開啟新的R Markdown 檔案
 
+```{r echo=FALSE}
+knitr::include_graphics("figures/RM.png")
+```
+
 R Markdown @RStudio
 ========================================================
 Step 2 設定輸出格式
+
 最後要放上GitHub，所以選From Template裡的GitHub Document
+
+```{r echo=FALSE}
+knitr::include_graphics("figures/RMTem.png")
+```
 
 R Markdown @RStudio
 ========================================================
 Step 3 設定文件基本資訊
 
+title: "Untitled"
+
+output: github_document
+
+```{r echo=FALSE}
+knitr::include_graphics("figures/RMMD.png")
+```
+
 R Code Chunk的參數
 ========================================================
-- eval：要不要執行並顯示在輸出的Markdown檔案內
-- echo：要不要一起顯示程式碼以及執行結果
+
+- eval：要不要**執行並顯示**在輸出的Markdown檔案內
+- echo：要不要一起**顯示程式碼**(不顯示程式碼仍會執行，但只顯示執行結果)
 - warning, error, message：要不要顯示錯誤訊息
 - cache：是否要暫存結果
 
 Table
 ========================================================
-By default, R Markdown prints data frames and matrices as you’d see them in the console:
 
-mtcars[1:5, ]
-#>                    mpg cyl disp  hp drat   wt qsec vs am gear carb
-#> Mazda RX4         21.0   6  160 110 3.90 2.62 16.5  0  1    4    4
-#> Mazda RX4 Wag     21.0   6  160 110 3.90 2.88 17.0  0  1    4    4
-#> Datsun 710        22.8   4  108  93 3.85 2.32 18.6  1  1    4    1
-#> Hornet 4 Drive    21.4   6  258 110 3.08 3.21 19.4  1  0    3    1
-#> Hornet Sportabout 18.7   8  360 175 3.15 3.44 17.0  0  0    3    2
-If you prefer that data be displayed with additional formatting you can use the knitr::kable function. The code below generates Table 27.1.
+若需要輸出表格，預設的輸出方式如下：
+```{r}
+mtcars[1:5, 1:5]
+```
 
+Table (knitr::kable)
+========================================================
+
+如果想要呈現的更清楚，建議使用**knitr::kable**
+```{r}
 knitr::kable(
-  mtcars[1:5, ], 
-  caption = "A knitr kable."
+  mtcars[1:5, 1:5], caption = "A knitr kable."
 )
+```
 
 HW2
 ========================================================
+作業目的：練習撰寫R Markdown文件、熟悉GitHub操作方式、練習基礎的R程式碼
+
+- 點開GitHub作業邀請連結
+- GitHub自動將作業模板新增至你的個人帳號
+- 將作業Repo clone至本機端
+- 按照作業模板指示完成第一份R的分析（？）報告！
+- Commit & Sync
+- 將Repo網址與SHA號碼繳交至eLearning系統
+- 3/20 (一) 11:59pm繳交
