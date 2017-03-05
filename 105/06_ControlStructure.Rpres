@@ -1,7 +1,7 @@
 控制流程
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: `r Sys.Date()`
+date: 2017/03/13
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -118,6 +118,12 @@ if- else if - else 練習
 type:alert
 incremental:true
 
+- 新增一個數值**price**，值設定為**199**
+- 撰寫if- else if - else條件判斷式，邏輯如下
+    - 小於100元，印出"不用考慮"
+    - 大於等於100元，小於1000元，印出"需要考慮一分鐘"
+    - 大於等於1000元，印出"買不起"
+
 
 ifelse() 
 ====================================
@@ -138,7 +144,7 @@ ifelse()
 scoreVector<-c(30,90,50,60,80)
 ifelse(scoreVector>=60,"及格", "不及格")
 ```
-- 其他條件判斷函數都不能判斷向量
+- 其他條件判斷函數都不能判斷向量，且會有**Warning message**
 ```{r}
 if(scoreVector>=60){
     print("及格")
@@ -181,12 +187,27 @@ for (n in 1:4){
 }
 ```
 
+for + if-else 練習
+====================================
+type:alert
+
+用**ifelse()**函數改寫上述範例
+```{r}
+for (n in 1:4){
+  if(n%%2==0){ #偶數直接輸出數字
+    print(n)
+  }else{
+    print("奇數") #奇數則輸出"奇數"
+  }
+}
+```
+
 while
 ====================================
 type:sub-section 
 - 每次執行迴圈時檢查while邏輯判斷是否為真
-    - 若邏輯判斷為真，就會執行區段程式碼
-    - 若邏輯判斷為偽，則會結束迴圈執行
+    - 若邏輯判斷為**真**，就會執行區段程式碼
+    - 若邏輯判斷為**偽**，則會結束迴圈執行
 ```{r}
 x<-0
 while(x<3){
@@ -226,3 +247,6 @@ for, while, break, next 練習
 type:alert
 incremental:true
 
+- 新增一向量a，包含1~20的所有奇數
+- 撰寫一個for迴圈，逐一印出向量a內的元素，但遇到3的倍數時，跳過不印
+- 撰寫一個for迴圈，逐一印出向量a內的元素，但遇到13的倍數時，直接跳出迴圈，不繼續執行

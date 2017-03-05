@@ -1,7 +1,7 @@
 資料結構
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017-02-15
+date: 2017/03/06
 autosize: true
 font-family: 'Microsoft JhengHei'
 
@@ -117,6 +117,12 @@ seq(from=1,to=50,by=2) ##1~50，中間相隔2
 type:alert
 incremental:true
 
+- 新增一向量a，包含數字1到10
+- 新增一向量b，包含數字1到20中的所有偶數
+- 取出a向量的第4個元素
+- 取出b向量的第5,6,7個元素
+
+
 向量運算
 ========================================================  
 向量也可直接做加減乘除運算，如
@@ -165,6 +171,9 @@ numvec1*numvec2
 type:alert
 incremental:true
 
+- a向量為1到6連續數字
+- b向量是3到5的連續數字
+- a+b =?
 
 因子 factor
 ========================================================
@@ -223,7 +232,7 @@ $School
 列表可用`$`符號做資料擷取
 
 ```r
-listSample$Students ##取得中表中的Students變量
+listSample$Students ##取得listSample列表中的Students變量
 ```
 
 ```
@@ -257,6 +266,13 @@ $Students
 type:alert
 incremental:true
 
+- 依投影片，新增listSample列表
+- 取出分數資料 (值)
+    - 方法一
+    - 方法二
+- 取出分數資料 （列表）
+
+
 列表資料編輯設定
 ======================================================== 
 列表資料和向量資料一樣，可重新編輯設定
@@ -286,6 +302,15 @@ listSample[[1]]
 listSample$Gender<-c("M","F","M","F","M") ##新增Gender變量，並設定向量值
 ```
 
+列表list資料編輯練習
+====================================
+type:alert
+incremental:true
+
+- 依投影片，新增listSample列表
+- 發現學校名稱打錯了，應該是CGUST，請改列表資料
+- 在列表中新增學期資料，並設定為上學期
+
 矩陣 matrix
 ======================================================== 
 type:sub-section
@@ -301,6 +326,8 @@ a
 [2,]    2    5
 [3,]    3    6
 ```
+
+先填Column
 
 資料框 data.frame
 ======================================================== 
@@ -375,6 +402,42 @@ str(iris)
  $ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
 ```
 
+資料框資料擷取
+======================================================== 
+資料框可用`$`符號做**欄位**資料擷取
+
+```r
+iris$Species ##取得iris資料框中的Species欄位
+```
+
+```
+  [1] setosa     setosa     setosa     setosa     setosa     setosa    
+  [7] setosa     setosa     setosa     setosa     setosa     setosa    
+ [13] setosa     setosa     setosa     setosa     setosa     setosa    
+ [19] setosa     setosa     setosa     setosa     setosa     setosa    
+ [25] setosa     setosa     setosa     setosa     setosa     setosa    
+ [31] setosa     setosa     setosa     setosa     setosa     setosa    
+ [37] setosa     setosa     setosa     setosa     setosa     setosa    
+ [43] setosa     setosa     setosa     setosa     setosa     setosa    
+ [49] setosa     setosa     versicolor versicolor versicolor versicolor
+ [55] versicolor versicolor versicolor versicolor versicolor versicolor
+ [61] versicolor versicolor versicolor versicolor versicolor versicolor
+ [67] versicolor versicolor versicolor versicolor versicolor versicolor
+ [73] versicolor versicolor versicolor versicolor versicolor versicolor
+ [79] versicolor versicolor versicolor versicolor versicolor versicolor
+ [85] versicolor versicolor versicolor versicolor versicolor versicolor
+ [91] versicolor versicolor versicolor versicolor versicolor versicolor
+ [97] versicolor versicolor versicolor versicolor virginica  virginica 
+[103] virginica  virginica  virginica  virginica  virginica  virginica 
+[109] virginica  virginica  virginica  virginica  virginica  virginica 
+[115] virginica  virginica  virginica  virginica  virginica  virginica 
+[121] virginica  virginica  virginica  virginica  virginica  virginica 
+[127] virginica  virginica  virginica  virginica  virginica  virginica 
+[133] virginica  virginica  virginica  virginica  virginica  virginica 
+[139] virginica  virginica  virginica  virginica  virginica  virginica 
+[145] virginica  virginica  virginica  virginica  virginica  virginica 
+Levels: setosa versicolor virginica
+```
 
 資料表 data.table
 ======================================================== 
@@ -592,3 +655,12 @@ List of 5
  $ School  : chr "CGU"
  $ Gender  : chr [1:5] "M" "F" "M" "F" ...
 ```
+
+
+資料探索練習
+====================================
+type:alert
+incremental:true
+
+- R的內建資料集**airquality**內有幾筆觀察值？每筆觀察值內有幾個變數？
+- R的內建資料集**airquality**裡面的**Month**變數中，各月份出現的次數是多少？

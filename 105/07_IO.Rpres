@@ -1,7 +1,7 @@
 資料讀取與匯出
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: `r Sys.Date()`
+date: 2017/03/20 & 27
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -18,7 +18,8 @@ navigation: slide
 - 資料匯出
 
 資料分析步驟
-- **資料匯入**
+====================================
+- **資料匯入** <-----本章！
 - **資料清洗處理**並轉換為Tidy data
 - **資料分析**
 - **資料呈現與視覺化**
@@ -67,7 +68,8 @@ Import Dataset功能 (RStudio)
 type:alert
 incremental:true
 
-匯入的檔案為**tab分隔文字檔**?
+- 操作[範例檔案](https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/104/POLIO_Incidence.csv)
+- 若匯入的檔案為**tab分隔文字檔**? 該如何調整參數？
 
 分隔文字檔 .txt
 ====================================
@@ -83,7 +85,8 @@ type:sub-section
 TAB分隔文字檔 .txt
 ====================================
 ```{r eval=F}
-library(readr)
+library(readr) 
+#第一次使用前需要安裝 install.packages("readr")
 dataset <- read_delim("檔案路徑與名稱", delim="\t")
 ```
 
@@ -94,6 +97,7 @@ type:sub-section
 - `read_csv()`
 ```{r eval=F}
 library(readr)
+#第一次使用前需要安裝 install.packages("readr")
 dataset <- read_csv("檔案路徑與名稱")
 ```
 
@@ -107,6 +111,7 @@ type:sub-section
     - `sheet`參數設定要讀取的工作表(sheet)
 ```{r eval=F}
 library(readxl)
+#第一次使用前需要安裝 install.packages("readxl")
 dataset <- read_excel("檔案路徑與名稱")
 ```
 
@@ -115,27 +120,32 @@ dataset <- read_excel("檔案路徑與名稱")
 type:alert
 incremental:true
 
-下載[範例檔案](https://raw.githubusercontent.com/yijutseng/BigDataCGUIM/master/files/opendata10401.csv)，並在RStudio匯入
+- 下載[範例CSV檔案](https://raw.githubusercontent.com/yijutseng/BigDataCGUIM/master/files/opendata10401.csv)，並在RStudio匯入
+    - 方法一
+    - 方法二
+- 匯入後，檢查匯入的資料，資料內有幾筆觀察值？每筆觀察值中有幾個欄位？
 
 R物件 .rds
 ====================================
 type:sub-section
-如果在R程式處理資料後必須儲存一份以供後續分析的話，使用R物件儲存是最佳的方式
+如果在R程式內處理完資料後，必須儲存一份以供後續分析，使用R物件儲存是最佳的方式
 
 - 檔案小
 - 讀取快速
-- 推薦`readRDS()`函數
+- 推薦使用`readRDS()`函數讀取RDS檔案
 - [A better way of saving and loading objects in R](http://www.fromthebottomoftheheap.net/2012/04/01/saving-and-loading-r-objects/)
 ```{r eval=F}
 dataset <- readRDS("檔案路徑與名稱")
 ```
 
-
 R程式 .R
 ====================================
 type:sub-section
 - `source`函數
-- 讀R的Obejct or script, 執行
+- 讀R的Obejct or script, **執行**
+- 實際操作範例
+    - 有一份example.R檔在工作環境中
+    - 使用source("example.R")一次執行檔案內所有R指令
 
 純文字資料 (無分隔)
 ====================================
@@ -147,7 +157,6 @@ type:sub-section
 type:sub-section
 
 - MySQL `RMySQL`
-- HDF5 `rhdf5`
 - Weka `foreign`
 - Stata `foreign`
 - SPSS `Hmisc`
@@ -203,7 +212,8 @@ type:sub-section
 - 應用程式介面
 - **A**pplication **P**rogramming **I**nterfaces
 - 為了讓第三方的開發者可以額外開發應用程式來強化他們的產品，推出可以與系統溝通的介面
-- 以下載Open Data為例，若檔案更新頻繁，使用手動下載相當耗時
+- 有API輔助可將資料擷取過程自動化
+    -  以下載Open Data為例，若檔案更新頻繁，使用手動下載相當耗時
 - [維基百科](https://zh.wikipedia.org/zh-tw/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%8F%A3)
 
 API - Open Data
@@ -290,6 +300,15 @@ myjson <- toJSON(iris, pretty=TRUE)
 str(myjson)
 ```
 
+JSON檔案匯入練習
+====================================
+type:alert
+incremental:true
+
+- 練習用資料：[「臺北市今日施工資訊」API存取](http://data.taipei/opendata/datalist/datasetMeta/outboundDesc?id=4d29818c-a3ee-425d-b88a-22ac0c24c712&rid=201d8ae8-dffc-4d17-ae1f-e58d8a95b162)
+- 使用檔案匯入**範例**，將資料匯入R中
+    - 提示：**fromJSON**, **getURL**
+- 使用str()函數檢查匯入的資料，請問今日施工資料有幾筆觀察值？幾個欄位？
 
 XML 可延伸標記式語言
 ====================================
@@ -378,6 +397,7 @@ library(httr)
 html <- htmlTreeParse(GET("http://im.cgu.edu.tw/bin/home.php"), useInternalNodes=T)
 xpathSApply(html, "//title", xmlValue)
 ```
+
 網頁爬蟲 Webscraping-逐行讀取
 ====================================
 讀取完網頁後，使用用XML工具分析擷取網頁 (`XML` package)
@@ -398,10 +418,10 @@ xpathSApply(html, "//span[@class='ptname ']", xmlValue)
 ====================================
 ```{r eval=F}
 library(rvest) ##載入
-YahooNewsurl="https://tw.news.yahoo.com/"
-news_title = read_html(YahooNewsurl) %>% html_nodes(".tpl-title a") %>% html_text()
-news_url = read_html(YahooNewsurl) %>% html_nodes(".tpl-title a") %>% html_attr("href")
-Yahoo_news = data.frame(title = news_title, url=news_url)
+YahooNewsurl<-"https://tw.news.yahoo.com/"
+news_title <- read_html(YahooNewsurl) %>% html_nodes(".tpl-title a") %>% html_text()
+news_url <- read_html(YahooNewsurl) %>% html_nodes(".tpl-title a") %>% html_attr("href")
+Yahoo_news <- data.frame(title = news_title, url=news_url)
 head(Yahoo_news)
 ```
 
@@ -414,10 +434,12 @@ head(Yahoo_news)
 5               匆忙推出移民禁令 他後悔了           /匆忙推移民禁令-美國土安全部長表後悔-044517088.html
 6 蔡政府對釣魚台態度 國民黨憂美日安保質變       /蔡政府對釣魚台態度-國民黨憂美日安保質變-160200179.html
 ```
+
 網頁爬蟲 Webscraping-rvest
 ====================================
 - 擷取條件的撰寫會因網頁語法不同而有差異
 - 使用**Google Chrome開發工具**輔助觀察擷取資料的條件
+- 使用**xpath-helper**輔助xpath標籤的擷取
 - 觀察需要擷取的資料所在HTML片段
     - 新聞清單被包含在`ul`標籤下
     - 且css class為`tpl-title yom-list list-style-none`
@@ -433,7 +455,51 @@ head(Yahoo_news)
 ....
 ```
 
+網頁爬蟲 DCard實作 -1
+====================================
+(爬蟲結果不代表本人意見)
+```{r}
+library(rvest) ##載入
+DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
+DCardContent<-read_html(DCardCGU)
+post_title <- DCardContent %>% html_nodes(".PostEntry_titleUnread_ycJL0") %>% html_text()
+post_contentShort<- DCardContent %>% html_nodes(".PostEntry_excerpt_A0Bmh") %>% html_text()
+post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
+post_comment<- DCardContent %>% html_nodes(".PostEntry_commentUnread_1cVyd") %>% html_text()
+```
 
+網頁爬蟲 DCard實作 -2
+====================================
+(爬蟲結果不代表本人意見)
+```{r}
+post_like<- DCardContent %>% html_nodes(".PostLikeCount_likeCount_2uhBH") %>% html_text()
+post_url <- DCardContent %>% html_nodes(".PostEntry_entry_2rsgm") %>% html_attr("href")
+DCardCGU_posts <- data.frame(title = post_title, author=post_author, 
+                            content=post_contentShort, commentN=post_comment, 
+                            likeN=post_like,
+                            url=paste0("https://www.dcard.tw",post_url))
+```
+
+網頁爬蟲 DCard實作 -3
+====================================
+(爬蟲結果不代表本人意見)
+```{r}
+knitr::kable(
+    DCardCGU_posts[1:3,c("title","author","commentN")]) 
+```
+
+
+網頁爬蟲 再想想？
+====================================
+type:alert
+incremental:true
+
+- 如何爬評論跟內文呢？
+- 其實...DCard是有API的
+    - https://www.dcard.tw/_api/forums/cgu/posts
+    - https://www.dcard.tw/_api/posts/225917717
+    - https://www.dcard.tw/_api/posts/225917717/comments
+- 
 
 其他爬蟲相關參考資源
 ====================================
