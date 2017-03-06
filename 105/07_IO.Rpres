@@ -143,7 +143,7 @@ R程式 .R
 type:sub-section
 - `source`函數
 - 讀R的Obejct or script, **執行**
-- 實際操作範例
+- **實際操作範例**
     - 有一份example.R檔在工作環境中
     - 使用source("example.R")一次執行檔案內所有R指令
 
@@ -172,7 +172,6 @@ type:sub-section
 
 讀檔的時候R會自動:
 
-- 跳過#開頭的任何行（Row）
 - 判斷要讀幾行
 - 判斷每個列（Column）的類別
 - 把欄位包起來的符號
@@ -291,15 +290,6 @@ table(PetData$result$results$Reason)
 ```
 分析可知開放認養理由以動物管制與未填寫居多
 
-將資料框轉為JSON格式
-====================================
-- `jsonlite` package
-- `toJSON()` 函數
-```{r writeJSON}
-myjson <- toJSON(iris, pretty=TRUE)
-str(myjson)
-```
-
 JSON檔案匯入練習
 ====================================
 type:alert
@@ -308,7 +298,17 @@ incremental:true
 - 練習用資料：[「臺北市今日施工資訊」API存取](http://data.taipei/opendata/datalist/datasetMeta/outboundDesc?id=4d29818c-a3ee-425d-b88a-22ac0c24c712&rid=201d8ae8-dffc-4d17-ae1f-e58d8a95b162)
 - 使用檔案匯入**範例**，將資料匯入R中
     - 提示：**fromJSON**, **getURL**
-- 使用str()函數檢查匯入的資料，請問今日施工資料有幾筆觀察值？幾個欄位？
+- 使用str()函數檢查匯入的資料
+- 請問今日施工資料有幾筆觀察值？幾個欄位？
+
+將資料框轉為JSON格式
+====================================
+- `jsonlite` package
+- `toJSON()` 函數
+```{r writeJSON}
+myjson <- toJSON(iris, pretty=TRUE)
+str(myjson)
+```
 
 XML 可延伸標記式語言
 ====================================
@@ -347,6 +347,13 @@ waterQ <- xmlTreeParse("http://data.taipei/opendata/datalist/datasetMeta/downloa
 rootNode <- xmlRoot(waterQ) #access the top node
 ```
 
+
+xpath?
+====================================
+- XML路徑語言（XML Path Language）
+- 基於XML的樹狀結構，提供在資料結構樹中找尋節點的能力
+- [維基百科](https://zh.wikipedia.org/wiki/XPath)
+
 XML 可延伸標記式語言-解析
 ====================================
 使用`xpathSApply()`函數取得指定標籤內的資料
@@ -362,6 +369,13 @@ XML 可延伸標記式語言-解析
 #取得各監測站的經度
 xpathSApply(rootNode,"//longitude",xmlValue)[1:10]
 ```
+
+XML檔案匯入練習
+====================================
+type:alert
+incremental:true
+- 載入[桃園捷運車站出入口基本資料](http://data.tycg.gov.tw/opendata/datalist/datasetMeta/download?id=b2653545-9425-46df-9a50-74ade59ab0cf&rid=f6362ce8-719b-4752-bec6-7fd995b623fd)
+- 嘗試取得各站出入口敘述(LocationDescription)與經緯度(PositionLon,PositionLat)
 
 網頁爬蟲 Webscraping
 ====================================
@@ -390,7 +404,7 @@ htmlCode[1:5]
 
 網頁爬蟲 Webscraping-逐行讀取
 ====================================
-讀取完網頁後，使用用XML工具分析擷取網頁 (`XML` package)
+讀取完網頁後，使用XML工具分析擷取網頁 (`XML` package)
 
 ```{r xmlhtml, warning=F}
 library(httr)
@@ -400,7 +414,7 @@ xpathSApply(html, "//title", xmlValue)
 
 網頁爬蟲 Webscraping-逐行讀取
 ====================================
-讀取完網頁後，使用用XML工具分析擷取網頁 (`XML` package)
+讀取完網頁後，使用用XML工具與xpath分析擷取網頁 (`XML` package)
 ```{r xmlhtml1, warning=F}
 xpathSApply(html, "//span[@class='ptname ']", xmlValue)
 ```
@@ -487,6 +501,11 @@ DCardCGU_posts <- data.frame(title = post_title, author=post_author,
 knitr::kable(
     DCardCGU_posts[1:3,c("title","author","commentN")]) 
 ```
+
+網頁爬蟲練習
+====================================
+type:alert
+incremental:true
 
 
 網頁爬蟲 再想想？
@@ -634,10 +653,15 @@ getPage("tsaiingwen", token,n = 5)
 5 46251501064_10153987095776065       20592            665          269
 ```
 
-Rfacebook package
+Rfacebook package練習
 ====================================
 type:alert
 incremental:true
+- 取得Facebook access token
+- 使用Rfacebook package取得**CGSGA 長庚學生會**粉絲頁面的前五筆資料
+- 第一筆資料的likes_count是多少?
+- 第二筆資料的shares_count是多少?
+
 
 Rfacebook package
 ====================================
@@ -655,6 +679,7 @@ DateVectorStr
 ```
 ## "2017-01-01" "2017-01-06" "2017-01-11" "2017-01-16" "2017-01-21" "2017-01-26" "2017-01-31" "2017-02-05"
 ```
+
 Rfacebook package
 ====================================
 利用上述日期向量資料，搭配迴圈，依序設定**since** 和 **until**參數
@@ -682,6 +707,17 @@ Rfacebook 提供的其他函數
 - Check https://github.com/pablobarbera/Rfacebook
 - ?Rfacebook
 
+
+Facebook資料擷取練習
+====================================
+type:alert
+incremental:true
+
+- 桃園捷運 Taoyuan MRT (TaoyuanMRT) 粉絲頁
+- 分別擷取以下兩段時間的資料
+    - 2017/2/16~20 (自由試乘開始)
+    - 2017/3/2~6 (正式通車)
+- 比較兩區間平均按讚次數，留言次數與分享次數，觀察民眾對粉絲頁的熱度
 
 資料匯出
 ====================================
@@ -713,6 +749,8 @@ write.table() 練習
 type:alert
 incremental:true
 
+- 將剛剛擷取的桃園捷運 Taoyuan MRT 粉絲頁資料存成tab分隔的.txt檔案
+
 CSV檔 .csv
 ====================================
 type:sub-section
@@ -730,3 +768,4 @@ type:sub-section
 ```{r eval=FALSE}
 saveRDS(iris,"iris.rds")
 ```
+

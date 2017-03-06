@@ -1,7 +1,7 @@
 資料結構
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/03/06
+date: 2017/03/13
 autosize: true
 font-family: 'Microsoft JhengHei'
 
@@ -439,6 +439,28 @@ iris$Species ##取得iris資料框中的Species欄位
 Levels: setosa versicolor virginica
 ```
 
+資料框資料編輯
+======================================================== 
+資料框可用`$`符號做**欄位**資料擷取後，當成向量，並使用**[]**做資料編輯。
+
+```r
+iris$Species[2]<-"versicolor"
+head(iris$Species)
+```
+
+```
+[1] setosa     versicolor setosa     setosa     setosa     setosa    
+Levels: setosa versicolor virginica
+```
+
+
+資料框資料編輯練習
+====================================
+type:alert
+incremental:true
+
+- iris$Time<-1 會發生什麼事情?
+
 資料表 data.table
 ======================================================== 
 type:sub-section
@@ -446,7 +468,7 @@ type:sub-section
 - 需安裝**data.table** package
 - 讀取大型資料的速度快上數倍
 - 進階處理語言
-- **探索式資料**分再介紹
+- **探索式資料分析**再介紹
 
 
 資料屬性查詢函數
@@ -609,7 +631,8 @@ iris$Species[1:10] ##原始值，印出第1~10個元素
 ```
 
 ```
- [1] setosa setosa setosa setosa setosa setosa setosa setosa setosa setosa
+ [1] setosa     versicolor setosa     setosa     setosa     setosa    
+ [7] setosa     setosa     setosa     setosa    
 Levels: setosa versicolor virginica
 ```
 
@@ -620,7 +643,7 @@ table(iris$Species) ##統計結果
 ```
 
     setosa versicolor  virginica 
-        50         50         50 
+        49         51         50 
 ```
 
 str()
