@@ -506,11 +506,11 @@ knitr::kable(
 ====================================
 type:alert
 incremental:true
-
+- [Ptt PokemonGo 版](https://www.ptt.cc/bbs/PokemonGO/index.html)
+- 試著爬出所有**標題**與**推文數**
 
 網頁爬蟲 再想想？
 ====================================
-type:alert
 incremental:true
 
 - 如何爬評論跟內文呢？
@@ -518,7 +518,8 @@ incremental:true
     - https://www.dcard.tw/_api/forums/cgu/posts
     - https://www.dcard.tw/_api/posts/225917717
     - https://www.dcard.tw/_api/posts/225917717/comments
-- 
+- 隱私問題 （去年的OkCupid事件）
+    - [70,000 OkCupid Users Just Had Their Data Published](https://motherboard.vice.com/en_us/article/70000-okcupid-users-just-had-their-data-published)
 
 其他爬蟲相關參考資源
 ====================================

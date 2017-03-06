@@ -24,7 +24,7 @@ navigation: slide
 
 Tidy Data
 ====================================
-type:section
+type:sub-section 
 
 Each column is a variable. Each row is an observation.
 
@@ -36,70 +36,542 @@ Each column is a variable. Each row is an observation.
 
 資料型別轉換處理
 ====================================
-type:section
+type:sub-section 
+包括**資料型別檢查**與**資料型別轉換**
 
 資料型別:
+
 - 數值 (numeric)
 - 字串 (character)
 - 布林變數 (logic)
 - 日期 (Date)
 
-- 資料型別檢查
-- 資料型別轉換
 
-資料型別檢查
+資料型別檢查 - is.
 ====================================
-type:sub-section 
+使用`is.`函數檢查資料型別，回傳布林變數，若為**真**，回傳**TRUE**
 
+- 是否為**數字** `is.numeric(變數名稱)`
+- 是否為**文字** `is.character(變數名稱)`
+- 是否為**布林變數** `is.logical(變數名稱)`
 
+```{r}
+num<-100
+is.numeric(num)
+is.character(num)
+```
 
-資料型別轉換
+資料型別檢查 - class()
 ====================================
-type:sub-section 
+使用`class(變數名稱)`函數，直接回傳資料型別
+```{r}
+class(num)
+class(Sys.Date())
+```
+
+
+資料型別轉換-as.
+====================================
+
+使用`as.`函數轉換型別
+
+- 轉換為**數字** `as.numeric(變數名稱)`
+- 轉換為**文字** `as.character(變數名稱)`
+- 轉換為**布林變數** `as.logical(變數名稱)`
+
+```{r}
+cha<-"100"
+as.numeric(cha)
+```
+
+資料型別轉換-as.
+====================================
+
+若無法順利完成轉換，會回傳空值`NA`，並出現警告訊息
+```{r}
+as.numeric("abc")
+```
+
 
 資料型別轉換練習
 ====================================
 type:alert
 incremental:true
+回想起DCard(爬蟲結果不代表本人意見)的資料．．．
+```{r}
+library(rvest) ##載入
+DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
+DCardContent<-read_html(DCardCGU)
+post_title <- DCardContent %>% html_nodes(".PostEntry_titleUnread_ycJL0") %>% html_text()
+post_comment<- DCardContent %>% html_nodes(".PostEntry_commentUnread_1cVyd") %>% html_text()
+post_like<- DCardContent %>% html_nodes(".PostLikeCount_likeCount_2uhBH") %>% html_text()
+DCardCGU_posts <- data.frame(title = post_title, commentN=post_comment,
+                             likeN=post_like,stringsAsFactors = F)
+```
+
+資料型別轉換練習
+====================================
+type:alert
+評論數和按讚數都是字串型別
+```{r}
+str(DCardCGU_posts)
+```
+該如何將這兩個欄位轉成數字呢？
 
 文字字串處理
 ====================================
-type:section
+type:sub-section 
 
 - 基本處理
 - 搜尋字串
 
 基本處理
 ====================================
-type:sub-section 
+
+- 切割 `strsplit()`
+- 子集 `substr()`
+- 大小寫轉換 `toupper()` `tolower()`
+- 兩文字連接 `paste()` `paste0()`
+- 文字取代 `gsub()`
+- 前後空白去除 `str_trim()` 需安裝`stringr` package
+
+基本處理-切割
+====================================
+```{r}
+strsplit ("Hello World"," ")
+```
+
+基本處理-子集
+====================================
+```{r}
+substr("Hello World", start=2,stop=4)
+```
+
+基本處理-大小寫轉換
+====================================
+```{r}
+toupper("Hello World")
+tolower("Hello World")
+```
+
+基本處理-兩文字連接
+====================================
+```{r}
+paste("Hello", "World", sep='')
+```
+
+基本處理-文字取代
+====================================
+```{r}
+gsub("o","0","Hello World")
+```
+
+基本處理-前後空白去除
+====================================
+```{r}
+library(stringr)
+str_trim(" Hello World ")
+```
+
 
 搜尋字串
 ====================================
-type:sub-section 
+- 通常使用在**比對文字向量**
+- **有分大小寫**
+- 依照回傳值的型態不同，有兩種常用函數
+    - 回傳符合條件之向量位置(index) `grep(搜尋條件,要搜尋的向量)`
+    - 回傳每個向量是否符合條件(TRUE or FALSE) `grepl(搜尋條件,要搜尋的向量)`
+
+```{r}
+##在姓名文字向量中尋找A，回傳包含"A"之元素位置
+grep("A",c("Alex","Tom","Amy","Joy","Emma")) 
+```
+
+搜尋字串 - grepl()
+====================================
+```{r}
+##在姓名文字向量中尋找A，回傳各元素是否包含"A"
+grepl("A",c("Alex","Tom","Amy","Joy","Emma")) 
+##在姓名文字向量中尋找a，回傳各元素是否包含"a"
+grepl("a",c("Alex","Tom","Amy","Joy","Emma")) 
+```
+
 
 文字字串處理練習
 ====================================
 type:alert
 incremental:true
 
-子集Subset
+又想起DCard(爬蟲結果不代表本人意見)的資料．．．
+```{r}
+library(rvest) ##載入
+DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
+DCardContent<-read_html(DCardCGU)
+post_title <- DCardContent %>% html_nodes(".PostEntry_titleUnread_ycJL0") %>% html_text()
+post_contentShort<- DCardContent %>% html_nodes(".PostEntry_excerpt_A0Bmh") %>% html_text()
+post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
+DCardCGU_posts <- data.frame(title = post_title, author=post_author, 
+                            content=post_contentShort,stringsAsFactors = F)
+```
+
+文字字串處理練習
 ====================================
-type:section
+type:alert
+incremental:true
+
+- 在DCardCGU_posts的content中，出現“資管”字串的文章位置(index)
+- 將content中的文章用逗號（全形，）切割
+- 將content中的文章用逗號或問號或句號（全形，？。）切割
+
+子集Subset - 一維資料
+====================================
+type:sub-section 
+
+之前有介紹使用`[]`取出單一或多個元素的方法
+```{r}
+letters ##R語言內建資料之一
+letters[1] ##取出letters向量的第一個元素
+```
+
+子集Subset - 一維資料
+====================================
+
+```{r}
+letters[c(1,3,5)] ##取出letters向量的第1,3,5個元素
+letters[c(-1,-3,-5)] ##取出letters向量除了第1,3,5個元素之外的所有元素
+```
+
+子集Subset - 一維資料
+====================================
+若想要快速取得一向量的開頭與結尾元素，可使用`head()`和`tail()`函數
+```{r}
+head(letters,5) ##取出letters向量的前五個元素
+tail(letters,3) ##取出letters向量的後三個元素
+```
+
+子集Subset - 二維資料
+====================================
+type:sub-section 
+- 可針對列(Row)和行(Column)做子集
+- 使用`[]`，但因應二維資料的需求，以`,`分隔列與行的篩選條件
+- 資料篩選原則為**前Row,後Column**，**前列,後行**
+- 若不想篩選列，則在`,`前方保持**空白**即可。
+- 篩選方式可輸入**位置(index)**、**欄位名稱**或輸入**布林變數(TRUE/FALSE)**
+    - 輸入位置: `dataFrame[row index,column index]`
+    - 輸入布林變數: `dataFrame[c(T,F,T),c(T,F,T)]`
+    - 輸入欄位名稱: `dataFrame[row name,column name]`
+
+子集Subset - 二維資料 []
+====================================
+```{r}
+iris[1,2] ##第一列Row，第二行Column
+iris[1:3,] ##第1~3列Row，所有的行Column
+```
+
+子集Subset - 二維資料 []
+====================================
+```{r}
+iris[1:10,c(T,F,T,F,T)] ##第1~10列Row，第1,3,5行Column (TRUE)
+```
+
+子集Subset - 二維資料 []
+====================================
+```{r}
+iris[,"Species"] ##所有的列Row，名稱為Species的行Column
+```
+
+子集 [ ] 練習
+====================================
+type:alert
+incremental:true
+
+
+
+子集Subset - 二維資料 $
+====================================
+也可使用`$`符號做**Column的篩選**
+```{r}
+iris$Species ##所有的列Row，名稱為Species的行Column
+```
+
+子集Subset - 二維資料subset()
+====================================
+**Row的篩選**可使用`subset()`函數，使用方法為`subset(資料表,篩選邏輯)`
+
+```{r}
+subset(iris,Species=="virginica") ##Species等於"virginica"的列Row，所有的行Column
+```
+
+子集Subset - 二維資料grepl()
+====================================
+**Row的篩選**也可搭配字串搜尋函數`grepl()`
+
+```{r}
+knitr::kable(iris[grepl("color",iris$Species),]) ##Species包含"color"的列，所有的行
+```
+
+子集Subset - head()
+====================================
+
+若想要快速取得資料框的前幾列(Raw)或後幾列，也可使用`head()`和`tail()`函數
+```{r}
+head(iris,5) ##取出iris資料框的前五列
+```
+
+子集Subset - head()
+====================================
+
+若想要快速取得資料框的前幾列(Raw)或後幾列，也可使用`head()`和`tail()`函數
+```{r}
+tail(iris,3) ##取出iris資料框的後三列
+```
+
+子集綜合練習
+====================================
+type:alert
+incremental:true
+
+
 
 排序
 ====================================
-type:section
+type:sub-section
+
+- **sort()** 直接對向量做**由小到大**的排序
+- **order()** 回傳**由小到大**之**元素位置**
+
+sort() 向量排序
+====================================
+`sort()`函數可直接對向量做**由小到大**的排序
+```{r}
+head(islands) ##排序前的前六筆資料
+head(sort(islands)) ##由小到大排序後的前六筆資料
+```
+
+sort() 向量排序
+====================================
+如需**由大到小**排序，可將`decreasing`參數設為TRUE
+```{r}
+head(sort(islands,decreasing = T)) ##由大到小排序後的前六筆資料
+```
+
+order() 元素位置
+====================================
+- 對資料框做排序
+- 回傳**由小到大**之**元素位置**
+
+以`iris$Sepal.Length`為例，回傳的第一個位置為`14`，表示`iris$Sepal.Length`中，數值最小的元素為第14個元素。
+```{r}
+order(iris$Sepal.Length)
+iris$Sepal.Length[14]
+```
+
+order() 元素位置
+====================================
+若將`decreasing`參數設定為TRUE，則會回傳**由大到小**的元素位置
+
+以`iris$Sepal.Length`為例，回傳的第一個位置為`132`，表示`iris$Sepal.Length`中，數值最大的元素為第132個元素。
+```{r}
+head(order(iris$Sepal.Length,decreasing = T))
+iris$Sepal.Length[132]
+```
+
+order() 元素位置
+====================================
+依照order回傳的元素位置，重新排序iris資料框
+
+```{r}
+head(iris) ##排序前的前六筆資料
+```
+
+order() 元素位置
+====================================
+依照order回傳的元素位置，重新排序iris資料框
+
+```{r}
+head(iris[order(iris$Sepal.Length),]) ##依照Sepal.Length欄位數值大小排序後的前六筆資料
+```
+
+order() 元素位置
+====================================
+依照order回傳的元素位置，重新排序iris資料框
+
+```{r}
+head(iris[order(iris$Sepal.Length,decreasing = T),]) ##改為由大到小排序的前六筆資料
+```
+
+
+資料框排序練習
+====================================
+type:alert
+incremental:true
+又再一次想起DCard(爬蟲結果不代表本人意見)的資料．．．
+```{r}
+library(rvest) ##載入
+DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
+DCardContent<-read_html(DCardCGU)
+post_title <- DCardContent %>% html_nodes(".PostEntry_titleUnread_ycJL0") %>% html_text()
+post_comment<- DCardContent %>% html_nodes(".PostEntry_commentUnread_1cVyd") %>% html_text()
+post_like<- DCardContent %>% html_nodes(".PostLikeCount_likeCount_2uhBH") %>% html_text()
+DCardCGU_posts <- data.frame(title = post_title, commentN=post_comment,
+                             likeN=post_like,stringsAsFactors = F)
+```
+
+資料框排序練習
+====================================
+type:alert
+```{r}
+str(DCardCGU_posts)
+```
+- 將DCardCGU_posts按照評論數由高到低排序
+- 將DCardCGU_posts按照按讚數由高到低排序
+- 提示：要將評論數與按讚數**轉成數值**
 
 資料組合
 ====================================
-type:section
+type:sub-section
+
+有時需要在資料框新增一列，或新增一行
+
+- Row 列的組合 `rbind()`
+- Column 行的組合 `cbind()`
+
+`rbind()`和`cbind()`的參數可以是向量，也可以是資料框
+
+資料組合
+====================================
+
+使用向量做資料整合範例:
+```{r}
+rbind(c(1,2,3), #第一列
+      c(4,5,6)  #第二列
+      ) 
+```
+
+資料組合
+====================================
+
+使用資料框與向量做資料整合範例:
+```{r warning=F}
+irisAdd<-rbind(iris, #資料框
+      c(1,1,1,1,"versicolor")  #新增一列
+      ) 
+tail(irisAdd,2)
+```
+
+資料組合
+====================================
+
+使用向量做資料整合範例:
+```{r}
+cbind(c(1,2,3), #第一行
+      c(4,5,6)  #第二行
+      ) 
+```
+
+資料組合
+====================================
+
+使用資料框與向量做資料整合範例:
+```{r warning=F}
+irisAdd<-cbind(iris, #資料框
+      rep("Add",nrow(iris))  #新增一行
+      ) 
+tail(irisAdd,1)
+```
+
+資料組合練習
+====================================
+type:alert
+incremental:true
+
 
 長表與寬表
 ====================================
-type:section
+type:sub-section
+
+- 在資料處理的過程中，常因各種需求，需要執行長寬表互換的動作
+- reshape2 package提供完整的轉換功能
+    - 寬表轉長表 `melt(資料框/寬表,id.vars=需要保留的欄位)`
+    - 長表轉寬表 `dcast(資料框/長表,寬表分列依據~分欄位依據)`
+    
+長表與寬表
+====================================
+原來的`airquality`資料框中，有Ozone, Solar.R, Wind, Temp, Month, Day等六個欄位 (Column)，屬於寬表
+```{r}
+head(airquality,3)
+```
+
+寬表轉長表 melt（）
+====================================
+
+- 保留Month和Day兩個欄位
+- 將其他欄位的名稱整合至variable欄位，數值整合至value欄位
+```{r}
+library(reshape2)
+airqualityM<-melt(airquality,id.vars = c("Month","Day")) ##欄位需要保留"Month","Day"
+head(airqualityM)
+```
+
+長表轉寬表 dcast（）
+====================================
+
+- `airqualityM`資料框中，剩下Month, Day, variable, value等四個欄位 (Column)，屬於長表
+- variable欄位的值轉換為新欄位，並將value欄位填回新增的欄位
+
+```{r}
+##欄位保留"Month","Day"外，其他欄位數目由variable定義
+airqualityCast<-dcast(airqualityM, Month +Day~variable) 
+head(airqualityCast)
+```
+
+寬表轉長表練習
+====================================
+type:alert
+incremental:true
+
 
 遺漏值處理
 ====================================
-type:section
+type:sub-section
+
+- 遺漏值(Missing Value)常常出現在真實資料內，在數值運算時常會有問題
+- 最簡單的方法是將有缺值的資料移除
+
+遺漏值處理 is.na()
+====================================
+如資料為向量，可使用`is.na()`來判斷資料是否為空值`NA`，若為真`TRUE`，則將資料移除。
+```{r}
+naVec<-c("a","b",NA,"d","e")
+is.na(naVec)
+naVec[!is.na(naVec)] ##保留所有在is.na()檢查回傳FALSE的元素
+```
+
+遺漏值處理 complete.cases()
+====================================
+若資料型態為資料框，可使用`complete.cases`來選出完整的資料列，如果資料列是完整的，則會回傳真TRUE
+```{r}
+head(airquality,5)
+complete.cases(airquality) 
+```
+
+遺漏值處理 complete.cases()
+====================================
+若資料型態為資料框，可使用`complete.cases`來選出完整的資料列，如果資料列是完整的，則會回傳真TRUE
+```{r}
+head(airquality[complete.cases(airquality),]) ##保留所有在complete.cases()檢查回傳TRUE的元素
+```
+
+遺漏值處理練習
+====================================
+type:alert
+incremental:true
+
+
+
+遺漏值處理 補值？
+====================================
+- 利用演算法補值也是一種解決辦法
+- [R筆記–(10)遺漏值處理(Impute Missing Value)](http://www.rpubs.com/skydome20/R-Note10-Missing_Value)
 
 
