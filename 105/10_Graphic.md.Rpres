@@ -115,6 +115,18 @@ qplot() - Aesthetics
 qplot(FieldGoalsAttempted, TotalPoints, data = NBA1516,color=Position)
 ```
 
+
+qplot() 預設散佈圖練習
+====================================
+type:alert
+incremental:true
+
+- 讀入內建iris資料
+- 用**qplot()**做圖
+    - x軸：Sepal.Length
+    - y軸：Sepal.Width
+    - 顏色：Species
+
 qplot() - Geometric
 ====================================
 - 第二個主要元素**Geometric**
@@ -135,6 +147,16 @@ qplot() - Histograms直方圖
 #fill = Position 用守備位置Position著色
 qplot(TotalPoints, data = NBA1516, fill = Position)
 ```
+
+qplot() 預設直方圖練習
+====================================
+type:alert
+incremental:true
+
+- 讀入內建iris資料
+- 用**qplot()**做圖
+    - 單變量：Petal.Width
+    - 顏色：Species
 
 qplot() - Facets
 ====================================
@@ -184,6 +206,18 @@ qplot(TotalPoints, data = NBA1516,
       facets = Position ~ ., binwidth = 100)
 ```
 
+
+qplot() 綜合練習
+====================================
+type:alert
+incremental:true
+
+- 讀入內建iris資料
+- 用**qplot()**做圖
+    - x軸：Sepal.Length
+    - y軸：Sepal.Width
+    - 子圖：Species，每個Species畫在新的**欄位**
+
 qplot() - 總結
 ====================================
 - `qplot()`提供快速方便的畫圖功能
@@ -209,7 +243,7 @@ type:sub-section
 ggplot() 
 ====================================
 ```{r warning=F, message=F}
-library(ggplot2) ##須先安裝 install.packages("ggplot2")
+library(ggplot2) ##先安裝 install.packages("ggplot2")
 ```
 
 首先先產生教學用畫圖資料
@@ -219,11 +253,12 @@ df <- data.frame(gp = factor(rep(letters[1:3], each = 10)),y = rnorm(30))
 
 ggplot() 設定重要元素
 ====================================
+- ggplot(data,...)
 - **Aesthetic attributes**
-    -aes(x = gp, y = y)
+    - aes(x = gp, y = y)
 - **Geometric objects**
     - geom_point()
-```{r, fig.height=4}
+```{r, fig.height=3.5}
 ggplot(df, aes(x = gp, y = y)) +geom_point()
 ```
 
@@ -258,7 +293,8 @@ ggplot() geom_smooth()
 ====================================
 替xy散佈圖加上趨勢線，使用linear regresion
 ```{r, fig.height=4}
-ggplot(df, aes(x = z, y = y)) +geom_point()+facet_grid(gp~.)+geom_smooth(method='lm')
+ggplot(df, aes(x = z, y = y)) +geom_point()+facet_grid(gp~.)+
+    geom_smooth(method='lm')
 ```
 
 ggplot() geom_line()
@@ -274,6 +310,34 @@ ggplot() 顏色分組
 ```{r, fig.height=4}
 ggplot(df, aes(x = z, y = y, color=gp)) +geom_line()
 ```
+
+ggplot() 綜合練習 
+====================================
+type:alert
+incremental:true
+
+- 讀入內建iris資料
+- 用**ggplot()**畫xy散佈圖
+    - x軸：Sepal.Length
+    - y軸：Sepal.Width
+    - 子圖：Species，每個Species畫在新的**欄位**
+- 用**ggplot()**做盒狀圖
+    - x軸：Species
+    - y軸：Sepal.Width
+
+
+ggplot() 綜合練習 
+====================================
+type:alert
+incremental:true
+
+- 讀入內建iris資料
+- 用**ggplot()**做折線圖
+    - x軸：Sepal.Length
+    - y軸：Sepal.Width
+    - 顏色：Species
+
+
 
 ggplot() 注意事項
 ====================================
@@ -311,7 +375,9 @@ ggplot() geom_bar()
 library(datasets) 
 library(data.table)
 airquality$Month<-as.factor(airquality$Month) #將Month轉為因子變項
-airquality.mean<-data.table(airquality)[,.(OzoneMean=mean(Ozone,na.rm = T)),by=Month] #計算每月Ozone平均
+airquality.mean<-
+    data.table(airquality)[,.(OzoneMean=mean(Ozone,na.rm = T)),
+                           by=Month] #計算每月Ozone平均
 ggplot()+geom_bar(data=airquality.mean,aes(x=Month,y=OzoneMean),
                   stat = "identity") #stat = "identity" 直接畫數字
 ```
@@ -332,10 +398,10 @@ ggplot() geom_errorbar()
 - 加上`geom_errorbar()`函式
 - 設定資料高低值，就能在原圖中加上誤差線
 ```{r eval=F,fig.height=3}
-library(datasets) 
-library(data.table)
-airquality$Month<-as.factor(airquality$Month) #將Month轉為因子變項
-airquality.stat<-data.table(airquality)[,.(OzoneMean=mean(Ozone,na.rm = T),OzoneSD=sd(Ozone,na.rm = T)),by=Month] #計算每月Ozone平均與標準差
+airquality.stat<-
+    data.table(airquality)[,.(OzoneMean=mean(Ozone,na.rm = T),
+                              OzoneSD=sd(Ozone,na.rm = T)),
+                           by=Month] #計算每月Ozone平均與標準差
 ggplot(data=airquality.stat)+ #資料airquality.eb
     geom_bar(aes(x=Month,y=OzoneMean),stat = "identity")+
     geom_errorbar( #ymin低點, ymax高點
@@ -354,6 +420,14 @@ ggplot(data=airquality.stat)+ #資料airquality.eb
     geom_errorbar( #ymin低點, ymax高點
         aes(x=Month,ymin=OzoneMean-OzoneSD,ymax=OzoneMean+OzoneSD), width=.1)
 ```
+
+ggplot2 參考資料
+====================================
+- [ggplot2 官網](http://ggplot2.tidyverse.org/)
+- [ggplot2 package source code](https://github.com/tidyverse/ggplot2)
+- [ggplot2 cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+- [ggplot2 doc](http://docs.ggplot2.org/)
+
 
 ggplot2+地圖
 ====================================
