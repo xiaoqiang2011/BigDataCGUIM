@@ -262,6 +262,18 @@ data.table DT[i] 練習
 type:alert
 incremental:true
 
+- 讀入NBA資料，轉成data.table
+
+```r
+library(SportsAnalytics)
+library(data.table)
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1516DT<-data.table(NBA1516)
+```
+- 試著用data.table語法篩選出所有助攻數(Assists)超過100的球員資料
+- 有多少名球員符合條件? (篩選出幾筆觀察值?)
+
+
 j 欄位選擇運算:決定輸出欄位
 ====================================
 - 來決定輸出欄位
@@ -344,6 +356,20 @@ data.table DT[i,j] 練習
 ====================================
 type:alert
 incremental:true
+
+- 讀入NBA資料，轉成data.table
+
+```r
+library(SportsAnalytics)
+library(data.table)
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1516DT<-data.table(NBA1516)
+```
+- 篩選出所有助攻數(Assists)超過100的球員資料
+- 計算這些球員的平均抄截數Steals與籃板數TotalRebounds
+
+
+
 
 by 分組依據
 ====================================
@@ -443,6 +469,18 @@ data.table 綜合練習
 type:alert
 incremental:true
 
+- 讀入NBA資料，轉成data.table
+
+```r
+library(SportsAnalytics)
+library(data.table)
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1516DT<-data.table(NBA1516)
+```
+- 篩選出所有助攻數(Assists)超過100的球員資料
+- 計算這些球員的平均抄截數Steals與籃板數TotalRebounds
+- 以球隊做分組Team
+
 
 data.table 參考文件與資源
 ====================================
@@ -465,7 +503,7 @@ type:sub-section
     - `group_by()`: 分組依據
     - `arrange()`: 觀察值排序
     - `rename()`: 欄位重新命名
-    - `%>%`: the “pipe” operator 連結上數函式，將所有函示計算串在一起執行
+    - `%>%`: the “pipe” operator 連結上數函式，將所有函式計算串在一起執行
 
 dplyr
 ====================================
@@ -489,48 +527,44 @@ NBA1516<-fetch_NBAPlayerStatistics("15-16")
 
 欄位(Column)子集 select() 
 ====================================
-使用`select()`函式可選要分析的欄位，也就是針對欄位 (Column)做子集，函式使用方式為`select(資料名稱,欄位條件1,欄位條件2,...)`，其中條件1與條件2是使用**或**的連結概念。另外`dplyr`提供幾個方便篩選名稱的函式：
-
-- `starts_with()`
-- `ends_with()`
-- `contains()`
-- `matches()`
-- `num_range()`
-- `one_of()`
-- `everything()`
+- 針對欄位 (Column)做子集
+- `select(資料名稱,欄位條件1,欄位條件2,...)`
+- 條件1與條件2是使用**或**的連結概念
+- `dplyr`提供幾個方便篩選名稱的函式：
+    - `starts_with()`
+    - `ends_with()`
+    - `contains()`
+    - `matches()`
+    - `num_range()`
+    - `one_of()`
+    - `everything()`
 
 詳細說明可在R執行視窗中輸入`?select_helpers`查看。
 
 欄位(Column)子集 select() 
 ====================================
-舉例來說，我們想要篩選欄位名稱為`Name`、`ThreesMade`、`ThreesAttempted`、`FieldGoalsMade`與`FieldGoalsAttempted`的五個欄位，指令範例如下
+篩選欄位名稱為`Name`、`ThreesMade`、`ThreesAttempted`、`FieldGoalsMade`與`FieldGoalsAttempted`的五個欄位
 
 ```r
-##等同於
-##NBA1516[,c("Name","ThreesMade","ThreesAttempted","FieldGoalsMade","FieldGoalsAttempted")]
-select1<-select(NBA1516,Name,starts_with("Threes"),starts_with("FieldGoals"))
+##等同於NBA1516[,c("Name","ThreesMade","ThreesAttempted",
+##      "FieldGoalsMade","FieldGoalsAttempted")]
+select1<-select(NBA1516,Name,starts_with("Threes"),
+                starts_with("FieldGoals"))
 head(select1)
 ```
 
-```
-           Name ThreesMade ThreesAttempted FieldGoalsMade
-1    Quincy Acy         19              49            119
-2  Jordan Adams          0               1              2
-3  Steven Adams          0               0            261
-4 Arron Afflalo         91             238            354
-5 Alexis Ajinca          0               1            150
-6  Cole Aldrich          0               0            134
-  FieldGoalsAttempted
-1                 214
-2                   6
-3                 426
-4                 799
-5                 314
-6                 225
-```
+|Name          | ThreesMade| ThreesAttempted| FieldGoalsMade| FieldGoalsAttempted|
+|:-------------|----------:|---------------:|--------------:|-------------------:|
+|Quincy Acy    |         19|              49|            119|                 214|
+|Jordan Adams  |          0|               1|              2|                   6|
+|Steven Adams  |          0|               0|            261|                 426|
+|Arron Afflalo |         91|             238|            354|                 799|
+|Alexis Ajinca |          0|               1|            150|                 314|
+|Cole Aldrich  |          0|               0|            134|                 225|
 
 欄位(Column)子集 select() 
 ====================================
+
 若想篩選欄位`Name`到欄位`FreeThrowsAttempted`間的所有欄位，可用`:`串連欄位名稱
 
 ```r
@@ -539,29 +573,18 @@ select2<-select(NBA1516,Name:FreeThrowsAttempted)
 head(select2)
 ```
 
-```
-           Name Team Position GamesPlayed TotalMinutesPlayed
-1    Quincy Acy  SAC       SF          59                877
-2  Jordan Adams  MEM       SG           2                 15
-3  Steven Adams  OKL        C          80               2019
-4 Arron Afflalo  NYK       SG          71               2359
-5 Alexis Ajinca  NOR        C          59                863
-6  Cole Aldrich  LAC        C          60                802
-  FieldGoalsMade FieldGoalsAttempted ThreesMade ThreesAttempted
-1            119                 214         19              49
-2              2                   6          0               1
-3            261                 426          0               0
-4            354                 799         91             238
-5            150                 314          0               1
-6            134                 225          0               0
-  FreeThrowsMade FreeThrowsAttempted
-1             50                  68
-2              3                   5
-3            114                 196
-4            110                 131
-5             52                  62
-6             60                  84
-```
+|Name          |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted|
+|:-------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|
+|Quincy Acy    |SAC  |SF       |          59|                877|            119|                 214|         19|              49|             50|                  68|
+|Jordan Adams  |MEM  |SG       |           2|                 15|              2|                   6|          0|               1|              3|                   5|
+|Steven Adams  |OKL  |C        |          80|               2019|            261|                 426|          0|               0|            114|                 196|
+|Arron Afflalo |NYK  |SG       |          71|               2359|            354|                 799|         91|             238|            110|                 131|
+|Alexis Ajinca |NOR  |C        |          59|                863|            150|                 314|          0|               1|             52|                  62|
+|Cole Aldrich  |LAC  |C        |          60|                802|            134|                 225|          0|               0|             60|                  84|
+欄位(Column)子集 select() 
+====================================
+
+若想篩選欄位`Name`到欄位`FreeThrowsAttempted`間的所有欄位，可用`:`串連欄位名稱
 
 ```r
 ##等同於NBA1516[,c(2:4,612)]
@@ -569,33 +592,20 @@ select3<-select(NBA1516,Name:FreeThrowsAttempted,-GamesPlayed)
 head(select3)
 ```
 
-```
-           Name Team Position TotalMinutesPlayed FieldGoalsMade
-1    Quincy Acy  SAC       SF                877            119
-2  Jordan Adams  MEM       SG                 15              2
-3  Steven Adams  OKL        C               2019            261
-4 Arron Afflalo  NYK       SG               2359            354
-5 Alexis Ajinca  NOR        C                863            150
-6  Cole Aldrich  LAC        C                802            134
-  FieldGoalsAttempted ThreesMade ThreesAttempted FreeThrowsMade
-1                 214         19              49             50
-2                   6          0               1              3
-3                 426          0               0            114
-4                 799         91             238            110
-5                 314          0               1             52
-6                 225          0               0             60
-  FreeThrowsAttempted
-1                  68
-2                   5
-3                 196
-4                 131
-5                  62
-6                  84
-```
+|Name          |Team |Position | TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted|
+|:-------------|:----|:--------|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|
+|Quincy Acy    |SAC  |SF       |                877|            119|                 214|         19|              49|             50|                  68|
+|Jordan Adams  |MEM  |SG       |                 15|              2|                   6|          0|               1|              3|                   5|
+|Steven Adams  |OKL  |C        |               2019|            261|                 426|          0|               0|            114|                 196|
+|Arron Afflalo |NYK  |SG       |               2359|            354|                 799|         91|             238|            110|                 131|
+|Alexis Ajinca |NOR  |C        |                863|            150|                 314|          0|               1|             52|                  62|
+|Cole Aldrich  |LAC  |C        |                802|            134|                 225|          0|               0|             60|                  84|
 
 觀察值(Row)子集 filter()
 ====================================
-使用`filter()`函式可選要分析的觀察值，也就是針對列 (Row)做子集，使用方法為`filter(資料名稱,篩選條件)`，舉例來說，如果想要看出場分鐘數超過2850分鐘的球員資料，可用輸入下列指令
+- 是針對列 (Row)做子集
+- `filter(資料名稱,篩選條件)`
+- 如果想要看出場分鐘數超過2850分鐘的球員資料，可用輸入下列指令
 
 ```r
 ##等同於 NBA1516[NBA1516$TotalMinutesPlayed>2850,]
@@ -603,48 +613,15 @@ filter1<-filter(NBA1516,TotalMinutesPlayed>2850)
 filter1
 ```
 
-```
-  League            Name Team Position GamesPlayed TotalMinutesPlayed
-1    NBA    Trevor Ariza  HOU       SF          81               2860
-2    NBA    James Harden  HOU       SG          82               3121
-3    NBA  Gordon Hayward  UTA       SG          80               2889
-4    NBA      Kyle Lowry  TOR       PG          77               2853
-5    NBA Khris Middleton  MIL       SF          79               2855
-6    NBA   Marcus Morris  DET       SF          80               2852
-7    NBA    Kemba Walker  CHA       PG          81               2885
-  FieldGoalsMade FieldGoalsAttempted ThreesMade ThreesAttempted
-1            357                 858        185             497
-2            710                1617        236             656
-3            521                1202        143             410
-4            512                1198        212             546
-5            507                1144        143             362
-6            410                 945        108             297
-7            568                1332        182             490
-  FreeThrowsMade FreeThrowsAttempted OffensiveRebounds TotalRebounds
-1            126                 161                67           366
-2            720                 837                63           502
-3            393                 477                61           397
-4            398                 491                55           365
-5            277                 312                45           301
-6            203                 271                91           404
-7            371                 438                56           358
-  Assists Steals Turnovers Blocks PersonalFouls Disqualifications
-1     188    161       113     26           177                 0
-2     612    138       374     51           229                 1
-3     296     95       202     27           183                 0
-4     494    158       225     34           211                 1
-5     331    131       180     19           204                 1
-6     201     67       140     23           170                 1
-7     421    127       171     39           111                 0
-  TotalPoints Technicals Ejections FlagrantFouls GamesStarted
-1        1025          2         0             0           81
-2        2376          2         0             0           82
-3        1578          0         0             0           80
-4        1634          9         0             0           77
-5        1434          5         0             0           79
-6        1131         11         0             0           80
-7        1689          5         0             0           81
-```
+|League |Name            |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
+|:------|:---------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
+|NBA    |Trevor Ariza    |HOU  |SF       |          81|               2860|            357|                 858|        185|             497|            126|                 161|                67|           366|     188|    161|       113|     26|           177|                 0|        1025|          2|         0|             0|           81|
+|NBA    |James Harden    |HOU  |SG       |          82|               3121|            710|                1617|        236|             656|            720|                 837|                63|           502|     612|    138|       374|     51|           229|                 1|        2376|          2|         0|             0|           82|
+|NBA    |Gordon Hayward  |UTA  |SG       |          80|               2889|            521|                1202|        143|             410|            393|                 477|                61|           397|     296|     95|       202|     27|           183|                 0|        1578|          0|         0|             0|           80|
+|NBA    |Kyle Lowry      |TOR  |PG       |          77|               2853|            512|                1198|        212|             546|            398|                 491|                55|           365|     494|    158|       225|     34|           211|                 1|        1634|          9|         0|             0|           77|
+|NBA    |Khris Middleton |MIL  |SF       |          79|               2855|            507|                1144|        143|             362|            277|                 312|                45|           301|     331|    131|       180|     19|           204|                 1|        1434|          5|         0|             0|           79|
+|NBA    |Marcus Morris   |DET  |SF       |          80|               2852|            410|                 945|        108|             297|            203|                 271|                91|           404|     201|     67|       140|     23|           170|                 1|        1131|         11|         0|             0|           80|
+|NBA    |Kemba Walker    |CHA  |PG       |          81|               2885|            568|                1332|        182|             490|            371|                 438|                56|           358|     421|    127|       171|     39|           111|                 0|        1689|          5|         0|             0|           81|
 
 觀察值(Row)子集 filter()
 ====================================
@@ -656,44 +633,14 @@ filter2<-filter(NBA1516,Team %in% c("BOS","SAN"))
 head(filter2)
 ```
 
-```
-  League             Name Team Position GamesPlayed TotalMinutesPlayed
-1    NBA Lamarcu Aldridge  SAN       PF          74               2260
-2    NBA    Kyle Anderson  SAN       SF          78               1247
-3    NBA      Matt Bonner  SAN        C          30                210
-4    NBA    Avery Bradley  BOS       PG          76               2536
-5    NBA    Rasual Butler  SAN       SF          46                432
-6    NBA      Coty Clarke  BOS     <NA>           4                  8
-  FieldGoalsMade FieldGoalsAttempted ThreesMade ThreesAttempted
-1            536                1045          0              16
-2            138                 296         12              37
-3             29                  58         15              35
-4            456                1018        147             406
-5             49                 105         15              49
-6              2                   4          2               2
-  FreeThrowsMade FreeThrowsAttempted OffensiveRebounds TotalRebounds
-1            259                 302               175           631
-2             62                  83                25           245
-3              3                   4                 3            27
-4             96                 123                48           220
-5             11                  16                 3            56
-6              0                   0                 0             1
-  Assists Steals Turnovers Blocks PersonalFouls Disqualifications
-1     110     38        99     81           151                 0
-2     123     60        59     29            97                 0
-3       9      6         3      1            16                 0
-4     158    117       109     19           164                 2
-5      24     13         8     23            11                 0
-6       0      0         1      0             0                 0
-  TotalPoints Technicals Ejections FlagrantFouls GamesStarted
-1        1331          0         0             0           74
-2         350          0         0             0           11
-3          76          0         0             0            2
-4        1155          0         0             0           72
-5         124          0         0             0            0
-6           6          0         0             0            0
-```
-
+|League |Name             |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
+|:------|:----------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
+|NBA    |Lamarcu Aldridge |SAN  |PF       |          74|               2260|            536|                1045|          0|              16|            259|                 302|               175|           631|     110|     38|        99|     81|           151|                 0|        1331|          0|         0|             0|           74|
+|NBA    |Kyle Anderson    |SAN  |SF       |          78|               1247|            138|                 296|         12|              37|             62|                  83|                25|           245|     123|     60|        59|     29|            97|                 0|         350|          0|         0|             0|           11|
+|NBA    |Matt Bonner      |SAN  |C        |          30|                210|             29|                  58|         15|              35|              3|                   4|                 3|            27|       9|      6|         3|      1|            16|                 0|          76|          0|         0|             0|            2|
+|NBA    |Avery Bradley    |BOS  |PG       |          76|               2536|            456|                1018|        147|             406|             96|                 123|                48|           220|     158|    117|       109|     19|           164|                 2|        1155|          0|         0|             0|           72|
+|NBA    |Rasual Butler    |SAN  |SF       |          46|                432|             49|                 105|         15|              49|             11|                  16|                 3|            56|      24|     13|         8|     23|            11|                 0|         124|          0|         0|             0|            0|
+|NBA    |Coty Clarke      |BOS  |NA       |           4|                  8|              2|                   4|          2|               2|              0|                   0|                 0|             1|       0|      0|         1|      0|             0|                 0|           6|          0|         0|             0|            0|
 觀察值(Row)子集 filter()
 ====================================
 在`filter()`函式中可**直接做變數計算**後再篩選
@@ -704,29 +651,11 @@ filter3<-filter(NBA1516,FieldGoalsMade/FieldGoalsAttempted>0.7)
 filter3
 ```
 
-```
-  League             Name Team Position GamesPlayed TotalMinutesPlayed
-1    NBA Th Antetokounmpo  NYK       SF           3                  7
-2    NBA Rakeem Christmas  IND       PF           1                  6
-3    NBA   Deandre Jordan  LAC        C          77               2600
-  FieldGoalsMade FieldGoalsAttempted ThreesMade ThreesAttempted
-1              3                   4          0               1
-2              2                   2          0               0
-3            357                 507          0               1
-  FreeThrowsMade FreeThrowsAttempted OffensiveRebounds TotalRebounds
-1              0                   0                 0             1
-2              0                   0                 1             1
-3            266                 619               267          1059
-  Assists Steals Turnovers Blocks PersonalFouls Disqualifications
-1       0      0         0      0             2                 0
-2       0      0         0      0             1                 0
-3      90     52       107    176           207                 1
-  TotalPoints Technicals Ejections FlagrantFouls GamesStarted
-1           6          0         0             0            0
-2           4          0         0             0            0
-3         980         10         0             0           77
-```
-
+|League |Name             |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
+|:------|:----------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
+|NBA    |Th Antetokounmpo |NYK  |SF       |           3|                  7|              3|                   4|          0|               1|              0|                   0|                 0|             1|       0|      0|         0|      0|             2|                 0|           6|          0|         0|             0|            0|
+|NBA    |Rakeem Christmas |IND  |PF       |           1|                  6|              2|                   2|          0|               0|              0|                   0|                 1|             1|       0|      0|         0|      0|             1|                 0|           4|          0|         0|             0|            0|
+|NBA    |Deandre Jordan   |LAC  |C        |          77|               2600|            357|                 507|          0|               1|            266|                 619|               267|          1059|      90|     52|       107|    176|           207|                 1|         980|         10|         0|             0|           77|
 觀察值(Row)子集 filter()
 ====================================
 也可使用 `&` 和 `|`等符號串連邏輯
@@ -737,28 +666,31 @@ filter4<-filter(NBA1516,FieldGoalsMade/FieldGoalsAttempted>0.7 & GamesPlayed>30)
 filter4
 ```
 
-```
-  League           Name Team Position GamesPlayed TotalMinutesPlayed
-1    NBA Deandre Jordan  LAC        C          77               2600
-  FieldGoalsMade FieldGoalsAttempted ThreesMade ThreesAttempted
-1            357                 507          0               1
-  FreeThrowsMade FreeThrowsAttempted OffensiveRebounds TotalRebounds
-1            266                 619               267          1059
-  Assists Steals Turnovers Blocks PersonalFouls Disqualifications
-1      90     52       107    176           207                 1
-  TotalPoints Technicals Ejections FlagrantFouls GamesStarted
-1         980         10         0             0           77
-```
-
+|League |Name           |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
+|:------|:--------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
+|NBA    |Deandre Jordan |LAC  |C        |          77|               2600|            357|                 507|          0|               1|            266|                 619|               267|          1059|      90|     52|       107|    176|           207|                 1|         980|         10|         0|             0|           77|
 
 dplyr 子集練習
 ====================================
 type:alert
 incremental:true
 
+- 讀入NBA資料
+
+```r
+library(SportsAnalytics)
+library(dplyr)
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+```
+- 試著用dplyr語法篩選出所有助攻數(Assists)超過100且抄截數大於20的球員資料
+- 只留下Name Team Position GamesPlayed TotalMinutesPlayed Assists Steals 七個欄位
+
+
+
 增加新欄位 mutate()
 ====================================
-使用`mutate()`增加新欄位，如需新增新欄位`FieldGoalsRate`，欄位值為`FieldGoalsMade/FieldGoalsAttempted`，指令如下
+- 增加新欄位
+- 新增新欄位`FieldGoalsRate`，欄位值為`FieldGoalsMade/FieldGoalsAttempted`
 
 ```r
 mutate1<-mutate(NBA1516,FieldGoalsRate=FieldGoalsMade/FieldGoalsAttempted)
@@ -772,7 +704,9 @@ mutate1$FieldGoalsRate[1:10]
 
 計算統計值 summarise() 
 ====================================
-`summarise()`函式用來計算統計值，像是**球員個數**、**不重複的隊伍數**以及**不重複的守備位置數**等
+- 計算統計值
+- **球員個數**、**不重複的隊伍數**以及**不重複的守備位置數**等
+- n(), n_distinct()
 
 ```r
 sum1<-summarise(NBA1516,
@@ -789,20 +723,21 @@ sum1
 
 計算統計值 summarise() 
 ====================================
-計算統計值的功能通常會與其他功能合併使用，像是與前述`filter()`功能合併使用，可計算**出場分鐘數大於2500分鐘**的球員個數、平均投進的兩分球數以及平均投出的兩分球數
+- 通常會與其他功能合併使用
+- 計算**出場分鐘數大於2500分鐘**的球員個數、平均投進的兩分球數以及平均投出的兩分球數
 
 ```r
 filter1<-filter(NBA1516,TotalMinutesPlayed>2500)
 sum2<-summarise(filter1,
                 nPlayer=n(),
-                meanFieldGoalsMade=mean(FieldGoalsMade),
-                meanFieldGoalsAttempted=mean(FieldGoalsAttempted))
+                meanFGMade=mean(FieldGoalsMade),
+                meanFGAttempted=mean(FieldGoalsAttempted))
 sum2
 ```
 
 ```
-  nPlayer meanFieldGoalsMade meanFieldGoalsAttempted
-1      40                512                  1120.6
+  nPlayer meanFGMade meanFGAttempted
+1      40        512          1120.6
 ```
 
 dplyr filter()+summarise() 練習
@@ -810,20 +745,31 @@ dplyr filter()+summarise() 練習
 type:alert
 incremental:true
 
+- 讀入NBA資料
+
+```r
+library(SportsAnalytics)
+library(dplyr)
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+```
+- 試著用dplyr語法篩選出所有助攻數(Assists)超過100且抄截數大於20的球員資料
+- 計算這些球員的平均出場數GamesPlayed，平均出場分鐘數TotalMinutesPlayed
+
 pipe %>%
 ====================================
-上述分析序列（先篩選再總和），可直接用**pipe**符號`%>%`將指令串連，減少暫存物件（filter1）的生成，主要概念是先篩選後計算
+- 直接用**pipe**符號`%>%`將指令串連，減少暫存物件（filter1）的生成
 
 ```r
 sum3<-filter(NBA1516,TotalMinutesPlayed>2500) %>%
-  summarise(nPlayer=n(),meanFieldGoalsMade=mean(FieldGoalsMade),
-                meanFieldGoalsAttempted=mean(FieldGoalsAttempted))
+  summarise(nPlayer=n(),
+            meanFGMade=mean(FieldGoalsMade),
+            meanFGAttempted=mean(FieldGoalsAttempted))
 sum3
 ```
 
 ```
-  nPlayer meanFieldGoalsMade meanFieldGoalsAttempted
-1      40                512                  1120.6
+  nPlayer meanFGMade meanFGAttempted
+1      40        512          1120.6
 ```
 
 dplyr pipe %>% 練習
@@ -831,56 +777,58 @@ dplyr pipe %>% 練習
 type:alert
 incremental:true
 
+- 讀入NBA資料
 
+```r
+library(SportsAnalytics)
+library(dplyr)
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+```
+- 試著用dplyr語法篩選出所有助攻數(Assists)超過100且抄截數大於20的球員資料
+- 計算這些球員的平均出場數GamesPlayed，平均出場分鐘數TotalMinutesPlayed
+- 用pipe %>%
 
 分組 group_by()
 ====================================
-`group_by()`函數的功能為設定分組依據，通常會與`summarise()`函式合併使用，例如計算各**隊**（以Team作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數
+- 設定分組依據
+- 與`summarise()`函式合併使用
+- 計算各**隊**（以Team作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數
 
 ```r
 group1<-group_by(NBA1516,Team)%>%
-  summarise(nPlayer=n(),meanFieldGoalsMade=mean(FieldGoalsMade),
-                meanFieldGoalsAttempted=mean(FieldGoalsAttempted))
+  summarise(nPlayer=n(),meanFGMade=mean(FieldGoalsMade),
+                meanFGAttempted=mean(FieldGoalsAttempted))
 head(group1)
 ```
 
-```
-# A tibble: 6 × 4
-    Team nPlayer meanFieldGoalsMade meanFieldGoalsAttempted
-  <fctr>   <int>              <dbl>                   <dbl>
-1    ATL      15           215.0000                471.1333
-2    BOS      15           208.6000                475.0667
-3    BRO      16           181.0625                395.8750
-4    CHA      14           199.1429                450.7857
-5    CHI      15           209.4667                474.9333
-6    CLE      16           199.9375                433.3750
-```
-
+|Team | nPlayer| meanFGMade| meanFGAttempted|
+|:----|-------:|----------:|---------------:|
+|ATL  |      15|   215.0000|        471.1333|
+|BOS  |      15|   208.6000|        475.0667|
+|BRO  |      16|   181.0625|        395.8750|
+|CHA  |      14|   199.1429|        450.7857|
+|CHI  |      15|   209.4667|        474.9333|
+|CLE  |      16|   199.9375|        433.3750|
 分組 group_by()
 ====================================
-當然也可以設定**多個**分組依據，像是計算各**隊**各**守備位置**（以Team和Position作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數
+- 可設定**多個**分組依據
+- 計算各**隊**各**守備位置**（以Team和Position作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數
 
 ```r
 group2<-group_by(NBA1516,Team,Position)%>%
-  summarise(nPlayer=n(),meanFieldGoalsMade=mean(FieldGoalsMade),
-                meanFieldGoalsAttempted=mean(FieldGoalsAttempted))
+  summarise(nPlayer=n(),meanFGMade=mean(FieldGoalsMade),
+                meanFGAttempted=mean(FieldGoalsAttempted))
 head(group2)
 ```
 
-```
-Source: local data frame [6 x 5]
-Groups: Team [2]
-
-    Team Position nPlayer meanFieldGoalsMade meanFieldGoalsAttempted
-  <fctr>   <fctr>   <int>              <dbl>                   <dbl>
-1    ATL        C       1            11.0000                 19.0000
-2    ATL       PF       6           247.3333                515.6667
-3    ATL       PG       2           381.5000                884.0000
-4    ATL       SG       6           161.1667                364.3333
-5    BOS        C       2           195.5000                423.0000
-6    BOS       PF       4           181.7500                385.5000
-```
-
+|Team |Position | nPlayer| meanFGMade| meanFGAttempted|
+|:----|:--------|-------:|----------:|---------------:|
+|ATL  |C        |       1|    11.0000|         19.0000|
+|ATL  |PF       |       6|   247.3333|        515.6667|
+|ATL  |PG       |       2|   381.5000|        884.0000|
+|ATL  |SG       |       6|   161.1667|        364.3333|
+|BOS  |C        |       2|   195.5000|        423.0000|
+|BOS  |PF       |       4|   181.7500|        385.5000|
 排序 arrange()
 ====================================
 排序功能，預設為**遞增排序**
@@ -890,43 +838,14 @@ arrange1<-arrange(NBA1516,TotalMinutesPlayed)
 head(arrange1)
 ```
 
-```
-  League             Name Team Position GamesPlayed TotalMinutesPlayed
-1    NBA     J.j. O'brien  UTA       SF           1                  2
-2    NBA Rakeem Christmas  IND       PF           1                  6
-3    NBA Th Antetokounmpo  NYK       SF           3                  7
-4    NBA       Sam Dekker  HOU       SF           3                  7
-5    NBA      Coty Clarke  BOS     <NA>           4                  8
-6    NBA     Jordan Adams  MEM       SG           2                 15
-  FieldGoalsMade FieldGoalsAttempted ThreesMade ThreesAttempted
-1              0                   1          0               0
-2              2                   2          0               0
-3              3                   4          0               1
-4              0                   0          0               0
-5              2                   4          2               2
-6              2                   6          0               1
-  FreeThrowsMade FreeThrowsAttempted OffensiveRebounds TotalRebounds
-1              0                   0                 0             0
-2              0                   0                 1             1
-3              0                   0                 0             1
-4              0                   0                 0             1
-5              0                   0                 0             1
-6              3                   5                 0             2
-  Assists Steals Turnovers Blocks PersonalFouls Disqualifications
-1       0      0         0      0             0                 0
-2       0      0         0      0             1                 0
-3       0      0         0      0             2                 0
-4       0      1         0      0             0                 0
-5       0      0         1      0             0                 0
-6       3      3         2      0             2                 0
-  TotalPoints Technicals Ejections FlagrantFouls GamesStarted
-1           0          0         0             0            0
-2           4          0         0             0            0
-3           6          0         0             0            0
-4           0          0         0             0            0
-5           6          0         0             0            0
-6           7          0         0             0            0
-```
+|League |Name             |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
+|:------|:----------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
+|NBA    |J.j. O'brien     |UTA  |SF       |           1|                  2|              0|                   1|          0|               0|              0|                   0|                 0|             0|       0|      0|         0|      0|             0|                 0|           0|          0|         0|             0|            0|
+|NBA    |Rakeem Christmas |IND  |PF       |           1|                  6|              2|                   2|          0|               0|              0|                   0|                 1|             1|       0|      0|         0|      0|             1|                 0|           4|          0|         0|             0|            0|
+|NBA    |Th Antetokounmpo |NYK  |SF       |           3|                  7|              3|                   4|          0|               1|              0|                   0|                 0|             1|       0|      0|         0|      0|             2|                 0|           6|          0|         0|             0|            0|
+|NBA    |Sam Dekker       |HOU  |SF       |           3|                  7|              0|                   0|          0|               0|              0|                   0|                 0|             1|       0|      1|         0|      0|             0|                 0|           0|          0|         0|             0|            0|
+|NBA    |Coty Clarke      |BOS  |NA       |           4|                  8|              2|                   4|          2|               2|              0|                   0|                 0|             1|       0|      0|         1|      0|             0|                 0|           6|          0|         0|             0|            0|
+|NBA    |Jordan Adams     |MEM  |SG       |           2|                 15|              2|                   6|          0|               1|              3|                   5|                 0|             2|       3|      3|         2|      0|             2|                 0|           7|          0|         0|             0|            0|
 
 遞減排序 arrange()
 ====================================
@@ -937,69 +856,37 @@ arrange2<-arrange(NBA1516,desc(TotalMinutesPlayed),desc(GamesPlayed))
 head(arrange2)
 ```
 
-```
-  League            Name Team Position GamesPlayed TotalMinutesPlayed
-1    NBA    James Harden  HOU       SG          82               3121
-2    NBA  Gordon Hayward  UTA       SG          80               2889
-3    NBA    Kemba Walker  CHA       PG          81               2885
-4    NBA    Trevor Ariza  HOU       SF          81               2860
-5    NBA Khris Middleton  MIL       SF          79               2855
-6    NBA      Kyle Lowry  TOR       PG          77               2853
-  FieldGoalsMade FieldGoalsAttempted ThreesMade ThreesAttempted
-1            710                1617        236             656
-2            521                1202        143             410
-3            568                1332        182             490
-4            357                 858        185             497
-5            507                1144        143             362
-6            512                1198        212             546
-  FreeThrowsMade FreeThrowsAttempted OffensiveRebounds TotalRebounds
-1            720                 837                63           502
-2            393                 477                61           397
-3            371                 438                56           358
-4            126                 161                67           366
-5            277                 312                45           301
-6            398                 491                55           365
-  Assists Steals Turnovers Blocks PersonalFouls Disqualifications
-1     612    138       374     51           229                 1
-2     296     95       202     27           183                 0
-3     421    127       171     39           111                 0
-4     188    161       113     26           177                 0
-5     331    131       180     19           204                 1
-6     494    158       225     34           211                 1
-  TotalPoints Technicals Ejections FlagrantFouls GamesStarted
-1        2376          2         0             0           82
-2        1578          0         0             0           80
-3        1689          5         0             0           81
-4        1025          2         0             0           81
-5        1434          5         0             0           79
-6        1634          9         0             0           77
-```
+|League |Name            |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
+|:------|:---------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
+|NBA    |James Harden    |HOU  |SG       |          82|               3121|            710|                1617|        236|             656|            720|                 837|                63|           502|     612|    138|       374|     51|           229|                 1|        2376|          2|         0|             0|           82|
+|NBA    |Gordon Hayward  |UTA  |SG       |          80|               2889|            521|                1202|        143|             410|            393|                 477|                61|           397|     296|     95|       202|     27|           183|                 0|        1578|          0|         0|             0|           80|
+|NBA    |Kemba Walker    |CHA  |PG       |          81|               2885|            568|                1332|        182|             490|            371|                 438|                56|           358|     421|    127|       171|     39|           111|                 0|        1689|          5|         0|             0|           81|
+|NBA    |Trevor Ariza    |HOU  |SF       |          81|               2860|            357|                 858|        185|             497|            126|                 161|                67|           366|     188|    161|       113|     26|           177|                 0|        1025|          2|         0|             0|           81|
+|NBA    |Khris Middleton |MIL  |SF       |          79|               2855|            507|                1144|        143|             362|            277|                 312|                45|           301|     331|    131|       180|     19|           204|                 1|        1434|          5|         0|             0|           79|
+|NBA    |Kyle Lowry      |TOR  |PG       |          77|               2853|            512|                1198|        212|             546|            398|                 491|                55|           365|     494|    158|       225|     34|           211|                 1|        1634|          9|         0|             0|           77|
 
-`group_by()`、`summarise()`、`arrange()`
+dplyr綜合範例
 ====================================
-結合`group_by()`、`summarise()`、`arrange()`，可完成一連串的資料分析，例如計算各**隊**各**守備**位置（以Team和Position作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數，並依平均投進的兩分球數**由大到小排序**
+- 結合`group_by()`、`summarise()`、`arrange()`，可完成一連串的資料分析
+- 計算各**隊**各**守備**位置（以Team和Position作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數，並依平均投進的兩分球數**由大到小排序**
 
 ```r
 arrange3<-group_by(NBA1516,Team,Position)%>%
-  summarise(nPlayer=n(),meanFieldGoalsMade=mean(FieldGoalsMade),
-                meanFieldGoalsAttempted=mean(FieldGoalsAttempted)) %>%
-  arrange(desc(meanFieldGoalsMade))
+  summarise(nPlayer=n(),meanFGMade=mean(FieldGoalsMade),
+                meanFGAttempted=mean(FieldGoalsAttempted)) %>%
+  arrange(desc(meanFGMade))
 head(arrange3)
 ```
 
-```
-Source: local data frame [6 x 5]
-Groups: Team [6]
+|Team |Position | nPlayer| meanFGMade| meanFGAttempted|
+|:----|:--------|-------:|----------:|---------------:|
+|GSW  |PG       |       2|      504.0|             988|
+|CLE  |SF       |       2|      440.0|             864|
+|ORL  |SG       |       1|      425.0|             969|
+|MIA  |C        |       1|      412.0|             681|
+|OKL  |PG       |       2|      385.0|             861|
+|ATL  |PG       |       2|      381.5|             884|
 
-    Team Position nPlayer meanFieldGoalsMade meanFieldGoalsAttempted
-  <fctr>   <fctr>   <int>              <dbl>                   <dbl>
-1    GSW       PG       2              504.0                     988
-2    CLE       SF       2              440.0                     864
-3    ORL       SG       1              425.0                     969
-4    MIA        C       1              412.0                     681
-5    OKL       PG       2              385.0                     861
-6    ATL       PG       2              381.5                     884
-```
 
 修改欄位名稱 rename()
 ====================================
@@ -1024,6 +911,17 @@ dplyr 綜合練習
 type:alert
 incremental:true
 
+- 讀入NBA資料
+
+```r
+library(SportsAnalytics)
+library(dplyr)
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+```
+- 試著用dplyr語法篩選出所有助攻數(Assists)超過100且抄截數大於20的球員資料
+- 依**守備位置**Position分組，計算球員的平均**出場數**GamesPlayed，平均**出場分鐘數**TotalMinutesPlayed
+- 依平均出場數GamesPlayed**由大到小**排序
+- 用pipe %>%
 
 dplyr 參考文件與資源
 ====================================
