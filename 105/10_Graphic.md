@@ -98,12 +98,15 @@ qplot() - ggplot2 “Hello, world!”
 ====================================
 - `qplot(x軸名稱,y軸名稱,data=使用資料)`: 散佈圖
 
-```{r qplot1, fig.height=4, warning=F,message=F}
+
+```r
 library(SportsAnalytics)
 NBA1516<-fetch_NBAPlayerStatistics("15-16") 
 library(ggplot2) 
 qplot(FieldGoalsAttempted, TotalPoints, data = NBA1516)
 ```
+
+![plot of chunk qplot1](10_Graphic-figure/qplot1-1.png)
 
 qplot() - Aesthetics
 ====================================
@@ -111,9 +114,12 @@ qplot() - Aesthetics
 - 包括顏色、形狀、點的大小與線的粗細
 - 加上`color=Position`，用守備位置Position著色
 
-```{r qplot2, fig.height=4}
+
+```r
 qplot(FieldGoalsAttempted, TotalPoints, data = NBA1516,color=Position)
 ```
+
+![plot of chunk qplot2](10_Graphic-figure/qplot2-1.png)
 
 
 qplot() 預設散佈圖練習
@@ -133,20 +139,26 @@ qplot() - Geometric
 - 包括點、線、盒狀圖、直條圖等
 - `geom = c("point", "smooth")` 在圖上加點與漸進線
 
-```{r qplot3, fig.height=4}
+
+```r
 qplot(FieldGoalsAttempted, TotalPoints, data = NBA1516,
       geom = c("point", "smooth"))
 ```
+
+![plot of chunk qplot3](10_Graphic-figure/qplot3-1.png)
 
 qplot() - Histograms直方圖
 ====================================
 - 是**單**變量
 - 預設圖形: **Histograms直方圖**
 
-```{r, fig.height=3.5, warning=F,message=F}
+
+```r
 #fill = Position 用守備位置Position著色
 qplot(TotalPoints, data = NBA1516, fill = Position)
 ```
+
+![plot of chunk unnamed-chunk-1](10_Graphic-figure/unnamed-chunk-1-1.png)
 
 qplot() 預設直方圖練習
 ====================================
@@ -170,41 +182,53 @@ qplot() - Facets
 qplot() - Facets
 ====================================
 `facets = 直向分類~橫向分類`
-```{r, fig.height=3.5}
+
+```r
 #. ~ Position 用守備位置Position分群畫圖(橫向)
 qplot(FieldGoalsAttempted, TotalPoints, 
       data = NBA1516,
       facets = . ~ Position)
 ```
 
+![plot of chunk unnamed-chunk-2](10_Graphic-figure/unnamed-chunk-2-1.png)
+
 qplot() - Facets
 ====================================
 `facets = 直向分類~橫向分類`
-```{r, fig.height=4}
+
+```r
 #. ~ Position 用守備位置Position分群畫圖(直向)
 qplot(FieldGoalsAttempted, TotalPoints, 
       data = NBA1516,
       facets = Position ~ .)
 ```
 
+![plot of chunk unnamed-chunk-3](10_Graphic-figure/unnamed-chunk-3-1.png)
+
 qplot() - 其他參數
 ====================================
 - 自動幫使用者選擇顏色與圖形各項參數
 - 使用者也可依需求微調
 - 如直方圖的分組間隔，可透過`binwidth`參數設定
-```{r, fig.height=3.5}
+
+```r
 qplot(TotalPoints, data = NBA1516, 
       facets = Position ~ ., binwidth = 2)
 ```
 
+![plot of chunk unnamed-chunk-4](10_Graphic-figure/unnamed-chunk-4-1.png)
+
 qplot() - 其他參數
 ====================================
-```{r, fig.height=3.5}
+
+```r
 #. ~ Position 用守備位置Position分群畫圖(直向)
 #binwidth = 100 每100分一組
 qplot(TotalPoints, data = NBA1516,
       facets = Position ~ ., binwidth = 100)
 ```
+
+![plot of chunk unnamed-chunk-5](10_Graphic-figure/unnamed-chunk-5-1.png)
 
 
 qplot() 綜合練習
@@ -242,12 +266,14 @@ type:sub-section
 
 ggplot() 
 ====================================
-```{r warning=F, message=F}
+
+```r
 library(ggplot2) ##先安裝 install.packages("ggplot2")
 ```
 
 首先先產生教學用畫圖資料
-```{r}
+
+```r
 df <- data.frame(gp = factor(rep(letters[1:3], each = 10)),y = rnorm(30))
 ```
 
@@ -258,58 +284,82 @@ ggplot() 設定重要元素
     - aes(x = gp, y = y)
 - **Geometric objects**
     - geom_point()
-```{r, fig.height=3.5}
+
+```r
 ggplot(df, aes(x = gp, y = y)) +geom_point()
 ```
+
+![plot of chunk unnamed-chunk-8](10_Graphic-figure/unnamed-chunk-8-1.png)
 
 ggplot() geom_boxpolt()
 ====================================
 用`geom_boxpolt()`改畫盒狀圖
-```{r, fig.height=4}
+
+```r
 ggplot(df, aes(x = gp, y = y)) +geom_boxplot()
 ```
 
+![plot of chunk unnamed-chunk-9](10_Graphic-figure/unnamed-chunk-9-1.png)
+
 ggplot() Faceting
 ====================================
-```{r, fig.height=4}
+
+```r
 df$z<-df$y+rnorm(30)
 ggplot(df, aes(x = z, y = y)) +geom_point()+facet_grid(gp~.)
 ```
 
+![plot of chunk unnamed-chunk-10](10_Graphic-figure/unnamed-chunk-10-1.png)
+
 ggplot() Faceting
 ====================================
-```{r, fig.height=4}
+
+```r
 ggplot(df, aes(x = z, y = y)) +geom_point()+facet_grid(.~gp)
 ```
+
+![plot of chunk unnamed-chunk-11](10_Graphic-figure/unnamed-chunk-11-1.png)
 
 ggplot() geom_smooth()
 ====================================
 替xy散佈圖加上趨勢線
-```{r, fig.height=4}
+
+```r
 ggplot(df, aes(x = z, y = y)) +geom_point()+facet_grid(gp~.)+geom_smooth()
 ```
+
+![plot of chunk unnamed-chunk-12](10_Graphic-figure/unnamed-chunk-12-1.png)
 
 ggplot() geom_smooth()
 ====================================
 替xy散佈圖加上趨勢線，使用linear regresion
-```{r, fig.height=4}
+
+```r
 ggplot(df, aes(x = z, y = y)) +geom_point()+facet_grid(gp~.)+
     geom_smooth(method='lm')
 ```
 
+![plot of chunk unnamed-chunk-13](10_Graphic-figure/unnamed-chunk-13-1.png)
+
 ggplot() geom_line()
 ====================================
 改用`geom_line()`畫線
-```{r, fig.height=4}
+
+```r
 ggplot(df, aes(x = z, y = y)) +geom_line()+facet_grid(gp~.)
 ```
+
+![plot of chunk unnamed-chunk-14](10_Graphic-figure/unnamed-chunk-14-1.png)
 
 ggplot() 顏色分組
 ====================================
 改用顏色分組，使用`aes(color='group name')`
-```{r, fig.height=4}
+
+```r
 ggplot(df, aes(x = z, y = y, color=gp)) +geom_line()
 ```
+
+![plot of chunk unnamed-chunk-15](10_Graphic-figure/unnamed-chunk-15-1.png)
 
 ggplot() 綜合練習 
 ====================================
@@ -371,7 +421,8 @@ ggplot() geom_bar()
 ====================================
 - 以空氣污染料為例，比較各月臭氧濃度差異
 - bar chart: 將**Geometric objects**設定為`geom_bar`
-```{r,eval=F}
+
+```r
 library(datasets) 
 library(data.table)
 airquality$Month<-as.factor(airquality$Month) #將Month轉為因子變項
@@ -384,20 +435,14 @@ ggplot()+geom_bar(data=airquality.mean,aes(x=Month,y=OzoneMean),
 
 ggplot() geom_bar()
 ====================================
-```{r echo=F,fig.height=6}
-library(datasets) 
-library(data.table)
-airquality$Month<-as.factor(airquality$Month) #將Month轉為因子變項
-airquality.mean<-data.table(airquality)[,.(OzoneMean=mean(Ozone,na.rm = T)),by=Month] #計算每月Ozone平均
-ggplot()+geom_bar(data=airquality.mean,aes(x=Month,y=OzoneMean),
-                  stat = "identity") #stat = "identity" 直接畫數字
-```
+![plot of chunk unnamed-chunk-17](10_Graphic-figure/unnamed-chunk-17-1.png)
 
 ggplot() geom_errorbar()
 ====================================
 - 加上`geom_errorbar()`函式
 - 設定資料高低值，就能在原圖中加上誤差線
-```{r eval=F,fig.height=3}
+
+```r
 airquality.stat<-
     data.table(airquality)[,.(OzoneMean=mean(Ozone,na.rm = T),
                               OzoneSD=sd(Ozone,na.rm = T)),
@@ -410,16 +455,7 @@ ggplot(data=airquality.stat)+ #資料airquality.eb
 
 ggplot() geom_errorbar()
 ====================================
-```{r echo=F,fig.height=6}
-library(datasets) 
-library(data.table)
-airquality$Month<-as.factor(airquality$Month) #將Month轉為因子變項
-airquality.stat<-data.table(airquality)[,.(OzoneMean=mean(Ozone,na.rm = T),OzoneSD=sd(Ozone,na.rm = T)),by=Month] #計算每月Ozone平均與標準差
-ggplot(data=airquality.stat)+ #資料airquality.eb
-    geom_bar(aes(x=Month,y=OzoneMean),stat = "identity")+
-    geom_errorbar( #ymin低點, ymax高點
-        aes(x=Month,ymin=OzoneMean-OzoneSD,ymax=OzoneMean+OzoneSD), width=.1)
-```
+![plot of chunk unnamed-chunk-19](10_Graphic-figure/unnamed-chunk-19-1.png)
 
 ggplot2 參考資料
 ====================================
@@ -445,10 +481,12 @@ Choropleth map面量圖
 - `choroplethr` package來畫面量圖
 - 基於`ggplot2` package的`面量圖`做圖工具
 - 建議同時安裝`choroplethrMaps` package
-```{r,eval=F,warning=F,message=F}
+
+```r
 install.packages(c("choroplethr","choroplethrMaps")) ##第一次使用前先安裝
 ```
-```{r, warning=F,message=F}
+
+```r
 library(choroplethr)
 ```
 
@@ -456,19 +494,25 @@ choroplethr package
 ====================================
 - 內建美國各州地圖與人口學資料
 - 使用`state_choropleth()`函式畫出美國人口分布
-```{r, fig.height=3.5}
+
+```r
 data(df_pop_state) #記載各州人口數的資料
 state_choropleth(df_pop_state) #把各州人口畫在地圖上
 ```
 
+![plot of chunk unnamed-chunk-22](10_Graphic-figure/unnamed-chunk-22-1.png)
+
 choroplethr package
 ====================================
 若在將`reference_map`設定為` = TRUE`，可在面量圖的背景加上google地圖
-```{r, warning=F,message=F, fig.height=3.5}
+
+```r
 data(continental_us_states)
 state_choropleth(df_pop_state,reference_map = TRUE,
                  zoom= continental_us_states) #把各州人口畫在地圖上
 ```
+
+![plot of chunk unnamed-chunk-23](10_Graphic-figure/unnamed-chunk-23-1.png)
 
 
 ggmap package
@@ -476,7 +520,8 @@ ggmap package
 - 把google map載入並作圖的套件
 - 基於`ggplot2`套件開發
 - 第一次使用前需要安裝
-```{r,eval=F,warning=F,message=F}
+
+```r
 install.packages("ggmap", type = "source") ##第一次使用前先安裝
 ```
 - `get_map()`函式取得google map圖層
@@ -488,17 +533,21 @@ install.packages("ggmap", type = "source") ##第一次使用前先安裝
 
 get_map() + ggmap()
 ====================================
-```{r, warning=F,message=F, fig.height=5}
+
+```r
 library(ggmap)
 twmap <- get_map(location = 'Taiwan', zoom = 7,language = "zh-TW")
 ggmap(twmap)
 ```
 
+![plot of chunk unnamed-chunk-25](10_Graphic-figure/unnamed-chunk-25-1.png)
+
 ggmap + open data 資料載入
 ====================================
 - 只要資料有經緯度等資訊，就可以使用`ggmap` package與各式資料結合呈現
 - [台北市水質資料](http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=190796c8-7c56-42e0-8068-39242b8ec927)
-```{r eval=F, message=F, warning=F}
+
+```r
 library(jsonlite) library(RCurl)
 WaterData<-fromJSON(getURL("http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=190796c8-7c56-42e0-8068-39242b8ec927"))
 WaterDataFrame<-WaterData$result$results
@@ -509,7 +558,8 @@ WaterDataFrame$qua_cntu<-as.numeric(WaterDataFrame$qua_cntu)
 
 ggmap + open data 繪圖
 ====================================
-```{r eval=F, message=F, warning=F}
+
+```r
 library(ggmap)
 TaipeiMap = get_map(location = c(121.43,24.93,121.62,25.19), 
                     zoom = 11, maptype = 'roadmap')
@@ -523,9 +573,7 @@ TaipeiMapO
 
 ggmap + open data
 ====================================
-```{r echo=FALSE, fig.height=5}
-knitr::include_graphics("figures/waterQ.png")
-```
+![plot of chunk unnamed-chunk-28](figures/waterQ.png)
 
 ggmap + 地圖型態
 ====================================
@@ -542,7 +590,8 @@ ggmap + 地圖型態
 ggmap + extent
 ====================================
 透過設定`extent`參數可將地圖輸出樣式改為滿版
-```{r eval=F,warning=F,message=F, fig.height=3}
+
+```r
 library(ggmap)
 TaipeiMap = get_map(location = c(121.43,24.93,121.62,25.19), 
                     zoom = 14, maptype = 'roadmap')
@@ -550,57 +599,70 @@ TaipeiMap = get_map(location = c(121.43,24.93,121.62,25.19),
 ggmap(TaipeiMap,extent = 'device') 
 ```
 
+ggmap() 練習 
+====================================
+type:alert
+incremental:true
+
+- 利用get_map() + ggmap()取得桃園地區的google 圖層
+    - location = 'Taoyuan'
+    - zoom = 11
+    - language = "zh-TW"
+- 在長庚大學所在地 （座標121.389539,25.035225）加上一個紅色的點
+    - geom_point()
+    - x= 121.389539
+    - y= 25.035225
+    - color ="red"
+
+ggmap() 練習輸出圖檔
+====================================
+![plot of chunk unnamed-chunk-30](10_Graphic-figure/unnamed-chunk-30-1.png)
+
 
 Density Map
 ====================================
 - 常用來表示因地理位置不同的數值差異
 - 美國人口密度圖範例 (`ggplot2` + `ggmap`)
 
-```{r, echo=F, warning=F,message=F, fig.height=6}
-StateCenter<-data.frame( #取得美國各州中心座標資料
-    region=tolower(state.name),lon=state.center$x,lat=state.center$y)
-StatePop<-merge(df_pop_state,StateCenter,by="region") #美國各州人口資料
-PopPoint<-NULL #將人口數值，轉為點！重要！
-for(i in 1:nrow(StatePop)){
-    for(j in 1:(StatePop[i,"value"]/1000000)){
-        PopPoint<-rbind(PopPoint,StatePop[i,])   
-    }
-}
-USMap <- get_map(location = "United States", zoom = 4)
-densityMap<-ggmap(USMap, extent = "device") + 
-    geom_density2d(data = PopPoint, aes(x = lon, y = lat), size = 0.3) + 
-    stat_density2d(data = PopPoint, 
-            aes(x = lon, y = lat, fill = ..level.., alpha = ..level..), 
-                size = 0.01, bins = 16, geom = "polygon") + 
-    scale_fill_gradient(low = "green", high = "red", guide = FALSE) + 
-    scale_alpha(range = c(0, 0.3), guide = FALSE)
-densityMap
-```
+![plot of chunk unnamed-chunk-31](10_Graphic-figure/unnamed-chunk-31-1.png)
 
 Density Map 資料載入
 ====================================
 取得美國各州中心座標資料以及美國各州人口資料
-```{r warning=F,message=F}
+
+```r
 #取得美國各州中心座標資料
 StateCenter<-data.frame( 
     region=tolower(state.name),lon=state.center$x,lat=state.center$y)
 head(StateCenter,1)
 ```
 
+```
+   region      lon     lat
+1 alabama -86.7509 32.5901
+```
+
 Density Map 資料載入
 ====================================
 取得美國各州中心座標資料以及美國各州人口資料
-```{r warning=F,message=F}
+
+```r
 #美國各州人口資料
 StatePop<-merge(df_pop_state,StateCenter,by="region") 
 head(StatePop,1)
+```
+
+```
+   region   value      lon     lat
+1 alabama 4777326 -86.7509 32.5901
 ```
 
 Density Map 資料轉換
 ====================================
 - 將人口數字轉換為**資料列數**
 - 密度圖是用資料列數來決定畫圖的密度
-```{r warning=F,message=F}
+
+```r
 PopPoint<-NULL 
 for(i in 1:nrow(StatePop)){
     #每100萬人轉為1點
@@ -611,10 +673,18 @@ for(i in 1:nrow(StatePop)){
 head(PopPoint,3)
 ```
 
+```
+   region   value      lon     lat
+1 alabama 4777326 -86.7509 32.5901
+2 alabama 4777326 -86.7509 32.5901
+3 alabama 4777326 -86.7509 32.5901
+```
+
 Density Map 作圖
 ====================================
 
-```{r eval=F,warning=F,message=F}
+
+```r
 USMap <- get_map(location = "United States", zoom = 4)
 densityMap<-ggmap(USMap, extent = "device") + 
     geom_density2d(data = PopPoint, aes(x = lon, y = lat), size = 0.3) + 
@@ -628,17 +698,7 @@ densityMap
 
 Density Map 作圖
 ====================================
-```{r echo=F,warning=F,message=F}
-USMap <- get_map(location = "United States", zoom = 4)
-densityMap<-ggmap(USMap, extent = "device") + 
-    geom_density2d(data = PopPoint, aes(x = lon, y = lat), size = 0.3) + 
-    stat_density2d(data = PopPoint, 
-            aes(x = lon, y = lat, fill = ..level.., alpha = ..level..), 
-                size = 0.01, bins = 16, geom = "polygon") + 
-    scale_fill_gradient(low = "green", high = "red", guide = FALSE) + 
-    scale_alpha(range = c(0, 0.3), guide = FALSE)
-densityMap
-```
+![plot of chunk unnamed-chunk-36](10_Graphic-figure/unnamed-chunk-36-1.png)
 
 ggmap 參考資料
 ====================================
@@ -649,7 +709,6 @@ ggmap 參考資料
 Taiwan的面量圖
 ====================================
 type:sub-section 
-
 
 - 台灣的面量圖尚無好的套件輔助
 - Open Data: 台灣鄉鎮市邊界的經緯度檔案
@@ -664,46 +723,36 @@ Taiwan的面量圖 程式碼總覽
 ====================================
 上述套件在第一次使用前需要安裝與載入
 
-```{r, eval=F,echo=F, warning=F,message=F, fig.height=4}
-install.packages(c("rgdal","rgeos","maptools","ggplot2","RColorBrewer"))
-library(rgdal)#for fortify()
-library(rgeos) #for fortify()
-library(maptools) #for readShapeSpatial()
 
-tw_new <- readShapeSpatial("Taiwan/Town_MOI_1041215.shp") #空間資料檔名 請自行下載
-
-library(ggplot2) #for fortify(), ggplot(), ggmap()
-tw_new.df <- fortify(tw_new, region = "T_UID") #from ggplot2 package
-mydata<-data.frame(NAME_2=tw_new$T_Name, id=tw_new$T_UID,
-                   prevalence=rnorm(length(tw_new$T_UID)))#prevalence 畫圖假資料
-final.plot<-merge(tw_new.df,mydata,by="id",all.x=T)
-
-library(RColorBrewer) #配色用brewer.pal( 9 , "Reds" )
-twcmap<-ggplot() +
-    geom_polygon(data = final.plot, 
-                 aes(x = long, y = lat, group = group, 
-                     fill = prevalence), 
-                 color = "black", size = 0.25) + 
-    coord_map()+#維持地圖比例
-    scale_fill_gradientn(colours = brewer.pal(9,"Reds"))+
-    theme_void()+
-    labs(title="Prevalence of X in Taiwan")
-twcmap
-```
-```{r echo=FALSE}
-knitr::include_graphics("figures/Taiwan.png")
-```
+![plot of chunk unnamed-chunk-38](figures/Taiwan.png)
 
 Taiwan的面量圖 處理shapefile-1
 ====================================
 
 - 需要`rgdal`, `rgeos`,`maptools`
+
+
+```r
+library(ggplot2) #for fortify(), ggplot(), ggmap()
+library(rgdal)#for fortify()
+library(rgeos) #for fortify()
+library(maptools) #for readShapeSpatial()
+#空間資料檔名 請自行下載
+tw_new <- readShapeSpatial("Taiwan/Town_MOI_1041215.shp") 
+head(tw_new$Town_ID)
+```
+```
+[1] 1001402 1001321 1000913 1001411 1001416 1000712
+```
+
+Taiwan的面量圖 處理shapefile-2
+====================================
+
 - fortify: 將`shapefile`物件轉為`data.frame`
 
-```{r, eval=F,warning=F,message=F, fig.height=3}
-library(ggplot2) #for fortify(), ggplot(), ggmap()
-head(tw_new$Town_ID)
-tw_new.df <- fortify(tw_new, region = "T_UID") #from ggplot2 package
+
+```r
+tw_new.df <- fortify(tw_new, region = "T_UID") 
 head(tw_new.df,10)
 ```
 ```
@@ -719,9 +768,11 @@ head(tw_new.df,10)
 9  119.9173 26.17515     9 FALSE     1  1   1.1
 10 119.9173 26.17515    10 FALSE     1  1   1.1
 ```
+
 Taiwan的面量圖 著色基準檔
 ====================================
-```{r, eval=F,warning=F,message=F, fig.height=3}
+
+```r
 #做一個假資料來畫
 #prevalence設為亂數rnorm(需要的亂數個數)
 mydata<-data.frame(NAME_2=tw_new$T_Name, id=tw_new$T_UID,
@@ -740,9 +791,10 @@ head(mydata)
 Taiwan的面量圖 處理中文編碼
 ====================================
 利用iconv將不知所以然的代碼（\xa6\xa8\xa5\\\xc2\xed）轉為看得懂的中文
-```{r, eval=F,warning=F,message=F, fig.height=3}
-#from big5 to utf-8
-mydata$NAME_2<-iconv(as.character(mydata$NAME_2), #NAME_2原本是factor
+
+```r
+#from big5 to utf-8  #NAME_2原本是factor
+mydata$NAME_2<-iconv(as.character(mydata$NAME_2),
                      from="big5", to = "UTF-8")
 head(mydata,10)
 ```
@@ -759,10 +811,12 @@ head(mydata,10)
 9  萬丹鄉 148  1.4849184
 10 三灣鄉  64  0.6094254
 ```
+
 Taiwan的面量圖 合併資料
 ====================================
 將有prevalence的假數據mydata和經緯度資料tw_new.df合併, 用merge()
-```{r, eval=F,warning=F,message=F, fig.height=3}
+
+```r
 final.plot<-merge(tw_new.df,mydata,by="id",all.x=T)
 head(final.plot,10)
 ```
@@ -779,9 +833,11 @@ head(final.plot,10)
 9   1 119.9173 26.17515     9 FALSE     1   1.1 南竿鄉  0.9584632
 10  1 119.9173 26.17515    10 FALSE     1   1.1 南竿鄉  0.9584632
 ```
+
 Taiwan的面量圖 畫台灣面量圖
 ====================================
-```{r, eval=F,warning=F,message=F, fig.height=3}
+
+```r
 library(RColorBrewer) #配色用brewer.pal( 9 , "Reds" )
 twcmap<-ggplot() +
     geom_polygon(data = final.plot, 
@@ -797,14 +853,13 @@ twcmap
 
 Taiwan的面量圖 
 ====================================
-```{r echo=FALSE}
-knitr::include_graphics("figures/Taiwan.png")
-```
+![plot of chunk unnamed-chunk-45](figures/Taiwan.png)
 
 
 ggmap+面量圖
 ====================================
-```{r, eval=F,warning=F,message=F, fig.height=6}
+
+```r
 library(ggmap)
 twmap <- get_map(location = 'Taiwan', zoom = 7,language = "zh-TW")
 ggmap(twmap)+ #ggmap
@@ -816,9 +871,7 @@ scale_fill_gradientn(colours = brewer.pal(9,"Reds"))
 
 ggmap+面量圖
 ====================================
-```{r echo=FALSE}
-knitr::include_graphics("figures/ggmapTaiwan.png")
-```
+![plot of chunk unnamed-chunk-47](figures/ggmapTaiwan.png)
 
 Heatmap
 ====================================
@@ -832,52 +885,113 @@ type:sub-section
 
 Heatmap
 ====================================
-```{r message=FALSE,warning=F}
+
+```r
 #讀.csv檔案
 nba <- read.csv("http://datasets.flowingdata.com/ppg2008.csv")
 head(nba,3)
 ```
 
+```
+           Name  G  MIN  PTS  FGM  FGA   FGP FTM FTA   FTP X3PM X3PA  X3PP
+1  Dwyane Wade  79 38.6 30.2 10.8 22.0 0.491 7.5 9.8 0.765  1.1  3.5 0.317
+2 LeBron James  81 37.7 28.4  9.7 19.9 0.489 7.3 9.4 0.780  1.6  4.7 0.344
+3  Kobe Bryant  82 36.2 26.8  9.8 20.9 0.467 5.9 6.9 0.856  1.4  4.1 0.351
+  ORB DRB TRB AST STL BLK  TO  PF
+1 1.1 3.9 5.0 7.5 2.2 1.3 3.4 2.3
+2 1.3 6.3 7.6 7.2 1.7 1.1 3.0 1.7
+3 1.1 4.1 5.2 4.9 1.5 0.5 2.6 2.3
+```
+
+Heatmap
+====================================
 為了做圖，將寬表轉長表
-```{r message=FALSE,warning=F}
+
+```r
 library(reshape2) #for melt()
 nba.m <- melt(nba,id.vars = "Name") #寬表轉長表,以名字作依據
 head(nba.m,5)
 ```
 
+```
+            Name variable value
+1   Dwyane Wade         G    79
+2  LeBron James         G    81
+3   Kobe Bryant         G    82
+4 Dirk Nowitzki         G    81
+5 Danny Granger         G    67
+```
+
 geom_tile()
 ====================================
 將Geometric objects指定為`geom_tile()`
-```{r message=FALSE,warning=F,fig.height=4}
+
+```r
 library(ggplot2) #for ggplot()
-ggplot(nba.m, aes(variable, Name)) + #aes(x,y)
-    geom_tile(aes(fill = value),colour = "white")+ #geom_tile: 區塊著色
-    scale_fill_gradient(low = "white",high = "steelblue") #數值低：白色
+ggplot(nba.m, aes(variable, Name)) + 
+    geom_tile(aes(fill = value),colour = "white")+ 
+    scale_fill_gradient(low = "white",high = "steelblue") 
 ```
 
-geom_tile() ??
+![plot of chunk unnamed-chunk-50](10_Graphic-figure/unnamed-chunk-50-1.png)
+
+geom_tile() + scale()
 ====================================
 - 因為G欄資料明顯大於其他欄位，導致顏色差異不明顯
 - 將個欄位的資料標準化處理
 
-apply()有類似for迴圈的功能
 
-- apply(Data, MARGIN, FUN,…)
-    - Data：矩陣（Matrix），Data Frame
-    - MARGIN：1=row, 2=column
-    - FUN：函數
-    - …：函數要用的參數
-    
-```{r message=FALSE,warning=F,fig.height=4}
-nba[,2:21]<-apply(nba[,2:21], 2, scale) #scale處理，將數值轉為平均=0
-head(nba,2)
-nba.m <- melt(nba) ##寬轉長
-ggplot(nba.m, aes(variable, Name)) + 
-    geom_tile(aes(fill = value),colour = "white")+ #geom_tile: 區塊著色
-    scale_fill_gradient(low = "white",high = "steelblue") #數值低：白色
+```r
+#scale處理
+library(dplyr)
+nba.s<-nba %>% mutate_each(funs(scale), -Name) 
+head(nba.s,2)
 ```
 
-以上範例之參考資料為[How to Make a Heatmap – a Quick and Easy Solution](http://flowingdata.com/2010/01/21/how-to-make-a-heatmap-a-quick-and-easy-solution/)
+```
+           Name         G       MIN      PTS      FGM      FGA       FGP
+1  Dwyane Wade  0.6179300 1.0019702 3.179941 2.920022 2.596832 0.5136017
+2 LeBron James  0.7693834 0.6119299 2.566974 1.957185 1.697237 0.4649190
+       FTM      FTA        FTP       X3PM      X3PA        X3PP
+1 1.917475 2.110772 -0.7401673 -0.1080044 0.1303647 -0.15749098
+2 1.778729 1.896589 -0.5233214  0.4920201 0.6971679  0.02738974
+          ORB        DRB        TRB      AST      STL       BLK       TO
+1 -0.27213551 -0.3465676 -0.3287465 1.652247 2.558238 1.2064646 1.790445
+2 -0.06117775  1.0080940  0.6605370 1.516147 1.367252 0.8627425 1.059651
+          PF
+1 -0.2984568
+2 -1.3903719
+```
+
+geom_tile() + scale()
+====================================
+
+```r
+nba.s.m <- melt(nba.s) ##寬轉長
+ggplot(nba.s.m, aes(variable, Name)) + 
+    geom_tile(aes(fill = value),colour = "white")+ 
+    scale_fill_gradient(low = "white",high = "steelblue") 
+```
+
+![plot of chunk unnamed-chunk-52](10_Graphic-figure/unnamed-chunk-52-1.png)
+
+[How to Make a Heatmap – a Quick and Easy Solution](http://flowingdata.com/2010/01/21/how-to-make-a-heatmap-a-quick-and-easy-solution/)
+
+Heatmap 練習 
+====================================
+type:alert
+incremental:true
+
+- 下載[小兒麻痺盛行率](https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/104/POLIO_Incidence.csv)資料
+- 將資料載入R
+- 表格是寬表，需要轉成長表
+- 有缺值 （-），用NA取代
+    - 方法一 gsub()
+    - 方法二 ifelse()
+- 盛行率欄位轉換成數值
+    - as.numeric()
+- 用年份當x軸，州名當y軸，區塊顏色用盛行率填入
+    - low = "white",high = "steelblue"
 
 Treemap
 ====================================
@@ -888,15 +1002,26 @@ type:sub-section
 
 treemap()
 ====================================
-```{r treemap1,message=FALSE,warning=F,fig.height=4}
+
+```r
 library(treemap)
 data(GNI2014)
 treemap(GNI2014,
-       index=c("continent", "iso3"),
-       vSize="population",
-       vColor="GNI",
+       index=c("continent", "iso3"), #分組依據
+       vSize="population", #區塊大小
+       vColor="GNI", #顏色深淺
        type="value")
 ```
+
+![plot of chunk treemap1](10_Graphic-figure/treemap1-1.png)
+
+Treemap 練習 
+====================================
+type:alert
+incremental:true
+
+- 下載[範例資料]()
+- 
 
 
 參考資料
