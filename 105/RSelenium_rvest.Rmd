@@ -84,7 +84,7 @@ knitr::kable(DCardCGU_posts)
 
 ##後記
 
-花了一點時間用自動化的方式處理瀑布式網頁的爬取，有問題可以歡迎留言討論。另外，我也嘗試過使用Google Chrome瀏覽器，搭配chromedrive，但一直卡關，後來試了firefox就沒問題，目前原因不明~
+花了一點時間用自動化的方式處理瀑布式網頁的爬取，有問題可以歡迎留言討論。另外，我也嘗試過使用Google Chrome瀏覽器，搭配chromedrive，但一直卡關，後來試了firefox就沒問題，目前原因不明~~
 
 ##執行環境
 ```{r warning=F,message=F}
