@@ -19,7 +19,8 @@ post_comment<- DCardContent %>% html_nodes(".PostEntry_commentUnread_1cVyd") %>%
 post_like<- DCardContent %>% html_nodes(".PostLikeCount_likeCount_2uhBH") %>% html_text()
 post_url <- DCardContent %>% html_nodes(".PostEntry_entry_2rsgm") %>% html_attr("href")
 post_title<-gsub("[^[:alnum:]///' ]", "", post_title)
-DCardCGU_posts <- data.frame(title = post_title, author=post_author, commentN=post_comment, likeN=post_like)
+DCardCGU_posts <- data.frame(title = post_title, author=post_author, 
+                            commentN=post_comment, likeN=post_like)
 knitr::kable(DCardCGU_posts)
 ```
 
@@ -66,6 +67,7 @@ knitr::kable(DCardCGU_posts)
 - [geckodriver](https://github.com/mozilla/geckodriver/releases) 
 - [Firefox](https://www.mozilla.org/zh-TW/firefox/new/) 
 - RSelenium package
+
 首先打開RStudio，新增一個R Project（名稱隨意），安裝`RSelenium` package
 
 ``` r
