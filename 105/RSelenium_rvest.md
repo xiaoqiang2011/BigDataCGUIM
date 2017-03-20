@@ -64,17 +64,23 @@ knitr::kable(DCardCGU_posts)
 - Java JVM (若已安裝可以不裝) 
 - [Selenium Standalone Server](http://www.seleniumhq.org/download/) 
 - [geckodriver](https://github.com/mozilla/geckodriver/releases) 
-- [Firefox](https://www.mozilla.org/zh-TW/firefox/new/) - RSelenium package
+- [Firefox](https://www.mozilla.org/zh-TW/firefox/new/) 
+- RSelenium package
+首先打開RStudio，新增一個R Project（名稱隨意），安裝`RSelenium` package
 
 ``` r
 install.packages("RSelenium")
 ```
 
-2017/03/20能下載的Selenium Standalone Server最新版本為3.3.1，以下都以3.3.1版本為例，若安裝版本不同，請依版本修改指令(取代3.3.1)， 將selenium-server-standalone-3.3.1.jar和geckodriver.exe放在同一個R projrct的資料夾內，打開cmd，進入R projrct的資料夾，執行
+2017/03/20能下載的Selenium Standalone Server最新版本為3.3.1，以下都以3.3.1版本為例，若安裝版本不同，請依版本修改指令(取代3.3.1)。
+
+selenium-server-standalone-3.3.1.jar和geckodriver.exe放在同一個R projrct的資料夾內，打開cmd，進入R projrct的資料夾，執行
 
 ``` java
 java -jar selenium-server-standalone-3.3.1.jar
 ```
+
+執行後，保持cmd視窗開啟，回到RStudio，輸入以下程式碼
 
 ``` r
 library(RSelenium)
@@ -83,6 +89,9 @@ library(RCurl)
 remDr <- remoteDriver(remoteServerAddr = "localhost", port = 4444L)
 remDr$open()
 ```
+
+如果看到下列文字表示RSelenium執行成功
+
 
     ## [1] "Connecting to remote server"
     ## $`moz:profile`
@@ -146,6 +155,7 @@ remDr$open()
     ## 
     ## $id
     ## [1] "48382f88-ff81-4f87-98ed-5fc796a556ca"
+
 
 ``` r
 #navigate to your page
