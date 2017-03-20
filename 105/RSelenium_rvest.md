@@ -59,7 +59,12 @@ knitr::kable(DCardCGU_posts)
 使用Selenium模擬網頁瀏覽動作
 ----------------------------
 
-在R中，如要與[Selenium](http://www.seleniumhq.org/)程式搭配，可以使用`RSelenium` package，在開始爬蟲前，請先安裝: - Java JVM (若已安裝可以不裝) - [Selenium Standalone Server](http://www.seleniumhq.org/download/) - [geckodriver](https://github.com/mozilla/geckodriver/releases) - [Firefox](https://www.mozilla.org/zh-TW/firefox/new/) - RSelenium package
+在R中，如要與[Selenium](http://www.seleniumhq.org/)程式搭配，可以使用`RSelenium` package，在開始爬蟲前，請先安裝: 
+
+- Java JVM (若已安裝可以不裝) 
+- [Selenium Standalone Server](http://www.seleniumhq.org/download/) 
+- [geckodriver](https://github.com/mozilla/geckodriver/releases) 
+- [Firefox](https://www.mozilla.org/zh-TW/firefox/new/) - RSelenium package
 
 ``` r
 install.packages("RSelenium")
