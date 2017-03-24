@@ -1432,29 +1432,29 @@ knitr::kable(
 </tr>
 </thead><tbody>
 <tr>
-<td align="left">校慶</td>
+<td align="left">需要愛健身愛運動的人的關心</td>
 <td align="left">長庚大學</td>
-<td align="left">15</td>
+<td align="left">1</td>
 </tr>
 <tr>
-<td align="left">明德熱水也太不穩了吧@@</td>
+<td align="left">想請問包裹問題</td>
 <td align="left">長庚大學</td>
-<td align="left">7</td>
+<td align="left">5</td>
 </tr>
 <tr>
-<td align="left">關於研究所推甄與考試</td>
+<td align="left">長庚有人在玩dj或是聽電子音樂的嗎？</td>
 <td align="left">長庚大學</td>
-<td align="left">9</td>
+<td align="left">19</td>
 </tr>
 <tr>
-<td align="left">暑期志工/實習招募囉</td>
-<td align="left">長庚大學</td>
+<td align="left">長庚盃撞球比賽開打囉！</td>
+<td align="left">長庚大學 資訊工程學系</td>
 <td align="left">0</td>
 </tr>
 <tr>
-<td align="left">#問 資訊管理</td>
+<td align="left">多元通識：領導統御</td>
 <td align="left">長庚大學</td>
-<td align="left">4</td>
+<td align="left">3</td>
 </tr>
 </tbody></table>
 
@@ -1506,6 +1506,29 @@ knitr::kable(
 
 <ul>
 <li class="fragment"><a href="https://motherboard.vice.com/en_us/article/70000-okcupid-users-just-had-their-data-published">70,000 OkCupid Users Just Had Their Data Published</a></li>
+</ul></li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>進階爬蟲</h3>
+<div class="slideContent" >
+<ul>
+<li><p>CSS Selector 語法介紹 <a href="https://www.w3schools.com/cssref/css_selectors.asp">參考資料</a></p>
+
+<ul>
+<li><strong>.</strong>xxx：select elements with class=&ldquo;xxx&rdquo;</li>
+<li><strong>#</strong>xxx：select elements with id=&ldquo;xxx&rdquo;</li>
+<li><strong>[</strong>yyy<strong>]</strong>：select elements with attribute yyy</li>
+<li><strong>[</strong>yyy=zzz<strong>]</strong>：select elements with attribute yyy=&ldquo;zzz&rdquo;</li>
+</ul></li>
+<li><p>瀑布式網頁爬蟲</p>
+
+<ul>
+<li>觀察Google Chrome 開發者工具，在Network內找到api呼叫方式</li>
+<li>搭配使用RSelenium 模擬瀏覽狀態 <a href="https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/105/RSelenium_rvest.md">DCard實作R Code</a></li>
 </ul></li>
 </ul>
 
@@ -1611,17 +1634,16 @@ knitr::kable(
 <ul>
 <li><code>jsonlite</code> package (套件使用前必須安裝)</li>
 <li><code>fromJSON()</code>函數載入JSON資料</li>
-<li>直接從API網址截取資料: <code>RCurl</code> package
+<li>如果API網址為<strong>https</strong>，則需使用 <code>httr</code> package
 
 <ul>
-<li>使用<code>getURL()</code>函數處理資料擷取網址</li>
+<li>使用<code>GET()</code>函數處理資料擷取網址</li>
 </ul></li>
 </ul>
 
 <pre><code class="r">library(jsonlite)
 library(RCurl)
-PetData&lt;-fromJSON(
-    getURL(&quot;http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&amp;rid=f4a75ba9-7721-4363-884d-c3820b0b917c&quot;))
+PetData&lt;-fromJSON(&quot;http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&amp;rid=f4a75ba9-7721-4363-884d-c3820b0b917c&quot;)
 </code></pre>
 
 </div>
@@ -1643,29 +1665,29 @@ PetData&lt;-fromJSON(
  $ result:List of 5
   ..$ offset : int 0
   ..$ limit  : int 10000
-  ..$ count  : int 310
+  ..$ count  : int 307
   ..$ sort   : chr &quot;&quot;
-  ..$ results:&#39;data.frame&#39;: 310 obs. of  20 variables:
-  .. ..$ _id            : chr [1:310] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
-  .. ..$ Name           : chr [1:310] &quot;Q寶&quot; &quot;麥茶&quot; &quot;&quot; &quot;金兒&quot; ...
-  .. ..$ Sex            : chr [1:310] &quot;雄&quot; &quot;雄&quot; &quot;雌&quot; &quot;雌&quot; ...
-  .. ..$ Type           : chr [1:310] &quot;犬&quot; &quot;貓&quot; &quot;犬&quot; &quot;貓&quot; ...
-  .. ..$ Build          : chr [1:310] &quot;幼&quot; &quot;中&quot; &quot;幼&quot; &quot;中&quot; ...
-  .. ..$ Age            : chr [1:310] &quot;幼齡&quot; &quot;成年&quot; &quot;幼齡&quot; &quot;成年&quot; ...
-  .. ..$ Variety        : chr [1:310] &quot;米克斯&quot; &quot;米克斯&quot; &quot;米克斯&quot; &quot;米克斯&quot; ...
-  .. ..$ Reason         : chr [1:310] &quot;民眾不擬續養&quot; &quot;動物管制&quot; &quot;民眾拾獲&quot; &quot;動物管制&quot; ...
-  .. ..$ AcceptNum      : chr [1:310] &quot;106031701&quot; &quot;106031003&quot; &quot;106031021&quot; &quot;106030705&quot; ...
-  .. ..$ ChipNum        : chr [1:310] &quot;900073000086728&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
-  .. ..$ IsSterilization: chr [1:310] &quot;未絕育&quot; &quot;未絕育&quot; &quot;未絕育&quot; &quot;未絕育&quot; ...
-  .. ..$ HairType       : chr [1:310] &quot;黑白&quot; &quot;黃白&quot; &quot;黑&quot; &quot;三花&quot; ...
-  .. ..$ Note           : chr [1:310] &quot;嗨~我的名字叫Q寶，現在還是小朋友的我，正在動物之家等你來認養我唷~陪我一起長大好嗎?&quot; &quot;大家好，我叫麥茶，\n淡淡憂鬱的我有吸引你嗎？\n個性有點緊張、怕人，\n要花時間慢慢培養感情，等待我熟悉，\n你願意給我機會，讓我進&quot;| __truncated__ &quot;&quot; &quot;你好，我叫金兒。\n個性緊張，不會靠人很近，\n因為貓咪很獨立，需要好長時間適應。\n但我還是想要在心情好的時候有人陪伴，\n你可以來&quot;| __truncated__ ...
-  .. ..$ Resettlement   : chr [1:310] &quot;臺北市動物之家 收容編號106031701&quot; &quot;臺北市動物之家 收容編號106031003&quot; &quot;臺北市動物之家 收容編號106031021&quot; &quot;臺北市動物之家 收容編號106030705&quot; ...
-  .. ..$ Phone          : chr [1:310] &quot;02-87913062&quot; &quot;02-87913062&quot; &quot;02-87913062&quot; &quot;02-87913062&quot; ...
-  .. ..$ Email          : chr [1:310] &quot;tcapoa8@mail.taipei.gov.tw&quot; &quot;tcapoa8@mail.taipei.gov.tw&quot; &quot;tcapoa8@mail.taipei.gov.tw&quot; &quot;tcapoa8@mail.taipei.gov.tw&quot; ...
-  .. ..$ ChildreAnlong  : chr [1:310] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
-  .. ..$ AnimalAnlong   : chr [1:310] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
-  .. ..$ Bodyweight     : chr [1:310] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
-  .. ..$ ImageName      : chr [1:310] &quot;http://163.29.39.183/uploads/images/medium/6fdc46e5-a14d-479e-9f83-c440bd87f8cb.jpg&quot; &quot;http://163.29.39.183/uploads/images/medium/c5983ea5-b55a-4bd1-bb3b-2c03f8e496a2.jpg&quot; &quot;http://163.29.39.183/uploads/images/medium/c9318c07-988d-4ac4-b7ba-ddba0968759c.jpg&quot; &quot;http://163.29.39.183/uploads/images/medium/dc71f0d8-74fd-4ffb-b41d-2c4aa62a49db.jpg&quot; ...
+  ..$ results:&#39;data.frame&#39;: 307 obs. of  20 variables:
+  .. ..$ _id            : chr [1:307] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
+  .. ..$ Name           : chr [1:307] &quot;&quot; &quot;&quot; &quot;花俏&quot; &quot;麥茶&quot; ...
+  .. ..$ Sex            : chr [1:307] &quot;雄&quot; &quot;雌&quot; &quot;雌&quot; &quot;雄&quot; ...
+  .. ..$ Type           : chr [1:307] &quot;貓&quot; &quot;犬&quot; &quot;貓&quot; &quot;貓&quot; ...
+  .. ..$ Build          : chr [1:307] &quot;中&quot; &quot;中&quot; &quot;中&quot; &quot;中&quot; ...
+  .. ..$ Age            : chr [1:307] &quot;成年&quot; &quot;老年&quot; &quot;成年&quot; &quot;成年&quot; ...
+  .. ..$ Variety        : chr [1:307] &quot;米克斯&quot; &quot;米克斯&quot; &quot;米克斯&quot; &quot;米克斯&quot; ...
+  .. ..$ Reason         : chr [1:307] &quot;動物救援&quot; &quot;動物救援&quot; &quot;動物救援&quot; &quot;動物管制&quot; ...
+  .. ..$ AcceptNum      : chr [1:307] &quot;106032203&quot; &quot;106031503&quot; &quot;106031204&quot; &quot;106031003&quot; ...
+  .. ..$ ChipNum        : chr [1:307] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+  .. ..$ IsSterilization: chr [1:307] &quot;未絕育&quot; &quot;未絕育&quot; &quot;未絕育&quot; &quot;未絕育&quot; ...
+  .. ..$ HairType       : chr [1:307] &quot;黃白&quot; &quot;黑&quot; &quot;三花&quot; &quot;黃白&quot; ...
+  .. ..$ Note           : chr [1:307] &quot;神經症狀&quot; &quot;虛弱、瘦、左側大範圍外傷、無法站立&quot; &quot;大家好~我的名字叫花俏，漂亮的我想要找個長期飯票，這個人會是你嗎?讓我們給彼此一個機會吧!!\n&quot; &quot;大家好，我叫麥茶，\n淡淡憂鬱的我有吸引你嗎？\n個性有點緊張、怕人，\n要花時間慢慢培養感情，等待我熟悉，\n你願意給我機會，讓我進&quot;| __truncated__ ...
+  .. ..$ Resettlement   : chr [1:307] &quot;臺北市動物之家 收容編號106032203&quot; &quot;臺北市動物之家 收容編號：106031503&quot; &quot;臺北市動物之家 收容編號106031204&quot; &quot;臺北市動物之家 收容編號106031003&quot; ...
+  .. ..$ Phone          : chr [1:307] &quot;02-87913063&quot; &quot;02-8791-3063&quot; &quot;02-87913062&quot; &quot;02-87913062&quot; ...
+  .. ..$ Email          : chr [1:307] &quot;tcapoa8@mail.taipei.gov.tw&quot; &quot;tcapoa8@mail.taipei.gov.tw&quot; &quot;tcapoa8@mail.taipei.gov.tw&quot; &quot;tcapoa8@mail.taipei.gov.tw&quot; ...
+  .. ..$ ChildreAnlong  : chr [1:307] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+  .. ..$ AnimalAnlong   : chr [1:307] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+  .. ..$ Bodyweight     : chr [1:307] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+  .. ..$ ImageName      : chr [1:307] &quot;http://163.29.39.183/uploads/images/medium/9fe8fb19-ed6f-41a2-b25c-719a80559085.jpg&quot; &quot;http://163.29.39.183/uploads/images/medium/6b77ae0f-e893-4bca-af97-c6e9afd36d2e.jpg&quot; &quot;http://163.29.39.183/uploads/images/medium/e0de6dfd-332e-459b-b157-36b006a1924c.jpg&quot; &quot;http://163.29.39.183/uploads/images/medium/c5983ea5-b55a-4bd1-bb3b-2c03f8e496a2.jpg&quot; ...
 </code></pre>
 
 </div>
@@ -1692,40 +1714,95 @@ PetData&lt;-fromJSON(
 <th align="left">Variety</th>
 <th align="left">Reason</th>
 <th align="left">AcceptNum</th>
-<th align="left">ChipNum</th>
-<th align="left">IsSterilization</th>
-<th align="left">HairType</th>
-<th align="left">Note</th>
-<th align="left">Resettlement</th>
-<th align="left">Phone</th>
-<th align="left">Email</th>
-<th align="left">ChildreAnlong</th>
-<th align="left">AnimalAnlong</th>
-<th align="left">Bodyweight</th>
-<th align="left">ImageName</th>
 </tr>
 </thead><tbody>
 <tr>
 <td align="left">1</td>
-<td align="left">Q寶</td>
+<td align="left"></td>
 <td align="left">雄</td>
+<td align="left">貓</td>
+<td align="left">中</td>
+<td align="left">成年</td>
+<td align="left">米克斯</td>
+<td align="left">動物救援</td>
+<td align="left">106032203</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"></td>
+<td align="left">雌</td>
+<td align="left">犬</td>
+<td align="left">中</td>
+<td align="left">老年</td>
+<td align="left">米克斯</td>
+<td align="left">動物救援</td>
+<td align="left">106031503</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">花俏</td>
+<td align="left">雌</td>
+<td align="left">貓</td>
+<td align="left">中</td>
+<td align="left">成年</td>
+<td align="left">米克斯</td>
+<td align="left">動物救援</td>
+<td align="left">106031204</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">麥茶</td>
+<td align="left">雄</td>
+<td align="left">貓</td>
+<td align="left">中</td>
+<td align="left">成年</td>
+<td align="left">米克斯</td>
+<td align="left">動物管制</td>
+<td align="left">106031003</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">山姆</td>
+<td align="left">雄</td>
+<td align="left">貓</td>
+<td align="left">中</td>
+<td align="left">成年</td>
+<td align="left">米克斯</td>
+<td align="left">民眾拾獲</td>
+<td align="left">106031002</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left"></td>
+<td align="left">雌</td>
 <td align="left">犬</td>
 <td align="left">幼</td>
 <td align="left">幼齡</td>
 <td align="left">米克斯</td>
-<td align="left">民眾不擬續養</td>
-<td align="left">106031701</td>
-<td align="left">900073000086728</td>
-<td align="left">未絕育</td>
-<td align="left">黑白</td>
-<td align="left">嗨~我的名字叫Q寶，現在還是小朋友的我，正在動物之家等你來認養我唷~陪我一起長大好嗎?</td>
-<td align="left">臺北市動物之家 收容編號106031701</td>
-<td align="left">02-87913062</td>
-<td align="left"><a href="mailto:tcapoa8@mail.taipei.gov.tw">tcapoa8@mail.taipei.gov.tw</a></td>
+<td align="left">民眾拾獲</td>
+<td align="left">106031021</td>
+</tr>
+<tr>
+<td align="left">7</td>
 <td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"><a href="http://163.29.39.183/uploads/images/medium/6fdc46e5-a14d-479e-9f83-c440bd87f8cb.jpg">http://163.29.39.183/uploads/images/medium/6fdc46e5-a14d-479e-9f83-c440bd87f8cb.jpg</a></td>
+<td align="left">雌</td>
+<td align="left">貓</td>
+<td align="left">中</td>
+<td align="left">成年</td>
+<td align="left">米克斯</td>
+<td align="left">動物管制</td>
+<td align="left">106030909</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left">瑛瑛</td>
+<td align="left">雌</td>
+<td align="left">貓</td>
+<td align="left">中</td>
+<td align="left">成年</td>
+<td align="left">米克斯</td>
+<td align="left">動物救援</td>
+<td align="left">106030808</td>
 </tr>
 </tbody></table>
 
@@ -1752,7 +1829,7 @@ PetData&lt;-fromJSON(
 </tr>
 <tr>
 <td align="left">動物救援</td>
-<td align="right">97</td>
+<td align="right">93</td>
 </tr>
 <tr>
 <td align="left">動物管制</td>
@@ -1760,11 +1837,11 @@ PetData&lt;-fromJSON(
 </tr>
 <tr>
 <td align="left">民眾不擬續養</td>
-<td align="right">45</td>
+<td align="right">44</td>
 </tr>
 <tr>
 <td align="left">民眾拾獲</td>
-<td align="right">21</td>
+<td align="right">23</td>
 </tr>
 </tbody></table>
 
@@ -1781,9 +1858,9 @@ PetData&lt;-fromJSON(
 <li class="fragment">使用檔案匯入<strong>範例</strong>，將資料匯入R中
 
 <ul>
-<li class="fragment">提示：<strong>fromJSON</strong>, <strong>getURL</strong></li>
+<li class="fragment">提示：<strong>fromJSON</strong></li>
 </ul></li>
-<li class="fragment">使用str()函數檢查匯入的資料</li>
+<li class="fragment">使用str()函數觀察匯入的資料</li>
 <li class="fragment">請問今日施工資料有幾筆觀察值？幾個欄位？</li>
 </ul>
 
@@ -1848,7 +1925,7 @@ str(myjson)
 <h3>Graph API in R</h3>
 <div class="slideContent" >
 <pre><code class="r">library(httr)
-token&lt;-&quot;your token&quot; #將access token複製到此處 
+token&lt;-&quot;your access token&quot; #將access token複製到此處 
 FBData = GET(
     paste0(&quot;https://graph.facebook.com/v2.8/tsaiingwen?fields=posts%7Bmessage%7D&amp;access_token=&quot;,
            token))
@@ -1922,41 +1999,18 @@ names(json1)
 <div class="slideContent" >
 <p>使用 Rfacebook 取得 <code>tsaiingwen</code> 粉絲頁的資料</p>
 
-<pre><code class="r">library(Rfacebook)
+<pre><code class="r">library(Rfacebook) #初次使用須先安裝
 token&lt;-&quot;your token&quot; #將token複製到此處 
 getPage(&quot;tsaiingwen&quot;, token,n = 5)
 </code></pre>
 
-<pre><code>5 posts       from_id           from_name
+<p>課堂操作</p>
+
+<pre><code>4 posts       from_id           from_name
 1 46251501064 蔡英文 Tsai Ing-wen
 2 46251501064 蔡英文 Tsai Ing-wen
 3 46251501064 蔡英文 Tsai Ing-wen
 4 46251501064 蔡英文 Tsai Ing-wen
-5 46251501064 蔡英文 Tsai Ing-wen
-                                                                                                                                                                                                                                                                                                                                                                                        message
-1 「國機國造」不是夢想，而是一個行動。今天啟動的高級教練機「自研自製」任務，是國防自主的重要里程碑。我們不只要讓戰機起飛，更要讓產業起飛。\n\n國防產業同樣是「5+2」關鍵產業之一，所以，除了要如期、如質完成新式高教機的「自研自製」外，也要重新厚植台灣的航太工業人才鏈，以及加強相關產業的連結、轉型和升級。\n\n國防自主沒有捷徑，只有努力再努力、堅持再堅持。今天，我們重新跨出歷史性的一步。
-2                                                                   今天，智慧機械推動辦公室正式啟動。「落實產學合作」、「支持創新研發」、「強化行銷通路」是辦公室的三項重點任務。\n\n智慧機械是「5+2」關鍵產業的其中之一。政府有決心。我相信，所有的機械業者－無論做的是螺桿、刀庫、控制器或是工作母機，大家也都有很強的決心，要走向創新、走向智慧化、走向品牌。我們是一個團隊，我們一起加油！
-3                                                                                                                                                          今天來向台商拜個晚年。我也邀請台商朋友們，共同參與台灣經濟轉型升級的世紀工程。\n\n無論是擴大對國內的投資，或者配合新南向政策，前進海外深耕佈局，我期待跟台商朋友們一起努力，群策群力，克服困難和瓶頸，為台灣經濟發展打開全新的局面。
-4                                                                                                                                                                                                                                                                                    「快了」！雞年通機捷，等待很值得。大年初四，我來看看機場捷運通車前的準備，也坐捷運到中壢，跟鄉親拜年問好。
-5                                                                                                                                                                                                                                                                                                            雞年初三發福袋\n\n臺中豐原慈濟宮、彰化溪湖福安宮、雲林北港朝天宮、嘉義九華山地藏庵
-              created_time  type
-1 2017-02-07T08:02:45+0000 photo
-2 2017-02-07T07:18:00+0000 photo
-3 2017-02-05T07:12:52+0000 photo
-4 2017-01-31T08:37:42+0000 photo
-5 2017-01-30T11:41:07+0000 photo
-                                                                                                    link
-1 https://www.facebook.com/tsaiingwen/photos/a.390960786064.163647.46251501064/10154006497206065/?type=3
-2 https://www.facebook.com/tsaiingwen/photos/a.390960786064.163647.46251501064/10154006455396065/?type=3
-3 https://www.facebook.com/tsaiingwen/photos/a.390960786064.163647.46251501064/10154001652641065/?type=3
-4 https://www.facebook.com/tsaiingwen/photos/a.390960786064.163647.46251501064/10153989357181065/?type=3
-5 https://www.facebook.com/tsaiingwen/photos/a.390960786064.163647.46251501064/10153987089121065/?type=3
-                             id likes_count comments_count shares_count
-1 46251501064_10154006497451065        2013            125           43
-2 46251501064_10154006456601065        2217            163           57
-3 46251501064_10154001652641065        9416            920          163
-4 46251501064_10153989358051065       34116           1574          373
-5 46251501064_10153987095776065       20592            665          269
 </code></pre>
 
 </div>
@@ -1985,9 +2039,8 @@ getPage(&quot;tsaiingwen&quot;, token,n = 5)
 <ul>
 <li> <strong>since</strong> 和 <strong>until</strong>參數，可設定資料擷取區間。</li>
 </ul></li>
+<li>先取得日期向量，供後續迴圈做使用</li>
 </ul>
-
-<p>首先先取得日期向量，供後續迴圈做使用</p>
 
 <pre><code class="r">lastDate&lt;-Sys.Date()
 DateVector&lt;-seq(as.Date(&quot;2017-01-01&quot;),lastDate,by=&quot;5 days&quot;)
@@ -2008,18 +2061,25 @@ DateVectorStr
 
 <pre><code class="r">totalPage&lt;-NULL
 token&lt;-&#39;your token&#39;
-numberOfPost&lt;-30
 for(i in 1:(length(DateVectorStr)-1)){
     tempPage&lt;-getPage(&quot;tsaiingwen&quot;, token,
-                      since = DateVectorStr[i],until = DateVectorStr[i+1])
+                since = DateVectorStr[i],
+                until = DateVectorStr[i+1])
     totalPage&lt;-rbind(totalPage,tempPage)
 }
 nrow(totalPage)
 </code></pre>
 
-<pre><code>## 4 posts 8 posts 10 posts 3 posts 2 posts 14 posts 1 posts
-## [1] 42
+<pre><code>## [1] 42
 </code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>作業三！？</h3>
+<div class="slideContent" >
+<p>好像有什麼有關的訊息在上一張投影片？！</p>
 
 </div>
 
@@ -2028,9 +2088,9 @@ nrow(totalPage)
 <h3>Rfacebook 提供的其他函數</h3>
 <div class="slideContent" >
 <ul>
-<li>getUser()</li>
+<li>getUsers()</li>
 <li>getPost()</li>
-<li>getLikes()</li>
+<li>searchFacebook()</li>
 <li>Check <a href="https://github.com/pablobarbera/Rfacebook">https://github.com/pablobarbera/Rfacebook</a></li>
 <li>?Rfacebook</li>
 </ul>
@@ -2050,6 +2110,23 @@ nrow(totalPage)
 <li class="fragment">2017/3/2~6 (正式通車)</li>
 </ul></li>
 <li class="fragment">比較兩區間平均按讚次數，留言次數與分享次數，觀察民眾對粉絲頁的熱度</li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="alert" data-transition="linear" data-transition-speed="default">
+<h3>Facebook資料擷取練習</h3>
+<div class="slideContent" >
+<ul>
+<li class="fragment"><p>嘗試看說明文件，使用以下函式</p>
+
+<ul>
+<li class="fragment">getUsers()</li>
+<li class="fragment">getPost()</li>
+<li class="fragment">searchFacebook()</li>
+</ul></li>
+<li class="fragment"><p class="fragment">檢查每個函式回傳的資料，各有幾個欄位？</p></li>
 </ul>
 
 </div>
