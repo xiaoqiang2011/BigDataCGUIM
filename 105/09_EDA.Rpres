@@ -718,6 +718,7 @@ group2<-group_by(NBA1516,Team,Position)%>%
                 meanFGAtt=mean(FieldGoalsAttempted))
 knitr::kable(head(group2,3))
 ```
+
 排序 arrange()
 ====================================
 排序功能，預設為**遞增排序**
