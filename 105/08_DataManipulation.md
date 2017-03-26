@@ -155,9 +155,9 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title   : chr  "需要愛健身愛運動的人的關心" "想請問包裹問題" "長庚有人在玩dj或是聽電子音樂的嗎？" "長庚盃撞球比賽開打囉！" ...
- $ commentN: chr  "1" "5" "19" "0" ...
- $ likeN   : chr  "4" "2" "4" "10" ...
+ $ title   : chr  "關於ptt合肥版" "學餐送餐員" "（黑特）停車場小偷" "嗯。勤勞樸實的攝影比賽" ...
+ $ commentN: chr  "2" "5" "3" "4" ...
+ $ likeN   : chr  "1" "2" "6" "9" ...
 ```
 該如何將這兩個欄位轉成數字呢？
 
@@ -438,6 +438,7 @@ iris[1:10,c(T,F,T,F,T)] ##第1~10列Row，第1,3,5行Column (TRUE)
 |          5.0|          1.5|setosa  |
 |          4.4|          1.4|setosa  |
 |          4.9|          1.5|setosa  |
+
 子集Subset - 二維資料 []
 ====================================
 
@@ -872,9 +873,9 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title   : chr  "需要愛健身愛運動的人的關心" "想請問包裹問題" "長庚有人在玩dj或是聽電子音樂的嗎？" "長庚盃撞球比賽開打囉！" ...
- $ commentN: chr  "1" "5" "19" "0" ...
- $ likeN   : chr  "4" "2" "4" "10" ...
+ $ title   : chr  "關於ptt合肥版" "學餐送餐員" "（黑特）停車場小偷" "嗯。勤勞樸實的攝影比賽" ...
+ $ commentN: chr  "2" "5" "3" "4" ...
+ $ likeN   : chr  "1" "2" "6" "9" ...
 ```
 - 將DCardCGU_posts按照評論數由高到低排序
 - 將DCardCGU_posts按照按讚數由高到低排序
@@ -997,6 +998,7 @@ head(airquality,3)
 |    41|     190|  7.4|   67|     5|   1|
 |    36|     118|  8.0|   72|     5|   2|
 |    12|     149| 12.6|   74|     5|   3|
+
 寬表轉長表 melt（）
 ====================================
 
@@ -1122,6 +1124,7 @@ complete.cases(airquality)
 [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 [144]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
 ```
+
 遺漏值處理 complete.cases()
 ====================================
 若資料型態為資料框，可使用`complete.cases`來選出完整的資料列，如果資料列是完整的，則會回傳真TRUE

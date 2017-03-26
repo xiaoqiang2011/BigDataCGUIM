@@ -281,6 +281,7 @@ iris[1:10,c(T,F,T,F,T)] ##第1~10列Row，第1,3,5行Column (TRUE)
 ```{r echo=F}
 knitr::kable(iris[1:10,c(T,F,T,F,T)]) ##第1~10列Row，第1,3,5行Column (TRUE)
 ```
+
 子集Subset - 二維資料 []
 ====================================
 ```{r}
@@ -554,6 +555,7 @@ head(airquality,3)
 ```{r echo=F}
 knitr::kable(head(airquality,3)) 
 ```
+
 寬表轉長表 melt（）
 ====================================
 
@@ -627,6 +629,7 @@ knitr::kable(head(airquality,5))
 ```{r}
 complete.cases(airquality) 
 ```
+
 遺漏值處理 complete.cases()
 ====================================
 若資料型態為資料框，可使用`complete.cases`來選出完整的資料列，如果資料列是完整的，則會回傳真TRUE
