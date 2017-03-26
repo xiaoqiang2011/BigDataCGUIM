@@ -9,7 +9,7 @@ navigation: slide
 
 對應書本章節
 ========================================================
-[6 探索式資料分析](http://yijutseng.github.io/DataScienceRBook/eda.html)
+[7 探索式資料分析](http://yijutseng.github.io/DataScienceRBook/eda.html)
 
 大綱
 ====================================
@@ -25,8 +25,8 @@ type:sub-section
 type:sub-section 
 
 - 探索式資料分析 (**E**xploratory **D**ata **A**nalysis)
-- 在資料量大/雜的時候，探索式資料分析非常重要
-- 運用**視覺化**、基本的統計等工具，反覆的探索**資料特性**，獲取資料所包含的資訊、結構和特點
+- 在資料量 大/雜/髒 的時候，探索式資料分析非常重要
+- 運用**視覺化**、**基本的統計**等工具，反覆的探索**資料特性**，獲取資料所包含的資訊、結構和特點
 - 在進行複雜或嚴謹的分析之前，必須要對資料有更多認識，才能訂定**對的資料分析方向**
 - 通常**不需要**嚴謹的假設和細節呈現
 
@@ -66,6 +66,35 @@ type:sub-section
     - 中位數 Median `median()`
     - 眾數 Mode，R無內建函數，可直接用`table()`找出現次數最多的資料
     
+量化的分析方式: 單變量-集中趨勢
+====================================
+
+```r
+mean(iris$Sepal.Length)
+```
+
+```
+[1] 5.843333
+```
+
+```r
+median(iris$Sepal.Length)
+```
+
+```
+[1] 5.8
+```
+
+```r
+table(iris$Species)
+```
+
+```
+
+    setosa versicolor  virginica 
+        50         50         50 
+```
+    
 量化的分析方式: 單變量
 ====================================
 資料初步統計，量化的分析方式可包含
@@ -77,24 +106,185 @@ type:sub-section
     - 四分位差 Quartiles `quantile()`
     - 變異數 Variance `var()`
     - 標準差 Standard deviation `sd()`
+    
+量化的分析方式: 單變量-分散程度
+====================================
+
+```r
+min(iris$Sepal.Length)
+```
+
+```
+[1] 4.3
+```
+
+```r
+max(iris$Sepal.Length)
+```
+
+```
+[1] 7.9
+```
+
+```r
+range(iris$Sepal.Length)
+```
+
+```
+[1] 4.3 7.9
+```
+
+量化的分析方式: 單變量
+====================================
+
+```r
+quantile(iris$Sepal.Length)
+```
+
+```
+  0%  25%  50%  75% 100% 
+ 4.3  5.1  5.8  6.4  7.9 
+```
+
+```r
+var(iris$Sepal.Length)
+```
+
+```
+[1] 0.6856935
+```
+
+```r
+sd(iris$Sepal.Length)
+```
+
+```
+[1] 0.8280661
+```
+
+單變量分析練習
+====================================
+type:alert
+incremental:true
+
+- 在mtcars資料集中，車子馬力(hp)的平均值？標準差？
+- 在mtcars資料集中，幾輪(cyl)的車子最多？
+- 在mtcars資料集中，油耗(mpg)的四分位數是多少？
 
 量化的分析方式: 雙變量
 ====================================
-- 列聯表 Crosstabs `table()`, `ftable()`, `prop.table()`
-- 共變數 Covariance `cov()`
+- 列聯表 Crosstabs `table()`, `prop.table()`
+- 共變異數 Covariance `cov()` [維基百科](https://zh.wikipedia.org/wiki/%E5%8D%8F%E6%96%B9%E5%B7%AE)
 - 相關性 Correlation `cor()`
 
+量化的分析方式: 雙變量-列聯表
+====================================
+
+```r
+table(mtcars$cyl,mtcars$am)
+```
+
+```
+   
+     0  1
+  4  3  8
+  6  4  3
+  8 12  2
+```
+
+量化的分析方式: 雙變量-列聯表
+====================================
+
+```r
+mtTable<-table(mtcars$cyl,mtcars$am)
+prop.table(mtTable)
+```
+
+```
+   
+          0       1
+  4 0.09375 0.25000
+  6 0.12500 0.09375
+  8 0.37500 0.06250
+```
+
+量化的分析方式: 雙變量-列聯表
+====================================
+
+```r
+prop.table(mtTable,margin = 1)
+```
+
+```
+   
+            0         1
+  4 0.2727273 0.7272727
+  6 0.5714286 0.4285714
+  8 0.8571429 0.1428571
+```
+
+```r
+prop.table(mtTable,margin = 2)
+```
+
+```
+   
+            0         1
+  4 0.1578947 0.6153846
+  6 0.2105263 0.2307692
+  8 0.6315789 0.1538462
+```
+
+量化的分析方式: 雙變量-共變異數
+====================================
+
+```r
+cov(mtcars)
+```
+
+|     |  mpg|   cyl|  disp|   hp|  drat|    wt|  qsec|    vs|    am|  gear| carb|
+|:----|----:|-----:|-----:|----:|-----:|-----:|-----:|-----:|-----:|-----:|----:|
+|mpg  |   36|  -9.2|  -633| -321|   2.2|  -5.1|   4.5|   2.0|   1.8|   2.1| -5.4|
+|cyl  |   -9|   3.2|   200|  102|  -0.7|   1.4|  -1.9|  -0.7|  -0.5|  -0.6|  1.5|
+|disp | -633| 199.7| 15361| 6721| -47.1| 107.7| -96.1| -44.4| -36.6| -50.8| 79.1|
+|hp   | -321| 101.9|  6721| 4701| -16.5|  44.2| -86.8| -25.0|  -8.3|  -6.4| 83.0|
+|drat |    2|  -0.7|   -47|  -16|   0.3|  -0.4|   0.1|   0.1|   0.2|   0.3| -0.1|
+|wt   |   -5|   1.4|   108|   44|  -0.4|   1.0|  -0.3|  -0.3|  -0.3|  -0.4|  0.7|
+|qsec |    4|  -1.9|   -96|  -87|   0.1|  -0.3|   3.2|   0.7|  -0.2|  -0.3| -1.9|
+|vs   |    2|  -0.7|   -44|  -25|   0.1|  -0.3|   0.7|   0.3|   0.0|   0.1| -0.5|
+|am   |    2|  -0.5|   -37|   -8|   0.2|  -0.3|  -0.2|   0.0|   0.2|   0.3|  0.0|
+|gear |    2|  -0.6|   -51|   -6|   0.3|  -0.4|  -0.3|   0.1|   0.3|   0.5|  0.3|
+|carb |   -5|   1.5|    79|   83|  -0.1|   0.7|  -1.9|  -0.5|   0.0|   0.3|  2.6|
+
+量化的分析方式: 雙變量-相關性
+====================================
+
+```r
+cor(mtcars$mpg,mtcars$hp)
+```
+
+```
+[1] -0.8
+```
+
+雙變量分析練習
+====================================
+type:alert
+incremental:true
+
+- 在airquality資料集中，氣溫Temp和臭氧濃度Ozone的相關係數是多少？
+- 在mtcars資料集中，各輪數cyl中，各類前進檔數gear的比例是多少
 
 量化的分析方式 w/ R
 ====================================
 - 大多可用R的內建函數完成計算
-- 但是在探索式分析時，常常需要資料分組
-    - 觀察男性和女性的血壓差異
-    - A隊與B隊的三分球命中率差異
-    - 中鋒和後衛的助攻次數
+- 但是在探索式分析時，常常需要**資料分組**
+    - 觀察**男性**和**女性**的血壓差異
+    - **A隊**與**B隊**的三分球命中率差異
+    - **中鋒**和**後衛**的助攻次數
     - ...等
 - 若只用基本的內建函數計算，相當耗時
-    - `data.table`和`dplyr` packages可以快速完成分組分析!
+    - `data.table`和`dplyr` packages可以快速完成**分組分析**!
 
 data.table
 ====================================
@@ -111,7 +301,7 @@ data.table
 - 必須安裝並載入data.table package
 
 ```r
-install.packages("data.table") ##安裝
+install.packages("data.table")#第一次使用需安裝
 ```
 
 ```r
@@ -133,9 +323,12 @@ data.frame轉data.table
 
 ```r
 library(SportsAnalytics)
+##讀取15-16球季的資料
+NBA1516<-fetch_NBAPlayerStatistics("15-16") 
+
 library(data.table)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
-NBA1516DT<-data.table(NBA1516)
+##轉換成data.table
+NBA1516DT<-data.table(NBA1516) 
 class(NBA1516DT)
 ```
 
@@ -143,6 +336,42 @@ class(NBA1516DT)
 [1] "data.table" "data.frame"
 ```
 
+SportsAnalytics提供的NBA資料
+====================================
+
+```r
+str(NBA1516DT)
+```
+
+```
+Classes 'data.table' and 'data.frame':	476 obs. of  25 variables:
+ $ League             : Factor w/ 1 level "NBA": 1 1 1 1 1 1 1 1 1 1 ...
+ $ Name               : chr  "Quincy Acy" "Jordan Adams" "Steven Adams" "Arron Afflalo" ...
+ $ Team               : Factor w/ 31 levels "ATL","BOS","BRO",..: 27 15 22 20 19 13 28 26 12 15 ...
+ $ Position           : Factor w/ 5 levels "C","PF","PG",..: 4 5 1 5 1 1 2 2 2 5 ...
+ $ GamesPlayed        : int  59 2 80 71 59 60 74 9 79 64 ...
+ $ TotalMinutesPlayed : int  877 15 2019 2359 863 802 2260 37 1601 1622 ...
+ $ FieldGoalsMade     : int  119 2 261 354 150 134 536 5 191 215 ...
+ $ FieldGoalsAttempted: int  214 6 426 799 314 225 1045 10 370 469 ...
+ $ ThreesMade         : int  19 0 0 91 0 0 0 0 0 15 ...
+ $ ThreesAttempted    : int  49 1 0 238 1 0 16 0 0 42 ...
+ $ FreeThrowsMade     : int  50 3 114 110 52 60 259 0 46 90 ...
+ $ FreeThrowsAttempted: int  68 5 196 131 62 84 302 0 73 138 ...
+ $ OffensiveRebounds  : int  65 0 218 23 75 86 175 2 162 104 ...
+ $ TotalRebounds      : int  188 2 531 266 269 288 631 6 424 297 ...
+ $ Assists            : int  27 3 61 145 32 50 110 0 76 70 ...
+ $ Steals             : int  29 3 42 25 19 47 38 1 26 109 ...
+ $ Turnovers          : int  27 2 84 82 54 64 99 1 69 78 ...
+ $ Blocks             : int  24 0 89 10 36 68 81 2 42 18 ...
+ $ PersonalFouls      : int  103 2 223 142 134 139 151 1 147 175 ...
+ $ Disqualifications  : int  0 0 2 1 0 1 0 0 1 1 ...
+ $ TotalPoints        : int  307 7 636 909 352 328 1331 10 428 535 ...
+ $ Technicals         : int  3 0 2 1 2 0 0 0 0 1 ...
+ $ Ejections          : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ FlagrantFouls      : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ GamesStarted       : int  29 0 80 57 17 5 74 0 28 56 ...
+ - attr(*, ".internal.selfref")=<externalptr> 
+```
 
 data.table 語法設計
 ====================================
@@ -154,10 +383,14 @@ data.table 語法設計
 - `j` 所需欄位 (Column)
 - `by` 分組依據
 
-注意事項:
+data.table 注意事項
+====================================
+
 - 各參數間需要以逗號`,`區隔
 - 但若只需使用前方參數，後方的**,**可省略
-    - 如只需使用i和j兩個參數，可以寫成**DT[i,j]**。
+    - 如只需使用**i**和**j**兩個參數，可以寫成**DT[ i , j ]**。
+- 若只需使用後方參數，前方的**,**不可省略
+    - 如只需使用**j**一個參數，可以寫成**DT[ , j ]**。
 
 
 i 觀察值篩選邏輯
@@ -165,7 +398,7 @@ i 觀察值篩選邏輯
 - 篩選**觀察值**，也就是針對列(Row)做子集
 - 透過**布林值**的向量或是**元素索引(index)**向量指定篩選條件
 
-擷取球員姓名包含James字串的資料
+擷取球員**姓名包含James字串**的資料
 
 ```r
 NBA1516DT[grepl('James',Name)]
@@ -181,9 +414,66 @@ NBA1516DT[grepl('James',Name)]
 |NBA    |James Jones    |CLE  |SG       |          48|                466|             59|                 143|         41|             104|             21|                  26|                 8|            50|      14|     11|        13|     10|            50|                 0|         180|          1|         0|             0|            0|
 |NBA    |James Mcadoo   |GSW  |SG       |          41|                265|             45|                  84|          1|               2|             26|                  49|                30|            58|      17|     10|        16|      8|            39|                 0|         117|          0|         0|             0|            1|
 |NBA    |James Young    |BOS  |SG       |          29|                200|             11|                  36|          6|              26|              1|                   4|                 4|            26|       9|      6|         5|      1|            17|                 0|          29|          0|         0|             0|            0|
+
+複習：字串搜尋函數grepl
+====================================
+grepl(**欲搜尋的字串模板**,**字串向量**)，回傳T or F向量
+
+```r
+grepl('James',NBA1516DT$Name)
+```
+
+```
+  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [12] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [45] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [56] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [67] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [78] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+ [89] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[100] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[111] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[122] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+[133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[144] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[155] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[166] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[177] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[188] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[199] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[210] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[221] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+[232] FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
+[243] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[254] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[265] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[276] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+[287] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[298] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[309] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[320] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[331] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[342] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[353] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[364] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[375] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[386] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[397] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[408] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[419] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[430] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[441] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[452] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+[463] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+[474] FALSE FALSE FALSE
+```
+
+
 i 觀察值篩選邏輯
 ====================================
-篩選所有中鋒，且姓名包含"A"字串的球員資料
+篩選所有**中鋒**，且**姓名包含"A"字串**的球員資料 (條件用**&**運算子串連)
 
 ```r
 NBA1516DT[grepl('A',Name)&Position=="C"]
@@ -203,9 +493,10 @@ NBA1516DT[grepl('A',Name)&Position=="C"]
 |NBA    |Alex Len         |PHO  |C        |          78|               1820|            264|                 623|          1|               7|            174|                 239|               178|           594|      97|     38|       145|     62|           230|                 3|         703|          1|         0|             0|           46|
 |NBA    |Anderson Varejao |GSW  |C        |          53|                494|             53|                 124|          0|               1|             32|                  50|                37|           141|      35|     16|        22|     10|            70|                 0|         138|          1|         0|             0|            0|
 |NBA    |Alan Williams    |PHO  |C        |          10|                 67|             10|                  24|          0|               0|              9|                  14|                14|            38|       5|      4|         6|      5|            15|                 0|          29|          0|         0|             0|            0|
+
 i 觀察值篩選邏輯
 ====================================
-篩選各隊出場數超過80場的球員資料
+篩選各隊**出場數超過80場**的球員資料
 
 ```r
 NBA1516DT[GamesPlayed>80]
@@ -262,47 +553,72 @@ data.table DT[i] 練習
 type:alert
 incremental:true
 
-- 讀入NBA資料，轉成data.table
+- 讀入NBA資料
 
 ```r
 library(SportsAnalytics)
-library(data.table)
 NBA1516<-fetch_NBAPlayerStatistics("15-16")
+```
+- 轉成data.table
+
+```r
+library(data.table)
 NBA1516DT<-data.table(NBA1516)
 ```
 - 試著用data.table語法篩選出所有助攻數(Assists)超過100的球員資料
 - 有多少名球員符合條件? (篩選出幾筆觀察值?)
 
+data.table 與 data.frame
+====================================
+type:alert
+
+觀察值的篩選，用法有點像，又有點不像，到底差在哪裡？
+
+```r
+NBA1516DT[GamesPlayed>80]
+NBA1516[NBA1516$GamesPlayed>80,]
+```
 
 j 欄位選擇運算:決定輸出欄位
 ====================================
-- 來決定輸出欄位
+- 來決定輸出**欄位**
 - 可以是原始欄位
-- 也可以是計算後的欄位
+- 也可以是**計算後**的欄位
 
-以計算所有球員的平均出場數為例：
+以計算所有球員的**平均出場數**為例：
 
 ```r
-NBA1516DT[,mean(GamesPlayed)] ##因沒有篩選需求，,前方留空
+##因沒有篩選需求， , 前方留空
+NBA1516DT[,mean(GamesPlayed)]
 ```
 
 ```
-[1] 54.78151
+[1] 55
 ```
 
 j 欄位選擇運算:計算多個數值
 ====================================
 - 也可以一次計算多個數值
 - 同時計算平均出場數、平均犯規次數以及平均抄截次數
-- 此時第二個欄位`j`需要使用**.()**包起來
+- 此時第二個欄位`j`需要使用**.()**或是**list()**包起來
 
 ```r
 NBA1516DT[,.(mean(GamesPlayed),mean(PersonalFouls),mean(Steals))]
 ```
 
 ```
-         V1       V2       V3
-1: 54.78151 104.7059 40.55252
+   V1  V2 V3
+1: 55 105 41
+```
+
+
+```r
+NBA1516DT[,list(mean(GamesPlayed),mean(PersonalFouls),mean(Steals))]
+```
+
+```
+   V1  V2 V3
+1: 55 105 41
 ```
 
 j 欄位選擇運算:計算多個數值
@@ -318,12 +634,12 @@ NBA1516DT[,.(GamesPlayedMean=mean(GamesPlayed),
 
 ```
    GamesPlayedMean PersonalFoulsMean StealsMean
-1:        54.78151          104.7059   40.55252
+1:              55               105         41
 ```
 
 j 欄位選擇運算:計算多個數值
 ====================================
-帶入其他函式做各式各樣的運算
+不是只能算**平均值**，也可帶入其他函式做各式各樣的運算
 
 ```r
 NBA1516DT[,.(GamesPlayedMax=max(GamesPlayed), #最大值
@@ -333,7 +649,7 @@ NBA1516DT[,.(GamesPlayedMax=max(GamesPlayed), #最大值
 
 ```
    GamesPlayedMax ThreesMadeMin FieldGoalsMadeSD
-1:             82             0         165.9156
+1:             82             0              166
 ```
 
 DT[i,j]
@@ -349,7 +665,7 @@ NBA1516DT[GamesPlayed>70,
 
 ```
    ThreesMadeMean FieldGoalsMadeMean
-1:       75.84091           335.1364
+1:             76                335
 ```
 
 data.table DT[i,j] 練習
@@ -361,20 +677,18 @@ incremental:true
 
 ```r
 library(SportsAnalytics)
-library(data.table)
 NBA1516<-fetch_NBAPlayerStatistics("15-16")
+library(data.table)
 NBA1516DT<-data.table(NBA1516)
 ```
-- 篩選出所有助攻數(Assists)超過100的球員資料
-- 計算這些球員的平均抄截數Steals與籃板數TotalRebounds
-
-
+- 篩選出所有**助攻數(Assists)超過100**的球員資料
+- 計算這些球員的**平均抄截數Steals**與**平均籃板數TotalRebounds**
 
 
 by 分組依據
 ====================================
 - 分組計算的依據
-- 計算NBA各隊的**球員數**與**平均助攻數**
+- 計算**NBA各隊**的**球員數**與**平均助攻數**
 - 球員個數的計算在`data.table`內可使用`.N`指令
 - 平均使用`mean()`函數
 - `by=`後方加上分組依據(各隊Team)
@@ -387,94 +701,46 @@ NBA1516DT[,.(.N,AssistsMean=mean(Assists)),
 
 |Team |  N| AssistsMean|
 |:----|--:|-----------:|
-|SAC  | 15|   133.93333|
-|MEM  | 22|    73.77273|
-|OKL  | 14|   126.28571|
-|NYK  | 16|   104.87500|
-|NOR  | 21|    87.47619|
-|LAC  | 15|   124.46667|
-|SAN  | 16|   130.06250|
-|POR  | 15|   116.26667|
-|IND  | 15|   124.80000|
-|WAS  | 17|   126.94118|
-|DAL  | 15|   123.86667|
-|MIL  | 17|   112.58824|
-|DET  | 15|   104.53333|
-|ORL  | 15|   127.60000|
-|HOU  | 16|   101.06250|
-|LAL  | 15|    98.53333|
-|DEN  | 15|   121.53333|
-|CHI  | 15|   121.46667|
-|GSW  | 15|   158.26667|
-|BRO  | 16|   100.00000|
-|CHA  | 14|   117.85714|
-|ATL  | 15|   142.20000|
-|TOR  | 16|    97.18750|
-|MIN  | 14|   129.42857|
-|PHO  | 17|    97.00000|
-|UTA  | 17|    93.70588|
-|MIA  | 15|   130.86667|
-|BOS  | 15|   128.46667|
-|PHI  | 16|   118.12500|
-|CLE  | 16|   117.31250|
-|OKC  |  1|   160.00000|
+|SAC  | 15|         134|
+|MEM  | 22|          74|
+|OKL  | 14|         126|
 
 DT[i,j,by]
 ====================================
 - 三個參數結合使用
-- **NBA各隊的中鋒球員數和他們的平均三分球出手次數**
+- **NBA各隊**的**中鋒**，**球員數**和他們的**平均三分球出手次數**
 
 
 ```r
 NBA1516DT[Position=="C",
-          .(.N,ThreesAttemptedMean=mean(ThreesAttempted)),
+          .(.N,
+            ThreesAttMean=mean(ThreesAttempted)),
           by=Team]
 ```
 
 |Team |  N| ThreesAttemptedMean|
 |:----|--:|-------------------:|
-|OKL  |  3|           7.0000000|
-|NOR  |  4|           0.2500000|
-|LAC  |  2|           0.5000000|
-|DET  |  2|           3.0000000|
-|BRO  |  3|          10.0000000|
-|LAL  |  3|           0.6666667|
-|WAS  |  2|           1.0000000|
-|GSW  |  4|          16.0000000|
-|SAN  |  3|          34.6666667|
-|HOU  |  2|           3.5000000|
-|SAC  |  3|          70.6666667|
-|PHO  |  3|           2.6666667|
-|ORL  |  2|           4.5000000|
-|MIN  |  3|          36.0000000|
-|MEM  |  2|           1.5000000|
-|UTA  |  3|           1.3333333|
-|IND  |  2|           0.5000000|
-|CHA  |  1|           0.0000000|
-|DEN  |  2|          43.5000000|
-|POR  |  2|         116.0000000|
-|CLE  |  3|           2.3333333|
-|NYK  |  1|           1.0000000|
-|DAL  |  3|           1.6666667|
-|MIL  |  2|           0.5000000|
-|CHI  |  1|           1.0000000|
-|PHI  |  2|           4.0000000|
-|TOR  |  3|           6.0000000|
-|BOS  |  2|         105.0000000|
-|ATL  |  1|           0.0000000|
-|MIA  |  1|           0.0000000|
+|OKL  |  3|                 7.0|
+|NOR  |  4|                 0.2|
+|LAC  |  2|                 0.5|
+|DET  |  2|                 3.0|
+|BRO  |  3|                10.0|
 
 data.table 綜合練習
 ====================================
 type:alert
 incremental:true
 
-- 讀入NBA資料，轉成data.table
+- 讀入NBA資料
 
 ```r
 library(SportsAnalytics)
-library(data.table)
 NBA1516<-fetch_NBAPlayerStatistics("15-16")
+```
+- 轉成data.table
+
+```r
+library(data.table)
 NBA1516DT<-data.table(NBA1516)
 ```
 - 篩選出所有助攻數(Assists)超過100的球員資料
@@ -487,7 +753,7 @@ data.table 參考文件與資源
 - [官網](https://github.com/Rdatatable/data.table/wiki)
 - 指令全集[The data.table R package cheat sheet](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf)
 - [A data.table R tutorial by DataCamp](https://www.datacamp.com/community/tutorials/data-table-r-tutorial#gs.vzMYa_k)
-- DataCamp[互動式教學課程](https://www.datacamp.com/courses/data-table-data-manipulation-r-tutorial)
+- DataCamp [互動式教學課程](https://www.datacamp.com/courses/data-table-data-manipulation-r-tutorial)
 
 
 dplyr
@@ -500,6 +766,12 @@ type:sub-section
     - `filter()`: 選要分析的觀察值，觀察值子集 (Row)
     - `mutate()`: 增加新欄位
     - `summarise()`: 計算統計值
+
+dplyr
+====================================
+type:sub-section 
+
+- 使用以下函數分析整理資料：
     - `group_by()`: 分組依據
     - `arrange()`: 觀察值排序
     - `rename()`: 欄位重新命名
@@ -530,87 +802,82 @@ NBA1516<-fetch_NBAPlayerStatistics("15-16")
 - 針對欄位 (Column)做子集
 - `select(資料名稱,欄位條件1,欄位條件2,...)`
 - 條件1與條件2是使用**或**的連結概念
+
+
+欄位(Column)子集 select() 
+====================================
 - `dplyr`提供幾個方便篩選名稱的函式：
     - `starts_with()`
     - `ends_with()`
     - `contains()`
-    - `matches()`
-    - `num_range()`
-    - `one_of()`
+    - `matches()`: matches a regular expression
+    - `num_range()`: num_range("x", 8:11).
+    - `one_of()`: variables in character vector
     - `everything()`
 
 詳細說明可在R執行視窗中輸入`?select_helpers`查看。
 
 欄位(Column)子集 select() 
 ====================================
-篩選欄位名稱為`Name`、`ThreesMade`、`ThreesAttempted`、`FieldGoalsMade`與`FieldGoalsAttempted`的五個欄位
+篩選欄位名稱為`Name`、開頭是`Threes`或是開頭是`FieldGoals`的欄位
 
 ```r
-##等同於NBA1516[,c("Name","ThreesMade","ThreesAttempted",
-##      "FieldGoalsMade","FieldGoalsAttempted")]
+##等於NBA1516[,c("Name","ThreesMade","ThreesAttempted",
+##   "FieldGoalsMade","FieldGoalsAttempted")]
 select1<-select(NBA1516,Name,starts_with("Threes"),
                 starts_with("FieldGoals"))
 head(select1)
 ```
 
-|Name          | ThreesMade| ThreesAttempted| FieldGoalsMade| FieldGoalsAttempted|
-|:-------------|----------:|---------------:|--------------:|-------------------:|
-|Quincy Acy    |         19|              49|            119|                 214|
-|Jordan Adams  |          0|               1|              2|                   6|
-|Steven Adams  |          0|               0|            261|                 426|
-|Arron Afflalo |         91|             238|            354|                 799|
-|Alexis Ajinca |          0|               1|            150|                 314|
-|Cole Aldrich  |          0|               0|            134|                 225|
+|Name       | ThreesMade| ThreesAttempted| FieldGoalsMade| FieldGoalsAttempted|
+|:----------|----------:|---------------:|--------------:|-------------------:|
+|Quincy Acy |         19|              49|            119|                 214|
 
 欄位(Column)子集 select() 
 ====================================
 
-若想篩選欄位`Name`到欄位`FreeThrowsAttempted`間的所有欄位，可用`:`串連欄位名稱
+若想篩選欄位`Name`到欄位`FieldGoalsMade`間的所有欄位，可用`:`串連欄位名稱
 
 ```r
-##等同於NBA1516[,2:12]
-select2<-select(NBA1516,Name:FreeThrowsAttempted)
-head(select2)
+##等同於NBA1516[,2:7]
+select2<-select(NBA1516,Name:FieldGoalsMade)
+head(select2,3)
 ```
 
-|Name          |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted|
-|:-------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|
-|Quincy Acy    |SAC  |SF       |          59|                877|            119|                 214|         19|              49|             50|                  68|
-|Jordan Adams  |MEM  |SG       |           2|                 15|              2|                   6|          0|               1|              3|                   5|
-|Steven Adams  |OKL  |C        |          80|               2019|            261|                 426|          0|               0|            114|                 196|
-|Arron Afflalo |NYK  |SG       |          71|               2359|            354|                 799|         91|             238|            110|                 131|
-|Alexis Ajinca |NOR  |C        |          59|                863|            150|                 314|          0|               1|             52|                  62|
-|Cole Aldrich  |LAC  |C        |          60|                802|            134|                 225|          0|               0|             60|                  84|
+|Name         |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade|
+|:------------|:----|:--------|-----------:|------------------:|--------------:|
+|Quincy Acy   |SAC  |SF       |          59|                877|            119|
+|Jordan Adams |MEM  |SG       |           2|                 15|              2|
+|Steven Adams |OKL  |C        |          80|               2019|            261|
+
 欄位(Column)子集 select() 
 ====================================
 
-若想篩選欄位`Name`到欄位`FreeThrowsAttempted`間的所有欄位，可用`:`串連欄位名稱
+若想篩選欄位`Name`到欄位`FieldGoalsMade`間的所有欄位，但不想要`GamesPlayed`欄位
+- 用`:`串連欄位名稱
+- 用`-`去除不要的欄位
 
 ```r
 ##等同於NBA1516[,c(2:4,612)]
-select3<-select(NBA1516,Name:FreeThrowsAttempted,-GamesPlayed)
-head(select3)
+select3<-select(NBA1516,Name:FieldGoalsMade,-GamesPlayed)
+head(select3,3)
 ```
 
-|Name          |Team |Position | TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted|
-|:-------------|:----|:--------|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|
-|Quincy Acy    |SAC  |SF       |                877|            119|                 214|         19|              49|             50|                  68|
-|Jordan Adams  |MEM  |SG       |                 15|              2|                   6|          0|               1|              3|                   5|
-|Steven Adams  |OKL  |C        |               2019|            261|                 426|          0|               0|            114|                 196|
-|Arron Afflalo |NYK  |SG       |               2359|            354|                 799|         91|             238|            110|                 131|
-|Alexis Ajinca |NOR  |C        |                863|            150|                 314|          0|               1|             52|                  62|
-|Cole Aldrich  |LAC  |C        |                802|            134|                 225|          0|               0|             60|                  84|
+|Name         |Team |Position | TotalMinutesPlayed| FieldGoalsMade|
+|:------------|:----|:--------|------------------:|--------------:|
+|Quincy Acy   |SAC  |SF       |                877|            119|
+|Jordan Adams |MEM  |SG       |                 15|              2|
+|Steven Adams |OKL  |C        |               2019|            261|
 
 觀察值(Row)子集 filter()
 ====================================
 - 是針對列 (Row)做子集
-- `filter(資料名稱,篩選條件)`
-- 如果想要看出場分鐘數超過2850分鐘的球員資料，可用輸入下列指令
+- `filter(資料名稱,篩選條件1,篩選條件2)`篩選條件們是用**且**的邏輯串連
+- **出場分鐘數超過2850分鐘**的球員資料，可輸入下列指令
 
 ```r
-##等同於 NBA1516[NBA1516$TotalMinutesPlayed>2850,]
-filter1<-filter(NBA1516,TotalMinutesPlayed>2850)
-filter1
+##等於NBA1516[NBA1516$TotalMinutesPlayed>2850,]
+filter(NBA1516,TotalMinutesPlayed>2850)
 ```
 
 |League |Name            |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
@@ -628,9 +895,8 @@ filter1
 也可選擇隊伍名稱為"BOS"或"SAN"的球員資料
 
 ```r
-##等同於 NBA1516[NBA1516$Team %in% c("BOS","SAN"),]
-filter2<-filter(NBA1516,Team %in% c("BOS","SAN"))
-head(filter2)
+##等於NBA1516[NBA1516$Team %in% c("BOS","SAN"),]
+filter(NBA1516,Team %in% c("BOS","SAN"))
 ```
 
 |League |Name             |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
@@ -641,14 +907,14 @@ head(filter2)
 |NBA    |Avery Bradley    |BOS  |PG       |          76|               2536|            456|                1018|        147|             406|             96|                 123|                48|           220|     158|    117|       109|     19|           164|                 2|        1155|          0|         0|             0|           72|
 |NBA    |Rasual Butler    |SAN  |SF       |          46|                432|             49|                 105|         15|              49|             11|                  16|                 3|            56|      24|     13|         8|     23|            11|                 0|         124|          0|         0|             0|            0|
 |NBA    |Coty Clarke      |BOS  |NA       |           4|                  8|              2|                   4|          2|               2|              0|                   0|                 0|             1|       0|      0|         1|      0|             0|                 0|           6|          0|         0|             0|            0|
+
 觀察值(Row)子集 filter()
 ====================================
 在`filter()`函式中可**直接做變數計算**後再篩選
 
 ```r
-##等同於
-filter3<-filter(NBA1516,FieldGoalsMade/FieldGoalsAttempted>0.7)
-filter3
+filter(NBA1516,
+       FieldGoalsMade/FieldGoalsAttempted>0.7)
 ```
 
 |League |Name             |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
@@ -661,9 +927,9 @@ filter3
 也可使用 `&` 和 `|`等符號串連邏輯
 
 ```r
-##等同於
-filter4<-filter(NBA1516,FieldGoalsMade/FieldGoalsAttempted>0.7 & GamesPlayed>30)
-filter4
+filter(NBA1516,
+       FieldGoalsMade/FieldGoalsAttempted>0.7
+           &GamesPlayed>30)
 ```
 
 |League |Name           |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
@@ -682,62 +948,60 @@ library(SportsAnalytics)
 library(dplyr)
 NBA1516<-fetch_NBAPlayerStatistics("15-16")
 ```
-- 試著用dplyr語法篩選出所有助攻數(Assists)超過100且抄截數大於20的球員資料
+- 試著用dplyr語法篩選出所有**助攻數(Assists)超過100**且**抄截數大於20**的球員資料
 - 只留下Name Team Position GamesPlayed TotalMinutesPlayed Assists Steals 七個欄位
+- 用data.table寫出一樣的功能
 
 
 
 增加新欄位 mutate()
 ====================================
-- 增加新欄位
-- 新增新欄位`FieldGoalsRate`，欄位值為`FieldGoalsMade/FieldGoalsAttempted`
+- 新增新欄位`FGRate`，欄位值為`FieldGoalsMade/FieldGoalsAttempted`
 
 ```r
-mutate1<-mutate(NBA1516,FieldGoalsRate=FieldGoalsMade/FieldGoalsAttempted)
-mutate1$FieldGoalsRate[1:10]
+mutate1<-
+    mutate(NBA1516,
+           FGRate=FieldGoalsMade/FieldGoalsAttempted)
+mutate1$FGRate[1:5]
 ```
 
 ```
- [1] 0.5560748 0.3333333 0.6126761 0.4430538 0.4777070 0.5955556 0.5129187
- [8] 0.5000000 0.5162162 0.4584222
+[1] 0.6 0.3 0.6 0.4 0.5
 ```
 
 計算統計值 summarise() 
 ====================================
-- 計算統計值
 - **球員個數**、**不重複的隊伍數**以及**不重複的守備位置數**等
 - n(), n_distinct()
 
 ```r
-sum1<-summarise(NBA1516,
-                nPlayer=n(),
-                nTeam=n_distinct(Team),
-                nPosition=n_distinct(Position))
-sum1
+summarise(NBA1516,
+          nPlayer=n(),
+          nTeam=n_distinct(Team),
+          nPos=n_distinct(Position))
 ```
 
 ```
-  nPlayer nTeam nPosition
-1     476    31         6
+  nPlayer nTeam nPos
+1     476    31    6
 ```
 
 計算統計值 summarise() 
 ====================================
 - 通常會與其他功能合併使用
-- 計算**出場分鐘數大於2500分鐘**的球員個數、平均投進的兩分球數以及平均投出的兩分球數
+- 計算**出場分鐘數大於2500分鐘**的**球員個數**、**平均投進的兩分球數**以及**平均投出的兩分球數**
 
 ```r
 filter1<-filter(NBA1516,TotalMinutesPlayed>2500)
-sum2<-summarise(filter1,
-                nPlayer=n(),
-                meanFGMade=mean(FieldGoalsMade),
-                meanFGAttempted=mean(FieldGoalsAttempted))
-sum2
+summarise(filter1,
+          nPlayer=n(),
+          meanFGMade=mean(FieldGoalsMade),
+          meanFGAtt=mean(FieldGoalsAttempted))
 ```
 
 ```
-  nPlayer meanFGMade meanFGAttempted
-1      40        512          1120.6
+  nPlayer meanFGMade meanFGAtt
+1      40        512      1121
 ```
 
 dplyr filter()+summarise() 練習
@@ -752,24 +1016,23 @@ library(SportsAnalytics)
 library(dplyr)
 NBA1516<-fetch_NBAPlayerStatistics("15-16")
 ```
-- 試著用dplyr語法篩選出所有助攻數(Assists)超過100且抄截數大於20的球員資料
-- 計算這些球員的平均出場數GamesPlayed，平均出場分鐘數TotalMinutesPlayed
+- 試著用dplyr語法篩選出所有**助攻數(Assists)超過100**且**抄截數大於20**的球員資料
+- 計算這些球員的**平均出場數GamesPlayed**，**平均出場分鐘數TotalMinutesPlayed**
 
 pipe %>%
 ====================================
 - 直接用**pipe**符號`%>%`將指令串連，減少暫存物件（filter1）的生成
 
 ```r
-sum3<-filter(NBA1516,TotalMinutesPlayed>2500) %>%
-  summarise(nPlayer=n(),
-            meanFGMade=mean(FieldGoalsMade),
-            meanFGAttempted=mean(FieldGoalsAttempted))
-sum3
+filter(NBA1516,TotalMinutesPlayed>2500) %>%
+    summarise(nPlayer=n(),
+        meanFGMade=mean(FieldGoalsMade),
+        meanFGAtt=mean(FieldGoalsAttempted))
 ```
 
 ```
-  nPlayer meanFGMade meanFGAttempted
-1      40        512          1120.6
+  nPlayer meanFGMade meanFGAtt
+1      40        512      1121
 ```
 
 dplyr pipe %>% 練習
@@ -781,61 +1044,56 @@ incremental:true
 
 ```r
 library(SportsAnalytics)
-library(dplyr)
 NBA1516<-fetch_NBAPlayerStatistics("15-16")
+library(dplyr)
 ```
-- 試著用dplyr語法篩選出所有助攻數(Assists)超過100且抄截數大於20的球員資料
-- 計算這些球員的平均出場數GamesPlayed，平均出場分鐘數TotalMinutesPlayed
-- 用pipe %>%
+- 試著用dplyr語法篩選出所有**助攻數(Assists)超過100**且**抄截數大於20**的球員資料
+- 計算這些球員的**平均出場數GamesPlayed**，**平均出場分鐘數TotalMinutesPlayed**
+- 用pipe **%>%**
 
 分組 group_by()
 ====================================
 - 設定分組依據
 - 與`summarise()`函式合併使用
-- 計算各**隊**（以Team作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數
+- 計算各**隊**（以Team作為分組依據）的**球員數**、**平均投進的兩分球數**以及**平均投出的兩分球數**
 
 ```r
-group1<-group_by(NBA1516,Team)%>%
-  summarise(nPlayer=n(),meanFGMade=mean(FieldGoalsMade),
-                meanFGAttempted=mean(FieldGoalsAttempted))
-head(group1)
+group_by(NBA1516,Team)%>%
+    summarise(nPlayer=n(),
+        meanFGMade=mean(FieldGoalsMade),
+        meanFGAtt=mean(FieldGoalsAttempted))
 ```
 
-|Team | nPlayer| meanFGMade| meanFGAttempted|
-|:----|-------:|----------:|---------------:|
-|ATL  |      15|   215.0000|        471.1333|
-|BOS  |      15|   208.6000|        475.0667|
-|BRO  |      16|   181.0625|        395.8750|
-|CHA  |      14|   199.1429|        450.7857|
-|CHI  |      15|   209.4667|        474.9333|
-|CLE  |      16|   199.9375|        433.3750|
+|Team | nPlayer| meanFGMade| meanFGAtt|
+|:----|-------:|----------:|---------:|
+|ATL  |      15|        215|       471|
+|BOS  |      15|        209|       475|
+|BRO  |      16|        181|       396|
+|CHA  |      14|        199|       451|
+
 分組 group_by()
 ====================================
 - 可設定**多個**分組依據
-- 計算各**隊**各**守備位置**（以Team和Position作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數
+- 計算各**隊**各**守備位置**（以Team和Position作為分組依據）的**球員數**、**平均投進的兩分球數**以及**平均投出的兩分球數**
 
 ```r
-group2<-group_by(NBA1516,Team,Position)%>%
-  summarise(nPlayer=n(),meanFGMade=mean(FieldGoalsMade),
-                meanFGAttempted=mean(FieldGoalsAttempted))
-head(group2)
+group_by(NBA1516,Team,Position)%>%
+  summarise(nPlayer=n(),
+        meanFGMade=mean(FieldGoalsMade),
+        meanFGAtt=mean(FieldGoalsAttempted))
 ```
 
-|Team |Position | nPlayer| meanFGMade| meanFGAttempted|
-|:----|:--------|-------:|----------:|---------------:|
-|ATL  |C        |       1|    11.0000|         19.0000|
-|ATL  |PF       |       6|   247.3333|        515.6667|
-|ATL  |PG       |       2|   381.5000|        884.0000|
-|ATL  |SG       |       6|   161.1667|        364.3333|
-|BOS  |C        |       2|   195.5000|        423.0000|
-|BOS  |PF       |       4|   181.7500|        385.5000|
+|Team |Position | nPlayer| meanFGMade| meanFGAtt|
+|:----|:--------|-------:|----------:|---------:|
+|ATL  |C        |       1|         11|        19|
+|ATL  |PF       |       6|        247|       516|
+|ATL  |PG       |       2|        382|       884|
 排序 arrange()
 ====================================
 排序功能，預設為**遞增排序**
 
 ```r
-arrange1<-arrange(NBA1516,TotalMinutesPlayed)
-head(arrange1)
+arrange(NBA1516,TotalMinutesPlayed)
 ```
 
 |League |Name             |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
@@ -852,18 +1110,16 @@ head(arrange1)
 使用`desc()`將要**遞減排序**的變數包起來，就可以遞減排序
 
 ```r
-arrange2<-arrange(NBA1516,desc(TotalMinutesPlayed),desc(GamesPlayed))
-head(arrange2)
+arrange(NBA1516,
+        desc(TotalMinutesPlayed),
+        desc(GamesPlayed))
 ```
 
-|League |Name            |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
-|:------|:---------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
-|NBA    |James Harden    |HOU  |SG       |          82|               3121|            710|                1617|        236|             656|            720|                 837|                63|           502|     612|    138|       374|     51|           229|                 1|        2376|          2|         0|             0|           82|
-|NBA    |Gordon Hayward  |UTA  |SG       |          80|               2889|            521|                1202|        143|             410|            393|                 477|                61|           397|     296|     95|       202|     27|           183|                 0|        1578|          0|         0|             0|           80|
-|NBA    |Kemba Walker    |CHA  |PG       |          81|               2885|            568|                1332|        182|             490|            371|                 438|                56|           358|     421|    127|       171|     39|           111|                 0|        1689|          5|         0|             0|           81|
-|NBA    |Trevor Ariza    |HOU  |SF       |          81|               2860|            357|                 858|        185|             497|            126|                 161|                67|           366|     188|    161|       113|     26|           177|                 0|        1025|          2|         0|             0|           81|
-|NBA    |Khris Middleton |MIL  |SF       |          79|               2855|            507|                1144|        143|             362|            277|                 312|                45|           301|     331|    131|       180|     19|           204|                 1|        1434|          5|         0|             0|           79|
-|NBA    |Kyle Lowry      |TOR  |PG       |          77|               2853|            512|                1198|        212|             546|            398|                 491|                55|           365|     494|    158|       225|     34|           211|                 1|        1634|          9|         0|             0|           77|
+|League |Name           |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
+|:------|:--------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
+|NBA    |James Harden   |HOU  |SG       |          82|               3121|            710|                1617|        236|             656|            720|                 837|                63|           502|     612|    138|       374|     51|           229|                 1|        2376|          2|         0|             0|           82|
+|NBA    |Gordon Hayward |UTA  |SG       |          80|               2889|            521|                1202|        143|             410|            393|                 477|                61|           397|     296|     95|       202|     27|           183|                 0|        1578|          0|         0|             0|           80|
+|NBA    |Kemba Walker   |CHA  |PG       |          81|               2885|            568|                1332|        182|             490|            371|                 438|                56|           358|     421|    127|       171|     39|           111|                 0|        1689|          5|         0|             0|           81|
 
 dplyr綜合範例
 ====================================
@@ -871,21 +1127,18 @@ dplyr綜合範例
 - 計算各**隊**各**守備**位置（以Team和Position作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數，並依平均投進的兩分球數**由大到小排序**
 
 ```r
-arrange3<-group_by(NBA1516,Team,Position)%>%
-  summarise(nPlayer=n(),meanFGMade=mean(FieldGoalsMade),
-                meanFGAttempted=mean(FieldGoalsAttempted)) %>%
+group_by(NBA1516,Team,Position) %>%
+  summarise(nPlayer=n(),
+    meanFGMade=mean(FieldGoalsMade),
+    meanFGAtt=mean(FieldGoalsAttempted)) %>%
   arrange(desc(meanFGMade))
-head(arrange3)
 ```
 
-|Team |Position | nPlayer| meanFGMade| meanFGAttempted|
-|:----|:--------|-------:|----------:|---------------:|
-|GSW  |PG       |       2|      504.0|             988|
-|CLE  |SF       |       2|      440.0|             864|
-|ORL  |SG       |       1|      425.0|             969|
-|MIA  |C        |       1|      412.0|             681|
-|OKL  |PG       |       2|      385.0|             861|
-|ATL  |PG       |       2|      381.5|             884|
+|Team |Position | nPlayer| meanFGMade| meanFGAtt|
+|:----|:--------|-------:|----------:|---------:|
+|GSW  |PG       |       2|        504|       988|
+|CLE  |SF       |       2|        440|       864|
+|ORL  |SG       |       1|        425|       969|
 
 
 修改欄位名稱 rename()
@@ -918,10 +1171,10 @@ library(SportsAnalytics)
 library(dplyr)
 NBA1516<-fetch_NBAPlayerStatistics("15-16")
 ```
-- 試著用dplyr語法篩選出所有助攻數(Assists)超過100且抄截數大於20的球員資料
+- 試著用dplyr語法篩選出所有**助攻數(Assists)超過100**且**抄截數大於20**的球員資料
 - 依**守備位置**Position分組，計算球員的平均**出場數**GamesPlayed，平均**出場分鐘數**TotalMinutesPlayed
 - 依平均出場數GamesPlayed**由大到小**排序
-- 用pipe %>%
+- 用pipe **%>%**
 
 dplyr 參考文件與資源
 ====================================

@@ -155,9 +155,9 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title   : chr  "暫停申請體適能中心會員" "想成立%%%社" "想成立阿卡貝拉社⋯" "腦磁圖(MEG)實驗" ...
- $ commentN: chr  "0" "2" "1" "1" ...
- $ likeN   : chr  "1" "6" "5" "6" ...
+ $ title   : chr  "需要愛健身愛運動的人的關心" "想請問包裹問題" "長庚有人在玩dj或是聽電子音樂的嗎？" "長庚盃撞球比賽開打囉！" ...
+ $ commentN: chr  "1" "5" "19" "0" ...
+ $ likeN   : chr  "4" "2" "4" "10" ...
 ```
 該如何將這兩個欄位轉成數字呢？
 
@@ -413,12 +413,11 @@ iris[1,2] ##第一列Row，第二行Column
 iris[1:3,] ##第1~3列Row，所有的行Column
 ```
 
-```
-  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-1          5.1         3.5          1.4         0.2  setosa
-2          4.9         3.0          1.4         0.2  setosa
-3          4.7         3.2          1.3         0.2  setosa
-```
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
+|------------:|-----------:|------------:|-----------:|:-------|
+|          5.1|         3.5|          1.4|         0.2|setosa  |
+|          4.9|         3.0|          1.4|         0.2|setosa  |
+|          4.7|         3.2|          1.3|         0.2|setosa  |
 
 子集Subset - 二維資料 []
 ====================================
@@ -427,20 +426,18 @@ iris[1:3,] ##第1~3列Row，所有的行Column
 iris[1:10,c(T,F,T,F,T)] ##第1~10列Row，第1,3,5行Column (TRUE)
 ```
 
-```
-   Sepal.Length Petal.Length Species
-1           5.1          1.4  setosa
-2           4.9          1.4  setosa
-3           4.7          1.3  setosa
-4           4.6          1.5  setosa
-5           5.0          1.4  setosa
-6           5.4          1.7  setosa
-7           4.6          1.4  setosa
-8           5.0          1.5  setosa
-9           4.4          1.4  setosa
-10          4.9          1.5  setosa
-```
-
+| Sepal.Length| Petal.Length|Species |
+|------------:|------------:|:-------|
+|          5.1|          1.4|setosa  |
+|          4.9|          1.4|setosa  |
+|          4.7|          1.3|setosa  |
+|          4.6|          1.5|setosa  |
+|          5.0|          1.4|setosa  |
+|          5.4|          1.7|setosa  |
+|          4.6|          1.4|setosa  |
+|          5.0|          1.5|setosa  |
+|          4.4|          1.4|setosa  |
+|          4.9|          1.5|setosa  |
 子集Subset - 二維資料 []
 ====================================
 
@@ -491,6 +488,7 @@ incremental:true
 也可使用`$`符號做**Column的篩選**
 
 ```r
+# 等同於iris[,"Species"]
 iris$Species ##所有的列Row，名稱為Species的行Column
 ```
 
@@ -532,70 +530,66 @@ Levels: setosa versicolor virginica
 subset(iris,Species=="virginica") ##Species等於"virginica"的列Row，所有的行Column
 ```
 
-```
-    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
-101          6.3         3.3          6.0         2.5 virginica
-102          5.8         2.7          5.1         1.9 virginica
-103          7.1         3.0          5.9         2.1 virginica
-104          6.3         2.9          5.6         1.8 virginica
-105          6.5         3.0          5.8         2.2 virginica
-106          7.6         3.0          6.6         2.1 virginica
-107          4.9         2.5          4.5         1.7 virginica
-108          7.3         2.9          6.3         1.8 virginica
-109          6.7         2.5          5.8         1.8 virginica
-110          7.2         3.6          6.1         2.5 virginica
-111          6.5         3.2          5.1         2.0 virginica
-112          6.4         2.7          5.3         1.9 virginica
-113          6.8         3.0          5.5         2.1 virginica
-114          5.7         2.5          5.0         2.0 virginica
-115          5.8         2.8          5.1         2.4 virginica
-116          6.4         3.2          5.3         2.3 virginica
-117          6.5         3.0          5.5         1.8 virginica
-118          7.7         3.8          6.7         2.2 virginica
-119          7.7         2.6          6.9         2.3 virginica
-120          6.0         2.2          5.0         1.5 virginica
-121          6.9         3.2          5.7         2.3 virginica
-122          5.6         2.8          4.9         2.0 virginica
-123          7.7         2.8          6.7         2.0 virginica
-124          6.3         2.7          4.9         1.8 virginica
-125          6.7         3.3          5.7         2.1 virginica
-126          7.2         3.2          6.0         1.8 virginica
-127          6.2         2.8          4.8         1.8 virginica
-128          6.1         3.0          4.9         1.8 virginica
-129          6.4         2.8          5.6         2.1 virginica
-130          7.2         3.0          5.8         1.6 virginica
-131          7.4         2.8          6.1         1.9 virginica
-132          7.9         3.8          6.4         2.0 virginica
-133          6.4         2.8          5.6         2.2 virginica
-134          6.3         2.8          5.1         1.5 virginica
-135          6.1         2.6          5.6         1.4 virginica
-136          7.7         3.0          6.1         2.3 virginica
-137          6.3         3.4          5.6         2.4 virginica
-138          6.4         3.1          5.5         1.8 virginica
-139          6.0         3.0          4.8         1.8 virginica
-140          6.9         3.1          5.4         2.1 virginica
-141          6.7         3.1          5.6         2.4 virginica
-142          6.9         3.1          5.1         2.3 virginica
-143          5.8         2.7          5.1         1.9 virginica
-144          6.8         3.2          5.9         2.3 virginica
-145          6.7         3.3          5.7         2.5 virginica
-146          6.7         3.0          5.2         2.3 virginica
-147          6.3         2.5          5.0         1.9 virginica
-148          6.5         3.0          5.2         2.0 virginica
-149          6.2         3.4          5.4         2.3 virginica
-150          5.9         3.0          5.1         1.8 virginica
-```
+|    | Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species   |
+|:---|------------:|-----------:|------------:|-----------:|:---------|
+|101 |          6.3|         3.3|          6.0|         2.5|virginica |
+|102 |          5.8|         2.7|          5.1|         1.9|virginica |
+|103 |          7.1|         3.0|          5.9|         2.1|virginica |
+|104 |          6.3|         2.9|          5.6|         1.8|virginica |
+|105 |          6.5|         3.0|          5.8|         2.2|virginica |
+|106 |          7.6|         3.0|          6.6|         2.1|virginica |
+|107 |          4.9|         2.5|          4.5|         1.7|virginica |
+|108 |          7.3|         2.9|          6.3|         1.8|virginica |
+|109 |          6.7|         2.5|          5.8|         1.8|virginica |
+|110 |          7.2|         3.6|          6.1|         2.5|virginica |
+|111 |          6.5|         3.2|          5.1|         2.0|virginica |
+|112 |          6.4|         2.7|          5.3|         1.9|virginica |
+|113 |          6.8|         3.0|          5.5|         2.1|virginica |
+|114 |          5.7|         2.5|          5.0|         2.0|virginica |
+|115 |          5.8|         2.8|          5.1|         2.4|virginica |
+|116 |          6.4|         3.2|          5.3|         2.3|virginica |
+|117 |          6.5|         3.0|          5.5|         1.8|virginica |
+|118 |          7.7|         3.8|          6.7|         2.2|virginica |
+|119 |          7.7|         2.6|          6.9|         2.3|virginica |
+|120 |          6.0|         2.2|          5.0|         1.5|virginica |
+|121 |          6.9|         3.2|          5.7|         2.3|virginica |
+|122 |          5.6|         2.8|          4.9|         2.0|virginica |
+|123 |          7.7|         2.8|          6.7|         2.0|virginica |
+|124 |          6.3|         2.7|          4.9|         1.8|virginica |
+|125 |          6.7|         3.3|          5.7|         2.1|virginica |
+|126 |          7.2|         3.2|          6.0|         1.8|virginica |
+|127 |          6.2|         2.8|          4.8|         1.8|virginica |
+|128 |          6.1|         3.0|          4.9|         1.8|virginica |
+|129 |          6.4|         2.8|          5.6|         2.1|virginica |
+|130 |          7.2|         3.0|          5.8|         1.6|virginica |
+|131 |          7.4|         2.8|          6.1|         1.9|virginica |
+|132 |          7.9|         3.8|          6.4|         2.0|virginica |
+|133 |          6.4|         2.8|          5.6|         2.2|virginica |
+|134 |          6.3|         2.8|          5.1|         1.5|virginica |
+|135 |          6.1|         2.6|          5.6|         1.4|virginica |
+|136 |          7.7|         3.0|          6.1|         2.3|virginica |
+|137 |          6.3|         3.4|          5.6|         2.4|virginica |
+|138 |          6.4|         3.1|          5.5|         1.8|virginica |
+|139 |          6.0|         3.0|          4.8|         1.8|virginica |
+|140 |          6.9|         3.1|          5.4|         2.1|virginica |
+|141 |          6.7|         3.1|          5.6|         2.4|virginica |
+|142 |          6.9|         3.1|          5.1|         2.3|virginica |
+|143 |          5.8|         2.7|          5.1|         1.9|virginica |
+|144 |          6.8|         3.2|          5.9|         2.3|virginica |
+|145 |          6.7|         3.3|          5.7|         2.5|virginica |
+|146 |          6.7|         3.0|          5.2|         2.3|virginica |
+|147 |          6.3|         2.5|          5.0|         1.9|virginica |
+|148 |          6.5|         3.0|          5.2|         2.0|virginica |
+|149 |          6.2|         3.4|          5.4|         2.3|virginica |
+|150 |          5.9|         3.0|          5.1|         1.8|virginica |
 
 子集Subset - 二維資料grepl()
 ====================================
 **Row的篩選**也可搭配字串搜尋函數`grepl()`
 
-
 ```r
-knitr::kable(iris[grepl("color",iris$Species),]) ##Species包含"color"的列，所有的行
+iris[grepl("color",iris$Species),] ##Species包含"color"的列，所有的行
 ```
-
-
 
 |    | Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species    |
 |:---|------------:|-----------:|------------:|-----------:|:----------|
@@ -659,14 +653,13 @@ knitr::kable(iris[grepl("color",iris$Species),]) ##Species包含"color"的列，
 head(iris,5) ##取出iris資料框的前五列
 ```
 
-```
-  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-1          5.1         3.5          1.4         0.2  setosa
-2          4.9         3.0          1.4         0.2  setosa
-3          4.7         3.2          1.3         0.2  setosa
-4          4.6         3.1          1.5         0.2  setosa
-5          5.0         3.6          1.4         0.2  setosa
-```
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
+|------------:|-----------:|------------:|-----------:|:-------|
+|          5.1|         3.5|          1.4|         0.2|setosa  |
+|          4.9|         3.0|          1.4|         0.2|setosa  |
+|          4.7|         3.2|          1.3|         0.2|setosa  |
+|          4.6|         3.1|          1.5|         0.2|setosa  |
+|          5.0|         3.6|          1.4|         0.2|setosa  |
 
 子集Subset - tail()
 ====================================
@@ -677,12 +670,12 @@ head(iris,5) ##取出iris資料框的前五列
 tail(iris,3) ##取出iris資料框的後三列
 ```
 
-```
-    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
-148          6.5         3.0          5.2         2.0 virginica
-149          6.2         3.4          5.4         2.3 virginica
-150          5.9         3.0          5.1         1.8 virginica
-```
+|    | Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species   |
+|:---|------------:|-----------:|------------:|-----------:|:---------|
+|148 |          6.5|         3.0|          5.2|         2.0|virginica |
+|149 |          6.2|         3.4|          5.4|         2.3|virginica |
+|150 |          5.9|         3.0|          5.1|         1.8|virginica |
+
 
 子集綜合練習
 ====================================
@@ -806,15 +799,14 @@ order() 元素位置
 head(iris) ##排序前的前六筆資料
 ```
 
-```
-  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-1          5.1         3.5          1.4         0.2  setosa
-2          4.9         3.0          1.4         0.2  setosa
-3          4.7         3.2          1.3         0.2  setosa
-4          4.6         3.1          1.5         0.2  setosa
-5          5.0         3.6          1.4         0.2  setosa
-6          5.4         3.9          1.7         0.4  setosa
-```
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
+|------------:|-----------:|------------:|-----------:|:-------|
+|          5.1|         3.5|          1.4|         0.2|setosa  |
+|          4.9|         3.0|          1.4|         0.2|setosa  |
+|          4.7|         3.2|          1.3|         0.2|setosa  |
+|          4.6|         3.1|          1.5|         0.2|setosa  |
+|          5.0|         3.6|          1.4|         0.2|setosa  |
+|          5.4|         3.9|          1.7|         0.4|setosa  |
 
 order() 元素位置
 ====================================
@@ -825,15 +817,14 @@ order() 元素位置
 head(iris[order(iris$Sepal.Length),]) ##依照Sepal.Length欄位數值大小排序後的前六筆資料
 ```
 
-```
-   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-14          4.3         3.0          1.1         0.1  setosa
-9           4.4         2.9          1.4         0.2  setosa
-39          4.4         3.0          1.3         0.2  setosa
-43          4.4         3.2          1.3         0.2  setosa
-42          4.5         2.3          1.3         0.3  setosa
-4           4.6         3.1          1.5         0.2  setosa
-```
+|   | Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
+|:--|------------:|-----------:|------------:|-----------:|:-------|
+|14 |          4.3|         3.0|          1.1|         0.1|setosa  |
+|9  |          4.4|         2.9|          1.4|         0.2|setosa  |
+|39 |          4.4|         3.0|          1.3|         0.2|setosa  |
+|43 |          4.4|         3.2|          1.3|         0.2|setosa  |
+|42 |          4.5|         2.3|          1.3|         0.3|setosa  |
+|4  |          4.6|         3.1|          1.5|         0.2|setosa  |
 
 order() 元素位置
 ====================================
@@ -844,16 +835,15 @@ order() 元素位置
 head(iris[order(iris$Sepal.Length,decreasing = T),]) ##改為由大到小排序的前六筆資料
 ```
 
-```
-    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
-132          7.9         3.8          6.4         2.0 virginica
-118          7.7         3.8          6.7         2.2 virginica
-119          7.7         2.6          6.9         2.3 virginica
-123          7.7         2.8          6.7         2.0 virginica
-136          7.7         3.0          6.1         2.3 virginica
-106          7.6         3.0          6.6         2.1 virginica
-```
 
+|    | Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species   |
+|:---|------------:|-----------:|------------:|-----------:|:---------|
+|132 |          7.9|         3.8|          6.4|         2.0|virginica |
+|118 |          7.7|         3.8|          6.7|         2.2|virginica |
+|119 |          7.7|         2.6|          6.9|         2.3|virginica |
+|123 |          7.7|         2.8|          6.7|         2.0|virginica |
+|136 |          7.7|         3.0|          6.1|         2.3|virginica |
+|106 |          7.6|         3.0|          6.6|         2.1|virginica |
 
 資料框排序練習
 ====================================
@@ -882,9 +872,9 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title   : chr  "暫停申請體適能中心會員" "想成立%%%社" "想成立阿卡貝拉社⋯" "腦磁圖(MEG)實驗" ...
- $ commentN: chr  "0" "2" "1" "1" ...
- $ likeN   : chr  "1" "6" "5" "6" ...
+ $ title   : chr  "需要愛健身愛運動的人的關心" "想請問包裹問題" "長庚有人在玩dj或是聽電子音樂的嗎？" "長庚盃撞球比賽開打囉！" ...
+ $ commentN: chr  "1" "5" "19" "0" ...
+ $ likeN   : chr  "4" "2" "4" "10" ...
 ```
 - 將DCardCGU_posts按照評論數由高到低排序
 - 將DCardCGU_posts按照按讚數由高到低排序
@@ -927,14 +917,16 @@ rbind(c(1,2,3), #第一列
 irisAdd<-rbind(iris, #資料框
       c(1,1,1,1,"versicolor")  #新增一列
       ) 
+```
+
+```r
 tail(irisAdd,2)
 ```
 
-```
-    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
-150          5.9           3          5.1         1.8  virginica
-151            1           1            1           1 versicolor
-```
+|    |Sepal.Length |Sepal.Width |Petal.Length |Petal.Width |Species    |
+|:---|:------------|:-----------|:------------|:-----------|:----------|
+|150 |5.9          |3           |5.1          |1.8         |virginica  |
+|151 |1            |1           |1            |1           |versicolor |
 
 資料組合
 ====================================
@@ -963,15 +955,15 @@ cbind(c(1,2,3), #第一行
 irisAdd<-cbind(iris, #資料框
       rep("Add",nrow(iris))  #新增一行
       ) 
+```
+
+```r
 tail(irisAdd,1)
 ```
 
-```
-    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
-150          5.9           3          5.1         1.8 virginica
-    rep("Add", nrow(iris))
-150                    Add
-```
+|    | Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species   |rep("Add", nrow(iris)) |
+|:---|------------:|-----------:|------------:|-----------:|:---------|:----------------------|
+|150 |          5.9|           3|          5.1|         1.8|virginica |Add                    |
 
 資料組合練習
 ====================================
@@ -1000,13 +992,11 @@ type:sub-section
 head(airquality,3)
 ```
 
-```
-  Ozone Solar.R Wind Temp Month Day
-1    41     190  7.4   67     5   1
-2    36     118  8.0   72     5   2
-3    12     149 12.6   74     5   3
-```
-
+| Ozone| Solar.R| Wind| Temp| Month| Day|
+|-----:|-------:|----:|----:|-----:|---:|
+|    41|     190|  7.4|   67|     5|   1|
+|    36|     118|  8.0|   72|     5|   2|
+|    12|     149| 12.6|   74|     5|   3|
 寬表轉長表 melt（）
 ====================================
 
@@ -1016,18 +1006,20 @@ head(airquality,3)
 ```r
 library(reshape2)
 airqualityM<-melt(airquality,id.vars = c("Month","Day")) ##欄位需要保留"Month","Day"
+```
+
+```r
 head(airqualityM)
 ```
 
-```
-  Month Day variable value
-1     5   1    Ozone    41
-2     5   2    Ozone    36
-3     5   3    Ozone    12
-4     5   4    Ozone    18
-5     5   5    Ozone    NA
-6     5   6    Ozone    28
-```
+| Month| Day|variable | value|
+|-----:|---:|:--------|-----:|
+|     5|   1|Ozone    |    41|
+|     5|   2|Ozone    |    36|
+|     5|   3|Ozone    |    12|
+|     5|   4|Ozone    |    18|
+|     5|   5|Ozone    |    NA|
+|     5|   6|Ozone    |    28|
 
 長表轉寬表 dcast（）
 ====================================
@@ -1039,18 +1031,20 @@ head(airqualityM)
 ```r
 ##欄位保留"Month","Day"外，其他欄位數目由variable定義
 airqualityCast<-dcast(airqualityM, Month +Day~variable) 
+```
+
+```r
 head(airqualityCast)
 ```
 
-```
-  Month Day Ozone Solar.R Wind Temp
-1     5   1    41     190  7.4   67
-2     5   2    36     118  8.0   72
-3     5   3    12     149 12.6   74
-4     5   4    18     313 11.5   62
-5     5   5    NA      NA 14.3   56
-6     5   6    28      NA 14.9   66
-```
+| Month| Day| Ozone| Solar.R| Wind| Temp|
+|-----:|---:|-----:|-------:|----:|----:|
+|     5|   1|    41|     190|  7.4|   67|
+|     5|   2|    36|     118|  8.0|   72|
+|     5|   3|    12|     149| 12.6|   74|
+|     5|   4|    18|     313| 11.5|   62|
+|     5|   5|    NA|      NA| 14.3|   56|
+|     5|   6|    28|      NA| 14.9|   66|
 
 寬表轉長表練習
 ====================================
@@ -1090,6 +1084,8 @@ naVec[!is.na(naVec)] ##保留所有在is.na()檢查回傳FALSE的元素
 [1] "a" "b" "d" "e"
 ```
 
+
+
 遺漏值處理 complete.cases()
 ====================================
 若資料型態為資料框，可使用`complete.cases`來選出完整的資料列，如果資料列是完整的，則會回傳真TRUE
@@ -1098,14 +1094,13 @@ naVec[!is.na(naVec)] ##保留所有在is.na()檢查回傳FALSE的元素
 head(airquality,5)
 ```
 
-```
-  Ozone Solar.R Wind Temp Month Day
-1    41     190  7.4   67     5   1
-2    36     118  8.0   72     5   2
-3    12     149 12.6   74     5   3
-4    18     313 11.5   62     5   4
-5    NA      NA 14.3   56     5   5
-```
+| Ozone| Solar.R| Wind| Temp| Month| Day|
+|-----:|-------:|----:|----:|-----:|---:|
+|    41|     190|  7.4|   67|     5|   1|
+|    36|     118|  8.0|   72|     5|   2|
+|    12|     149| 12.6|   74|     5|   3|
+|    18|     313| 11.5|   62|     5|   4|
+|    NA|      NA| 14.3|   56|     5|   5|
 
 ```r
 complete.cases(airquality) 
@@ -1127,24 +1122,23 @@ complete.cases(airquality)
 [133]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 [144]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE
 ```
-
 遺漏值處理 complete.cases()
 ====================================
 若資料型態為資料框，可使用`complete.cases`來選出完整的資料列，如果資料列是完整的，則會回傳真TRUE
+
 
 ```r
 head(airquality[complete.cases(airquality),]) ##保留所有在complete.cases()檢查回傳TRUE的元素
 ```
 
-```
-  Ozone Solar.R Wind Temp Month Day
-1    41     190  7.4   67     5   1
-2    36     118  8.0   72     5   2
-3    12     149 12.6   74     5   3
-4    18     313 11.5   62     5   4
-7    23     299  8.6   65     5   7
-8    19      99 13.8   59     5   8
-```
+|   | Ozone| Solar.R| Wind| Temp| Month| Day|
+|:--|-----:|-------:|----:|----:|-----:|---:|
+|1  |    41|     190|  7.4|   67|     5|   1|
+|2  |    36|     118|  8.0|   72|     5|   2|
+|3  |    12|     149| 12.6|   74|     5|   3|
+|4  |    18|     313| 11.5|   62|     5|   4|
+|7  |    23|     299|  8.6|   65|     5|   7|
+|8  |    19|      99| 13.8|   59|     5|   8|
 
 遺漏值處理練習
 ====================================
