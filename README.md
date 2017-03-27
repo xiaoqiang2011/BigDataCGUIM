@@ -4,7 +4,7 @@
 
 ## 105學年 (2017, Spring)
 
-上課投影片與上課相關素材請參考**105**資料夾，第一章到第三章的課程投影片只提供PDF檔案，其他章節共提供三種檔案:
+上課投影片與上課相關素材請參考**105**[資料夾](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/tree/master/105)，第一章到第三章的課程投影片只提供PDF檔案，其他章節共提供三種檔案:
 
 - .Rpres
     - [R Presentation](https://support.rstudio.com/hc/en-us/sections/200130218-R-Presentations) 檔案，製作投影片的原始程式碼
