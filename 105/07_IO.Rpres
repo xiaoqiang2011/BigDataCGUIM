@@ -320,9 +320,9 @@ close(con)
 htmlCode[3:5]
 ```
 
-網頁爬蟲 Webscraping-逐行讀取
+網頁爬蟲 Webscraping-XML工具
 ====================================
-讀取完網頁後，使用XML工具分析擷取網頁 (`XML` package)
+或是使用XML工具分析擷取網頁 (`XML` package)
 
 ```{r xmlhtml, warning=F}
 html <- htmlParse("http://im.cgu.edu.tw/bin/home.php")
