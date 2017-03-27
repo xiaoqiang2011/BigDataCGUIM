@@ -21,3 +21,8 @@
 
 - .R
     - 日期.R 檔案內有課程練習的解答，供複習參考用
+
+
+## 104學年 (2016, Spring)
+
+上課投影片與上課相關素材請參考**104**[資料夾](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/tree/master/104)
