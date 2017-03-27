@@ -265,13 +265,21 @@ type:sub-section
 ====================================
 ```{r}
 iris[1,2] ##第一列Row，第二行Column
+```
+```{r eval=F}
 iris[1:3,] ##第1~3列Row，所有的行Column
+```
+```{r echo=F}
+knitr::kable(iris[1:3,]) ##第1~3列Row，所有的行Column
 ```
 
 子集Subset - 二維資料 []
 ====================================
-```{r}
+```{r eval=F}
 iris[1:10,c(T,F,T,F,T)] ##第1~10列Row，第1,3,5行Column (TRUE)
+```
+```{r echo=F}
+knitr::kable(iris[1:10,c(T,F,T,F,T)]) ##第1~10列Row，第1,3,5行Column (TRUE)
 ```
 
 子集Subset - 二維資料 []
@@ -293,6 +301,7 @@ incremental:true
 ====================================
 也可使用`$`符號做**Column的篩選**
 ```{r}
+# 等同於iris[,"Species"]
 iris$Species ##所有的列Row，名稱為Species的行Column
 ```
 
@@ -300,33 +309,45 @@ iris$Species ##所有的列Row，名稱為Species的行Column
 ====================================
 **Row的篩選**可使用`subset()`函數，使用方法為`subset(資料表,篩選邏輯)`
 
-```{r}
+```{r eval=F}
 subset(iris,Species=="virginica") ##Species等於"virginica"的列Row，所有的行Column
+```
+```{r echo=F}
+knitr::kable(subset(iris,Species=="virginica"))
 ```
 
 子集Subset - 二維資料grepl()
 ====================================
 **Row的篩選**也可搭配字串搜尋函數`grepl()`
-
-```{r}
-knitr::kable(iris[grepl("color",iris$Species),]) ##Species包含"color"的列，所有的行
+```{r eval=F}
+iris[grepl("color",iris$Species),] ##Species包含"color"的列，所有的行
+```
+```{r echo=F}
+knitr::kable(iris[grepl("color",iris$Species),]) 
 ```
 
 子集Subset - head()
 ====================================
 
 若想要快速取得資料框的前幾列(Raw)或後幾列，也可使用`head()`和`tail()`函數
-```{r}
+```{r eval=F}
 head(iris,5) ##取出iris資料框的前五列
+```
+```{r echo=F}
+knitr::kable(head(iris,5)) 
 ```
 
 子集Subset - tail()
 ====================================
 
 若想要快速取得資料框的前幾列(Raw)或後幾列，也可使用`head()`和`tail()`函數
-```{r}
+```{r eval=F}
 tail(iris,3) ##取出iris資料框的後三列
 ```
+```{r echo=F}
+knitr::kable(tail(iris,3))
+```
+
 
 子集綜合練習
 ====================================
@@ -387,26 +408,35 @@ order() 元素位置
 ====================================
 依照order回傳的元素位置，重新排序iris資料框
 
-```{r}
+```{r eval=F}
 head(iris) ##排序前的前六筆資料
 ```
-
-order() 元素位置
-====================================
-依照order回傳的元素位置，重新排序iris資料框
-
-```{r}
-head(iris[order(iris$Sepal.Length),]) ##依照Sepal.Length欄位數值大小排序後的前六筆資料
+```{r echo=F}
+knitr::kable(head(iris))
 ```
 
 order() 元素位置
 ====================================
 依照order回傳的元素位置，重新排序iris資料框
 
-```{r}
+```{r eval=F}
+head(iris[order(iris$Sepal.Length),]) ##依照Sepal.Length欄位數值大小排序後的前六筆資料
+```
+```{r echo=F}
+knitr::kable(head(iris[order(iris$Sepal.Length),]))
+```
+
+order() 元素位置
+====================================
+依照order回傳的元素位置，重新排序iris資料框
+
+```{r eval=F}
 head(iris[order(iris$Sepal.Length,decreasing = T),]) ##改為由大到小排序的前六筆資料
 ```
 
+```{r echo=F}
+knitr::kable(head(iris[order(iris$Sepal.Length,decreasing = T),])) 
+```
 
 資料框排序練習
 ====================================
@@ -463,7 +493,12 @@ rbind(c(1,2,3), #第一列
 irisAdd<-rbind(iris, #資料框
       c(1,1,1,1,"versicolor")  #新增一列
       ) 
+```
+```{r eval=F}
 tail(irisAdd,2)
+```
+```{r echo=F}
+knitr::kable(tail(irisAdd,2)) 
 ```
 
 資料組合
@@ -484,7 +519,12 @@ cbind(c(1,2,3), #第一行
 irisAdd<-cbind(iris, #資料框
       rep("Add",nrow(iris))  #新增一行
       ) 
+```
+```{r eval=F}
 tail(irisAdd,1)
+```
+```{r echo=F}
+knitr::kable(tail(irisAdd,1)) 
 ```
 
 資料組合練習
@@ -509,8 +549,11 @@ type:sub-section
 長表與寬表
 ====================================
 原來的`airquality`資料框中，有Ozone, Solar.R, Wind, Temp, Month, Day等六個欄位 (Column)，屬於寬表
-```{r}
+```{r eval=F}
 head(airquality,3)
+```
+```{r echo=F}
+knitr::kable(head(airquality,3)) 
 ```
 
 寬表轉長表 melt（）
@@ -521,7 +564,12 @@ head(airquality,3)
 ```{r}
 library(reshape2)
 airqualityM<-melt(airquality,id.vars = c("Month","Day")) ##欄位需要保留"Month","Day"
+```
+```{r eval=F}
 head(airqualityM)
+```
+```{r echo=F}
+knitr::kable(head(airqualityM)) 
 ```
 
 長表轉寬表 dcast（）
@@ -533,7 +581,12 @@ head(airqualityM)
 ```{r}
 ##欄位保留"Month","Day"外，其他欄位數目由variable定義
 airqualityCast<-dcast(airqualityM, Month +Day~variable) 
+```
+```{r eval=F}
 head(airqualityCast)
+```
+```{r echo=F}
+knitr::kable(head(airqualityCast))
 ```
 
 寬表轉長表練習
@@ -562,19 +615,30 @@ is.na(naVec)
 naVec[!is.na(naVec)] ##保留所有在is.na()檢查回傳FALSE的元素
 ```
 
+
+
 遺漏值處理 complete.cases()
 ====================================
 若資料型態為資料框，可使用`complete.cases`來選出完整的資料列，如果資料列是完整的，則會回傳真TRUE
-```{r}
+```{r eval=F}
 head(airquality,5)
+```
+```{r echo=F}
+knitr::kable(head(airquality,5))
+```
+```{r}
 complete.cases(airquality) 
 ```
 
 遺漏值處理 complete.cases()
 ====================================
 若資料型態為資料框，可使用`complete.cases`來選出完整的資料列，如果資料列是完整的，則會回傳真TRUE
-```{r}
+
+```{r eval=F}
 head(airquality[complete.cases(airquality),]) ##保留所有在complete.cases()檢查回傳TRUE的元素
+```
+```{r echo=F}
+knitr::kable(head(airquality[complete.cases(airquality),]))
 ```
 
 遺漏值處理練習
