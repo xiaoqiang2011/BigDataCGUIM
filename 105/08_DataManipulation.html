@@ -879,7 +879,7 @@ is.numeric(num)
 <section data-transition="linear" data-transition-speed="default">
 <h3>資料型別檢查 - class()</h3>
 <div class="slideContent" >
-<p>使用<code>class(變數名稱)</code>函數，直接回傳資料型別</p>
+<p>使用<code>class(變數名稱)</code>函數，直接回傳<strong>資料型別</strong></p>
 
 <pre><code class="r">class(num)
 </code></pre>
@@ -897,7 +897,7 @@ is.numeric(num)
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>資料型別轉換-as.</h3>
+<h3>資料型別轉換 - as.</h3>
 <div class="slideContent" >
 <p>使用<code>as.</code>函數轉換型別</p>
 
@@ -918,7 +918,7 @@ as.numeric(cha)
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>資料型別轉換-as.</h3>
+<h3>資料型別轉換 - as.</h3>
 <div class="slideContent" >
 <p>若無法順利完成轉換，會回傳空值<code>NA</code>，並出現警告訊息</p>
 
@@ -952,15 +952,15 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 <section data-state="alert" data-transition="linear" data-transition-speed="default">
 <h3>資料型別轉換練習</h3>
 <div class="slideContent" >
-<p>評論數和按讚數都是字串型別</p>
+<p>評論數和按讚數都是字串型別 (chr)</p>
 
 <pre><code class="r">str(DCardCGU_posts)
 </code></pre>
 
 <pre><code>&#39;data.frame&#39;:   30 obs. of  3 variables:
- $ title   : chr  &quot;關於ptt合肥版&quot; &quot;學餐送餐員&quot; &quot;（黑特）停車場小偷&quot; &quot;嗯。勤勞樸實的攝影比賽&quot; ...
- $ commentN: chr  &quot;2&quot; &quot;5&quot; &quot;3&quot; &quot;4&quot; ...
- $ likeN   : chr  &quot;1&quot; &quot;2&quot; &quot;6&quot; &quot;9&quot; ...
+ $ title   : chr  &quot;打工活動&quot; &quot;戰8+9？&quot; &quot;資管神釣手&quot; &quot;別再戰了&quot; ...
+ $ commentN: chr  &quot;0&quot; &quot;26&quot; &quot;0&quot; &quot;20&quot; ...
+ $ likeN   : chr  &quot;2&quot; &quot;12&quot; &quot;10&quot; &quot;8&quot; ...
 </code></pre>
 
 <p>該如何將這兩個欄位轉成數字呢？</p>
@@ -983,12 +983,12 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 <h3>基本處理</h3>
 <div class="slideContent" >
 <ul>
-<li>切割 <code>strsplit()</code></li>
-<li>子集 <code>substr()</code></li>
+<li>切割 <code>strsplit()</code> <strong>Split</strong></li>
+<li>子集 <code>substr()</code> <strong>sub string</strong></li>
 <li>大小寫轉換 <code>toupper()</code> <code>tolower()</code></li>
 <li>兩文字連接 <code>paste()</code> <code>paste0()</code></li>
-<li>文字取代 <code>gsub()</code></li>
-<li>前後空白去除 <code>str_trim()</code> 需安裝<code>stringr</code> package</li>
+<li>文字取代 <code>gsub()</code> <strong>substitute</strong></li>
+<li>前後空白去除 <code>str_trim()</code> 需安裝<code>stringr</code> package <strong>trim</strong></li>
 </ul>
 
 </div>
@@ -997,6 +997,8 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 <section data-transition="linear" data-transition-speed="default">
 <h3>基本處理-切割</h3>
 <div class="slideContent" >
+<p>strsplit (欲切割的字串,用什麼符號切割)</p>
+
 <pre><code class="r">strsplit (&quot;Hello World&quot;,&quot; &quot;)
 </code></pre>
 
@@ -1008,8 +1010,25 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>基本處理-子集</h3>
+<h3>基本處理-切割（多字元）|</h3>
 <div class="slideContent" >
+<p>strsplit (欲切割的字串,切割符號1|切割符號2|&hellip;)</p>
+
+<pre><code class="r">strsplit (&quot;Hello World&quot;,&quot; |o&quot;)
+</code></pre>
+
+<pre><code>[[1]]
+[1] &quot;Hell&quot; &quot;&quot;     &quot;W&quot;    &quot;rld&quot; 
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>基本處理-子集（切一小段）</h3>
+<div class="slideContent" >
+<p>substr(欲做子集的字串,開始位置,結束位置)</p>
+
 <pre><code class="r">substr(&quot;Hello World&quot;, start=2,stop=4)
 </code></pre>
 
@@ -1040,7 +1059,21 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 <section data-transition="linear" data-transition-speed="default">
 <h3>基本處理-兩文字連接</h3>
 <div class="slideContent" >
+<p>paste(欲連接的字串1, 欲連接的字串2, 欲連接的字串3,&hellip;. sep=中間用什麼符號分隔)</p>
+
+<pre><code class="r">paste(&quot;Hello&quot;, &quot;World&quot;)
+</code></pre>
+
+<pre><code>[1] &quot;Hello World&quot;
+</code></pre>
+
 <pre><code class="r">paste(&quot;Hello&quot;, &quot;World&quot;, sep=&#39;&#39;)
+</code></pre>
+
+<pre><code>[1] &quot;HelloWorld&quot;
+</code></pre>
+
+<pre><code class="r">paste0(&quot;Hello&quot;, &quot;World&quot;)
 </code></pre>
 
 <pre><code>[1] &quot;HelloWorld&quot;
@@ -1052,6 +1085,8 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 <section data-transition="linear" data-transition-speed="default">
 <h3>基本處理-文字取代</h3>
 <div class="slideContent" >
+<p>gsub(想要換掉的舊字串,想要換成的新字串,欲作取代的完整字串)</p>
+
 <pre><code class="r">gsub(&quot;o&quot;,&quot;0&quot;,&quot;Hello World&quot;)
 </code></pre>
 
@@ -1062,8 +1097,24 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
+<h3>基本處理-文字取代（多字元）|</h3>
+<div class="slideContent" >
+<p>gsub(想要換掉的舊字串1|想要換掉的舊字串2|&hellip;,想要換成的新字串,欲作取代的完整字串)</p>
+
+<pre><code class="r">gsub(&quot;o|l&quot;,&quot;0&quot;,&quot;Hello World&quot;)
+</code></pre>
+
+<pre><code>[1] &quot;He000 W0r0d&quot;
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
 <h3>基本處理-前後空白去除</h3>
 <div class="slideContent" >
+<p>str_trim要使用前需要安裝與載入<strong>stringr</strong>套件</p>
+
 <pre><code class="r">library(stringr)
 str_trim(&quot; Hello World &quot;)
 </code></pre>
@@ -1118,6 +1169,34 @@ grepl(&quot;a&quot;,c(&quot;Alex&quot;,&quot;Tom&quot;,&quot;Amy&quot;,&quot;Joy
 </div>
 
 </section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>搜尋字串 - grep()</h3>
+<div class="slideContent" >
+<pre><code class="r">##在姓名文字向量中尋找A，回傳包含&quot;A&quot;的元素位置
+grep(&quot;A&quot;,c(&quot;Alex&quot;,&quot;Tom&quot;,&quot;Amy&quot;,&quot;Joy&quot;,&quot;Emma&quot;)) 
+</code></pre>
+
+<pre><code>[1] 1 3
+</code></pre>
+
+<pre><code class="r">##在姓名文字向量中尋找a，回傳包含&quot;a&quot;的元素位置
+grep(&quot;a&quot;,c(&quot;Alex&quot;,&quot;Tom&quot;,&quot;Amy&quot;,&quot;Joy&quot;,&quot;Emma&quot;)) 
+</code></pre>
+
+<pre><code>[1] 5
+</code></pre>
+
+</div>
+
+</section>
+<section data-state="alert" data-transition="linear" data-transition-speed="default">
+<h3>搜尋字串 - grep()</h3>
+<div class="slideContent" >
+<p>多字元？</p>
+
+</div>
+
+</section>
 <section data-state="alert" data-transition="linear" data-transition-speed="default">
 <h3>文字字串處理練習</h3>
 <div class="slideContent" >
@@ -1126,11 +1205,8 @@ grepl(&quot;a&quot;,c(&quot;Alex&quot;,&quot;Tom&quot;,&quot;Amy&quot;,&quot;Joy
 <pre class="fragment"><code class="r">library(rvest) ##載入
 DCardCGU&lt;-&quot;https://www.dcard.tw/f/cgu?latest=true&quot;
 DCardContent&lt;-read_html(DCardCGU)
-post_title &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_titleUnread_ycJL0&quot;) %&gt;% html_text()
-post_contentShort&lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_excerpt_A0Bmh&quot;) %&gt;% html_text()
-post_author&lt;- DCardContent %&gt;% html_nodes(&quot;.PostAuthor_root_3vAJf&quot;) %&gt;% html_text()
-DCardCGU_posts &lt;- data.frame(title = post_title, author=post_author, 
-                            content=post_contentShort,stringsAsFactors = F)
+DCardContentNode &lt;-  html_nodes(DCardContent, &quot;.PostEntry_excerpt_A0Bmh&quot;)
+post_contentShort&lt;- html_text(DCardContentNode)
 </code></pre>
 
 </div>
@@ -1140,9 +1216,9 @@ DCardCGU_posts &lt;- data.frame(title = post_title, author=post_author,
 <h3>文字字串處理練習</h3>
 <div class="slideContent" >
 <ul>
-<li class="fragment">在DCardCGU_posts的content中，出現“資管”字串的文章位置(index)</li>
-<li class="fragment">將content中的文章用逗號（全形，）切割</li>
-<li class="fragment">將content中的文章用逗號或問號或句號（全形，？。）切割</li>
+<li class="fragment">在post_contentShort中，出現“資管”字串的文章位置(index)</li>
+<li class="fragment">將post_contentShort中的文章用逗號（全形，）切割</li>
+<li class="fragment">將post_contentShort中的文章用逗號或問號或句號（全形，？。）切割</li>
 </ul>
 
 </div>
@@ -1172,6 +1248,8 @@ DCardCGU_posts &lt;- data.frame(title = post_title, author=post_author,
 <section data-transition="linear" data-transition-speed="default">
 <h3>子集Subset - 一維資料</h3>
 <div class="slideContent" >
+<p>也可以用“負號”去掉不要的資料</p>
+
 <pre><code class="r">letters[c(1,3,5)] ##取出letters向量的第1,3,5個元素
 </code></pre>
 
@@ -1860,7 +1938,11 @@ Levels: setosa versicolor virginica
 <div class="slideContent" >
 <p><strong>Row的篩選</strong>也可搭配字串搜尋函數<code>grepl()</code></p>
 
-<pre><code class="r">iris[grepl(&quot;color&quot;,iris$Species),] ##Species包含&quot;color&quot;的列，所有的行
+<pre><code class="r">grepl(&quot;color&quot;,iris$Species)
+iris[grepl(&quot;color&quot;,iris$Species),] ##Species包含&quot;color&quot;的列，所有的行
+</code></pre>
+
+<pre><code>[1] FALSE FALSE FALSE FALSE FALSE FALSE
 </code></pre>
 
 <table><thead>
@@ -1918,358 +2000,6 @@ Levels: setosa versicolor virginica
 <td align="right">5.7</td>
 <td align="right">2.8</td>
 <td align="right">4.5</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">57</td>
-<td align="right">6.3</td>
-<td align="right">3.3</td>
-<td align="right">4.7</td>
-<td align="right">1.6</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">58</td>
-<td align="right">4.9</td>
-<td align="right">2.4</td>
-<td align="right">3.3</td>
-<td align="right">1.0</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">59</td>
-<td align="right">6.6</td>
-<td align="right">2.9</td>
-<td align="right">4.6</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">60</td>
-<td align="right">5.2</td>
-<td align="right">2.7</td>
-<td align="right">3.9</td>
-<td align="right">1.4</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">61</td>
-<td align="right">5.0</td>
-<td align="right">2.0</td>
-<td align="right">3.5</td>
-<td align="right">1.0</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">62</td>
-<td align="right">5.9</td>
-<td align="right">3.0</td>
-<td align="right">4.2</td>
-<td align="right">1.5</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">63</td>
-<td align="right">6.0</td>
-<td align="right">2.2</td>
-<td align="right">4.0</td>
-<td align="right">1.0</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">64</td>
-<td align="right">6.1</td>
-<td align="right">2.9</td>
-<td align="right">4.7</td>
-<td align="right">1.4</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">65</td>
-<td align="right">5.6</td>
-<td align="right">2.9</td>
-<td align="right">3.6</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">66</td>
-<td align="right">6.7</td>
-<td align="right">3.1</td>
-<td align="right">4.4</td>
-<td align="right">1.4</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">67</td>
-<td align="right">5.6</td>
-<td align="right">3.0</td>
-<td align="right">4.5</td>
-<td align="right">1.5</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">68</td>
-<td align="right">5.8</td>
-<td align="right">2.7</td>
-<td align="right">4.1</td>
-<td align="right">1.0</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">69</td>
-<td align="right">6.2</td>
-<td align="right">2.2</td>
-<td align="right">4.5</td>
-<td align="right">1.5</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">70</td>
-<td align="right">5.6</td>
-<td align="right">2.5</td>
-<td align="right">3.9</td>
-<td align="right">1.1</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">71</td>
-<td align="right">5.9</td>
-<td align="right">3.2</td>
-<td align="right">4.8</td>
-<td align="right">1.8</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">72</td>
-<td align="right">6.1</td>
-<td align="right">2.8</td>
-<td align="right">4.0</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">73</td>
-<td align="right">6.3</td>
-<td align="right">2.5</td>
-<td align="right">4.9</td>
-<td align="right">1.5</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">74</td>
-<td align="right">6.1</td>
-<td align="right">2.8</td>
-<td align="right">4.7</td>
-<td align="right">1.2</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">75</td>
-<td align="right">6.4</td>
-<td align="right">2.9</td>
-<td align="right">4.3</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">76</td>
-<td align="right">6.6</td>
-<td align="right">3.0</td>
-<td align="right">4.4</td>
-<td align="right">1.4</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">77</td>
-<td align="right">6.8</td>
-<td align="right">2.8</td>
-<td align="right">4.8</td>
-<td align="right">1.4</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">78</td>
-<td align="right">6.7</td>
-<td align="right">3.0</td>
-<td align="right">5.0</td>
-<td align="right">1.7</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">79</td>
-<td align="right">6.0</td>
-<td align="right">2.9</td>
-<td align="right">4.5</td>
-<td align="right">1.5</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">80</td>
-<td align="right">5.7</td>
-<td align="right">2.6</td>
-<td align="right">3.5</td>
-<td align="right">1.0</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">81</td>
-<td align="right">5.5</td>
-<td align="right">2.4</td>
-<td align="right">3.8</td>
-<td align="right">1.1</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">82</td>
-<td align="right">5.5</td>
-<td align="right">2.4</td>
-<td align="right">3.7</td>
-<td align="right">1.0</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">83</td>
-<td align="right">5.8</td>
-<td align="right">2.7</td>
-<td align="right">3.9</td>
-<td align="right">1.2</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">84</td>
-<td align="right">6.0</td>
-<td align="right">2.7</td>
-<td align="right">5.1</td>
-<td align="right">1.6</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">85</td>
-<td align="right">5.4</td>
-<td align="right">3.0</td>
-<td align="right">4.5</td>
-<td align="right">1.5</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">86</td>
-<td align="right">6.0</td>
-<td align="right">3.4</td>
-<td align="right">4.5</td>
-<td align="right">1.6</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">87</td>
-<td align="right">6.7</td>
-<td align="right">3.1</td>
-<td align="right">4.7</td>
-<td align="right">1.5</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">88</td>
-<td align="right">6.3</td>
-<td align="right">2.3</td>
-<td align="right">4.4</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">89</td>
-<td align="right">5.6</td>
-<td align="right">3.0</td>
-<td align="right">4.1</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">90</td>
-<td align="right">5.5</td>
-<td align="right">2.5</td>
-<td align="right">4.0</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">91</td>
-<td align="right">5.5</td>
-<td align="right">2.6</td>
-<td align="right">4.4</td>
-<td align="right">1.2</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">92</td>
-<td align="right">6.1</td>
-<td align="right">3.0</td>
-<td align="right">4.6</td>
-<td align="right">1.4</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">93</td>
-<td align="right">5.8</td>
-<td align="right">2.6</td>
-<td align="right">4.0</td>
-<td align="right">1.2</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">94</td>
-<td align="right">5.0</td>
-<td align="right">2.3</td>
-<td align="right">3.3</td>
-<td align="right">1.0</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">95</td>
-<td align="right">5.6</td>
-<td align="right">2.7</td>
-<td align="right">4.2</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">96</td>
-<td align="right">5.7</td>
-<td align="right">3.0</td>
-<td align="right">4.2</td>
-<td align="right">1.2</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">97</td>
-<td align="right">5.7</td>
-<td align="right">2.9</td>
-<td align="right">4.2</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">98</td>
-<td align="right">6.2</td>
-<td align="right">2.9</td>
-<td align="right">4.3</td>
-<td align="right">1.3</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">99</td>
-<td align="right">5.1</td>
-<td align="right">2.5</td>
-<td align="right">3.0</td>
-<td align="right">1.1</td>
-<td align="left">versicolor</td>
-</tr>
-<tr>
-<td align="left">100</td>
-<td align="right">5.7</td>
-<td align="right">2.8</td>
-<td align="right">4.1</td>
 <td align="right">1.3</td>
 <td align="left">versicolor</td>
 </tr>
@@ -2422,20 +2152,80 @@ Levels: setosa versicolor virginica
 <pre><code class="r">head(islands) ##排序前的前六筆資料
 </code></pre>
 
-<pre><code>      Africa   Antarctica         Asia    Australia Axel Heiberg 
-       11506         5500        16988         2968           16 
-      Baffin 
-         184 
-</code></pre>
+<table><thead>
+<tr>
+<th align="left"></th>
+<th align="right">islands</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">Africa</td>
+<td align="right">11506</td>
+</tr>
+<tr>
+<td align="left">Antarctica</td>
+<td align="right">5500</td>
+</tr>
+<tr>
+<td align="left">Asia</td>
+<td align="right">16988</td>
+</tr>
+<tr>
+<td align="left">Australia</td>
+<td align="right">2968</td>
+</tr>
+<tr>
+<td align="left">Axel Heiberg</td>
+<td align="right">16</td>
+</tr>
+<tr>
+<td align="left">Baffin</td>
+<td align="right">184</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>sort() 向量排序</h3>
+<div class="slideContent" >
+<p><code>sort()</code>函數可直接對向量做<strong>由小到大</strong>的排序</p>
 
 <pre><code class="r">head(sort(islands)) ##由小到大排序後的前六筆資料
 </code></pre>
 
-<pre><code>      Vancouver          Hainan Prince of Wales           Timor 
-             12              13              13              13 
-         Kyushu          Taiwan 
-             14              14 
-</code></pre>
+<table><thead>
+<tr>
+<th align="left"></th>
+<th align="right">sort.islands.</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">Vancouver</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td align="left">Hainan</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Prince of Wales</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Timor</td>
+<td align="right">13</td>
+</tr>
+<tr>
+<td align="left">Kyushu</td>
+<td align="right">14</td>
+</tr>
+<tr>
+<td align="left">Taiwan</td>
+<td align="right">14</td>
+</tr>
+</tbody></table>
 
 </div>
 
@@ -2448,11 +2238,37 @@ Levels: setosa versicolor virginica
 <pre><code class="r">head(sort(islands,decreasing = T)) ##由大到小排序後的前六筆資料
 </code></pre>
 
-<pre><code>         Asia        Africa North America South America    Antarctica 
-        16988         11506          9390          6795          5500 
-       Europe 
-         3745 
-</code></pre>
+<table><thead>
+<tr>
+<th align="left"></th>
+<th align="right">sort.islands..decreasing&hellip;T.</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">Asia</td>
+<td align="right">16988</td>
+</tr>
+<tr>
+<td align="left">Africa</td>
+<td align="right">11506</td>
+</tr>
+<tr>
+<td align="left">North America</td>
+<td align="right">9390</td>
+</tr>
+<tr>
+<td align="left">South America</td>
+<td align="right">6795</td>
+</tr>
+<tr>
+<td align="left">Antarctica</td>
+<td align="right">5500</td>
+</tr>
+<tr>
+<td align="left">Europe</td>
+<td align="right">3745</td>
+</tr>
+</tbody></table>
 
 </div>
 
@@ -2467,18 +2283,10 @@ Levels: setosa versicolor virginica
 
 <p>以<code>iris$Sepal.Length</code>為例，回傳的第一個位置為<code>14</code>，表示<code>iris$Sepal.Length</code>中，數值最小的元素為第14個元素。</p>
 
-<pre><code class="r">order(iris$Sepal.Length)
+<pre><code class="r">head(order(iris$Sepal.Length))
 </code></pre>
 
-<pre><code>  [1]  14   9  39  43  42   4   7  23  48   3  30  12  13  25  31  46   2
- [18]  10  35  38  58 107   5   8  26  27  36  41  44  50  61  94   1  18
- [35]  20  22  24  40  45  47  99  28  29  33  60  49   6  11  17  21  32
- [52]  85  34  37  54  81  82  90  91  65  67  70  89  95 122  16  19  56
- [69]  80  96  97 100 114  15  68  83  93 102 115 143  62  71 150  63  79
- [86]  84  86 120 139  64  72  74  92 128 135  69  98 127 149  57  73  88
-[103] 101 104 124 134 137 147  52  75 112 116 129 133 138  55 105 111 117
-[120] 148  59  76  66  78  87 109 125 141 145 146  77 113 144  53 121 140
-[137] 142  51 103 110 126 130 108 131 106 118 119 123 136 132
+<pre><code>[1] 14  9 39 43 42  4
 </code></pre>
 
 <pre><code class="r">iris$Sepal.Length[14]
@@ -2743,9 +2551,9 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 </code></pre>
 
 <pre><code>&#39;data.frame&#39;:   30 obs. of  3 variables:
- $ title   : chr  &quot;關於ptt合肥版&quot; &quot;學餐送餐員&quot; &quot;（黑特）停車場小偷&quot; &quot;嗯。勤勞樸實的攝影比賽&quot; ...
- $ commentN: chr  &quot;2&quot; &quot;5&quot; &quot;3&quot; &quot;4&quot; ...
- $ likeN   : chr  &quot;1&quot; &quot;2&quot; &quot;6&quot; &quot;9&quot; ...
+ $ title   : chr  &quot;打工活動&quot; &quot;戰8+9？&quot; &quot;資管神釣手&quot; &quot;別再戰了&quot; ...
+ $ commentN: chr  &quot;0&quot; &quot;26&quot; &quot;0&quot; &quot;20&quot; ...
+ $ likeN   : chr  &quot;2&quot; &quot;12&quot; &quot;10&quot; &quot;8&quot; ...
 </code></pre>
 
 <ul>
@@ -3042,7 +2850,7 @@ airqualityM&lt;-melt(airquality,id.vars = c(&quot;Month&quot;,&quot;Day&quot;)) 
 <li>variable欄位的值轉換為新欄位，並將value欄位填回新增的欄位</li>
 </ul>
 
-<pre><code class="r">##欄位保留&quot;Month&quot;,&quot;Day&quot;外，其他欄位數目由variable定義
+<pre><code class="r">#欄位保留&quot;Month&quot;,&quot;Day&quot;外，其他欄位由variable定義
 airqualityCast&lt;-dcast(airqualityM, Month +Day~variable) 
 </code></pre>
 
@@ -3119,6 +2927,20 @@ airqualityCast&lt;-dcast(airqualityM, Month +Day~variable)
 <li class="fragment">下載<a href="https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/104/HEPATITIS_A_Cases.csv">寬表範例資料</a></li>
 <li class="fragment">保留YEAR和WEEK欄位，將各州資料轉換成長表</li>
 <li class="fragment">檢查長表的內容與資料型態，共有幾個觀察值?幾個變數?</li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>寬表 長表 互換</h3>
+<div class="slideContent" >
+<p>也可使用tidyr package做到一樣的功能
+<strong>gather()</strong>、<strong>spread()</strong></p>
+
+<ul>
+<li><a href="http://tidyr.tidyverse.org/">官網</a></li>
+<li><a href="https://github.com/tidyverse/tidyr">GitHub</a></li>
 </ul>
 
 </div>
@@ -3241,7 +3063,7 @@ is.na(naVec)
 <section data-transition="linear" data-transition-speed="default">
 <h3>遺漏值處理 complete.cases()</h3>
 <div class="slideContent" >
-<p>若資料型態為資料框，可使用<code>complete.cases</code>來選出完整的資料列，如果資料列是完整的，則會回傳真TRUE</p>
+<p>若資料型態為資料框，可使用<code>complete.cases</code>來選出完整的資料列，如果資料列(row)是完整的，則會回傳真TRUE</p>
 
 <pre><code class="r">head(airquality[complete.cases(airquality),]) ##保留所有在complete.cases()檢查回傳TRUE的元素
 </code></pre>

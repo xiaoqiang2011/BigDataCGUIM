@@ -63,14 +63,14 @@ is.character(num)
 
 資料型別檢查 - class()
 ====================================
-使用`class(變數名稱)`函數，直接回傳資料型別
+使用`class(變數名稱)`函數，直接回傳**資料型別**
 ```{r}
 class(num)
 class(Sys.Date())
 ```
 
 
-資料型別轉換-as.
+資料型別轉換 - as.
 ====================================
 
 使用`as.`函數轉換型別
@@ -84,7 +84,7 @@ cha<-"100"
 as.numeric(cha)
 ```
 
-資料型別轉換-as.
+資料型別轉換 - as.
 ====================================
 
 若無法順利完成轉換，會回傳空值`NA`，並出現警告訊息
@@ -112,7 +112,7 @@ DCardCGU_posts <- data.frame(title = post_title, commentN=post_comment,
 資料型別轉換練習
 ====================================
 type:alert
-評論數和按讚數都是字串型別
+評論數和按讚數都是字串型別 (chr)
 ```{r}
 str(DCardCGU_posts)
 ```
@@ -128,21 +128,30 @@ type:sub-section
 基本處理
 ====================================
 
-- 切割 `strsplit()`
-- 子集 `substr()`
+- 切割 `strsplit()` **Split**
+- 子集 `substr()` **sub string**
 - 大小寫轉換 `toupper()` `tolower()`
 - 兩文字連接 `paste()` `paste0()`
-- 文字取代 `gsub()`
-- 前後空白去除 `str_trim()` 需安裝`stringr` package
+- 文字取代 `gsub()` **substitute**
+- 前後空白去除 `str_trim()` 需安裝`stringr` package **trim**
 
 基本處理-切割
 ====================================
+strsplit (欲切割的字串,用什麼符號切割)
 ```{r}
 strsplit ("Hello World"," ")
 ```
 
-基本處理-子集
+基本處理-切割（多字元）|
 ====================================
+strsplit (欲切割的字串,切割符號1|切割符號2|...)
+```{r}
+strsplit ("Hello World"," |o")
+```
+
+基本處理-子集（切一小段）
+====================================
+substr(欲做子集的字串,開始位置,結束位置)
 ```{r}
 substr("Hello World", start=2,stop=4)
 ```
@@ -156,18 +165,30 @@ tolower("Hello World")
 
 基本處理-兩文字連接
 ====================================
+paste(欲連接的字串1, 欲連接的字串2, 欲連接的字串3,.... sep=中間用什麼符號分隔)
 ```{r}
+paste("Hello", "World")
 paste("Hello", "World", sep='')
+paste0("Hello", "World")
 ```
 
 基本處理-文字取代
 ====================================
+gsub(想要換掉的舊字串,想要換成的新字串,欲作取代的完整字串)
 ```{r}
 gsub("o","0","Hello World")
 ```
 
+基本處理-文字取代（多字元）|
+====================================
+gsub(想要換掉的舊字串1|想要換掉的舊字串2|...,想要換成的新字串,欲作取代的完整字串)
+```{r}
+gsub("o|l","0","Hello World")
+```
+
 基本處理-前後空白去除
 ====================================
+str_trim要使用前需要安裝與載入**stringr**套件
 ```{r}
 library(stringr)
 str_trim(" Hello World ")
@@ -196,6 +217,19 @@ grepl("A",c("Alex","Tom","Amy","Joy","Emma"))
 grepl("a",c("Alex","Tom","Amy","Joy","Emma")) 
 ```
 
+搜尋字串 - grep()
+====================================
+```{r}
+##在姓名文字向量中尋找A，回傳包含"A"的元素位置
+grep("A",c("Alex","Tom","Amy","Joy","Emma")) 
+##在姓名文字向量中尋找a，回傳包含"a"的元素位置
+grep("a",c("Alex","Tom","Amy","Joy","Emma")) 
+```
+
+搜尋字串 - grep()
+====================================
+type:alert
+多字元？
 
 文字字串處理練習
 ====================================
@@ -207,11 +241,8 @@ incremental:true
 library(rvest) ##載入
 DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
 DCardContent<-read_html(DCardCGU)
-post_title <- DCardContent %>% html_nodes(".PostEntry_titleUnread_ycJL0") %>% html_text()
-post_contentShort<- DCardContent %>% html_nodes(".PostEntry_excerpt_A0Bmh") %>% html_text()
-post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
-DCardCGU_posts <- data.frame(title = post_title, author=post_author, 
-                            content=post_contentShort,stringsAsFactors = F)
+DCardContentNode <-  html_nodes(DCardContent, ".PostEntry_excerpt_A0Bmh")
+post_contentShort<- html_text(DCardContentNode)
 ```
 
 文字字串處理練習
@@ -219,9 +250,9 @@ DCardCGU_posts <- data.frame(title = post_title, author=post_author,
 type:alert
 incremental:true
 
-- 在DCardCGU_posts的content中，出現“資管”字串的文章位置(index)
-- 將content中的文章用逗號（全形，）切割
-- 將content中的文章用逗號或問號或句號（全形，？。）切割
+- 在post_contentShort中，出現“資管”字串的文章位置(index)
+- 將post_contentShort中的文章用逗號（全形，）切割
+- 將post_contentShort中的文章用逗號或問號或句號（全形，？。）切割
 
 子集Subset - 一維資料
 ====================================
@@ -236,6 +267,7 @@ letters[1] ##取出letters向量的第一個元素
 子集Subset - 一維資料
 ====================================
 
+也可以用“負號”去掉不要的資料
 ```{r}
 letters[c(1,3,5)] ##取出letters向量的第1,3,5個元素
 letters[c(-1,-3,-5)] ##取出letters向量除了第1,3,5個元素之外的所有元素
@@ -320,10 +352,12 @@ knitr::kable(subset(iris,Species=="virginica"))
 ====================================
 **Row的篩選**也可搭配字串搜尋函數`grepl()`
 ```{r eval=F}
+grepl("color",iris$Species)
 iris[grepl("color",iris$Species),] ##Species包含"color"的列，所有的行
 ```
 ```{r echo=F}
-knitr::kable(iris[grepl("color",iris$Species),]) 
+head(grepl("color",iris$Species))
+knitr::kable(head(iris[grepl("color",iris$Species),]))
 ```
 
 子集Subset - head()
@@ -371,16 +405,32 @@ type:sub-section
 sort() 向量排序
 ====================================
 `sort()`函數可直接對向量做**由小到大**的排序
-```{r}
+```{r eval=F}
 head(islands) ##排序前的前六筆資料
+```
+```{r echo=F}
+knitr::kable(head(data.frame(islands)))
+```
+
+sort() 向量排序
+====================================
+`sort()`函數可直接對向量做**由小到大**的排序
+```{r eval=F}
 head(sort(islands)) ##由小到大排序後的前六筆資料
+```
+```{r echo=F}
+knitr::kable(head(data.frame(sort(islands))))
 ```
 
 sort() 向量排序
 ====================================
 如需**由大到小**排序，可將`decreasing`參數設為TRUE
-```{r}
+
+```{r eval=F}
 head(sort(islands,decreasing = T)) ##由大到小排序後的前六筆資料
+```
+```{r echo=F}
+knitr::kable(head(data.frame(sort(islands,decreasing = T)))) 
 ```
 
 order() 元素位置
@@ -390,7 +440,7 @@ order() 元素位置
 
 以`iris$Sepal.Length`為例，回傳的第一個位置為`14`，表示`iris$Sepal.Length`中，數值最小的元素為第14個元素。
 ```{r}
-order(iris$Sepal.Length)
+head(order(iris$Sepal.Length))
 iris$Sepal.Length[14]
 ```
 
@@ -579,7 +629,7 @@ knitr::kable(head(airqualityM))
 - variable欄位的值轉換為新欄位，並將value欄位填回新增的欄位
 
 ```{r}
-##欄位保留"Month","Day"外，其他欄位數目由variable定義
+#欄位保留"Month","Day"外，其他欄位由variable定義
 airqualityCast<-dcast(airqualityM, Month +Day~variable) 
 ```
 ```{r eval=F}
@@ -598,6 +648,13 @@ incremental:true
 - 保留YEAR和WEEK欄位，將各州資料轉換成長表
 - 檢查長表的內容與資料型態，共有幾個觀察值?幾個變數?
 
+寬表 長表 互換
+====================================
+也可使用tidyr package做到一樣的功能
+**gather()**、**spread()**
+
+- [官網](http://tidyr.tidyverse.org/)
+- [GitHub](https://github.com/tidyverse/tidyr)
 
 遺漏值處理
 ====================================
@@ -632,7 +689,7 @@ complete.cases(airquality)
 
 遺漏值處理 complete.cases()
 ====================================
-若資料型態為資料框，可使用`complete.cases`來選出完整的資料列，如果資料列是完整的，則會回傳真TRUE
+若資料型態為資料框，可使用`complete.cases`來選出完整的資料列，如果資料列(row)是完整的，則會回傳真TRUE
 
 ```{r eval=F}
 head(airquality[complete.cases(airquality),]) ##保留所有在complete.cases()檢查回傳TRUE的元素
