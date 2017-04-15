@@ -29,7 +29,7 @@ type:sub-section
 Each column is a variable. Each row is an observation.
 
 - 一個欄位（Column）內只有一個數值，最好要有凡人看得懂的Column Name
-- 不同的觀察值應該要在不同行（Raw）
+- 不同的觀察值應該要在不同行（Row）
 - 一張表裡面，有所有分析需要的資料
 - 如果一定要多張表，中間一定要有index可以把表串起來
 - One file, one table
@@ -155,9 +155,9 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title   : chr  "打工活動" "戰8+9？" "資管神釣手" "別再戰了" ...
- $ commentN: chr  "0" "26" "0" "20" ...
- $ likeN   : chr  "2" "12" "10" "8" ...
+ $ title   : chr  "長庚怪事真的很多" "路跑卡，讓子彈飛一會" "過關卡" "香緹早餐" ...
+ $ commentN: chr  "2" "1" "0" "1" ...
+ $ likeN   : chr  "1" "7" "1" "12" ...
 ```
 該如何將這兩個欄位轉成數字呢？
 
@@ -680,7 +680,7 @@ iris[grepl("color",iris$Species),] ##Species包含"color"的列，所有的行
 子集Subset - head()
 ====================================
 
-若想要快速取得資料框的前幾列(Raw)或後幾列，也可使用`head()`和`tail()`函數
+若想要快速取得資料框的前幾列(Row)或後幾列，也可使用`head()`和`tail()`函數
 
 ```r
 head(iris,5) ##取出iris資料框的前五列
@@ -697,7 +697,7 @@ head(iris,5) ##取出iris資料框的前五列
 子集Subset - tail()
 ====================================
 
-若想要快速取得資料框的前幾列(Raw)或後幾列，也可使用`head()`和`tail()`函數
+若想要快速取得資料框的前幾列(Row)或後幾列，也可使用`head()`和`tail()`函數
 
 ```r
 tail(iris,3) ##取出iris資料框的後三列
@@ -908,9 +908,9 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title   : chr  "打工活動" "戰8+9？" "資管神釣手" "別再戰了" ...
- $ commentN: chr  "0" "26" "0" "20" ...
- $ likeN   : chr  "2" "12" "10" "8" ...
+ $ title   : chr  "長庚怪事真的很多" "路跑卡，讓子彈飛一會" "過關卡" "香緹早餐" ...
+ $ commentN: chr  "2" "1" "0" "1" ...
+ $ likeN   : chr  "1" "7" "1" "12" ...
 ```
 - 將DCardCGU_posts按照評論數由高到低排序
 - 將DCardCGU_posts按照按讚數由高到低排序
@@ -927,7 +927,7 @@ type:sub-section
 
 `rbind()`和`cbind()`的參數可以是向量，也可以是資料框
 
-資料組合
+資料組合 - rbind()
 ====================================
 
 使用向量做資料整合範例:
@@ -944,7 +944,7 @@ rbind(c(1,2,3), #第一列
 [2,]    4    5    6
 ```
 
-資料組合
+資料組合 - rbind()
 ====================================
 
 使用資料框與向量做資料整合範例:
@@ -964,7 +964,7 @@ tail(irisAdd,2)
 |150 |5.9          |3           |5.1          |1.8         |virginica  |
 |151 |1            |1           |1            |1           |versicolor |
 
-資料組合
+資料組合 - cbind()
 ====================================
 
 使用向量做資料整合範例:
@@ -982,7 +982,7 @@ cbind(c(1,2,3), #第一行
 [3,]    3    6
 ```
 
-資料組合
+資料組合 - cbind()
 ====================================
 
 使用資料框與向量做資料整合範例:
@@ -1010,6 +1010,206 @@ incremental:true
 - 新增一個欄位，名稱為 1965，數值分別由上到下分別為100,60,30,10,5
     - 方法一 **cbind()** + names()
     - 方法二 **$**
+    
+資料結合 (Join)
+====================================
+
+除了按照行列順序的組合外，更常有的情形是依照某個欄位的值作為結合依據，如：
+
+- 用學號把以下兩個資料框結合成一個資料框
+    - 學號與姓名資料框
+    - 學號與宿舍床位資料框
+- 用縣市名稱與年度將人口資料與醫療資源資料結合
+
+資料結合 (Join)
+====================================
+原生的R環境可以用`merge()`函數將資料框結合，使用方法為`merge(資料框1,資料框2,by="結合依據欄位")`
+
+
+```r
+nameDF<-data.frame(ID=c(1,2,3,4,5),
+                  Name=c("Amy","Bob","Chris","David","Emma"))
+scoreDF<-data.frame(ID=c(1,2,4),
+                  Score=c(60,90,50))
+```
+
+資料結合 (Join)
+====================================
+
+```r
+nameDF
+```
+
+| ID|Name  |
+|--:|:-----|
+|  1|Amy   |
+|  2|Bob   |
+|  3|Chris |
+|  4|David |
+|  5|Emma  |
+---
+
+```r
+scoreDF
+```
+
+| ID| Score|
+|--:|-----:|
+|  1|    60|
+|  2|    90|
+|  4|    50|
+
+資料結合 (Join)
+====================================
+`merge(資料框1,資料框2,by="結合依據欄位")`
+
+
+```r
+merge(nameDF,scoreDF,by="ID")
+```
+
+| ID|Name  | Score|
+|--:|:-----|-----:|
+|  1|Amy   |    60|
+|  2|Bob   |    90|
+|  4|David |    50|
+
+資料結合 (Join) 資料保留？
+====================================
+`merge(資料框1,資料框2,by="結合依據欄位",all=T)`
+
+`merge(資料框1,資料框2,by="結合依據欄位",all.x=T)`
+
+`merge(資料框1,資料框2,by="結合依據欄位",all.y=T)`
+
+
+```r
+merge(nameDF,scoreDF,by="ID",all=T)
+```
+
+| ID|Name  | Score|
+|--:|:-----|-----:|
+|  1|Amy   |    60|
+|  2|Bob   |    90|
+|  3|Chris |    NA|
+|  4|David |    50|
+|  5|Emma  |    NA|
+
+資料結合 (Join) 更有效率的做法
+====================================
+
+`dplyr`套件提供更有效率的資料結合方法，包括:
+
+- inner_join()：保留有對應到的資料
+- left_join()：保留左邊資料框的所有資料
+- right_join()：保留右邊資料框的所有資料
+- full_join()：保留所有資料
+- semi_join()
+- anti_join()
+
+資料結合 - inner_join()
+====================================
+只保留兩張表都有的列
+使用方法 `inner_join(x, y, by = )`
+
+
+```r
+library(dplyr)
+inner_join(nameDF,scoreDF,by="ID")
+```
+
+```
+  ID  Name Score
+1  1   Amy    60
+2  2   Bob    90
+3  4 David    50
+```
+
+資料結合 - left_join()
+====================================
+保留左邊的表所有的列
+使用方法 `left_join(x, y, by = )`
+
+
+```r
+library(dplyr)
+left_join(nameDF,scoreDF,by="ID")
+```
+
+```
+  ID  Name Score
+1  1   Amy    60
+2  2   Bob    90
+3  3 Chris    NA
+4  4 David    50
+5  5  Emma    NA
+```
+
+資料結合 - right_join()
+====================================
+保留右邊的表所有的列
+使用方法 `right_join(x, y, by = )`
+
+
+```r
+library(dplyr)
+right_join(nameDF,scoreDF,by="ID")
+```
+
+```
+  ID  Name Score
+1  1   Amy    60
+2  2   Bob    90
+3  4 David    50
+```
+
+資料結合 - full_join()
+====================================
+保留所有的列
+使用方法 `full_join(x, y, by = )`
+
+
+```r
+library(dplyr)
+full_join(nameDF,scoreDF,by="ID")
+```
+
+```
+  ID  Name Score
+1  1   Amy    60
+2  2   Bob    90
+3  3 Chris    NA
+4  4 David    50
+5  5  Emma    NA
+```
+
+資料結合 - semi_join()
+====================================
+留下左邊的ID也有出現在右邊的表的列，右表資料不會輸出
+使用方法 `semi_join(x, y, by = )`
+
+
+```r
+library(dplyr)
+semi_join(nameDF,scoreDF,by="ID")
+```
+
+```
+  ID  Name
+1  1   Amy
+2  2   Bob
+3  4 David
+```
+
+資料結合練習
+====================================
+type:alert
+
+- 下載[105各村里教育程度資料](http://data.moi.gov.tw/MoiOD/Data/DataContent.aspx?oid=1F69C3BD-C367-4216-8969-14FDC609B4B0)
+- 下載[10512各村（里）戶籍人口統計月報表](http://data.moi.gov.tw/MoiOD/Data/DataContent.aspx?oid=4FB19859-0149-451E-A2F0-8388EF960415)
+- 分別讀入兩個csv檔
+- 依照區域別與村里名稱，將兩張表格結合，只留下有對應到的資料
+- 請問結合後的資料有幾列？
 
 長表與寬表
 ====================================

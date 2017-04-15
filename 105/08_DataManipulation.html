@@ -823,7 +823,7 @@ hljs.initHighlightingOnLoad();
 
 <ul>
 <li>一個欄位（Column）內只有一個數值，最好要有凡人看得懂的Column Name</li>
-<li>不同的觀察值應該要在不同行（Raw）</li>
+<li>不同的觀察值應該要在不同行（Row）</li>
 <li>一張表裡面，有所有分析需要的資料</li>
 <li>如果一定要多張表，中間一定要有index可以把表串起來</li>
 <li>One file, one table</li>
@@ -958,9 +958,9 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 </code></pre>
 
 <pre><code>&#39;data.frame&#39;:   30 obs. of  3 variables:
- $ title   : chr  &quot;打工活動&quot; &quot;戰8+9？&quot; &quot;資管神釣手&quot; &quot;別再戰了&quot; ...
- $ commentN: chr  &quot;0&quot; &quot;26&quot; &quot;0&quot; &quot;20&quot; ...
- $ likeN   : chr  &quot;2&quot; &quot;12&quot; &quot;10&quot; &quot;8&quot; ...
+ $ title   : chr  &quot;長庚怪事真的很多&quot; &quot;路跑卡，讓子彈飛一會&quot; &quot;過關卡&quot; &quot;香緹早餐&quot; ...
+ $ commentN: chr  &quot;2&quot; &quot;1&quot; &quot;0&quot; &quot;1&quot; ...
+ $ likeN   : chr  &quot;1&quot; &quot;7&quot; &quot;1&quot; &quot;12&quot; ...
 </code></pre>
 
 <p>該如何將這兩個欄位轉成數字呢？</p>
@@ -2011,7 +2011,7 @@ iris[grepl(&quot;color&quot;,iris$Species),] ##Species包含&quot;color&quot;的
 <section data-transition="linear" data-transition-speed="default">
 <h3>子集Subset - head()</h3>
 <div class="slideContent" >
-<p>若想要快速取得資料框的前幾列(Raw)或後幾列，也可使用<code>head()</code>和<code>tail()</code>函數</p>
+<p>若想要快速取得資料框的前幾列(Row)或後幾列，也可使用<code>head()</code>和<code>tail()</code>函數</p>
 
 <pre><code class="r">head(iris,5) ##取出iris資料框的前五列
 </code></pre>
@@ -2068,7 +2068,7 @@ iris[grepl(&quot;color&quot;,iris$Species),] ##Species包含&quot;color&quot;的
 <section data-transition="linear" data-transition-speed="default">
 <h3>子集Subset - tail()</h3>
 <div class="slideContent" >
-<p>若想要快速取得資料框的前幾列(Raw)或後幾列，也可使用<code>head()</code>和<code>tail()</code>函數</p>
+<p>若想要快速取得資料框的前幾列(Row)或後幾列，也可使用<code>head()</code>和<code>tail()</code>函數</p>
 
 <pre><code class="r">tail(iris,3) ##取出iris資料框的後三列
 </code></pre>
@@ -2551,9 +2551,9 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 </code></pre>
 
 <pre><code>&#39;data.frame&#39;:   30 obs. of  3 variables:
- $ title   : chr  &quot;打工活動&quot; &quot;戰8+9？&quot; &quot;資管神釣手&quot; &quot;別再戰了&quot; ...
- $ commentN: chr  &quot;0&quot; &quot;26&quot; &quot;0&quot; &quot;20&quot; ...
- $ likeN   : chr  &quot;2&quot; &quot;12&quot; &quot;10&quot; &quot;8&quot; ...
+ $ title   : chr  &quot;長庚怪事真的很多&quot; &quot;路跑卡，讓子彈飛一會&quot; &quot;過關卡&quot; &quot;香緹早餐&quot; ...
+ $ commentN: chr  &quot;2&quot; &quot;1&quot; &quot;0&quot; &quot;1&quot; ...
+ $ likeN   : chr  &quot;1&quot; &quot;7&quot; &quot;1&quot; &quot;12&quot; ...
 </code></pre>
 
 <ul>
@@ -2581,7 +2581,7 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>資料組合</h3>
+<h3>資料組合 - rbind()</h3>
 <div class="slideContent" >
 <p>使用向量做資料整合範例:</p>
 
@@ -2599,7 +2599,7 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>資料組合</h3>
+<h3>資料組合 - rbind()</h3>
 <div class="slideContent" >
 <p>使用資料框與向量做資料整合範例:</p>
 
@@ -2643,7 +2643,7 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>資料組合</h3>
+<h3>資料組合 - cbind()</h3>
 <div class="slideContent" >
 <p>使用向量做資料整合範例:</p>
 
@@ -2662,7 +2662,7 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>資料組合</h3>
+<h3>資料組合 - cbind()</h3>
 <div class="slideContent" >
 <p>使用資料框與向量做資料整合範例:</p>
 
@@ -2710,6 +2710,318 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 <li class="fragment">方法一 <strong>cbind()</strong> + names()</li>
 <li class="fragment">方法二 <strong>$</strong></li>
 </ul></li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 (Join)</h3>
+<div class="slideContent" >
+<p>除了按照行列順序的組合外，更常有的情形是依照某個欄位的值作為結合依據，如：</p>
+
+<ul>
+<li>用學號把以下兩個資料框結合成一個資料框
+
+<ul>
+<li>學號與姓名資料框</li>
+<li>學號與宿舍床位資料框</li>
+</ul></li>
+<li>用縣市名稱與年度將人口資料與醫療資源資料結合</li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 (Join)</h3>
+<div class="slideContent" >
+<p>原生的R環境可以用<code>merge()</code>函數將資料框結合，使用方法為<code>merge(資料框1,資料框2,by=&quot;結合依據欄位&quot;)</code></p>
+
+<pre><code class="r">nameDF&lt;-data.frame(ID=c(1,2,3,4,5),
+                  Name=c(&quot;Amy&quot;,&quot;Bob&quot;,&quot;Chris&quot;,&quot;David&quot;,&quot;Emma&quot;))
+scoreDF&lt;-data.frame(ID=c(1,2,4),
+                  Score=c(60,90,50))
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 (Join)</h3>
+<div class="column column1 slideContent" >
+<pre><code class="r">nameDF
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="right">ID</th>
+<th align="left">Name</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">1</td>
+<td align="left">Amy</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="left">Bob</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="left">Chris</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="left">David</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td align="left">Emma</td>
+</tr>
+</tbody></table>
+
+
+</div>
+
+<div class="column column2 slideContent" >
+
+
+<pre><code class="r">scoreDF
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="right">ID</th>
+<th align="right">Score</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">1</td>
+<td align="right">60</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="right">90</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="right">50</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 (Join)</h3>
+<div class="slideContent" >
+<p><code>merge(資料框1,資料框2,by=&quot;結合依據欄位&quot;)</code></p>
+
+<pre><code class="r">merge(nameDF,scoreDF,by=&quot;ID&quot;)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="right">ID</th>
+<th align="left">Name</th>
+<th align="right">Score</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">1</td>
+<td align="left">Amy</td>
+<td align="right">60</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="left">Bob</td>
+<td align="right">90</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="left">David</td>
+<td align="right">50</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 (Join) 資料保留？</h3>
+<div class="slideContent" >
+<p><code>merge(資料框1,資料框2,by=&quot;結合依據欄位&quot;,all=T)</code></p>
+
+<p><code>merge(資料框1,資料框2,by=&quot;結合依據欄位&quot;,all.x=T)</code></p>
+
+<p><code>merge(資料框1,資料框2,by=&quot;結合依據欄位&quot;,all.y=T)</code></p>
+
+<pre><code class="r">merge(nameDF,scoreDF,by=&quot;ID&quot;,all=T)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="right">ID</th>
+<th align="left">Name</th>
+<th align="right">Score</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">1</td>
+<td align="left">Amy</td>
+<td align="right">60</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="left">Bob</td>
+<td align="right">90</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="left">Chris</td>
+<td align="right">NA</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="left">David</td>
+<td align="right">50</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td align="left">Emma</td>
+<td align="right">NA</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 (Join) 更有效率的做法</h3>
+<div class="slideContent" >
+<p><code>dplyr</code>套件提供更有效率的資料結合方法，包括:</p>
+
+<ul>
+<li>inner_join()：保留有對應到的資料</li>
+<li>left_join()：保留左邊資料框的所有資料</li>
+<li>right_join()：保留右邊資料框的所有資料</li>
+<li>full_join()：保留所有資料</li>
+<li>semi_join()</li>
+<li>anti_join()</li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 - inner_join()</h3>
+<div class="slideContent" >
+<p>只保留兩張表都有的列
+使用方法 <code>inner_join(x, y, by = )</code></p>
+
+<pre><code class="r">library(dplyr)
+inner_join(nameDF,scoreDF,by=&quot;ID&quot;)
+</code></pre>
+
+<pre><code>  ID  Name Score
+1  1   Amy    60
+2  2   Bob    90
+3  4 David    50
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 - left_join()</h3>
+<div class="slideContent" >
+<p>保留左邊的表所有的列
+使用方法 <code>left_join(x, y, by = )</code></p>
+
+<pre><code class="r">library(dplyr)
+left_join(nameDF,scoreDF,by=&quot;ID&quot;)
+</code></pre>
+
+<pre><code>  ID  Name Score
+1  1   Amy    60
+2  2   Bob    90
+3  3 Chris    NA
+4  4 David    50
+5  5  Emma    NA
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 - right_join()</h3>
+<div class="slideContent" >
+<p>保留右邊的表所有的列
+使用方法 <code>right_join(x, y, by = )</code></p>
+
+<pre><code class="r">library(dplyr)
+right_join(nameDF,scoreDF,by=&quot;ID&quot;)
+</code></pre>
+
+<pre><code>  ID  Name Score
+1  1   Amy    60
+2  2   Bob    90
+3  4 David    50
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 - full_join()</h3>
+<div class="slideContent" >
+<p>保留所有的列
+使用方法 <code>full_join(x, y, by = )</code></p>
+
+<pre><code class="r">library(dplyr)
+full_join(nameDF,scoreDF,by=&quot;ID&quot;)
+</code></pre>
+
+<pre><code>  ID  Name Score
+1  1   Amy    60
+2  2   Bob    90
+3  3 Chris    NA
+4  4 David    50
+5  5  Emma    NA
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料結合 - semi_join()</h3>
+<div class="slideContent" >
+<p>留下左邊的ID也有出現在右邊的表的列，右表資料不會輸出
+使用方法 <code>semi_join(x, y, by = )</code></p>
+
+<pre><code class="r">library(dplyr)
+semi_join(nameDF,scoreDF,by=&quot;ID&quot;)
+</code></pre>
+
+<pre><code>  ID  Name
+1  1   Amy
+2  2   Bob
+3  4 David
+</code></pre>
+
+</div>
+
+</section>
+<section data-state="alert" data-transition="linear" data-transition-speed="default">
+<h3>資料結合練習</h3>
+<div class="slideContent" >
+<ul>
+<li>下載<a href="http://data.moi.gov.tw/MoiOD/Data/DataContent.aspx?oid=1F69C3BD-C367-4216-8969-14FDC609B4B0">105各村里教育程度資料</a></li>
+<li>下載<a href="http://data.moi.gov.tw/MoiOD/Data/DataContent.aspx?oid=4FB19859-0149-451E-A2F0-8388EF960415">10512各村（里）戶籍人口統計月報表</a></li>
+<li>分別讀入兩個csv檔</li>
+<li>依照區域別與村里名稱，將兩張表格結合，只留下有對應到的資料</li>
+<li>請問結合後的資料有幾列？</li>
 </ul>
 
 </div>
