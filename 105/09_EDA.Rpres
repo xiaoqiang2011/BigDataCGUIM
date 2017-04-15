@@ -1,7 +1,7 @@
 探索式資料分析
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/05/01
+date: 2017/04/17、05/01
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
