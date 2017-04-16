@@ -866,7 +866,7 @@ hljs.initHighlightingOnLoad();
 <section data-transition="linear" data-transition-speed="default">
 <h3>圖形化的分析</h3>
 <div class="slideContent" >
-<p>包括做圖與列表，本章節著重於量化的分析方式。</p>
+<p>包括做圖與列表，將會在下章節介紹，本章節著重於量化的分析方式。</p>
 
 </div>
 
@@ -1002,7 +1002,7 @@ hljs.initHighlightingOnLoad();
 <div class="slideContent" >
 <ul>
 <li>列聯表 Crosstabs <code>table()</code>, <code>prop.table()</code></li>
-<li>共變異數 Covariance <code>cov()</code> <a href="https://zh.wikipedia.org/wiki/%E5%8D%8F%E6%96%B9%E5%B7%AE">維基百科</a></li>
+<li>共變異數 Covariance <code>cov()</code> 用於衡量兩個變量的總體誤差，<a href="https://zh.wikipedia.org/wiki/%E5%8D%8F%E6%96%B9%E5%B7%AE">維基百科</a></li>
 <li>相關性 Correlation <code>cor()</code></li>
 </ul>
 
@@ -1012,6 +1012,8 @@ hljs.initHighlightingOnLoad();
 <section data-transition="linear" data-transition-speed="default">
 <h3>量化的分析方式: 雙變量-列聯表</h3>
 <div class="slideContent" >
+<p>輪子的數目與自手排的關係</p>
+
 <pre><code class="r">table(mtcars$cyl,mtcars$am)
 </code></pre>
 
@@ -1252,6 +1254,8 @@ prop.table(mtTable)
 <section data-transition="linear" data-transition-speed="default">
 <h3>量化的分析方式: 雙變量-相關性</h3>
 <div class="slideContent" >
+<p>油耗跟馬力的關聯性（相關係數）</p>
+
 <pre><code class="r">cor(mtcars$mpg,mtcars$hp)
 </code></pre>
 
@@ -1299,7 +1303,11 @@ prop.table(mtTable)
 <h2>data.table</h2>
 <div class="slideContent" >
 <ul>
-<li>讀大型資料快</li>
+<li>讀大型資料快
+
+<ul>
+<li>效能比較可參考<a href="https://github.com/Rdatatable/data.table/wiki/Benchmarks-%3A-Grouping">Benchmarks : Grouping</a></li>
+</ul></li>
 <li>分組計算方便</li>
 </ul>
 
@@ -1415,16 +1423,16 @@ class(NBA1516DT)
 <h3>data.table 注意事項</h3>
 <div class="slideContent" >
 <ul>
-<li>各參數間需要以逗號<code>,</code>區隔</li>
-<li>但若只需使用前方參數，後方的<strong>,</strong>可省略
+<li>各參數間需要以逗號 <code>,</code> 區隔</li>
+<li>但若只需使用前方參數，後方的 <strong>,</strong> 可省略
 
 <ul>
-<li>如只需使用<strong>i</strong>和<strong>j</strong>兩個參數，可以寫成<strong>DT[ i , j ]</strong>。</li>
+<li>如只需使用 <strong>i</strong> 和 <strong>j</strong> 兩個參數，可以寫成 <strong>DT[ i , j ]</strong>。</li>
 </ul></li>
-<li>若只需使用後方參數，前方的<strong>,</strong>不可省略
+<li>若只需使用後方參數，前方的 <strong>,</strong> 不可省略
 
 <ul>
-<li>如只需使用<strong>j</strong>一個參數，可以寫成<strong>DT[ , j ]</strong>。</li>
+<li>如只需使用 <strong>j</strong> 一個參數，可以寫成 <strong>DT[ , j ]</strong>。</li>
 </ul></li>
 </ul>
 
@@ -3327,7 +3335,7 @@ class(NBA1516DT)
 <li class="fragment">讀入NBA資料</li>
 </ul>
 
-<pre class="fragment"><code class="r">library(SportsAnalytics)
+<pre class="fragment"><code class="r">library(SportsAnalytics) #如果沒安裝過，要先安裝
 NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
 </code></pre>
 
@@ -3335,7 +3343,7 @@ NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
 <li class="fragment">轉成data.table</li>
 </ul>
 
-<pre class="fragment"><code class="r">library(data.table)
+<pre class="fragment"><code class="r">library(data.table) #如果沒安裝過，要先安裝
 NBA1516DT&lt;-data.table(NBA1516)
 </code></pre>
 
@@ -3389,14 +3397,28 @@ NBA1516DT[,mean(GamesPlayed)]
 <li>此時第二個欄位<code>j</code>需要使用<strong>.()</strong>或是<strong>list()</strong>包起來</li>
 </ul>
 
-<pre><code class="r">NBA1516DT[,.(mean(GamesPlayed),mean(PersonalFouls),mean(Steals))]
+<pre><code class="r">NBA1516DT[,.(mean(GamesPlayed),
+             mean(PersonalFouls),mean(Steals))]
 </code></pre>
 
 <pre><code>   V1  V2 V3
 1: 55 105 41
 </code></pre>
 
-<pre><code class="r">NBA1516DT[,list(mean(GamesPlayed),mean(PersonalFouls),mean(Steals))]
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>j 欄位選擇運算:計算多個數值</h3>
+<div class="slideContent" >
+<ul>
+<li>也可以一次計算多個數值</li>
+<li>同時計算平均出場數、平均犯規次數以及平均抄截次數</li>
+<li>此時第二個欄位<code>j</code>需要使用<strong>.()</strong>或是<strong>list()</strong>包起來</li>
+</ul>
+
+<pre><code class="r">NBA1516DT[,list(mean(GamesPlayed),
+                mean(PersonalFouls),mean(Steals))]
 </code></pre>
 
 <pre><code>   V1  V2 V3
@@ -3414,13 +3436,13 @@ NBA1516DT[,mean(GamesPlayed)]
 <li>在新欄位定義的前方加上<code>欄位名稱=</code>，替欄位取名字</li>
 </ul>
 
-<pre><code class="r">NBA1516DT[,.(GamesPlayedMean=mean(GamesPlayed),
-             PersonalFoulsMean=mean(PersonalFouls),
+<pre><code class="r">NBA1516DT[,.(GPlayedMean=mean(GamesPlayed),
+             PFoulsMean=mean(PersonalFouls),
              StealsMean=mean(Steals))]
 </code></pre>
 
-<pre><code>   GamesPlayedMean PersonalFoulsMean StealsMean
-1:              55               105         41
+<pre><code>   GPlayedMean PFoulsMean StealsMean
+1:          55        105         41
 </code></pre>
 
 </div>
@@ -3431,13 +3453,14 @@ NBA1516DT[,mean(GamesPlayed)]
 <div class="slideContent" >
 <p>不是只能算<strong>平均值</strong>，也可帶入其他函式做各式各樣的運算</p>
 
-<pre><code class="r">NBA1516DT[,.(GamesPlayedMax=max(GamesPlayed), #最大值
-             ThreesMadeMin=min(ThreesMade), #最小值
-             FieldGoalsMadeSD=sd(FieldGoalsMade))] #標準差
+<pre><code class="r">NBA1516DT[,
+    .(GPlayedMax=max(GamesPlayed), #最大值
+      TMadeMin=min(ThreesMade), #最小值
+      FGoalsMadeSD=sd(FieldGoalsMade))] #標準差
 </code></pre>
 
-<pre><code>   GamesPlayedMax ThreesMadeMin FieldGoalsMadeSD
-1:             82             0              166
+<pre><code>   GPlayedMax TMadeMin FGoalsMadeSD
+1:         82        0          166
 </code></pre>
 
 </div>
@@ -3452,12 +3475,12 @@ NBA1516DT[,mean(GamesPlayed)]
 </ul>
 
 <pre><code class="r">NBA1516DT[GamesPlayed&gt;70,
-          .(ThreesMadeMean=mean(ThreesMade), 
-            FieldGoalsMadeMean=mean(FieldGoalsMade))]
+          .(TMadeMean=mean(ThreesMade), 
+            FGMadeMean=mean(FieldGoalsMade))]
 </code></pre>
 
-<pre><code>   ThreesMadeMean FieldGoalsMadeMean
-1:             76                335
+<pre><code>   TMadeMean FGMadeMean
+1:        76        335
 </code></pre>
 
 </div>
@@ -3536,7 +3559,7 @@ NBA1516DT&lt;-data.table(NBA1516)
 
 <pre><code class="r">NBA1516DT[Position==&quot;C&quot;,
           .(.N,
-            ThreesAttMean=mean(ThreesAttempted)),
+            TAttMean=mean(ThreesAttempted)),
           by=Team]
 </code></pre>
 
@@ -3544,7 +3567,7 @@ NBA1516DT&lt;-data.table(NBA1516)
 <tr>
 <th align="left">Team</th>
 <th align="right">N</th>
-<th align="right">ThreesAttemptedMean</th>
+<th align="right">TAttMean</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -3714,8 +3737,9 @@ NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
 
 <pre><code class="r">##等於NBA1516[,c(&quot;Name&quot;,&quot;ThreesMade&quot;,&quot;ThreesAttempted&quot;,
 ##   &quot;FieldGoalsMade&quot;,&quot;FieldGoalsAttempted&quot;)]
-select1&lt;-select(NBA1516,Name,starts_with(&quot;Threes&quot;),
-                starts_with(&quot;FieldGoals&quot;))
+select1&lt;-
+    select(NBA1516,Name,starts_with(&quot;Threes&quot;),
+            starts_with(&quot;FieldGoals&quot;))
 head(select1)
 </code></pre>
 
@@ -3800,7 +3824,8 @@ head(select2,3)
 </ul>
 
 <pre><code class="r">##等同於NBA1516[,c(2:4,612)]
-select3&lt;-select(NBA1516,Name:FieldGoalsMade,-GamesPlayed)
+select3&lt;-
+    select(NBA1516,Name:FieldGoalsMade,-GamesPlayed)
 head(select3,3)
 </code></pre>
 

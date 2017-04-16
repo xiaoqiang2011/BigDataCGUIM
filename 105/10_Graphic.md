@@ -1015,14 +1015,13 @@ treemap(GNI2014,
 
 ![plot of chunk treemap1](10_Graphic-figure/treemap1-1.png)
 
-Treemap 練習 
+互動式資料呈現
 ====================================
-type:alert
-incremental:true
 
-- 下載[範例資料]()
-- 
-
+- [互動式資料呈現](http://yijutseng.github.io/DataScienceRBook/InteractiveGraphics.html)
+- [ggvis](http://yijutseng.github.io/DataScienceRBook/InteractiveGraphics.html#ggvis)
+- [googleVis](http://yijutseng.github.io/DataScienceRBook/InteractiveGraphics.html#googlevis)
+- [Plot.ly](http://yijutseng.github.io/DataScienceRBook/InteractiveGraphics.html#plot.ly)
 
 參考資料
 ====================================
@@ -1034,3 +1033,4 @@ type:sub-section
 - DataCamp課程2 [Data Visualization with ggplot2 (Part 2)](https://www.datacamp.com/courses/data-visualization-with-ggplot2-2)
 - DataCamp課程3 [Data Visualization with ggplot2 (Part 3)](https://www.datacamp.com/courses/data-visualization-with-ggplot2-3)
 - [每個人心中都有一碗巷口的牛肉湯](http://tequila1979.blogspot.tw/2017/01/blog-post.html)
+

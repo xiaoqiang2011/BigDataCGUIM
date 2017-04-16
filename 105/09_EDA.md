@@ -54,7 +54,7 @@ type:sub-section
 
 圖形化的分析
 ====================================
-包括做圖與列表，本章節著重於量化的分析方式。
+包括做圖與列表，將會在下章節介紹，本章節著重於量化的分析方式。
 
 
 量化的分析方式: 單變量
@@ -174,11 +174,12 @@ incremental:true
 量化的分析方式: 雙變量
 ====================================
 - 列聯表 Crosstabs `table()`, `prop.table()`
-- 共變異數 Covariance `cov()` [維基百科](https://zh.wikipedia.org/wiki/%E5%8D%8F%E6%96%B9%E5%B7%AE)
+- 共變異數 Covariance `cov()` 用於衡量兩個變量的總體誤差，[維基百科](https://zh.wikipedia.org/wiki/%E5%8D%8F%E6%96%B9%E5%B7%AE)
 - 相關性 Correlation `cor()`
 
 量化的分析方式: 雙變量-列聯表
 ====================================
+輪子的數目與自手排的關係
 
 ```r
 table(mtcars$cyl,mtcars$am)
@@ -258,6 +259,7 @@ cov(mtcars)
 
 量化的分析方式: 雙變量-相關性
 ====================================
+油耗跟馬力的關聯性（相關係數）
 
 ```r
 cor(mtcars$mpg,mtcars$hp)
@@ -291,8 +293,8 @@ data.table
 type:sub-section 
 
 - 讀大型資料快
+    - 效能比較可參考[Benchmarks : Grouping](https://github.com/Rdatatable/data.table/wiki/Benchmarks-%3A-Grouping)
 - 分組計算方便
-
 
 data.table
 ====================================
@@ -386,11 +388,11 @@ data.table 語法設計
 data.table 注意事項
 ====================================
 
-- 各參數間需要以逗號`,`區隔
-- 但若只需使用前方參數，後方的**,**可省略
-    - 如只需使用**i**和**j**兩個參數，可以寫成**DT[ i , j ]**。
-- 若只需使用後方參數，前方的**,**不可省略
-    - 如只需使用**j**一個參數，可以寫成**DT[ , j ]**。
+- 各參數間需要以逗號 `,` 區隔
+- 但若只需使用前方參數，後方的 **,** 可省略
+    - 如只需使用 **i** 和 **j** 兩個參數，可以寫成 **DT[ i , j ]**。
+- 若只需使用後方參數，前方的 **,** 不可省略
+    - 如只需使用 **j** 一個參數，可以寫成 **DT[ , j ]**。
 
 
 i 觀察值篩選邏輯
@@ -556,13 +558,13 @@ incremental:true
 - 讀入NBA資料
 
 ```r
-library(SportsAnalytics)
+library(SportsAnalytics) #如果沒安裝過，要先安裝
 NBA1516<-fetch_NBAPlayerStatistics("15-16")
 ```
 - 轉成data.table
 
 ```r
-library(data.table)
+library(data.table) #如果沒安裝過，要先安裝
 NBA1516DT<-data.table(NBA1516)
 ```
 - 試著用data.table語法篩選出所有助攻數(Assists)超過100的球員資料
@@ -603,7 +605,8 @@ j 欄位選擇運算:計算多個數值
 - 此時第二個欄位`j`需要使用**.()**或是**list()**包起來
 
 ```r
-NBA1516DT[,.(mean(GamesPlayed),mean(PersonalFouls),mean(Steals))]
+NBA1516DT[,.(mean(GamesPlayed),
+             mean(PersonalFouls),mean(Steals))]
 ```
 
 ```
@@ -611,9 +614,15 @@ NBA1516DT[,.(mean(GamesPlayed),mean(PersonalFouls),mean(Steals))]
 1: 55 105 41
 ```
 
+j 欄位選擇運算:計算多個數值
+====================================
+- 也可以一次計算多個數值
+- 同時計算平均出場數、平均犯規次數以及平均抄截次數
+- 此時第二個欄位`j`需要使用**.()**或是**list()**包起來
 
 ```r
-NBA1516DT[,list(mean(GamesPlayed),mean(PersonalFouls),mean(Steals))]
+NBA1516DT[,list(mean(GamesPlayed),
+                mean(PersonalFouls),mean(Steals))]
 ```
 
 ```
@@ -627,14 +636,14 @@ j 欄位選擇運算:計算多個數值
 - 在新欄位定義的前方加上`欄位名稱=`，替欄位取名字
 
 ```r
-NBA1516DT[,.(GamesPlayedMean=mean(GamesPlayed),
-             PersonalFoulsMean=mean(PersonalFouls),
+NBA1516DT[,.(GPlayedMean=mean(GamesPlayed),
+             PFoulsMean=mean(PersonalFouls),
              StealsMean=mean(Steals))]
 ```
 
 ```
-   GamesPlayedMean PersonalFoulsMean StealsMean
-1:              55               105         41
+   GPlayedMean PFoulsMean StealsMean
+1:          55        105         41
 ```
 
 j 欄位選擇運算:計算多個數值
@@ -642,14 +651,15 @@ j 欄位選擇運算:計算多個數值
 不是只能算**平均值**，也可帶入其他函式做各式各樣的運算
 
 ```r
-NBA1516DT[,.(GamesPlayedMax=max(GamesPlayed), #最大值
-             ThreesMadeMin=min(ThreesMade), #最小值
-             FieldGoalsMadeSD=sd(FieldGoalsMade))] #標準差
+NBA1516DT[,
+    .(GPlayedMax=max(GamesPlayed), #最大值
+      TMadeMin=min(ThreesMade), #最小值
+      FGoalsMadeSD=sd(FieldGoalsMade))] #標準差
 ```
 
 ```
-   GamesPlayedMax ThreesMadeMin FieldGoalsMadeSD
-1:             82             0              166
+   GPlayedMax TMadeMin FGoalsMadeSD
+1:         82        0          166
 ```
 
 DT[i,j]
@@ -659,13 +669,13 @@ DT[i,j]
 
 ```r
 NBA1516DT[GamesPlayed>70,
-          .(ThreesMadeMean=mean(ThreesMade), 
-            FieldGoalsMadeMean=mean(FieldGoalsMade))]
+          .(TMadeMean=mean(ThreesMade), 
+            FGMadeMean=mean(FieldGoalsMade))]
 ```
 
 ```
-   ThreesMadeMean FieldGoalsMadeMean
-1:             76                335
+   TMadeMean FGMadeMean
+1:        76        335
 ```
 
 data.table DT[i,j] 練習
@@ -714,17 +724,17 @@ DT[i,j,by]
 ```r
 NBA1516DT[Position=="C",
           .(.N,
-            ThreesAttMean=mean(ThreesAttempted)),
+            TAttMean=mean(ThreesAttempted)),
           by=Team]
 ```
 
-|Team |  N| ThreesAttemptedMean|
-|:----|--:|-------------------:|
-|OKL  |  3|                 7.0|
-|NOR  |  4|                 0.2|
-|LAC  |  2|                 0.5|
-|DET  |  2|                 3.0|
-|BRO  |  3|                10.0|
+|Team |  N| TAttMean|
+|:----|--:|--------:|
+|OKL  |  3|      7.0|
+|NOR  |  4|      0.2|
+|LAC  |  2|      0.5|
+|DET  |  2|      3.0|
+|BRO  |  3|     10.0|
 
 data.table 綜合練習
 ====================================
@@ -824,8 +834,9 @@ NBA1516<-fetch_NBAPlayerStatistics("15-16")
 ```r
 ##等於NBA1516[,c("Name","ThreesMade","ThreesAttempted",
 ##   "FieldGoalsMade","FieldGoalsAttempted")]
-select1<-select(NBA1516,Name,starts_with("Threes"),
-                starts_with("FieldGoals"))
+select1<-
+    select(NBA1516,Name,starts_with("Threes"),
+            starts_with("FieldGoals"))
 head(select1)
 ```
 
@@ -859,7 +870,8 @@ head(select2,3)
 
 ```r
 ##等同於NBA1516[,c(2:4,612)]
-select3<-select(NBA1516,Name:FieldGoalsMade,-GamesPlayed)
+select3<-
+    select(NBA1516,Name:FieldGoalsMade,-GamesPlayed)
 head(select3,3)
 ```
 
