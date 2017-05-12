@@ -1,17 +1,302 @@
-è³‡æ–™æ¢å‹˜
+¸ê®Æ±´°É
 ========================================================
-author: æ›¾æ„å„’ Yi-Ju Tseng
+author: ´¿·N¾§ Yi-Ju Tseng
 date: 2017/05/22
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
 
 
-å°æ‡‰æ›¸æœ¬ç« ç¯€
+¹ïÀ³®Ñ¥»³¹¸`
 ========================================================
-[10 è³‡æ–™æ¢å‹˜](http://yijutseng.github.io/DataScienceRBook/datamining.html)
+[10 ¸ê®Æ±´°É](http://yijutseng.github.io/DataScienceRBook/datamining.html)
 
-å¤§ç¶±
+¤jºõ
 ====================================
 type:sub-section 
 
+- ¤°»ò¬O¸ê®Æ±´°É
+- Regression °jÂk
+- Decision Trees ¨Mµ¦¾ğ
+
+¤°»ò¬O¸ê®Æ±´°É
+====================================
+
+**¸ê®Æ±´°É¡]Data mining¡^**¬O¥Î¤H¤u´¼¼z¡B¾÷¾¹¾Ç²ß¡B²Î­p¾Çªº¥æ¤e¤èªk¡A¦b¬Û¹ï¸û¤j«¬ªº¸ê®Æ¶°¤¤µo²{¼Ò¦¡ªº­pºâ¹Lµ{¡C¨Ï¥Î¸ê®Æ±´°É§Ş³N¥i¥H«Ø¥ß±q**¿é¤J¸ê®Æ**¾Ç²ß·s¸ê°T¡AÅÜ¦¨´¼¼zªº**ºtºâªk**©Î**¸ê®Æ¼Ò¦¡**¡A¥Î¨Ó**¹w´ú¨Æ¥ó**©Î**¨ó§U¨Mµ¦**¡C©Ò¥H¡A·í¸ê®Æ¤Ó`¤Ö`©Î`¤ÓÅ¼`ªº®É­Ô¡A¸ê®Æ±´°Éªº®Ä¤O·|³Q¼vÅT¡C
+
+¸ê®Æ±´°É­n¬£¤W¥Î³õ¡A¥²¶·¦³¥H¤U±ø¥ó¡G
+
+- ¦³¤@¨Ç¼Ò¦¡/¼Ò«¬¥i`¾Ç`
+- «ÜÃø©w¸q³o¨Ç¼Ò¦¡/¼Ò«¬
+- ¦³¸ê®Æ¥i`¾Ç`³o¨Ç¼Ò¦¡/¼Ò«¬
+
+¸ê®Æ±´°É¥iÀ³¥Î¦b
+====================================
+
+- ¤Ñ®ğ¹w´ú
+- ·j´M«ØÄ³¡BÁÊª««ØÄ³
+- ªÑ¥«¹w´ú
+- Áy³¡¿ëÃÑ¡B«ü¯¾¿ëÃÑ
+- ©U§£¶l¥ó¼Ğ°O
+- §¿¥¬°à°s
+
+¸ê®Æ±´°Éªº¤ÀÃş
+====================================
+
+¸ê®Æ±´°É¥i¤À¬°**ºÊ·ş¦¡**¾Ç²ß»P**«DºÊ·ş¦¡**¾Ç²ß¡AºÊ·ş¦¡¾Ç²ßªº¯SÂI¬O°V½m¸ê®Æ¤¤¦³**¥¿½Tµª®×**¡A¥Ñ¿é¤Jª«¥ó©M¹w´Á¿é¥X©Ò²Õ¦¨¡A¦Óºtºâªk¥i¥H¥Ñ°V½m¸ê®Æ¤¤¾Ç¨ì©Î«Ø¥ß¤@­Ó¼Ò¦¡¡A¨Ã¨Ì¦¹¼Ò¦¡±À´ú·sªº¹ê¨Ò¡F«DºÊ·ş¦¡¾Ç²ß«h¤£¥Î´£¨Ñ**¥¿½Tµª®×**¡A¤]´N¬O¤£»İ­n¤H¤O¨Ó¿é¤J¼ĞÅÒ¡A³æ¯Â§Q¥Î°V½m¸ê®Æªº¯S©Ê¡A±N¸ê®Æ¤À¸s¤À²Õ¡C
+
+¦¹¨âºØ¾Ç²ß¥i¸Ñ¨M¤£¦Pªº°İÃD¡A±ø¦C¦p¤U¡G
+
+- Supervised learning ºÊ·ş¦¡¾Ç²ß
+    - Regression °jÂk¡G¯u¹êªº'­È'¡]ªÑ²¼¡B®ğ·Å¡^
+    - Classification ¤ÀÃş¡G¤À¨âÃş¡]P/N, Yes/No, M/F, Sick/Not sick¡^/¤À¦hÃş (A/B/C/D)
+
+- Unsupervised learning «DºÊ·ş¦¡¾Ç²ß
+    - Clustering ¤À¸s
+    - Association Rules ÃöÁp¦¡³W«h
+
+ºÊ·ş¦¡¾Ç²ß
+====================================
+
+¦b**ºÊ·ş¦¡**¾Ç²ß¤¤±`¨£ªº¸ê®Æ±´°Éºtºâªk¦p¤U¡G 
+  - Linear Regression ½u©Ê°jÂk
+  - Logistic Regression Ã¹¦N´µ°jÂk¡BÅŞ¿è°jÂk
+  - Support Vector Machines ¤ä«ù¦V¶q¾÷
+  - Decision Trees ¨Mµ¦¾ğ
+  - K-Nearest Neighbor
+  - Neural Networks ¯«¸gºô¸ô
+  - Deep Learning ²`«×¾Ç²ß
+
+«DºÊ·ş¦¡¾Ç²ß
+====================================
+
+¦b**«DºÊ·ş¦¡**¾Ç²ß¤¤±`¨£ªº¸ê®Æ±´°Éºtºâªk¦p¤U¡G 
+  - Hierarchical clustering ¶¥¼h¦¡¤À¸s
+  - K-means clustering
+  - Neural Networks ¯«¸gºô¸ô
+  - Deep Learning ²`«×¾Ç²ß
+
+
+Regression °jÂk
+====================================
+
+Regression Analysis °jÂk¤ÀªR¥D­n¥Î¦b¤F¸Ñ¨â­Ó©Î¦h­ÓÅÜ¼Æ¶¡`¬O§_¬ÛÃö`¡B`¬ÛÃö¤è¦V»P±j«×`¡A¨Ã«Ø¥ß`¼Æ¾Ç¼Ò«¬`¥H«KÆ[¹î¯S©wÅÜ¼Æ¨Ó¹w´ú¬ã¨sªÌ·P¿³½ìªºÅÜ¼Æ¡A±`¨£ªº°jÂk¤ÀªRºtºâªk¥]¬A¡G
+
+- Linear Regression ½u©Ê°jÂk
+- Logistic Regression Ã¹¦N´µ°jÂk¡BÅŞ¿è°jÂk
+
+Linear Regression ½u©Ê°jÂk
+====================================
+
+­º¥ı¡A¹Á¸Õ±NLinear Regression ½u©Ê°jÂk¥Î¦bNBAªº¸ê®Æ¬İ¬İ¡A°µNBA`±o¤À`»P`¤W³õ¤ÀÄÁ¼Æ`ªº½u©Ê°jÂkÆ[¹î
+
+```r
+#Åª¤JSportsAnalytics package
+library(SportsAnalytics)
+#Â^¨ú2015-2016¦~²y©u²y­û¸ê®Æ
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+```
+
+°jÂk½u§@¹Ï
+====================================
+
+```r
+library(ggplot2)
+ggplot(NBA1516,aes(x=TotalMinutesPlayed,y=TotalPoints))+
+    geom_point()+geom_smooth(method = "glm")
+```
+
+![plot of chunk linear2](11_DataMining-figure/linear2-1.png)
+
+lm()
+====================================
+
+¦bR¤¤¡A³Ì°ò¥»ªºÂ²³æ½u©Ê°jÂk¤ÀªR¬°`lm()`¡A¨Ï¥Î¤èªk¬°`lm(formula,data=¸ê®Æ¦WºÙ)`¡A·f°tformula¨Ï¥Î¡Aformulaªº¼¶¼g¤èªk¬°¡G¨ÌÅÜ¶µ~¦ÛÅÜ¶µ1¡Ï¦ÛÅÜ¶µ2¡Ï....
+
+```r
+lm(TotalPoints~TotalMinutesPlayed,data =NBA1516)
+```
+
+```
+
+Call:
+lm(formula = TotalPoints ~ TotalMinutesPlayed, data = NBA1516)
+
+Coefficients:
+       (Intercept)  TotalMinutesPlayed  
+          -85.9071              0.4931  
+```
+
+TotalPoints = `0.4931` * TotalMinutesPlayed `-85.9071`
+
+glm()
+====================================
+§ó³Q¼sªx¨Ï¥Îªº¬O¼s¸q½u©Ê°jÂk¼Ò«¬generalized linear models (glm)¡A¨ç¼Æ¬°`glm()`¡A¨Ï¥Î¤èªk»P`lm()`Ãş¦ü¡A¥]¬A¤F½u©Ê°jÂk¼Ò«¬©MÅŞ¿è°jÂk¼Ò«¬¡C
+¦pªG»İ­n­×§ï¹w³]¼Ò«¬¡A¥i³]©wfamily°Ñ¼Æ¡G
+    - `family="gaussian"` ½u©Ê¼Ò«¬¼Ò«¬
+    - `family="binomial"` ÅŞ¿è°jÂk¼Ò«¬
+    - `family="poisson"` ¤R¥ËªQ°jÂk¼Ò«¬
+    
+Gaussian distribution
+====================================
+Gaussian distribution°ª´µ¨ç¼Æ¬O`±`ºA¤À¥¬`ªº±K«×¨ç¼Æ
+
+Binomial distribution
+====================================
+Binomial distribution¤G¶µ¤À¥¬¬O`n­Ó¿W¥ßªº¬O/«D¸ÕÅç¤¤¦¨¥\ªº¦¸¼Æ`ªºÂ÷´²¾÷²v¤À¥¬
+
+Poisson distribution
+====================================
+Poisson distribution`¦¸¼Æ`¤À§G¡G
+
+- ¬Y¤@ªA°È³]¬I¦b¤@©w®É¶¡¤º¨ü¨ìªºªA°È½Ğ¨Dªº¦¸¼Æ
+- ¤½¨®¯¸ªº­Ô«È¤H¼Æ
+- ¾÷¾¹¬G»Ù¼Æ
+- ¦ÛµM¨a®`µo¥Íªº¦¸¼Æ
+- DNA§Ç¦CªºÅÜ²§¼Æ.....
+
+glm()»PNBA
+====================================
+¥H¤U¬°¨Ï¥Î¦hÅÜ¶q½u©Ê°jÂk¨Ó¤ÀªR`±o¤À`»P`¤W³õ¤ÀÄÁ¼Æ`©M`¨â¤À²y¥X¤â¼Æ`ªºÃö«Y½d¨Ò
+
+
+```r
+# e+01: 10^1 / e-04: 10^(-4)
+glm(TotalPoints~TotalMinutesPlayed+FieldGoalsAttempted,
+    data =NBA1516)
+```
+
+```
+
+Call:  glm(formula = TotalPoints ~ TotalMinutesPlayed + FieldGoalsAttempted, 
+    data = NBA1516)
+
+Coefficients:
+        (Intercept)   TotalMinutesPlayed  FieldGoalsAttempted  
+         -1.799e+01           -2.347e-04            1.256e+00  
+
+Degrees of Freedom: 475 Total (i.e. Null);  473 Residual
+Null Deviance:	    99360000 
+Residual Deviance: 2160000 	AIC: 5367
+```
+
+TotalPoints = `-0.0002347` * TotalMinutesPlayed + `1.255794` *FieldGoalsAttempted  `-17.99`
+
+glm()»PNBA
+====================================
+¦p»İ¨Ï¥Î¦hÅÜ¶q½u©Ê°jÂk¨Ó¤ÀªR`±o¤À`»P`¤W³õ¤ÀÄÁ¼Æ`©M`¨â¤À²y¥X¤â¼Æ`©M`¦u³Æ¦ì¸m`ªºÃö«Y¡A¥i­×§ïformula
+
+
+```r
+glm(TotalPoints~TotalMinutesPlayed+FieldGoalsAttempted+Position,
+    data =NBA1516)
+```
+
+```
+
+Call:  glm(formula = TotalPoints ~ TotalMinutesPlayed + FieldGoalsAttempted + 
+    Position, data = NBA1516)
+
+Coefficients:
+        (Intercept)   TotalMinutesPlayed  FieldGoalsAttempted  
+          22.852223            -0.006537             1.275721  
+         PositionPF           PositionPG           PositionSF  
+         -39.416327           -65.034646           -38.522299  
+         PositionSG  
+         -52.175144  
+
+Degrees of Freedom: 474 Total (i.e. Null);  468 Residual
+  (1 observation deleted due to missingness)
+Null Deviance:	    99080000 
+Residual Deviance: 1975000 	AIC: 5322
+```
+
+```r
+# e+01: 10^1 / e-04: 10^(-4)
+```
+
+TotalPoints = `-0.0065` * TotalMinutesPlayed + `1.28` *FieldGoalsAttempted  `+22.85` + `22.85` * PositionPF + `-65.03` * PositionPG + `-38.52` * PositionSF + `-52.18` * PositionSG
+
+µêÀÀÅÜ¶µ Dummy Variable
+====================================
+¥Ñ¤W­zµ²ªG¥iµo²{¡A`¦u³Æ¦ì¸m`ªºÅÜ¶µ³QÂà¬°**µêÀÀÅÜ¶µ Dummy Variable**¡GPositionPF¡BPositionPG¡BPositionSF¡BPositionSG¡A¦pªG¬O±±²y«á½Ã¡]PG¡^¡A·|±o¨ì¡G
+
+  - PositionPF=0
+  - PositionPG=1
+  - PositionSF=0
+  - PositionSG=0
+  
+¤¤¾W¥h­ş¤F¡H
+====================================
+¨ä¹ê¤¤¾W³Q·í§@°ò·Ç¶µ¡A¤]´N¬O·í¦u³Æ¦ì¸m¬O¤¤¾W(C)®É¡A·|±o¨ì¡G
+
+  - PositionPF=0
+  - PositionPG=0
+  - PositionSF=0
+  - PositionSG=0
+
+½u©Ê°jÂkÁ`µ²
+====================================
+Á`µ²¥H¤W¡A¦hÅÜ¶q½u©Ê°jÂk¤ÀªR¦³¤U¦C¯S¦â¡G
+
+- °²³]¡G¦UÅÜ¼Æ¬Û¤¬¿W¥ß¡I
+- ­Y¦ÛÅÜ¶µX¬OÃş§OÅÜ¶µ¡A»İ­n«Ø¥ß`µêÀÀÅÜ¶µ`
+- ¦bR¸Ì¡A`Ãş§OÅÜ¶µ`½Ğ°O±oÂà¦¨factor¡AR·|¦Û°Ê«Ø¥ß`µêÀÀÅÜ¶µ`
+- ¥Î¦b`¨ÌÅÜ¼Æ¬°³sÄòÅÜ¼Æ`¡A`¦ÛÅÜ¼Æ¬°³sÄòÅÜ¼Æ©ÎµêÀÀÅÜ¼Æ`ªº³õ¦X
+
+
+Logistic Regression Ã¹¦N´µ°jÂk
+====================================
+
+Logistic Regression Ã¹¦N´µ°jÂk±`¥Î¦b`¨ÌÅÜ¼Æ¬°¤G¤¸ÅÜ¼Æ¡]«D0§Y1¡^`ªº³õ¦X¡A¦p¡G
+  - ¥Í¯f/¨S¥Í¯f
+  - ¿ı¨ú/¤£¿ı¨ú
+  - `family="binomial"` ÅŞ¿è°jÂk¼Ò«¬
+
+¤ÀªR¬°¤°»ò¿ı¨ú/¤£¿ı¨ú¡H
+====================================
+
+```r
+mydata <- read.csv("http://www.ats.ucla.edu/stat/data/binary.csv")
+```
+
+```r
+# GRE:¬Y¦Ò¸Õ¦¨ÁZ, GPA:¦b®Õ¥­§¡¦¨ÁZ, rank:¾Ç®ÕÁn±æ
+head(mydata)
+```
+
+|X..DOCTYPE.html.                                                                                                                           |
+|:------------------------------------------------------------------------------------------------------------------------------------------|
+|<html lang=en-US prefix=og: http://ogp.me/ns#>                                                                                             |
+|<head >                                                                                                                                    |
+|<meta charset=UTF-8 />                                                                                                                     |
+|<title>Statistics - Institute for Digital Research and Education</title><meta name=viewport content=width=device-width, initial-scale=1 /> |
+|<meta name=viewport content=width=device-width, initial-scale=1.0/><script>                                                                |
+|jQuery(function($) {                                                                                                                       |
+
+¤ÀªR¬°¤°»ò¿ı¨ú/¤£¿ı¨ú¡H
+====================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+Error in `$<-.data.frame`(`*tmp*`, "rank", value = integer(0)) : 
+  replacement has 0 rows, data has 526
+```
