@@ -302,6 +302,16 @@ Residual Deviance: 1975000 	AIC: 5322
   - PositionPG=0
   - PositionSF=0
   - PositionSG=0
+  
+線性迴歸練習
+====================================
+type:alert
+- 用[BostonHousing](https://archive.ics.uci.edu/ml/datasets/Housing)資料
+  - install.packages("mlbench")
+  - library(mlbench)
+  - data(BostonHousing)
+- 使用crim、tax、dis欄位預測medv(Median value of owner-occupied homes in $1000's)
+  - glm()廣義線性迴歸
 
 線性迴歸總結
 ====================================
@@ -366,6 +376,17 @@ sum$coefficients
 |rank3       | -1.3402039|  0.3453064| -3.881202|          0.0001039|
 |rank4       | -1.5514637|  0.4178316| -3.713131|          0.0002047|
 
+羅吉斯迴歸練習
+====================================
+type:alert
+- 用[PimaIndiansDiabetes](https://archive.ics.uci.edu/ml/datasets/Pima+Indians+Diabetes)資料
+  - install.packages("mlbench")
+  - library(mlbench)
+  - data(PimaIndiansDiabetes)
+- 使用pregnant、glucose、triceps、mass欄位預測diabetes
+  - glm()廣義線性迴歸
+  - family = "binomial"
+
 最佳模型篩選
 ====================================
 
@@ -383,7 +404,8 @@ OneVar<-glm(TotalPoints~
               TotalMinutesPlayed,
             data =NBA1516)
 TwoVar<-glm(TotalPoints~
-              TotalMinutesPlayed+FieldGoalsAttempted,
+              TotalMinutesPlayed+
+              FieldGoalsAttempted,
             data =NBA1516)
 ThreeVar<-glm(TotalPoints~
                 TotalMinutesPlayed+
@@ -535,5 +557,19 @@ prp(DT)
 - Variance reduction
 
 細節可參考[維基百科](https://en.wikipedia.org/wiki/Decision_tree_learning)
+
+
+決策樹 練習
+====================================
+type:alert
+- 用[PimaIndiansDiabetes](https://archive.ics.uci.edu/ml/datasets/Pima+Indians+Diabetes)資料
+  - install.packages("mlbench")
+  - library(mlbench)
+  - data(PimaIndiansDiabetes)
+- 使用所有欄位預測diabetes
+  - diabetes~.
+- 使用rpart.plot套件畫出決策樹
+  - prp()
+
 
 
