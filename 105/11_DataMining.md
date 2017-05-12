@@ -324,30 +324,216 @@ Logistic Regression 羅吉斯迴歸
 分析為什麼錄取/不錄取？
 ====================================
 
+```r
+mydata <- read.csv("https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/binary.csv")
+```
 
+```r
+# GRE:某考試成績, GPA:在校平均成績, rank:學校聲望
+head(mydata)
+```
 
+| admit| gre|  gpa| rank|
+|-----:|---:|----:|----:|
+|     0| 380| 3.61|    3|
+|     1| 660| 3.67|    3|
+|     1| 800| 4.00|    1|
+|     1| 640| 3.19|    4|
+|     0| 520| 2.93|    4|
+|     1| 760| 3.00|    2|
 
+分析為什麼錄取/不錄取？
+====================================
 
+```r
+mydata$rank <- factor(mydata$rank)
+mylogit <- glm(admit ~ gre + gpa + rank,
+               data = mydata, 
+               family = "binomial")
+sum<-summary(mylogit)
+```
 
+```r
+sum$coefficients
+```
 
+|            |   Estimate| Std. Error|   z value| Pr(>&#124;z&#124;)|
+|:-----------|----------:|----------:|---------:|------------------:|
+|(Intercept) | -3.9899791|  1.1399509| -3.500132|          0.0004650|
+|gre         |  0.0022644|  0.0010940|  2.069863|          0.0384651|
+|gpa         |  0.8040375|  0.3318193|  2.423119|          0.0153879|
+|rank2       | -0.6754429|  0.3164897| -2.134171|          0.0328288|
+|rank3       | -1.3402039|  0.3453064| -3.881202|          0.0001039|
+|rank4       | -1.5514637|  0.4178316| -3.713131|          0.0002047|
 
+最佳模型篩選
+====================================
 
+到底該用哪個模型來預測，會得到最準確的結果？在迴歸模型中，常用的判斷準則包括：
 
+  - Akaike’s Information Criterion (AIC)
+  - Bayesian Information Criterion (BIC)
 
+AIC
+====================================
+AIC和BIC都是數值越小越好，以下建立三個模型，並比較其AIC
 
+```r
+OneVar<-glm(TotalPoints~
+              TotalMinutesPlayed,
+            data =NBA1516)
+TwoVar<-glm(TotalPoints~
+              TotalMinutesPlayed+FieldGoalsAttempted,
+            data =NBA1516)
+ThreeVar<-glm(TotalPoints~
+                TotalMinutesPlayed+
+                FieldGoalsAttempted+Position,
+              data =NBA1516)
+```
+AIC
+====================================
 
-
-
-
-
-
-
-
-
-
-
+```r
+c(OneVar$aic,TwoVar$aic,ThreeVar$aic)
+```
 
 ```
-Error in read.table(file = file, header = header, sep = sep, quote = quote,  : 
-  no lines available in input
+[1] 6338.913 5366.763 5321.972
 ```
+所有參數都有用嗎？
+====================================
+- 在建立迴歸模型時，常會遇到的問題：到底該放多少參數？
+- 所有參數都有用嗎？
+- 藉由觀察coefficients來判斷參數在模型中的"實用程度"
+
+```r
+sum2<-summary(TwoVar)
+sum2$coefficients
+```
+
+|                    |    Estimate| Std. Error|    t value| Pr(>&#124;t&#124;)|
+|:-------------------|-----------:|----------:|----------:|------------------:|
+|(Intercept)         | -17.9885533|  5.6597583| -3.1783254|          0.0015783|
+|TotalMinutesPlayed  |  -0.0002347|  0.0094746| -0.0247733|          0.9802462|
+|FieldGoalsAttempted |   1.2557937|  0.0222395| 56.4668275|          0.0000000|
+
+所有參數都有用嗎？
+====================================
+
+```r
+sum3<-summary(ThreeVar)
+sum3$coefficients
+```
+
+|                    |    Estimate| Std. Error|    t value| Pr(>&#124;t&#124;)|
+|:-------------------|-----------:|----------:|----------:|------------------:|
+|(Intercept)         |  22.8522227|  9.0147144|  2.5349913|          0.0115696|
+|TotalMinutesPlayed  |  -0.0065369|  0.0092000| -0.7105322|          0.4777281|
+|FieldGoalsAttempted |   1.2757212|  0.0216472| 58.9324535|          0.0000000|
+|PositionPF          | -39.4163267|  9.9365417| -3.9668053|          0.0000843|
+|PositionPG          | -65.0346462| 10.2692504| -6.3329497|          0.0000000|
+|PositionSF          | -38.5222989| 10.4881704| -3.6729284|          0.0002675|
+|PositionSG          | -52.1751437|  9.9853312| -5.2251791|          0.0000003|
+
+Decision Trees 決策樹
+====================================
+- 在`樹狀目錄`中建立一系列分割，以建立模型
+- 這些分割會表示成`「節點」(Node)`
+- 每次發現輸入資料行與可預測資料行有明顯地相互關聯時，此演算法就會在模型中加入一個`節點`
+- 演算法決定分岔的方式不同
+
+![plot of chunk unnamed-chunk-7](11_DataMining-figure/unnamed-chunk-7-1.png)
+
+Classification And Regression Tree (CART)
+====================================
+- 常見的Classification And Regression Tree (CART)
+- 使用前須先安裝`rpart` packages
+
+
+```r
+install.packages("rpart")
+```
+
+CART
+====================================
+- 嘗試用用籃板/三分/助攻/抄截數據來判斷守備位置
+- 建立決策樹的函數為`rpart()`
+- 使用方式為`rpart(formula, data)`
+
+```r
+library(rpart)
+DT<-rpart(Position~
+            Blocks+ThreesMade+Assists+Steals,
+          data=NBA1516)
+DT
+```
+
+```
+n=475 (1 observation deleted due to missingness)
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+  1) root 475 364 PF (0.15 0.23 0.21 0.18 0.23)  
+    2) ThreesMade< 2.5 132  74 C (0.44 0.35 0.098 0.053 0.061)  
+      4) Blocks>=4.5 89  37 C (0.58 0.38 0.011 0.011 0.011) *
+      5) Blocks< 4.5 43  31 PF (0.14 0.28 0.28 0.14 0.16)  
+       10) Steals< 2.5 29  19 PF (0.17 0.34 0.14 0.21 0.14) *
+       11) Steals>=2.5 14   6 PG (0.071 0.14 0.57 0 0.21) *
+    3) ThreesMade>=2.5 343 242 SG (0.035 0.19 0.25 0.23 0.29)  
+      6) Assists>=170.5 96  39 PG (0.031 0.052 0.59 0.15 0.18) *
+      7) Assists< 170.5 247 163 SG (0.036 0.24 0.12 0.26 0.34)  
+       14) Blocks>=20.5 80  42 PF (0.062 0.48 0 0.26 0.2)  
+         28) Steals< 59.5 58  21 PF (0.069 0.64 0 0.14 0.16) *
+         29) Steals>=59.5 22   9 SF (0.045 0.045 0 0.59 0.32) *
+       15) Blocks< 20.5 167  99 SG (0.024 0.13 0.17 0.26 0.41)  
+         30) Assists< 81.5 110  68 SG (0.027 0.18 0.091 0.32 0.38)  
+           60) Blocks>=4.5 63  39 SF (0.032 0.29 0.016 0.38 0.29)  
+            120) ThreesMade< 13.5 19   9 PF (0.11 0.53 0 0.26 0.11) *
+            121) ThreesMade>=13.5 44  25 SF (0 0.18 0.023 0.43 0.36)  
+              242) Blocks< 9.5 17   7 SF (0 0.18 0.059 0.59 0.18) *
+              243) Blocks>=9.5 27  14 SG (0 0.19 0 0.33 0.48) *
+           61) Blocks< 4.5 47  23 SG (0.021 0.043 0.19 0.23 0.51) *
+         31) Assists>=81.5 57  31 SG (0.018 0.035 0.33 0.16 0.46)  
+           62) ThreesMade< 37 17   5 PG (0 0.12 0.71 0.059 0.12) *
+           63) ThreesMade>=37 40  16 SG (0.025 0 0.17 0.2 0.6) *
+```
+
+CART
+====================================
+
+```r
+par(mfrow=c(1,1), mar = rep(1,4)) #下,左,上,右
+plot(DT)
+text(DT, use.n=F, all=F, cex=1)
+```
+
+![plot of chunk rpart3](11_DataMining-figure/rpart3-1.png)
+
+決策樹圖
+====================================
+改用`rpart.plot` package 裡面的`prp()`
+
+```r
+#第一次使用前須先安裝
+install.packages("rpart.plot") 
+```
+
+```r
+library(rpart.plot)
+prp(DT)	
+```
+
+![plot of chunk rpart4](11_DataMining-figure/rpart4-1.png)
+
+決策樹 節點
+====================================
+決策樹演算法決定`節點`的方式如下：
+
+- Gini impurity
+- Information gain
+- Variance reduction
+
+細節可參考[維基百科](https://en.wikipedia.org/wiki/Decision_tree_learning)
+
+

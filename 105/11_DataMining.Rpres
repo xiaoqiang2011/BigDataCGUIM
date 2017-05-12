@@ -255,7 +255,7 @@ Logistic Regression 羅吉斯迴歸
 分析為什麼錄取/不錄取？
 ====================================
 ```{r logistic1,warning=F,message=F,fig.height=4.5}
-mydata <- read.csv("")
+mydata <- read.csv("https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/binary.csv")
 ```
 ```{r warning=F,message=F,eval=F}
 # GRE:某考試成績, GPA:在校平均成績, rank:學校聲望
@@ -270,9 +270,15 @@ knitr::kable(head(mydata))
 ```{r logistic2,warning=F,message=F,fig.height=4.5}
 mydata$rank <- factor(mydata$rank)
 mylogit <- glm(admit ~ gre + gpa + rank,
-               data = mydata, family = "binomial")
+               data = mydata, 
+               family = "binomial")
 sum<-summary(mylogit)
+```
+```{r eval=F}
 sum$coefficients
+```
+```{r logistic2x,echo=F,warning=F,message=F,fig.height=4.5}
+knitr::kable(sum$coefficients)
 ```
 
 最佳模型篩選
@@ -285,53 +291,85 @@ sum$coefficients
 
 AIC
 ====================================
-AIC和BIC都是數值越小越好，以下建立三個模型，並比較其AIC，
+AIC和BIC都是數值越小越好，以下建立三個模型，並比較其AIC
 ```{r linear7,warning=F,message=F,fig.height=4.5}
-OneVar<-glm(TotalPoints~TotalMinutesPlayed,data =NBA1516)
-TwoVar<-glm(TotalPoints~TotalMinutesPlayed+FieldGoalsAttempted,
+OneVar<-glm(TotalPoints~
+              TotalMinutesPlayed,
             data =NBA1516)
-ThreeVar<-glm(TotalPoints~TotalMinutesPlayed+FieldGoalsAttempted+Position,
+TwoVar<-glm(TotalPoints~
+              TotalMinutesPlayed+FieldGoalsAttempted,
+            data =NBA1516)
+ThreeVar<-glm(TotalPoints~
+                TotalMinutesPlayed+
+                FieldGoalsAttempted+Position,
               data =NBA1516)
+
+```
+AIC
+====================================
+```{r linear7aic,warning=F,message=F,fig.height=4.5}
 c(OneVar$aic,TwoVar$aic,ThreeVar$aic)
 ```
-
 所有參數都有用嗎？
 ====================================
-在建立迴歸模型時，常會遇到到底該放多少參數？所有參數都有用嗎？這類的問題，我們可以藉由觀察coefficients來判斷參數在模型中的"實用程度"
-```{r linear8,warning=F,message=F,fig.height=4.5}
+- 在建立迴歸模型時，常會遇到的問題：到底該放多少參數？
+- 所有參數都有用嗎？
+- 藉由觀察coefficients來判斷參數在模型中的"實用程度"
+```{r linear8,eval=F,warning=F,message=F,fig.height=4.5}
 sum2<-summary(TwoVar)
 sum2$coefficients
 ```
+```{r linear8x,echo=F,warning=F,message=F,fig.height=4.5}
+sum2<-summary(TwoVar)
+knitr::kable(sum2$coefficients) 
+```
 
 所有參數都有用嗎？
 ====================================
-```{r linear9,warning=F,message=F,fig.height=4.5}
+```{r linear9,eval=F,warning=F,message=F,fig.height=4.5}
 sum3<-summary(ThreeVar)
 sum3$coefficients
+```
+```{r linear9x,echo=F,warning=F,message=F,fig.height=4.5}
+sum3<-summary(ThreeVar)
+knitr::kable(sum3$coefficients)
 ```
 
 Decision Trees 決策樹
 ====================================
-決策樹是在`樹狀目錄`中建立一系列分割，以建立模型。這些分割會表示成`「節點」(Node)`。每次發現輸入資料行與可預測資料行有明顯地相互關聯時，此演算法就會在模型中加入一個`節點`。演算法決定分岔的方式不同，視它預測連續資料行或分隔資料行而定。
+- 在`樹狀目錄`中建立一系列分割，以建立模型
+- 這些分割會表示成`「節點」(Node)`
+- 每次發現輸入資料行與可預測資料行有明顯地相互關聯時，此演算法就會在模型中加入一個`節點`
+- 演算法決定分岔的方式不同
 
 ```{r echo=F}
+#install.packages("rpart")
+library(rpart)
+library(rpart.plot)
 DT<-rpart(Position~Blocks+ThreesMade+Assists+Steals,data=NBA1516)
 prp(DT)	
 ```
 
 Classification And Regression Tree (CART)
 ====================================
-以下介紹常見的Classification And Regression Tree (CART)，使用前須先安裝`rpart` packages [@R-rpart]
+- 常見的Classification And Regression Tree (CART)
+- 使用前須先安裝`rpart` packages
 
 ```{r rpart1,eval=F,warning=F,message=F,fig.height=4.5}
 install.packages("rpart")
 ```
-以前述NBA資料為例，嘗試用用籃板/三分/助攻/抄截數據來判斷守備位置，建立決策樹的函數為`rpart()`，使用方式為`rpart(formula, data)`
+
+CART
+====================================
+- 嘗試用用籃板/三分/助攻/抄截數據來判斷守備位置
+- 建立決策樹的函數為`rpart()`
+- 使用方式為`rpart(formula, data)`
 ```{r rpart2,warning=F,message=F,fig.height=4.5}
 library(rpart)
-DT<-rpart(Position~Blocks+ThreesMade+Assists+Steals,data=NBA1516)
+DT<-rpart(Position~
+            Blocks+ThreesMade+Assists+Steals,
+          data=NBA1516)
 DT
-#控球後衛（PG）、得分後衛（SG）、小前鋒（SF）、大前鋒（PF）和中鋒（C）
 ```
 
 CART
@@ -340,14 +378,14 @@ CART
 par(mfrow=c(1,1), mar = rep(1,4)) #下,左,上,右
 plot(DT)
 text(DT, use.n=F, all=F, cex=1)
-#控球後衛（PG）、得分後衛（SG）、小前鋒（SF）、大前鋒（PF）和中鋒（C）
 ```
 
 決策樹圖
 ====================================
-可以看出預設的`plot()`畫出來的圖很難看懂，可以改用`rpart.plot` package [@R-rpart.plot]裡面的`prp()`
+改用`rpart.plot` package 裡面的`prp()`
 ```{r rpart41,eval=F,warning=F,message=F,fig.height=4.5}
-install.packages("rpart.plot") #第一次使用前須先安裝
+#第一次使用前須先安裝
+install.packages("rpart.plot") 
 ```
 ```{r rpart4,warning=F,message=F,fig.height=4.5}
 library(rpart.plot)
