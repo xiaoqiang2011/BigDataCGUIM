@@ -1,109 +1,125 @@
-��Ʊ���
+資料探勘
 ========================================================
-author: ���N�� Yi-Ju Tseng
+author: 曾意儒 Yi-Ju Tseng
 date: 2017/05/22
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
 
 
-�����ѥ����`
+對應書本章節
 ========================================================
-[10 ��Ʊ���](http://yijutseng.github.io/DataScienceRBook/datamining.html)
+[10 資料探勘](http://yijutseng.github.io/DataScienceRBook/datamining.html)
 
-�j��
+大綱
 ====================================
 type:sub-section 
 
-- ����O��Ʊ���
-- Regression �j�k
-- Decision Trees �M����
+- 什麼是資料探勘
+- Regression 迴歸
+- Decision Trees 決策樹
 
-����O��Ʊ���
+什麼是資料探勘
 ====================================
 
-**��Ʊ��ɡ]Data mining�^**�O�ΤH�u���z�B�����ǲߡB�έp�Ǫ���e��k�A�b�۹���j������ƶ����o�{�Ҧ����p��L�{�C�ϥθ�Ʊ��ɧ޳N�i�H�إ߱q**��J���**�ǲ߷s��T�A�ܦ����z��**�t��k**��**��ƼҦ�**�A�Ψ�**�w���ƥ�**��**��U�M��**�C�ҥH�A����Ƥ�`��`��`��ż`���ɭԡA��Ʊ��ɪ��ĤO�|�Q�v�T�C
+建立從**輸入資料**學習新資訊，變成智慧的**演算法**或**資料模式**，用來**預測事件**或**協助決策**
 
-��Ʊ��ɭn���W�γ��A�������H�U����G
+- 用人工智慧、機器學習、統計學等方法
+- 在相對較大型的資料集中發現模式的計算過程
+- 當資料太`少`或`太髒`的時候，資料探勘的效力會被影響。
 
-- ���@�ǼҦ�/�ҫ��i`��`
-- �����w�q�o�ǼҦ�/�ҫ�
-- ����ƥi`��`�o�ǼҦ�/�ҫ�
+資料探勘條件
+====================================
+資料探勘要派上用場，必須有以下條件：
 
-��Ʊ��ɥi���Φb
+- 有一些模式/模型可`學`
+- 很難定義這些模式/模型
+- 有資料可`學`這些模式/模型
+
+資料探勘可應用在
 ====================================
 
-- �Ѯ�w��
-- �j�M��ĳ�B�ʪ���ĳ
-- �ѥ��w��
-- �y�����ѡB��������
-- �U���l��аO
-- ������s
+- 天氣預測
+- 搜尋建議、購物建議
+- 股市預測
+- 臉部辨識、指紋辨識
+- 垃圾郵件標記
+- 尿布啤酒
 
-��Ʊ��ɪ�����
+資料探勘的分類
 ====================================
 
-��Ʊ��ɥi����**�ʷ���**�ǲ߻P**�D�ʷ���**�ǲߡA�ʷ����ǲߪ��S�I�O�V�m��Ƥ���**���T����**�A�ѿ�J����M�w����X�Ҳզ��A�Ӻt��k�i�H�ѰV�m��Ƥ��Ǩ�Ϋإߤ@�ӼҦ��A�è̦��Ҧ������s����ҡF�D�ʷ����ǲ߫h���δ���**���T����**�A�]�N�O���ݭn�H�O�ӿ�J���ҡA��§Q�ΰV�m��ƪ��S�ʡA�N��Ƥ��s���աC
+- **監督式**學習與**非監督式**學習
+- 監督式學習的特點是訓練資料中有**正確答案**，由輸入物件和預期輸出所組成，而演算法可以由訓練資料中學到或建立一個模式，並依此模式推測新的實例
+- 非監督式學習則不用提供**正確答案**，也就是不需要人力來輸入標籤，單純利用訓練資料的特性，將資料分群分組。
 
-����ؾǲߥi�ѨM���P�����D�A���C�p�U�G
-
-- Supervised learning �ʷ����ǲ�
-    - Regression �j�k�G�u�ꪺ'��'�]�Ѳ��B��š^
-    - Classification �����G�������]P/N, Yes/No, M/F, Sick/Not sick�^/���h�� (A/B/C/D)
-
-- Unsupervised learning �D�ʷ����ǲ�
-    - Clustering ���s
-    - Association Rules ���p���W�h
-
-�ʷ����ǲ�
+資料探勘的分類
 ====================================
 
-�b**�ʷ���**�ǲߤ��`������Ʊ��ɺt��k�p�U�G 
-  - Linear Regression �u�ʰj�k
-  - Logistic Regression ù�N���j�k�B�޿�j�k
-  - Support Vector Machines ����V�q��
-  - Decision Trees �M����
+- Supervised learning 監督式學習
+    - Regression 迴歸：真實的'值'（股票、氣溫）
+    - Classification 分類：分兩類（P/N, Yes/No, M/F, Sick/Not sick）/分多類 (A/B/C/D)
+
+- Unsupervised learning 非監督式學習
+    - Clustering 分群
+    - Association Rules 關聯式規則
+
+監督式學習
+====================================
+
+在**監督式**學習中常見的資料探勘演算法如下： 
+  - Linear Regression 線性迴歸
+  - Logistic Regression 羅吉斯迴歸、邏輯迴歸
+  - Support Vector Machines 支持向量機
+  - Decision Trees 決策樹
   - K-Nearest Neighbor
-  - Neural Networks ���g����
-  - Deep Learning �`�׾ǲ�
+  - Neural Networks 神經網路
+  - Deep Learning 深度學習
 
-�D�ʷ����ǲ�
+非監督式學習
 ====================================
 
-�b**�D�ʷ���**�ǲߤ��`������Ʊ��ɺt��k�p�U�G 
-  - Hierarchical clustering ���h�����s
+在**非監督式**學習中常見的資料探勘演算法如下： 
+  - Hierarchical clustering 階層式分群
   - K-means clustering
-  - Neural Networks ���g����
-  - Deep Learning �`�׾ǲ�
+  - Neural Networks 神經網路
+  - Deep Learning 深度學習
 
 
-Regression �j�k
+Regression 迴歸
 ====================================
 
-Regression Analysis �j�k���R�D�n�Φb�F�Ѩ�өΦh���ܼƶ�`�O�_����`�B`������V�P�j��`�A�ëإ�`�ƾǼҫ�`�H�K�[��S�w�ܼƨӹw����s�̷P���쪺�ܼơA�`�����j�k���R�t��k�]�A�G
+- 用在了解兩個或多個變數間`是否相關`、`相關方向與強度`
+- 建立`數學模型`以便觀察特定變數來預測研究者感興趣的變數
 
-- Linear Regression �u�ʰj�k
-- Logistic Regression ù�N���j�k�B�޿�j�k
+常見的迴歸分析演算法包括：
 
-Linear Regression �u�ʰj�k
+- Linear Regression 線性迴歸
+- Logistic Regression 羅吉斯迴歸、邏輯迴歸
+
+Linear Regression 線性迴歸
 ====================================
 
-�����A���ձNLinear Regression �u�ʰj�k�ΦbNBA����ƬݬݡA��NBA`�o��`�P`�W��������`���u�ʰj�k�[��
+- 嘗試將Linear Regression 線性迴歸用在NBA的資料
+- 做NBA`得分`與`上場分鐘數`的線性迴歸觀察
 
 ```r
-#Ū�JSportsAnalytics package
+#讀入SportsAnalytics package
 library(SportsAnalytics)
-#�^��2015-2016�~�y�u�y�����
+#擷取2015-2016年球季球員資料
 NBA1516<-fetch_NBAPlayerStatistics("15-16")
 ```
 
-�j�k�u�@��
+迴歸線作圖
 ====================================
 
 ```r
 library(ggplot2)
-ggplot(NBA1516,aes(x=TotalMinutesPlayed,y=TotalPoints))+
-    geom_point()+geom_smooth(method = "glm")
+ggplot(NBA1516,
+       aes(x=TotalMinutesPlayed,
+           y=TotalPoints))+
+  geom_point()+
+  geom_smooth(method = "glm")
 ```
 
 ![plot of chunk linear2](11_DataMining-figure/linear2-1.png)
@@ -111,10 +127,13 @@ ggplot(NBA1516,aes(x=TotalMinutesPlayed,y=TotalPoints))+
 lm()
 ====================================
 
-�bR���A�̰򥻪�²��u�ʰj�k���R��`lm()`�A�ϥΤ�k��`lm(formula,data=��ƦW��)`�A�f�tformula�ϥΡAformula�����g��k���G���ܶ�~���ܶ�1�Ϧ��ܶ�2��....
+- 在R中，最基本的簡單線性迴歸分析為`lm()`
+- `lm(formula,data=資料名稱)`，搭配formula使用
+- formula的撰寫方法為：依變項~自變項1＋自變項2＋....
 
 ```r
-lm(TotalPoints~TotalMinutesPlayed,data =NBA1516)
+lm(TotalPoints~TotalMinutesPlayed,
+   data =NBA1516)
 ```
 
 ```
@@ -131,38 +150,45 @@ TotalPoints = `0.4931` * TotalMinutesPlayed `-85.9071`
 
 glm()
 ====================================
-��Q�s�x�ϥΪ��O�s�q�u�ʰj�k�ҫ�generalized linear models (glm)�A��Ƭ�`glm()`�A�ϥΤ�k�P`lm()`�����A�]�A�F�u�ʰj�k�ҫ��M�޿�j�k�ҫ��C
-�p�G�ݭn�ק�w�]�ҫ��A�i�]�wfamily�ѼơG
-    - `family="gaussian"` �u�ʼҫ��ҫ�
-    - `family="binomial"` �޿�j�k�ҫ�
-    - `family="poisson"` �R�˪Q�j�k�ҫ�
+- 更被廣泛使用的是廣義線性迴歸模型generalized linear models (glm)，`glm()`
+- 使用方法與`lm()`類似
+- 包括線性迴歸模型和邏輯迴歸模型
+- 如果需要修改預設模型，可設定family參數：
+    - `family="gaussian"` 線性模型模型
+    - `family="binomial"` 邏輯迴歸模型
+    - `family="poisson"` 卜瓦松迴歸模型
     
 Gaussian distribution
 ====================================
-Gaussian distribution������ƬO`�`�A����`���K�ר��
+Gaussian distribution高斯函數是`常態分布`的密度函數
+
+![plot of chunk unnamed-chunk-1](https://upload.wikimedia.org/wikipedia/commons/a/a9/Empirical_Rule.PNG)
 
 Binomial distribution
 ====================================
-Binomial distribution�G�������O`n�ӿW�ߪ��O/�D���礤���\������`���������v����
+Binomial distribution二項分布是`n個獨立的是/非試驗中成功的次數`的離散機率分布
+![plot of chunk unnamed-chunk-2](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Pascal%27s_triangle%3B_binomial_distribution.svg/794px-Pascal%27s_triangle%3B_binomial_distribution.svg.png)
 
 Poisson distribution
 ====================================
-Poisson distribution`����`���G�G
+Poisson distribution`次數`分佈：
 
-- �Y�@�A�ȳ]�I�b�@�w�ɶ������쪺�A�ȽШD������
-- ���������ԫȤH��
-- �����G�ټ�
-- �۵M�a�`�o�ͪ�����
-- DNA�ǦC���ܲ���.....
+- 某一服務設施在一定時間內受到的服務請求的次數
+- 公車站的候客人數
+- 自然災害發生的次數
 
-glm()�PNBA
+![plot of chunk unnamed-chunk-3](https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Poisson_pmf.svg/360px-Poisson_pmf.svg.png)
+
+
+
+廣義線性迴歸與NBA
 ====================================
-�H�U���ϥΦh�ܶq�u�ʰj�k�Ӥ��R`�o��`�P`�W��������`�M`����y�X���`�����Y�d��
-
+分析`得分`與`上場分鐘數`和`兩分球出手數`的關係範例
 
 ```r
 # e+01: 10^1 / e-04: 10^(-4)
-glm(TotalPoints~TotalMinutesPlayed+FieldGoalsAttempted,
+glm(TotalPoints ~ 
+      TotalMinutesPlayed+FieldGoalsAttempted,
     data =NBA1516)
 ```
 
@@ -180,15 +206,32 @@ Null Deviance:	    99360000
 Residual Deviance: 2160000 	AIC: 5367
 ```
 
+廣義線性迴歸與NBA
+====================================
+
+```
+
+Call:  glm(formula = TotalPoints ~ TotalMinutesPlayed + FieldGoalsAttempted, 
+    data = NBA1516)
+
+Coefficients:
+        (Intercept)   TotalMinutesPlayed  FieldGoalsAttempted  
+         -1.799e+01           -2.347e-04            1.256e+00  
+
+Degrees of Freedom: 475 Total (i.e. Null);  473 Residual
+Null Deviance:	    99360000 
+Residual Deviance: 2160000 	AIC: 5367
+```
 TotalPoints = `-0.0002347` * TotalMinutesPlayed + `1.255794` *FieldGoalsAttempted  `-17.99`
 
-glm()�PNBA
+廣義線性迴歸與NBA
 ====================================
-�p�ݨϥΦh�ܶq�u�ʰj�k�Ӥ��R`�o��`�P`�W��������`�M`����y�X���`�M`�u�Ʀ�m`�����Y�A�i�ק�formula
+如需使用多變量線性迴歸來分析`得分`與`上場分鐘數`和`兩分球出手數`和`守備位置`的關係，可修改formula
 
 
 ```r
-glm(TotalPoints~TotalMinutesPlayed+FieldGoalsAttempted+Position,
+glm(TotalPoints~
+      TotalMinutesPlayed+FieldGoalsAttempted+Position,
     data =NBA1516)
 ```
 
@@ -215,67 +258,75 @@ Residual Deviance: 1975000 	AIC: 5322
 # e+01: 10^1 / e-04: 10^(-4)
 ```
 
+廣義線性迴歸與NBA
+====================================
 TotalPoints = `-0.0065` * TotalMinutesPlayed + `1.28` *FieldGoalsAttempted  `+22.85` + `22.85` * PositionPF + `-65.03` * PositionPG + `-38.52` * PositionSF + `-52.18` * PositionSG
 
-�����ܶ� Dummy Variable
+```
+
+Call:  glm(formula = TotalPoints ~ TotalMinutesPlayed + FieldGoalsAttempted + 
+    Position, data = NBA1516)
+
+Coefficients:
+        (Intercept)   TotalMinutesPlayed  FieldGoalsAttempted  
+          22.852223            -0.006537             1.275721  
+         PositionPF           PositionPG           PositionSF  
+         -39.416327           -65.034646           -38.522299  
+         PositionSG  
+         -52.175144  
+
+Degrees of Freedom: 474 Total (i.e. Null);  468 Residual
+  (1 observation deleted due to missingness)
+Null Deviance:	    99080000 
+Residual Deviance: 1975000 	AIC: 5322
+```
+
+
+虛擬變項 Dummy Variable
 ====================================
-�ѤW�z���G�i�o�{�A`�u�Ʀ�m`���ܶ��Q�ର**�����ܶ� Dummy Variable**�GPositionPF�BPositionPG�BPositionSF�BPositionSG�A�p�G�O���y��á]PG�^�A�|�o��G
+- `守備位置`的變項被轉為**虛擬變項 Dummy Variable**
+- PositionPF、PositionPG、PositionSF、PositionSG
+- 如果是控球後衛（PG），會得到：
 
   - PositionPF=0
   - PositionPG=1
   - PositionSF=0
   - PositionSG=0
   
-���W�h���F�H
+中鋒去哪了？
 ====================================
-��ꤤ�W�Q���@��Ƕ��A�]�N�O���u�Ʀ�m�O���W(C)�ɡA�|�o��G
+- 中鋒被當作基準項
+- 當守備位置是中鋒( C )時，會得到：
 
   - PositionPF=0
   - PositionPG=0
   - PositionSF=0
   - PositionSG=0
 
-�u�ʰj�k�`��
+線性迴歸總結
 ====================================
-�`���H�W�A�h�ܶq�u�ʰj�k���R���U�C�S��G
+總結以上，多變量線性迴歸分析有下列特色：
 
-- ���]�G�U�ܼƬۤ��W�ߡI
-- �Y���ܶ�X�O���O�ܶ��A�ݭn�إ�`�����ܶ�`
-- �bR�̡A`���O�ܶ�`�аO�o�নfactor�AR�|�۰ʫإ�`�����ܶ�`
-- �Φb`���ܼƬ��s���ܼ�`�A`���ܼƬ��s���ܼƩε����ܼ�`�����X
+- 假設：各變數相互獨立！
+- 若自變項X是類別變項，需要建立`虛擬變項`
+- 在R裡，`類別變項`請記得轉成factor，R會自動建立`虛擬變項`
+- 用在`依變數為連續變數`，`自變數為連續變數或虛擬變數`的場合
 
 
-Logistic Regression ù�N���j�k
-====================================
-
-Logistic Regression ù�N���j�k�`�Φb`���ܼƬ��G���ܼơ]�D0�Y1�^`�����X�A�p�G
-  - �ͯf/�S�ͯf
-  - ����/������
-  - `family="binomial"` �޿�j�k�ҫ�
-
-���R���������/�������H
+Logistic Regression 羅吉斯迴歸
 ====================================
 
-```r
-mydata <- read.csv("http://www.ats.ucla.edu/stat/data/binary.csv")
-```
+常用在`依變數為二元變數（非0即1）`的場合，如：
+  - 生病/沒生病
+  - 錄取/不錄取
+  - `family="binomial"` 邏輯迴歸模型
 
-```r
-# GRE:�Y�Ҹզ��Z, GPA:�b�ե������Z, rank:�Ǯ��n��
-head(mydata)
-```
-
-|X..DOCTYPE.html.                                                                                                                           |
-|:------------------------------------------------------------------------------------------------------------------------------------------|
-|<html lang=en-US prefix=og: http://ogp.me/ns#>                                                                                             |
-|<head >                                                                                                                                    |
-|<meta charset=UTF-8 />                                                                                                                     |
-|<title>Statistics - Institute for Digital Research and Education</title><meta name=viewport content=width=device-width, initial-scale=1 /> |
-|<meta name=viewport content=width=device-width, initial-scale=1.0/><script>                                                                |
-|jQuery(function($) {                                                                                                                       |
-
-���R���������/�������H
+分析為什麼錄取/不錄取？
 ====================================
+
+
+
+
 
 
 
@@ -297,6 +348,6 @@ head(mydata)
 
 
 ```
-Error in `$<-.data.frame`(`*tmp*`, "rank", value = integer(0)) : 
-  replacement has 0 rows, data has 526
+Error in read.table(file = file, header = header, sep = sep, quote = quote,  : 
+  no lines available in input
 ```

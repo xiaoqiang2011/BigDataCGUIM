@@ -1,0 +1,33 @@
+Big Data Integration and Processing In R
+========================================================
+author: 曾意儒 Yi-Ju Tseng
+date: 2017/05/20
+autosize: true
+font-family: 'Microsoft JhengHei'
+navigation: slide
+
+
+
+sparklyr單機套件載入與安裝
+========================================================
+安裝的程式碼（已註解部分），一台電腦只需要安裝一次
+```{r}
+#install.packages("dplyr")
+#install.packages("devtools")
+#devtools::install_github("rstudio/sparklyr")
+#install.packages("nycflights13")
+library(dplyr)
+library(sparklyr)
+#spark_install(version = "2.1.0")
+```
+
+Spark單機連接測試
+========================================================
+```{r}
+sc <- spark_connect(master = "local", version = "2.1.0")
+flights_tbl <- copy_to(sc, nycflights13::flights, "flights")
+src_tbls(sc)
+flights_tbl %>% filter(dep_delay == 2)
+spark_disconnect(sc)
+```
+
