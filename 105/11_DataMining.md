@@ -572,4 +572,380 @@ type:alert
   - prp()
 
 
+模型驗證
+====================================
+- 在完成模型訓練後，為了驗證模型訓練的好不好，需要用一組**獨立**的測試資料，來做模型的驗證
+- 在訓練模型前，必須特別留意是否有保留一份**獨立的資料**，並確保在訓練模型時都不用到此獨立資料集。
+
+因此，資料集可分為以下兩種：
+
+- **訓練組** Training set, Development set: 讓演算法`學`到`知識`
+- **測試組** Test set, Validation set: 驗證`學`的怎麼樣
+
+模型驗證
+====================================
+- Training set和Test set通常會比例分配
+  - 如2/3的資料設為`Training set`
+  - 剩下的1/3做驗證`Test set`
+- 以下圖的監督式學習流程圖為例，可以注意到綠色箭頭的資料集在訓練過程中從未被使用。
+
+![plot of chunk unnamed-chunk-8](figure/SupervisedLearning.png)
+
+模型驗證
+====================================
+- 以Training set來`選看起來最好的模型`
+- 用Test set來`驗證模型是不是真的很好`
+- 想像.....訓練出來題庫答得好的學生，寫到新題目不一定會寫！？
+- 訓練模型時，只能看Training set，用Training set來選一個最好的模型
+- 訓練模型時，不能偷看Test set，才是真正的驗證
+
+
+Regression 迴歸驗證
+====================================
+
+以NBA資料為例，首先先將資料讀入
+
+```r
+#讀入SportsAnalytics package
+if (!require('SportsAnalytics')){
+    install.packages("SportsAnalytics")
+    library(SportsAnalytics)
+}
+#擷取2015-2016年球季球員資料
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+#只保留完整的資料
+NBA1516<-NBA1516[complete.cases(NBA1516),]
+```
+
+Regression 迴歸驗證：資料分組
+====================================
+為分出訓練組與測試組，需使用隨機抽樣的方式
+
+```r
+sample(1:10,3) # 從1到10，隨機取三個數字
+```
+
+```
+[1] 3 4 7
+```
+
+```r
+sample(1:nrow(NBA1516),nrow(NBA1516)/3) #從第一列到最後一列，隨機取1/3列數
+```
+
+```
+  [1] 108 325 398 353 123 143 144 472 139 326 474 290 303 390 154  71   1
+ [18]  51 334 374 201 104 185 445  52 172 296 240 137 219 427 155 248 278
+ [35] 384 254 204 475 412 146 118  42 236  64 179 438 348  33 418 451 162
+ [52] 428  45 158 423 157  22 141 151 350 383 351 417 113 126 114 239 322
+ [69] 262  60 302 426  86 166 465 287 110 187 467 245 441  38 142 233 270
+ [86] 337 408 257 345 449 214 196 363 420 285 176  85  84 253 218 344  76
+[103] 246 244 241  18 111 235 355 450 294 443 147 156 266  12  90 211 301
+[120]  15  53 459 382 435 299 190 329  20 128 471 463 161 361 275 413 440
+[137] 422 291 217 394  50 256 120 116 401 309 444 221 360  56 269 247 310
+[154] 180 280 437 117 184
+```
+
+Regression 迴歸驗證：資料分組
+====================================
+使用隨機抽樣法，選出1/3的元素位置，把NBA的資料分成Training 和 Test set
+
+```r
+NBA1516$Test<-F #新增一個參數紀錄分組
+#隨機取1/3當Test set
+NBA1516[sample(1:nrow(NBA1516),nrow(NBA1516)/3),]$Test<-T
+# Training set : Test set球員數
+c(sum(NBA1516$Test==F),sum(NBA1516$Test==T))
+```
+
+```
+[1] 317 158
+```
+
+Regression 迴歸驗證：模型訓練
+====================================
+並用訓練組的資料（NBA1516$Test==F），訓練一個多變數線性迴歸模型
+
+```r
+fit<-glm(TotalPoints~TotalMinutesPlayed+FieldGoalsAttempted+
+             Position+ThreesAttempted+FreeThrowsAttempted,
+              data =NBA1516[NBA1516$Test==F,])
+summary(fit)$coefficients
+```
+
+```
+                        Estimate  Std. Error   t value      Pr(>|t|)
+(Intercept)           7.48869501 6.749514069  1.109516  2.680731e-01
+TotalMinutesPlayed    0.01192765 0.006942915  1.717961  8.680885e-02
+FieldGoalsAttempted   0.95571510 0.021558158 44.331947 9.994107e-136
+PositionPF          -15.57351653 7.427439330 -2.096754  3.683065e-02
+PositionPG          -36.43150479 8.040507007 -4.530996  8.408743e-06
+PositionSF          -19.43606280 8.308298425 -2.339355  1.995591e-02
+PositionSG          -18.99678595 8.295109451 -2.290119  2.269020e-02
+ThreesAttempted       0.12977381 0.028024869  4.630666  5.382474e-06
+FreeThrowsAttempted   0.73225375 0.035491426 20.631849  5.295642e-60
+```
+
+Regression 迴歸驗證：逐步選擇模型
+====================================
+逐步選擇模型 stepwise 後退學習：一開始先將所有參數加到模型裡，再一個一個拿掉
+
+```r
+library(MASS)
+##根據AIC，做逐步選擇, 預設倒退學習 direction = "backward"
+##trace=FALSE: 不要顯示步驟
+finalModel_B<-stepAIC(fit,direction = "backward",trace=FALSE)
+summary(finalModel_B)$coefficients
+```
+
+```
+                        Estimate  Std. Error   t value      Pr(>|t|)
+(Intercept)           7.48869501 6.749514069  1.109516  2.680731e-01
+TotalMinutesPlayed    0.01192765 0.006942915  1.717961  8.680885e-02
+FieldGoalsAttempted   0.95571510 0.021558158 44.331947 9.994107e-136
+PositionPF          -15.57351653 7.427439330 -2.096754  3.683065e-02
+PositionPG          -36.43150479 8.040507007 -4.530996  8.408743e-06
+PositionSF          -19.43606280 8.308298425 -2.339355  1.995591e-02
+PositionSG          -18.99678595 8.295109451 -2.290119  2.269020e-02
+ThreesAttempted       0.12977381 0.028024869  4.630666  5.382474e-06
+FreeThrowsAttempted   0.73225375 0.035491426 20.631849  5.295642e-60
+```
+
+Regression 迴歸驗證：逐步選擇模型
+====================================
+逐步選擇模型 stepwise 雙向學習：參數加加減減
+
+```r
+##根據AIC，做逐步選擇, 雙向學習 direction = "both"
+finalModel_Both<-stepAIC(fit,direction = "both",trace=FALSE)
+summary(finalModel_Both)$coefficients
+```
+
+```
+                        Estimate  Std. Error   t value      Pr(>|t|)
+(Intercept)           7.48869501 6.749514069  1.109516  2.680731e-01
+TotalMinutesPlayed    0.01192765 0.006942915  1.717961  8.680885e-02
+FieldGoalsAttempted   0.95571510 0.021558158 44.331947 9.994107e-136
+PositionPF          -15.57351653 7.427439330 -2.096754  3.683065e-02
+PositionPG          -36.43150479 8.040507007 -4.530996  8.408743e-06
+PositionSF          -19.43606280 8.308298425 -2.339355  1.995591e-02
+PositionSG          -18.99678595 8.295109451 -2.290119  2.269020e-02
+ThreesAttempted       0.12977381 0.028024869  4.630666  5.382474e-06
+FreeThrowsAttempted   0.73225375 0.035491426 20.631849  5.295642e-60
+```
+
+Regression 迴歸驗證：模型驗證
+====================================
+用Test set來評估模型好不好，使用predict函數，將測試組資料（NBA1516$Test==T）放入預測模型中，預測測試組的結果
+
+```r
+predictPoint<-predict(finalModel_Both, #Test==T, test data
+                      newdata = NBA1516[NBA1516$Test==T,])
+cor(x=predictPoint,y=NBA1516[NBA1516$Test==T,]$TotalPoints) #相關係數
+```
+
+```
+[1] 0.9956966
+```
+
+```r
+plot(x=predictPoint,y=NBA1516[NBA1516$Test==T,]$TotalPoints)
+```
+
+![plot of chunk unnamed-chunk-15](11_DataMining-figure/unnamed-chunk-15-1.png)
+
+邏輯迴歸驗證
+====================================
+- 先把入學資料分成Training 和 Test set
+- 這邊要特別留意，當答案有正反兩面時，`Level 1 要放正面答案`-->有病/錄取...
+
+```r
+mydata <- read.csv("https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/binary.csv")
+mydata$admit <- factor(mydata$admit) # 類別變項要轉為factor
+mydata$rank <- factor(mydata$rank) # 類別變項要轉為factor
+mydata$Test<-F #新增一個參數紀錄分組
+mydata[sample(1:nrow(mydata),nrow(mydata)/3),]$Test<-T #隨機取1/3當Test set
+c(sum(mydata$Test==F),sum(mydata$Test==T)) # Training set : Test set學生數
+```
+
+```
+[1] 267 133
+```
+
+```r
+#修改一下factor的level: 改成Level 1為錄取，2為不錄取-->Level 1 要放正面答案
+mydata$admit<-factor(mydata$admit,levels=c(1,0))
+```
+
+邏輯迴歸驗證：訓練
+====================================
+逐步選擇最好的模型
+
+```r
+# GRE:某考試成績, GPA:在校平均成績, rank:學校聲望
+mylogit <- glm(admit ~ gre + gpa + rank,
+               data = mydata[mydata$Test==F,], family = "binomial")
+finalFit<-stepAIC(mylogit,direction = "both",trace=FALSE) # 雙向逐步選擇模型
+summary(finalFit)
+```
+
+```
+
+Call:
+glm(formula = admit ~ gre + gpa + rank, family = "binomial", 
+    data = mydata[mydata$Test == F, ])
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.0101  -1.1945   0.6607   0.8823   1.4680  
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)   
+(Intercept)  4.186810   1.415970   2.957  0.00311 **
+gre         -0.002133   0.001337  -1.595  0.11061   
+gpa         -0.842238   0.407001  -2.069  0.03851 * 
+rank2        0.541234   0.402119   1.346  0.17832   
+rank3        1.057607   0.435566   2.428  0.01518 * 
+rank4        1.390147   0.507863   2.737  0.00620 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 332.54  on 266  degrees of freedom
+Residual deviance: 310.41  on 261  degrees of freedom
+AIC: 322.41
+
+Number of Fisher Scoring iterations: 4
+```
+
+邏輯迴歸驗證：驗證
+====================================
+用預測組預測新學生可不可以錄取，並驗證答案
+
+```r
+AdmitProb<-predict(finalFit, # 用Training set做的模型
+                   newdata = mydata[mydata$Test==T,], #Test==T, test data
+                   type="response") #結果為每個人被錄取的機率
+head(AdmitProb)
+```
+
+```
+        1         3         5         6         7         9 
+0.6666111 0.4729450 0.7988264 0.2913768 0.6520991 0.4813477 
+```
+
+```r
+table(AdmitProb<0.5,mydata[mydata$Test==T,]$admit) # row,column
+```
+
+```
+       
+         1  0
+  FALSE 35 82
+  TRUE  12  4
+```
+
+效能指標
+====================================
+當答案是二元時：效能指標
+
+- Sensitivity 敏感性
+- Specificity 特異性
+- Positive Predictive Value (PPV) 陽性預測值
+- Negative Predictive Value (NPV) 陰性預測值
+
+效能指標名詞解釋
+====================================
+
+![plot of chunk unnamed-chunk-19](figures/Cond.png)
+
+- TP: 有病且預測也有病
+- TN: 沒病且預測也沒病
+- FP: 沒病但是預測有病
+- FN: 有病但預測沒病
+
+效能指標名詞解釋
+====================================
+![plot of chunk unnamed-chunk-20](figures/para.png)
+
+效能指標公式
+====================================
+當答案是二元時：效能指標公式
+ 
+- Sensitivity 敏感性：所有`真的有病`的人，被`預測有病`的比例
+- Specificity 特異性：所有`真的沒病`的人，被`預測沒病`的比例
+- Positive Predictive Value (PPV) 陽性預測值：所有被`預測有病`的人，`真的有病`的比例
+- Negative Predictive Value (NPV) 陰性預測值：所有被`預測沒病`的人，`真的沒病`的比例
+
+效能指標
+====================================
+ 回想一下剛剛的驗證結果
+
+```r
+table(AdmitProb<0.5,mydata[mydata$Test==T,]$admit) # row,column
+```
+
+```
+       
+         1  0
+  FALSE 35 82
+  TRUE  12  4
+```
+![plot of chunk unnamed-chunk-22](figures/para.png)
+
+效能指標
+====================================
+ 計算預測效能參數
+
+```r
+AdmitProb<-predict(finalFit,
+                   newdata = mydata[mydata$Test==T,], #Test==T, test data
+                   type="response") #結果為每個人『不』被錄取的機率
+AdmitAns<-factor(ifelse(AdmitProb<0.5,1,0),levels=c(1,0))
+str(AdmitAns)
+```
+
+```
+ Factor w/ 2 levels "1","0": 2 1 2 1 2 1 2 2 2 2 ...
+ - attr(*, "names")= chr [1:133] "1" "3" "5" "6" ...
+```
+
+效能指標
+====================================
+ 計算預測效能參數
+
+```r
+library(caret) # install.packages("caret") #計算參數的packages
+sensitivity(AdmitAns,mydata[mydata$Test==T,]$admit)
+```
+
+```
+[1] 0.2553191
+```
+
+```r
+specificity(AdmitAns,mydata[mydata$Test==T,]$admit)
+```
+
+```
+[1] 0.9534884
+```
+
+```r
+posPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
+```
+
+```
+[1] 0.75
+```
+
+```r
+negPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
+```
+
+```
+[1] 0.7008547
+```
+
 
