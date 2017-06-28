@@ -1,0 +1,198 @@
+社群網路分析案例
+========================================================
+author: 曾意儒 Yi-Ju Tseng
+date: 2017/07/01
+autosize: true
+font-family: 'Microsoft JhengHei'
+navigation: slide
+
+
+從Facebook匯入資料的方法
+====================================
+type:section
+- Graph API in R
+- Rfacebook package
+
+Graph API in R
+====================================
+type:sub-section
+
+- [Graph API](https://developers.facebook.com/docs/graph-api?locale=zh_TW)
+    - 根據篩選條件，回傳JSON格式的資料
+- [Graph API Explorer](https://developers.facebook.com/tools/explorer/)
+    - 測試資料撈取方法和結果
+- 必須要取得自己的**access token** (存取權杖)
+    - 可在[Graph API Explorer](https://developers.facebook.com/tools/explorer/)視窗右上角的**Get Token**按鈕取得
+    - [官方文件](https://developers.facebook.com/docs/facebook-login/access-tokens/?locale=zh_TW)
+
+
+Rfacebook package
+====================================
+type:sub-section
+
+使用 Rfacebook 取得 `tsaiingwen` 粉絲頁的資料
+```{r }
+library(Rfacebook) #初次使用須先安裝
+#將token複製到此處 
+token<-"EAACEdEose0cBAOedD1g1lEAhVPkpFOMttiKOwt8qkVjSSoPYokrhu4uWfgjuUnM7S0bwGYw9RYhDxpBJnOfT3LQ27pydJjDdEA1YfqeYT1BLFsgrg3tEUXViYLPks2Cc4HowWYOvuktE4fl1SN4s0w3ZBrD1hLh2cfyvjrsvmaDjGb6brE3jOG48rNMYZD" 
+getPage("tsaiingwen", token,n = 5)
+```
+
+
+
+Rfacebook package練習
+====================================
+type:alert
+incremental:true
+- 取得Facebook access token
+- 使用Rfacebook package取得**DoctorKoWJ**粉絲頁面的前五筆資料
+- 第一筆資料的likes_count是多少?
+- 第二筆資料的shares_count是多少?
+
+
+Rfacebook package
+====================================
+- 每次擷取資料的比數有上限（大概30筆）
+- 如需取得更多資料: 使用迴圈協助
+    -  **since** 和 **until**參數，可設定資料擷取區間。
+- 先取得日期向量，供後續迴圈做使用
+```{r }
+lastDate<-Sys.Date()
+DateVector<-
+    seq(as.Date("2017-01-01"),
+        lastDate,by="10 days")
+DateVectorStr<-as.character(DateVector)
+DateVectorStr
+```
+
+
+Rfacebook package
+====================================
+利用上述日期向量，搭配迴圈，依序設定**since** 和 **until**
+```{r }
+totalPage<-NULL
+token<-'EAACEdEose0cBAOedD1g1lEAhVPkpFOMttiKOwt8qkVjSSoPYokrhu4uWfgjuUnM7S0bwGYw9RYhDxpBJnOfT3LQ27pydJjDdEA1YfqeYT1BLFsgrg3tEUXViYLPks2Cc4HowWYOvuktE4fl1SN4s0w3ZBrD1hLh2cfyvjrsvmaDjGb6brE3jOG48rNMYZD'
+for(i in 1:(length(DateVectorStr)-1)){ 
+    tempPage<-getPage("tsaiingwen", token,
+                since = DateVectorStr[i],
+                until = DateVectorStr[i+1])
+    totalPage<-rbind(totalPage,tempPage)
+}
+nrow(totalPage)
+```
+
+
+FB資料撈下來了...然後呢？
+====================================
+```{r }
+str(totalPage)
+```
+
+
+分析po文時間: 時區轉換
+====================================
+```{r }
+library(lubridate)
+totalPage$created_time<-
+    ymd_hms(totalPage$created_time,
+            tz = "GMT")
+totalPage$created_time<-
+    with_tz(totalPage$created_time, 
+            "Asia/Taipei")
+```
+
+
+分析po文時間: 跟星期是否有關？
+====================================
+```{r }
+totalPage$weeks<-weekdays(totalPage$created_time)
+#取得星期
+totalPage$weeks<-
+    factor(totalPage$weeks,
+           levels = c("週一","週二","週三",
+                "週四","週五","週六","週日"))
+#取得日期
+totalPage$date<-date(totalPage$created_time)
+```
+
+分析po文時間: 跟星期是否有關？
+====================================
+```{r }
+library(dplyr)
+WeekAve<-totalPage %>% 
+    group_by(weeks) %>% 
+    summarise(N=n(),
+              Mean=n()/n_distinct(date))
+WeekAve
+```
+
+分析po文時間: 跟星期是否有關？
+====================================
+```{r , fig.height=4.5}
+library(ggplot2)
+ggplot(WeekAve,aes(x=weeks,y=Mean))+
+    geom_bar(stat="identity")+
+  theme(text = element_text(family = 'Microsoft JhengHei'))
+```
+
+分析po文類別
+====================================
+```{r }
+totalPage %>% group_by(type) %>% summarise(N=n())
+```
+
+
+分析po文文字內內容: 結巴斷詞
+====================================
+```{r }
+#install.packages("jiebaR")
+library(jiebaR)
+cutter <- worker()
+## 不分行輸出
+words<-cutter[totalPage$message] 
+words
+```
+
+分析po文文字內內容: 結巴斷詞
+====================================
+```{r }
+cutter$bylines<-T
+## 分行輸出
+wordsLine<-cutter[totalPage$message] 
+wordsLine
+```
+
+分析po文文字內內容: 結巴斷詞
+====================================
+```{r }
+wordsDT<-data.frame(table(words))
+wordsDT$words<-as.character(wordsDT$words)
+#視情況修改編碼問題
+wordsDT$words[4746:4755]<-""
+wordsDT %>% 
+    filter(nchar(words)>1&Freq>50) %>% 
+    arrange(desc(Freq))
+```
+
+斷詞後文字雲
+====================================
+```{r eval=F}
+#install.packages("wordcloud2")
+library(wordcloud2)
+wordcloud2(wordsDT%>% filter(nchar(words)>1), 
+           size = 1, 
+           fontFamily = "Microsoft JhengHei", 
+           minRotation = -pi/2, 
+           maxRotation = -pi/2)
+```
+
+斷詞後文字雲
+====================================
+```{r echo=FALSE}
+knitr::include_graphics("figures/wordcloud.png")
+```
+
+更多結巴斷詞
+====================================
+
+[結巴R演練](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/105/JiebaR.md)

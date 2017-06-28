@@ -1,15 +1,10 @@
-資料探勘
+資料探勘101
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/05/22
+date: 2017/07/01
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
-
-
-對應書本章節
-========================================================
-[10 資料探勘](http://yijutseng.github.io/DataScienceRBook/datamining.html)
 
 大綱
 ====================================
@@ -105,6 +100,7 @@ Linear Regression 線性迴歸
 - 嘗試將Linear Regression 線性迴歸用在NBA的資料
 - 做NBA`得分`與`上場分鐘數`的線性迴歸觀察
 ```{r linear1,message=FALSE,warning=FALSE}
+options(digits = 3)
 #讀入SportsAnalytics package
 library(SportsAnalytics)
 #擷取2015-2016年球季球員資料
@@ -125,7 +121,7 @@ ggplot(NBA1516,
 lm()
 ====================================
 
-- 在R中，最基本的簡單線性迴歸分析為`lm()`
+- 最基本的簡單線性迴歸分析為`lm()`
 - `lm(formula,data=資料名稱)`，搭配formula使用
 - formula的撰寫方法為：依變項~自變項1＋自變項2＋....
 ```{r linear3,warning=F,message=F,fig.height=4.5}
@@ -177,42 +173,43 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/1/
 廣義線性迴歸與NBA
 ====================================
 分析`得分`與`上場分鐘數`和`兩分球出手數`的關係範例
-```{r linear4,warning=F,message=F,fig.height=4.5}
+```{r eval=F,linear4,warning=F,message=F,fig.height=4.5}
 # e+01: 10^1 / e-04: 10^(-4)
-glm(TotalPoints ~ 
+fit<-glm(TotalPoints ~ 
       TotalMinutesPlayed+FieldGoalsAttempted,
     data =NBA1516)
+summary(fit)$coefficients
 ```
-
-廣義線性迴歸與NBA
-====================================
-```{r linearx, echo=F,warning=F,message=F,fig.height=4.5}
+```{r echo=F,linear4-1,warning=F,message=F,fig.height=4.5}
 # e+01: 10^1 / e-04: 10^(-4)
-glm(TotalPoints ~ 
+fit<-glm(TotalPoints ~ 
       TotalMinutesPlayed+FieldGoalsAttempted,
     data =NBA1516)
+knitr::kable(summary(fit)$coefficients)
 ```
 TotalPoints = `-0.0002347` * TotalMinutesPlayed + `1.255794` *FieldGoalsAttempted  `-17.99`
+
+
 
 廣義線性迴歸與NBA
 ====================================
 如需使用多變量線性迴歸來分析`得分`與`上場分鐘數`和`兩分球出手數`和`守備位置`的關係，可修改formula
 
-```{r linear5,warning=F,message=F,fig.height=4.5}
-glm(TotalPoints~
-      TotalMinutesPlayed+FieldGoalsAttempted+Position,
+```{r eval=F,linear5,warning=F,message=F,fig.height=4.5}
+fit<-glm(TotalPoints~
+         TotalMinutesPlayed+
+         FieldGoalsAttempted+Position,
     data =NBA1516)
-# e+01: 10^1 / e-04: 10^(-4)
+summary(fit)$coefficients
+```
+```{r echo=F,linear5-1,warning=F,message=F,fig.height=4.5}
+fit<-glm(TotalPoints~
+      TotalMinutesPlayed+
+      FieldGoalsAttempted+Position,
+    data =NBA1516)
+knitr::kable(summary(fit)$coefficients)
 ```
 
-廣義線性迴歸與NBA
-====================================
-TotalPoints = `-0.0065` * TotalMinutesPlayed + `1.28` *FieldGoalsAttempted  `+22.85` + `22.85` * PositionPF + `-65.03` * PositionPG + `-38.52` * PositionSF + `-52.18` * PositionSG
-```{r linear5x, echo=F, warning=F,message=F,fig.height=4.5}
-glm(TotalPoints~
-      TotalMinutesPlayed+FieldGoalsAttempted+Position,
-    data =NBA1516)
-```
 
 
 虛擬變項 Dummy Variable
@@ -329,11 +326,13 @@ ThreeVar<-glm(TotalPoints~
               data =NBA1516)
 
 ```
+
 AIC
 ====================================
 ```{r linear7aic,warning=F,message=F,fig.height=4.5}
 c(OneVar$aic,TwoVar$aic,ThreeVar$aic)
 ```
+
 所有參數都有用嗎？
 ====================================
 - 在建立迴歸模型時，常會遇到的問題：到底該放多少參數？
@@ -396,13 +395,6 @@ DT<-rpart(Position~
 DT
 ```
 
-CART
-====================================
-```{r rpart3,warning=F,message=F,fig.height=4.5}
-par(mfrow=c(1,1), mar = rep(1,4)) #下,左,上,右
-plot(DT)
-text(DT, use.n=F, all=F, cex=1)
-```
 
 決策樹圖
 ====================================
@@ -449,13 +441,13 @@ type:alert
 
 - **訓練組** Training set, Development set: 讓演算法`學`到`知識`
 - **測試組** Test set, Validation set: 驗證`學`的怎麼樣
-
-模型驗證
-====================================
 - Training set和Test set通常會比例分配
   - 如2/3的資料設為`Training set`
   - 剩下的1/3做驗證`Test set`
-- 以下圖的監督式學習流程圖為例，可以注意到綠色箭頭的資料集在訓練過程中從未被使用。
+
+模型驗證 （監督式學習）
+====================================
+可以注意到綠色箭頭的資料集在訓練過程中從未被使用。
 
 ```{r echo=FALSE}
 knitr::include_graphics("figures/SupervisedLearning.png")
@@ -490,17 +482,24 @@ Regression 迴歸驗證：資料分組
 ====================================
 為分出訓練組與測試組，需使用隨機抽樣的方式
 ```{r message=FALSE,warning=FALSE}
-sample(1:10,3) # 從1到10，隨機取三個數字
-sample(1:nrow(NBA1516),nrow(NBA1516)/3) #從第一列到最後一列，隨機取1/3列數
+# 從1到10，隨機取三個數字
+sample(1:10,3)
+#從第一列到最後一列，隨機取1/3列數
+sample(1:nrow(NBA1516),nrow(NBA1516)/3) 
 ```
 
 Regression 迴歸驗證：資料分組
 ====================================
 使用隨機抽樣法，選出1/3的元素位置，把NBA的資料分成Training 和 Test set
 ```{r message=FALSE,warning=FALSE}
-NBA1516$Test<-F #新增一個參數紀錄分組
+#新增一個參數紀錄分組
+NBA1516$Test<-F 
 #隨機取1/3當Test set
-NBA1516[sample(1:nrow(NBA1516),nrow(NBA1516)/3),]$Test<-T
+testIndex<-
+    sample(1:nrow(NBA1516),nrow(NBA1516)/3)
+NBA1516[testIndex,]$Test<-T
+trainData<-NBA1516[NBA1516$Test==F,]
+testData<-NBA1516[NBA1516$Test==T,]
 # Training set : Test set球員數
 c(sum(NBA1516$Test==F),sum(NBA1516$Test==T))
 ```
@@ -508,78 +507,103 @@ c(sum(NBA1516$Test==F),sum(NBA1516$Test==T))
 Regression 迴歸驗證：模型訓練
 ====================================
 並用訓練組的資料（NBA1516$Test==F），訓練一個多變數線性迴歸模型
-```{r warning=F,message=F,fig.height=4.5}
-fit<-glm(TotalPoints~TotalMinutesPlayed+FieldGoalsAttempted+
-             Position+ThreesAttempted+FreeThrowsAttempted,
-              data =NBA1516[NBA1516$Test==F,])
+```{r eval=F,warning=F,message=F,fig.height=4.5}
+fit<-glm(TotalPoints~TotalMinutesPlayed+
+            FieldGoalsAttempted+Position+
+            ThreesAttempted+
+            FreeThrowsAttempted,
+              data =trainData)
 summary(fit)$coefficients
 ```
-
-Regression 迴歸驗證：逐步選擇模型
-====================================
-逐步選擇模型 stepwise 後退學習：一開始先將所有參數加到模型裡，再一個一個拿掉
-```{r warning=F,message=F,fig.height=4.5}
-library(MASS)
-##根據AIC，做逐步選擇, 預設倒退學習 direction = "backward"
-##trace=FALSE: 不要顯示步驟
-finalModel_B<-stepAIC(fit,direction = "backward",trace=FALSE)
-summary(finalModel_B)$coefficients
+```{r echo=F,warning=F,message=F,fig.height=4.5}
+fit<-glm(TotalPoints~TotalMinutesPlayed+
+            FieldGoalsAttempted+Position+
+            ThreesAttempted+FreeThrowsAttempted,
+              data =trainData)
+knitr::kable(summary(fit)$coefficients)
 ```
 
 Regression 迴歸驗證：逐步選擇模型
 ====================================
 逐步選擇模型 stepwise 雙向學習：參數加加減減
-```{r warning=F,message=F,fig.height=4.5}
-##根據AIC，做逐步選擇, 雙向學習 direction = "both"
-finalModel_Both<-stepAIC(fit,direction = "both",trace=FALSE)
+```{r eval=F,warning=F,message=F,fig.height=4.5}
+##根據AIC做逐步選擇, 雙向direction = "both"
+library(MASS)
+finalModel_Both<-
+    stepAIC(fit,direction = "both",
+            trace=FALSE)
 summary(finalModel_Both)$coefficients
 ```
+```{r echo=F,warning=F,message=F,fig.height=4.5}
+##根據AIC做逐步選擇, 雙向direction = "both"
+library(MASS)
+finalModel_Both<-
+    stepAIC(fit,direction = "both",
+            trace=FALSE)
+knitr::kable(summary(finalModel_Both)$coefficients)
+```
+
 
 Regression 迴歸驗證：模型驗證
 ====================================
-用Test set來評估模型好不好，使用predict函數，將測試組資料（NBA1516$Test==T）放入預測模型中，預測測試組的結果
-```{r warning=F,message=F,fig.height=3}
-predictPoint<-predict(finalModel_Both, #Test==T, test data
-                      newdata = NBA1516[NBA1516$Test==T,])
-cor(x=predictPoint,y=NBA1516[NBA1516$Test==T,]$TotalPoints) #相關係數
-plot(x=predictPoint,y=NBA1516[NBA1516$Test==T,]$TotalPoints)
+用Test set來評估模型，使用predict函數
+```{r warning=F,message=F,fig.height=2.5}
+predictPoint<-predict(finalModel_Both,
+                      newdata = testData)
+plot(x=predictPoint,y=testData$TotalPoints)
+cor(x=predictPoint,y=testData$TotalPoints)
 ```
 
 邏輯迴歸驗證
 ====================================
-- 先把入學資料分成Training 和 Test set
-- 這邊要特別留意，當答案有正反兩面時，`Level 1 要放正面答案`-->有病/錄取...
+- 先把[入學資料](https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/binary.csv)載入
 ```{r warning=F,message=F,fig.height=4.5}
 mydata <- read.csv("https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/binary.csv")
-mydata$admit <- factor(mydata$admit) # 類別變項要轉為factor
-mydata$rank <- factor(mydata$rank) # 類別變項要轉為factor
-mydata$Test<-F #新增一個參數紀錄分組
-mydata[sample(1:nrow(mydata),nrow(mydata)/3),]$Test<-T #隨機取1/3當Test set
-c(sum(mydata$Test==F),sum(mydata$Test==T)) # Training set : Test set學生數
-#修改一下factor的level: 改成Level 1為錄取，2為不錄取-->Level 1 要放正面答案
-mydata$admit<-factor(mydata$admit,levels=c(1,0))
+# 類別變項轉為factor
+#mydata$admit <- factor(mydata$admit,levels = c(0,1)) 
+mydata$rank <- factor(mydata$rank) 
 ```
+
+
+邏輯迴歸驗證
+====================================
+- 把[入學資料](https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/binary.csv)分成Training 和 Test set
+```{r warning=F,message=F,fig.height=4.5}
+mydata$Test<-F #新增一個參數紀錄分組
+#隨機取1/3當Test set
+testIndex<-sample(1:nrow(mydata),nrow(mydata)/3)
+mydata[testIndex,]$Test<-T 
+testData<-mydata[mydata$Test==T,]
+trainData<-mydata[mydata$Test==F,]
+```
+
 
 邏輯迴歸驗證：訓練
 ====================================
-逐步選擇最好的模型
 ```{r warning=F,message=F,fig.height=4.5}
-# GRE:某考試成績, GPA:在校平均成績, rank:學校聲望
+# GRE, GPA:在校成績, rank:學校聲望
 mylogit <- glm(admit ~ gre + gpa + rank,
-               data = mydata[mydata$Test==F,], family = "binomial")
-finalFit<-stepAIC(mylogit,direction = "both",trace=FALSE) # 雙向逐步選擇模型
-summary(finalFit)
+               data = trainData, 
+               family = "binomial")
+finalFit<-stepAIC(mylogit,direction = "both",
+                  trace=FALSE) # 雙向逐步
+```
+```{r eval=F}
+summary(finalFit)$coefficients
+```
+```{r echo=F}
+knitr::kable(summary(finalFit)$coefficients)
 ```
 
 邏輯迴歸驗證：驗證
 ====================================
 用預測組預測新學生可不可以錄取，並驗證答案
 ```{r warning=F,message=F,fig.height=4.5}
-AdmitProb<-predict(finalFit, # 用Training set做的模型
-                   newdata = mydata[mydata$Test==T,], #Test==T, test data
-                   type="response") #結果為每個人被錄取的機率
-head(AdmitProb)
-table(AdmitProb<0.5,mydata[mydata$Test==T,]$admit) # row,column
+#結果為每個人被錄取的機率
+AdmitProb<-predict(finalFit, # 模型
+                   newdata = testData,
+                   type="response") 
+table(AdmitProb>0.2,testData$admit)
 ```
 
 效能指標
@@ -620,9 +644,9 @@ knitr::include_graphics("figures/para.png")
 
 效能指標
 ====================================
- 回想一下剛剛的驗證結果
 ```{r warning=F,message=F,fig.height=4.5}
-table(AdmitProb<0.5,mydata[mydata$Test==T,]$admit) # row,column
+# 回想一下剛剛的驗證結果
+table(AdmitProb>0.2,testData$admit) 
 ```
 ```{r echo=FALSE}
 knitr::include_graphics("figures/para.png")
@@ -632,22 +656,22 @@ knitr::include_graphics("figures/para.png")
 ====================================
  計算預測效能參數
 ```{r warning=F,message=F,fig.height=4.5}
-AdmitProb<-predict(finalFit,
-                   newdata = mydata[mydata$Test==T,], #Test==T, test data
-                   type="response") #結果為每個人『不』被錄取的機率
-AdmitAns<-factor(ifelse(AdmitProb<0.5,1,0),levels=c(1,0))
-str(AdmitAns)
+#每個人被錄取的機率
+AdmitAns<-factor(ifelse(AdmitProb>0.2,1,0),
+                 levels=c(1,0))
+GoldAns<-factor(testData$admit,
+                levels=c(1,0))
+table(AdmitAns,GoldAns)
 ```
 
 效能指標
 ====================================
  計算預測效能參數
 ```{r warning=F,message=F,fig.height=4.5}
-library(caret) # install.packages("caret") #計算參數的packages
-sensitivity(AdmitAns,mydata[mydata$Test==T,]$admit)
-specificity(AdmitAns,mydata[mydata$Test==T,]$admit)
-posPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
-negPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
+# install.packages("caret")
+library(caret)  #計算參數的packages
+sensitivity(AdmitAns,GoldAns)
+specificity(AdmitAns,GoldAns)
 ```
 
 

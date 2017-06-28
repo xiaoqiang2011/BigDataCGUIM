@@ -1,15 +1,10 @@
-資料探勘
+資料探勘101
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/05/22
+date: 2017/07/01
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
-
-
-對應書本章節
-========================================================
-[10 資料探勘](http://yijutseng.github.io/DataScienceRBook/datamining.html)
 
 大綱
 ====================================
@@ -104,7 +99,9 @@ Linear Regression 線性迴歸
 
 - 嘗試將Linear Regression 線性迴歸用在NBA的資料
 - 做NBA`得分`與`上場分鐘數`的線性迴歸觀察
-```{r linear1,message=FALSE,warning=FALSE}
+
+```r
+options(digits = 3)
 #讀入SportsAnalytics package
 library(SportsAnalytics)
 #擷取2015-2016年球季球員資料
@@ -113,7 +110,8 @@ NBA1516<-fetch_NBAPlayerStatistics("15-16")
 
 迴歸線作圖
 ====================================
-```{r linear2,warning=F,message=F,fig.height=4}
+
+```r
 library(ggplot2)
 ggplot(NBA1516,
        aes(x=TotalMinutesPlayed,
@@ -122,15 +120,28 @@ ggplot(NBA1516,
   geom_smooth(method = "glm")
 ```
 
+![plot of chunk linear2](DataMining101-figure/linear2-1.png)
+
 lm()
 ====================================
 
-- 在R中，最基本的簡單線性迴歸分析為`lm()`
+- 最基本的簡單線性迴歸分析為`lm()`
 - `lm(formula,data=資料名稱)`，搭配formula使用
 - formula的撰寫方法為：依變項~自變項1＋自變項2＋....
-```{r linear3,warning=F,message=F,fig.height=4.5}
+
+```r
 lm(TotalPoints~TotalMinutesPlayed,
    data =NBA1516)
+```
+
+```
+
+Call:
+lm(formula = TotalPoints ~ TotalMinutesPlayed, data = NBA1516)
+
+Coefficients:
+       (Intercept)  TotalMinutesPlayed  
+           -85.907               0.493  
 ```
 
 TotalPoints = `0.4931` * TotalMinutesPlayed `-85.9071`
@@ -149,16 +160,12 @@ Gaussian distribution
 ====================================
 Gaussian distribution高斯函數是`常態分布`的密度函數
 
-```{r echo=FALSE}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/a/a9/Empirical_Rule.PNG")
-```
+![plot of chunk unnamed-chunk-1](https://upload.wikimedia.org/wikipedia/commons/a/a9/Empirical_Rule.PNG)
 
 Binomial distribution
 ====================================
 Binomial distribution二項分布是`n個獨立的是/非試驗中成功的次數`的離散機率分布
-```{r echo=FALSE}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Pascal%27s_triangle%3B_binomial_distribution.svg/794px-Pascal%27s_triangle%3B_binomial_distribution.svg.png")
-```
+![plot of chunk unnamed-chunk-2](https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Pascal%27s_triangle%3B_binomial_distribution.svg/794px-Pascal%27s_triangle%3B_binomial_distribution.svg.png)
 
 Poisson distribution
 ====================================
@@ -168,51 +175,54 @@ Poisson distribution`次數`分佈：
 - 公車站的候客人數
 - 自然災害發生的次數
 
-```{r echo=FALSE}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Poisson_pmf.svg/360px-Poisson_pmf.svg.png")
-```
+![plot of chunk unnamed-chunk-3](https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Poisson_pmf.svg/360px-Poisson_pmf.svg.png)
 
 
 
 廣義線性迴歸與NBA
 ====================================
 分析`得分`與`上場分鐘數`和`兩分球出手數`的關係範例
-```{r linear4,warning=F,message=F,fig.height=4.5}
+
+```r
 # e+01: 10^1 / e-04: 10^(-4)
-glm(TotalPoints ~ 
+fit<-glm(TotalPoints ~ 
       TotalMinutesPlayed+FieldGoalsAttempted,
     data =NBA1516)
+summary(fit)$coefficients
 ```
 
-廣義線性迴歸與NBA
-====================================
-```{r linearx, echo=F,warning=F,message=F,fig.height=4.5}
-# e+01: 10^1 / e-04: 10^(-4)
-glm(TotalPoints ~ 
-      TotalMinutesPlayed+FieldGoalsAttempted,
-    data =NBA1516)
-```
+|                    | Estimate| Std. Error| t value| Pr(>&#124;t&#124;)|
+|:-------------------|--------:|----------:|-------:|------------------:|
+|(Intercept)         |   -17.99|      5.660|  -3.178|              0.002|
+|TotalMinutesPlayed  |     0.00|      0.009|  -0.025|              0.980|
+|FieldGoalsAttempted |     1.26|      0.022|  56.467|              0.000|
 TotalPoints = `-0.0002347` * TotalMinutesPlayed + `1.255794` *FieldGoalsAttempted  `-17.99`
+
+
 
 廣義線性迴歸與NBA
 ====================================
 如需使用多變量線性迴歸來分析`得分`與`上場分鐘數`和`兩分球出手數`和`守備位置`的關係，可修改formula
 
-```{r linear5,warning=F,message=F,fig.height=4.5}
-glm(TotalPoints~
-      TotalMinutesPlayed+FieldGoalsAttempted+Position,
+
+```r
+fit<-glm(TotalPoints~
+         TotalMinutesPlayed+
+         FieldGoalsAttempted+Position,
     data =NBA1516)
-# e+01: 10^1 / e-04: 10^(-4)
+summary(fit)$coefficients
 ```
 
-廣義線性迴歸與NBA
-====================================
-TotalPoints = `-0.0065` * TotalMinutesPlayed + `1.28` *FieldGoalsAttempted  `+22.85` + `22.85` * PositionPF + `-65.03` * PositionPG + `-38.52` * PositionSF + `-52.18` * PositionSG
-```{r linear5x, echo=F, warning=F,message=F,fig.height=4.5}
-glm(TotalPoints~
-      TotalMinutesPlayed+FieldGoalsAttempted+Position,
-    data =NBA1516)
-```
+|                    | Estimate| Std. Error| t value| Pr(>&#124;t&#124;)|
+|:-------------------|--------:|----------:|-------:|------------------:|
+|(Intercept)         |   22.852|      9.015|   2.535|              0.012|
+|TotalMinutesPlayed  |   -0.007|      0.009|  -0.711|              0.478|
+|FieldGoalsAttempted |    1.276|      0.022|  58.932|              0.000|
+|PositionPF          |  -39.416|      9.937|  -3.967|              0.000|
+|PositionPG          |  -65.035|     10.269|  -6.333|              0.000|
+|PositionSF          |  -38.522|     10.488|  -3.673|              0.000|
+|PositionSG          |  -52.175|      9.985|  -5.225|              0.000|
+
 
 
 虛擬變項 Dummy Variable
@@ -266,32 +276,48 @@ Logistic Regression 羅吉斯迴歸
 
 分析為什麼錄取/不錄取？
 ====================================
-```{r logistic1,warning=F,message=F,fig.height=4.5}
+
+```r
 mydata <- read.csv("https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/binary.csv")
 ```
-```{r warning=F,message=F,eval=F}
+
+```r
 # GRE:某考試成績, GPA:在校平均成績, rank:學校聲望
 head(mydata)
 ```
-```{r warning=F,message=F,echo=F}
-knitr::kable(head(mydata)) 
-```
+
+| admit| gre|  gpa| rank|
+|-----:|---:|----:|----:|
+|     0| 380| 3.61|    3|
+|     1| 660| 3.67|    3|
+|     1| 800| 4.00|    1|
+|     1| 640| 3.19|    4|
+|     0| 520| 2.93|    4|
+|     1| 760| 3.00|    2|
 
 分析為什麼錄取/不錄取？
 ====================================
-```{r logistic2,warning=F,message=F,fig.height=4.5}
+
+```r
 mydata$rank <- factor(mydata$rank)
 mylogit <- glm(admit ~ gre + gpa + rank,
                data = mydata, 
                family = "binomial")
 sum<-summary(mylogit)
 ```
-```{r eval=F}
+
+```r
 sum$coefficients
 ```
-```{r logistic2x,echo=F,warning=F,message=F,fig.height=4.5}
-knitr::kable(sum$coefficients)
-```
+
+|            | Estimate| Std. Error| z value| Pr(>&#124;z&#124;)|
+|:-----------|--------:|----------:|-------:|------------------:|
+|(Intercept) |   -3.990|      1.140|   -3.50|              0.000|
+|gre         |    0.002|      0.001|    2.07|              0.038|
+|gpa         |    0.804|      0.332|    2.42|              0.015|
+|rank2       |   -0.675|      0.316|   -2.13|              0.033|
+|rank3       |   -1.340|      0.345|   -3.88|              0.000|
+|rank4       |   -1.551|      0.418|   -3.71|              0.000|
 
 羅吉斯迴歸練習
 ====================================
@@ -315,7 +341,8 @@ type:alert
 AIC
 ====================================
 AIC和BIC都是數值越小越好，以下建立三個模型，並比較其AIC
-```{r linear7,warning=F,message=F,fig.height=4.5}
+
+```r
 OneVar<-glm(TotalPoints~
               TotalMinutesPlayed,
             data =NBA1516)
@@ -327,37 +354,53 @@ ThreeVar<-glm(TotalPoints~
                 TotalMinutesPlayed+
                 FieldGoalsAttempted+Position,
               data =NBA1516)
-
 ```
+
 AIC
 ====================================
-```{r linear7aic,warning=F,message=F,fig.height=4.5}
+
+```r
 c(OneVar$aic,TwoVar$aic,ThreeVar$aic)
 ```
+
+```
+[1] 6339 5367 5322
+```
+
 所有參數都有用嗎？
 ====================================
 - 在建立迴歸模型時，常會遇到的問題：到底該放多少參數？
 - 所有參數都有用嗎？
 - 藉由觀察coefficients來判斷參數在模型中的"實用程度"
-```{r linear8,eval=F,warning=F,message=F,fig.height=4.5}
+
+```r
 sum2<-summary(TwoVar)
 sum2$coefficients
 ```
-```{r linear8x,echo=F,warning=F,message=F,fig.height=4.5}
-sum2<-summary(TwoVar)
-knitr::kable(sum2$coefficients) 
-```
+
+|                    | Estimate| Std. Error| t value| Pr(>&#124;t&#124;)|
+|:-------------------|--------:|----------:|-------:|------------------:|
+|(Intercept)         |   -17.99|      5.660|  -3.178|              0.002|
+|TotalMinutesPlayed  |     0.00|      0.009|  -0.025|              0.980|
+|FieldGoalsAttempted |     1.26|      0.022|  56.467|              0.000|
 
 所有參數都有用嗎？
 ====================================
-```{r linear9,eval=F,warning=F,message=F,fig.height=4.5}
+
+```r
 sum3<-summary(ThreeVar)
 sum3$coefficients
 ```
-```{r linear9x,echo=F,warning=F,message=F,fig.height=4.5}
-sum3<-summary(ThreeVar)
-knitr::kable(sum3$coefficients)
-```
+
+|                    | Estimate| Std. Error| t value| Pr(>&#124;t&#124;)|
+|:-------------------|--------:|----------:|-------:|------------------:|
+|(Intercept)         |   22.852|      9.015|   2.535|              0.012|
+|TotalMinutesPlayed  |   -0.007|      0.009|  -0.711|              0.478|
+|FieldGoalsAttempted |    1.276|      0.022|  58.932|              0.000|
+|PositionPF          |  -39.416|      9.937|  -3.967|              0.000|
+|PositionPG          |  -65.035|     10.269|  -6.333|              0.000|
+|PositionSF          |  -38.522|     10.488|  -3.673|              0.000|
+|PositionSG          |  -52.175|      9.985|  -5.225|              0.000|
 
 Decision Trees 決策樹
 ====================================
@@ -366,20 +409,15 @@ Decision Trees 決策樹
 - 每次發現輸入資料行與可預測資料行有明顯地相互關聯時，此演算法就會在模型中加入一個`節點`
 - 演算法決定分岔的方式不同
 
-```{r echo=F}
-#install.packages("rpart")
-library(rpart)
-library(rpart.plot)
-DT<-rpart(Position~Blocks+ThreesMade+Assists+Steals,data=NBA1516)
-prp(DT)	
-```
+![plot of chunk unnamed-chunk-7](DataMining101-figure/unnamed-chunk-7-1.png)
 
 Classification And Regression Tree (CART)
 ====================================
 - 常見的Classification And Regression Tree (CART)
 - 使用前須先安裝`rpart` packages
 
-```{r rpart1,eval=F,warning=F,message=F,fig.height=4.5}
+
+```r
 install.packages("rpart")
 ```
 
@@ -388,7 +426,8 @@ CART
 - 嘗試用用籃板/三分/助攻/抄截數據來判斷守備位置
 - 建立決策樹的函數為`rpart()`
 - 使用方式為`rpart(formula, data)`
-```{r rpart2,warning=F,message=F,fig.height=4.5}
+
+```r
 library(rpart)
 DT<-rpart(Position~
             Blocks+ThreesMade+Assists+Steals,
@@ -396,25 +435,53 @@ DT<-rpart(Position~
 DT
 ```
 
-CART
-====================================
-```{r rpart3,warning=F,message=F,fig.height=4.5}
-par(mfrow=c(1,1), mar = rep(1,4)) #下,左,上,右
-plot(DT)
-text(DT, use.n=F, all=F, cex=1)
 ```
+n=475 (1 observation deleted due to missingness)
+
+node), split, n, loss, yval, (yprob)
+      * denotes terminal node
+
+  1) root 475 364 PF (0.15 0.23 0.21 0.18 0.23)  
+    2) ThreesMade< 2.5 132  74 C (0.44 0.35 0.098 0.053 0.061)  
+      4) Blocks>=4.5 89  37 C (0.58 0.38 0.011 0.011 0.011) *
+      5) Blocks< 4.5 43  31 PF (0.14 0.28 0.28 0.14 0.16)  
+       10) Steals< 2.5 29  19 PF (0.17 0.34 0.14 0.21 0.14) *
+       11) Steals>=2.5 14   6 PG (0.071 0.14 0.57 0 0.21) *
+    3) ThreesMade>=2.5 343 242 SG (0.035 0.19 0.25 0.23 0.29)  
+      6) Assists>=170 96  39 PG (0.031 0.052 0.59 0.15 0.18) *
+      7) Assists< 170 247 163 SG (0.036 0.24 0.12 0.26 0.34)  
+       14) Blocks>=20.5 80  42 PF (0.062 0.48 0 0.26 0.2)  
+         28) Steals< 59.5 58  21 PF (0.069 0.64 0 0.14 0.16) *
+         29) Steals>=59.5 22   9 SF (0.045 0.045 0 0.59 0.32) *
+       15) Blocks< 20.5 167  99 SG (0.024 0.13 0.17 0.26 0.41)  
+         30) Assists< 81.5 110  68 SG (0.027 0.18 0.091 0.32 0.38)  
+           60) Blocks>=4.5 63  39 SF (0.032 0.29 0.016 0.38 0.29)  
+            120) ThreesMade< 13.5 19   9 PF (0.11 0.53 0 0.26 0.11) *
+            121) ThreesMade>=13.5 44  25 SF (0 0.18 0.023 0.43 0.36)  
+              242) Blocks< 9.5 17   7 SF (0 0.18 0.059 0.59 0.18) *
+              243) Blocks>=9.5 27  14 SG (0 0.19 0 0.33 0.48) *
+           61) Blocks< 4.5 47  23 SG (0.021 0.043 0.19 0.23 0.51) *
+         31) Assists>=81.5 57  31 SG (0.018 0.035 0.33 0.16 0.46)  
+           62) ThreesMade< 37 17   5 PG (0 0.12 0.71 0.059 0.12) *
+           63) ThreesMade>=37 40  16 SG (0.025 0 0.17 0.2 0.6) *
+```
+
 
 決策樹圖
 ====================================
 改用`rpart.plot` package 裡面的`prp()`
-```{r rpart41,eval=F,warning=F,message=F,fig.height=4.5}
+
+```r
 #第一次使用前須先安裝
 install.packages("rpart.plot") 
 ```
-```{r rpart4,warning=F,message=F,fig.height=4.5}
+
+```r
 library(rpart.plot)
 prp(DT)	
 ```
+
+![plot of chunk rpart4](DataMining101-figure/rpart4-1.png)
 
 決策樹 節點
 ====================================
@@ -449,17 +516,15 @@ type:alert
 
 - **訓練組** Training set, Development set: 讓演算法`學`到`知識`
 - **測試組** Test set, Validation set: 驗證`學`的怎麼樣
-
-模型驗證
-====================================
 - Training set和Test set通常會比例分配
   - 如2/3的資料設為`Training set`
   - 剩下的1/3做驗證`Test set`
-- 以下圖的監督式學習流程圖為例，可以注意到綠色箭頭的資料集在訓練過程中從未被使用。
 
-```{r echo=FALSE}
-knitr::include_graphics("figures/SupervisedLearning.png")
-```
+模型驗證 （監督式學習）
+====================================
+可以注意到綠色箭頭的資料集在訓練過程中從未被使用。
+
+![plot of chunk unnamed-chunk-8](figures/SupervisedLearning.png)
 
 模型驗證
 ====================================
@@ -474,7 +539,8 @@ Regression 迴歸驗證
 ====================================
 
 以NBA資料為例，首先先將資料讀入
-```{r message=FALSE,warning=FALSE}
+
+```r
 #讀入SportsAnalytics package
 if (!require('SportsAnalytics')){
     install.packages("SportsAnalytics")
@@ -489,97 +555,193 @@ NBA1516<-NBA1516[complete.cases(NBA1516),]
 Regression 迴歸驗證：資料分組
 ====================================
 為分出訓練組與測試組，需使用隨機抽樣的方式
-```{r message=FALSE,warning=FALSE}
-sample(1:10,3) # 從1到10，隨機取三個數字
-sample(1:nrow(NBA1516),nrow(NBA1516)/3) #從第一列到最後一列，隨機取1/3列數
+
+```r
+# 從1到10，隨機取三個數字
+sample(1:10,3)
+```
+
+```
+[1]  9 10  7
+```
+
+```r
+#從第一列到最後一列，隨機取1/3列數
+sample(1:nrow(NBA1516),nrow(NBA1516)/3) 
+```
+
+```
+  [1]  41 352 360 407 373 286 283 295  26  56 284  64 184 134 390 419 412
+ [18] 156 289 268 357 279 300 108 389 199  13  55 340 258 116   9 387 186
+ [35] 315  49  30 270 416 423  58 138 230 422 453 464 438 139  39  32 326
+ [52] 252 358 322 372 121  84 187 400 329 331 202 385 272 182 327 434 262
+ [69] 313 224 374 112 287 271 236 260 376 397 380 219 312  85  11 463 154
+ [86]  69 375 347 425  38   8 293 170 310 254 216 328 266 240 110 165 106
+[103]  68 149  63 444 196 274 178 302 366 307 142 471 122 160 135 148 393
+[120] 117 450 337 176  72 193 152 168 411 355 325 171  47 316 403 449 227
+[137] 427  54 100  22 137 321 348 206 359 442  16   6  70 235 338 370 101
+[154]  34 190 417  37 399
 ```
 
 Regression 迴歸驗證：資料分組
 ====================================
 使用隨機抽樣法，選出1/3的元素位置，把NBA的資料分成Training 和 Test set
-```{r message=FALSE,warning=FALSE}
-NBA1516$Test<-F #新增一個參數紀錄分組
+
+```r
+#新增一個參數紀錄分組
+NBA1516$Test<-F 
 #隨機取1/3當Test set
-NBA1516[sample(1:nrow(NBA1516),nrow(NBA1516)/3),]$Test<-T
+testIndex<-
+    sample(1:nrow(NBA1516),nrow(NBA1516)/3)
+NBA1516[testIndex,]$Test<-T
+trainData<-NBA1516[NBA1516$Test==F,]
+testData<-NBA1516[NBA1516$Test==T,]
 # Training set : Test set球員數
 c(sum(NBA1516$Test==F),sum(NBA1516$Test==T))
+```
+
+```
+[1] 317 158
 ```
 
 Regression 迴歸驗證：模型訓練
 ====================================
 並用訓練組的資料（NBA1516$Test==F），訓練一個多變數線性迴歸模型
-```{r warning=F,message=F,fig.height=4.5}
-fit<-glm(TotalPoints~TotalMinutesPlayed+FieldGoalsAttempted+
-             Position+ThreesAttempted+FreeThrowsAttempted,
-              data =NBA1516[NBA1516$Test==F,])
+
+```r
+fit<-glm(TotalPoints~TotalMinutesPlayed+
+            FieldGoalsAttempted+Position+
+            ThreesAttempted+
+            FreeThrowsAttempted,
+              data =trainData)
 summary(fit)$coefficients
 ```
 
-Regression 迴歸驗證：逐步選擇模型
-====================================
-逐步選擇模型 stepwise 後退學習：一開始先將所有參數加到模型裡，再一個一個拿掉
-```{r warning=F,message=F,fig.height=4.5}
-library(MASS)
-##根據AIC，做逐步選擇, 預設倒退學習 direction = "backward"
-##trace=FALSE: 不要顯示步驟
-finalModel_B<-stepAIC(fit,direction = "backward",trace=FALSE)
-summary(finalModel_B)$coefficients
-```
+|                    | Estimate| Std. Error| t value| Pr(>&#124;t&#124;)|
+|:-------------------|--------:|----------:|-------:|------------------:|
+|(Intercept)         |   14.476|      8.009|   1.807|              0.072|
+|TotalMinutesPlayed  |   -0.004|      0.008|  -0.496|              0.620|
+|FieldGoalsAttempted |    0.985|      0.024|  41.188|              0.000|
+|PositionPF          |  -19.090|      8.840|  -2.160|              0.032|
+|PositionPG          |  -43.817|      9.395|  -4.664|              0.000|
+|PositionSF          |  -26.331|      9.363|  -2.812|              0.005|
+|PositionSG          |  -29.605|      9.515|  -3.111|              0.002|
+|ThreesAttempted     |    0.214|      0.032|   6.776|              0.000|
+|FreeThrowsAttempted |    0.734|      0.040|  18.426|              0.000|
 
 Regression 迴歸驗證：逐步選擇模型
 ====================================
 逐步選擇模型 stepwise 雙向學習：參數加加減減
-```{r warning=F,message=F,fig.height=4.5}
-##根據AIC，做逐步選擇, 雙向學習 direction = "both"
-finalModel_Both<-stepAIC(fit,direction = "both",trace=FALSE)
+
+```r
+##根據AIC做逐步選擇, 雙向direction = "both"
+library(MASS)
+finalModel_Both<-
+    stepAIC(fit,direction = "both",
+            trace=FALSE)
 summary(finalModel_Both)$coefficients
 ```
 
+|                    | Estimate| Std. Error| t value| Pr(>&#124;t&#124;)|
+|:-------------------|--------:|----------:|-------:|------------------:|
+|(Intercept)         |   13.035|      7.454|    1.75|              0.081|
+|FieldGoalsAttempted |    0.977|      0.018|   54.19|              0.000|
+|PositionPF          |  -18.722|      8.798|   -2.13|              0.034|
+|PositionPG          |  -43.255|      9.315|   -4.64|              0.000|
+|PositionSF          |  -26.230|      9.349|   -2.81|              0.005|
+|PositionSG          |  -29.241|      9.475|   -3.09|              0.002|
+|ThreesAttempted     |    0.213|      0.031|    6.77|              0.000|
+|FreeThrowsAttempted |    0.733|      0.040|   18.45|              0.000|
+
+
 Regression 迴歸驗證：模型驗證
 ====================================
-用Test set來評估模型好不好，使用predict函數，將測試組資料（NBA1516$Test==T）放入預測模型中，預測測試組的結果
-```{r warning=F,message=F,fig.height=3}
-predictPoint<-predict(finalModel_Both, #Test==T, test data
-                      newdata = NBA1516[NBA1516$Test==T,])
-cor(x=predictPoint,y=NBA1516[NBA1516$Test==T,]$TotalPoints) #相關係數
-plot(x=predictPoint,y=NBA1516[NBA1516$Test==T,]$TotalPoints)
+用Test set來評估模型，使用predict函數
+
+```r
+predictPoint<-predict(finalModel_Both,
+                      newdata = testData)
+plot(x=predictPoint,y=testData$TotalPoints)
+```
+
+![plot of chunk unnamed-chunk-16](DataMining101-figure/unnamed-chunk-16-1.png)
+
+```r
+cor(x=predictPoint,y=testData$TotalPoints)
+```
+
+```
+[1] 0.995
 ```
 
 邏輯迴歸驗證
 ====================================
-- 先把入學資料分成Training 和 Test set
-- 這邊要特別留意，當答案有正反兩面時，`Level 1 要放正面答案`-->有病/錄取...
-```{r warning=F,message=F,fig.height=4.5}
+- 先把[入學資料](https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/binary.csv)載入
+
+```r
 mydata <- read.csv("https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/binary.csv")
-mydata$admit <- factor(mydata$admit) # 類別變項要轉為factor
-mydata$rank <- factor(mydata$rank) # 類別變項要轉為factor
-mydata$Test<-F #新增一個參數紀錄分組
-mydata[sample(1:nrow(mydata),nrow(mydata)/3),]$Test<-T #隨機取1/3當Test set
-c(sum(mydata$Test==F),sum(mydata$Test==T)) # Training set : Test set學生數
-#修改一下factor的level: 改成Level 1為錄取，2為不錄取-->Level 1 要放正面答案
-mydata$admit<-factor(mydata$admit,levels=c(1,0))
+# 類別變項轉為factor
+#mydata$admit <- factor(mydata$admit,levels = c(0,1)) 
+mydata$rank <- factor(mydata$rank) 
 ```
+
+
+邏輯迴歸驗證
+====================================
+- 把[入學資料](https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/binary.csv)分成Training 和 Test set
+
+```r
+mydata$Test<-F #新增一個參數紀錄分組
+#隨機取1/3當Test set
+testIndex<-sample(1:nrow(mydata),nrow(mydata)/3)
+mydata[testIndex,]$Test<-T 
+testData<-mydata[mydata$Test==T,]
+trainData<-mydata[mydata$Test==F,]
+```
+
 
 邏輯迴歸驗證：訓練
 ====================================
-逐步選擇最好的模型
-```{r warning=F,message=F,fig.height=4.5}
-# GRE:某考試成績, GPA:在校平均成績, rank:學校聲望
+
+```r
+# GRE, GPA:在校成績, rank:學校聲望
 mylogit <- glm(admit ~ gre + gpa + rank,
-               data = mydata[mydata$Test==F,], family = "binomial")
-finalFit<-stepAIC(mylogit,direction = "both",trace=FALSE) # 雙向逐步選擇模型
-summary(finalFit)
+               data = trainData, 
+               family = "binomial")
+finalFit<-stepAIC(mylogit,direction = "both",
+                  trace=FALSE) # 雙向逐步
 ```
+
+```r
+summary(finalFit)$coefficients
+```
+
+|            | Estimate| Std. Error| z value| Pr(>&#124;z&#124;)|
+|:-----------|--------:|----------:|-------:|------------------:|
+|(Intercept) |   -4.737|      1.430|   -3.31|              0.001|
+|gre         |    0.003|      0.001|    2.16|              0.031|
+|gpa         |    0.965|      0.410|    2.35|              0.019|
+|rank2       |   -0.583|      0.396|   -1.47|              0.141|
+|rank3       |   -1.386|      0.428|   -3.24|              0.001|
+|rank4       |   -1.588|      0.493|   -3.22|              0.001|
 
 邏輯迴歸驗證：驗證
 ====================================
 用預測組預測新學生可不可以錄取，並驗證答案
-```{r warning=F,message=F,fig.height=4.5}
-AdmitProb<-predict(finalFit, # 用Training set做的模型
-                   newdata = mydata[mydata$Test==T,], #Test==T, test data
-                   type="response") #結果為每個人被錄取的機率
-head(AdmitProb)
-table(AdmitProb<0.5,mydata[mydata$Test==T,]$admit) # row,column
+
+```r
+#結果為每個人被錄取的機率
+AdmitProb<-predict(finalFit, # 模型
+                   newdata = testData,
+                   type="response") 
+table(AdmitProb>0.2,testData$admit)
+```
+
+```
+       
+         0  1
+  FALSE 24  5
+  TRUE  74 30
 ```
 
 效能指標
@@ -594,9 +756,7 @@ table(AdmitProb<0.5,mydata[mydata$Test==T,]$admit) # row,column
 效能指標名詞解釋
 ====================================
 
-```{r echo=FALSE}
-knitr::include_graphics("figures/Cond.png")
-```
+![plot of chunk unnamed-chunk-23](figures/Cond.png)
 
 - TP: 有病且預測也有病
 - TN: 沒病且預測也沒病
@@ -605,9 +765,7 @@ knitr::include_graphics("figures/Cond.png")
 
 效能指標名詞解釋
 ====================================
-```{r echo=FALSE}
-knitr::include_graphics("figures/para.png")
-```
+![plot of chunk unnamed-chunk-24](figures/para.png)
 
 效能指標公式
 ====================================
@@ -620,34 +778,60 @@ knitr::include_graphics("figures/para.png")
 
 效能指標
 ====================================
- 回想一下剛剛的驗證結果
-```{r warning=F,message=F,fig.height=4.5}
-table(AdmitProb<0.5,mydata[mydata$Test==T,]$admit) # row,column
+
+```r
+# 回想一下剛剛的驗證結果
+table(AdmitProb>0.2,testData$admit) 
 ```
-```{r echo=FALSE}
-knitr::include_graphics("figures/para.png")
+
+```
+       
+         0  1
+  FALSE 24  5
+  TRUE  74 30
+```
+![plot of chunk unnamed-chunk-26](figures/para.png)
+
+效能指標
+====================================
+ 計算預測效能參數
+
+```r
+#每個人被錄取的機率
+AdmitAns<-factor(ifelse(AdmitProb>0.2,1,0),
+                 levels=c(1,0))
+GoldAns<-factor(testData$admit,
+                levels=c(1,0))
+table(AdmitAns,GoldAns)
+```
+
+```
+        GoldAns
+AdmitAns  1  0
+       1 30 74
+       0  5 24
 ```
 
 效能指標
 ====================================
  計算預測效能參數
-```{r warning=F,message=F,fig.height=4.5}
-AdmitProb<-predict(finalFit,
-                   newdata = mydata[mydata$Test==T,], #Test==T, test data
-                   type="response") #結果為每個人『不』被錄取的機率
-AdmitAns<-factor(ifelse(AdmitProb<0.5,1,0),levels=c(1,0))
-str(AdmitAns)
+
+```r
+# install.packages("caret")
+library(caret)  #計算參數的packages
+sensitivity(AdmitAns,GoldAns)
 ```
 
-效能指標
-====================================
- 計算預測效能參數
-```{r warning=F,message=F,fig.height=4.5}
-library(caret) # install.packages("caret") #計算參數的packages
-sensitivity(AdmitAns,mydata[mydata$Test==T,]$admit)
-specificity(AdmitAns,mydata[mydata$Test==T,]$admit)
-posPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
-negPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
+```
+[1] 0.857
+```
+
+```r
+specificity(AdmitAns,GoldAns)
+```
+
+```
+[1] 0.245
 ```
 
 
