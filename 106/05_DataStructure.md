@@ -1,7 +1,6 @@
 資料結構
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/03/13
 autosize: true
 font-family: 'Microsoft JhengHei'
 
