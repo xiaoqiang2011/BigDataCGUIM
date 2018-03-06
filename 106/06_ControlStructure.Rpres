@@ -1,7 +1,6 @@
 控制流程
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/03/13
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -14,7 +13,7 @@ navigation: slide
 ====================================
 - 條件判斷
     - if-else敘述
-    - if-else if-else
+    - [if]-[else if]-[else]
     - 巢狀if
     - ifelse() 
     
@@ -31,7 +30,7 @@ navigation: slide
 type:section
 
 - if-else敘述
-- if-else if-else
+- [if]-[else if]-[else]
 - 巢狀if
 - ifelse() 
 
@@ -78,7 +77,7 @@ if(score>=60){
 }
 ```
 
-if-else if-else
+[if] - [else if] - [else]
 ====================================
 type:sub-section 
 
@@ -113,7 +112,7 @@ if(CHscore>=60){
 }
 ```
 
-if- else if - else 練習
+[if]-[else if]-[else] 練習
 ====================================
 type:alert
 incremental:true
