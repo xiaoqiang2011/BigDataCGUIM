@@ -34,6 +34,21 @@ vec<-c('a','b','c','d','e')
     - `a`: 第**1**個元素
     - `b`: 第**2**個元素
 
+向量元素之資料型態必須相同
+========================================================
+- 在同一向量中，所有元素之**資料型態必須相同**
+- 上述`vec`向量，元素均為文字型態
+- 若放不同類別的資料進同一個向量，資料型態會被自動轉為相同
+
+```r
+a<-c(TRUE, "a",1)
+str(a)
+```
+
+```
+ chr [1:3] "TRUE" "a" "1"
+```
+
 向量 Vector 取值
 ========================================================  
 
@@ -460,6 +475,25 @@ incremental:true
 
 - iris$Time<-1 會發生什麼事情?
 
+資料框欄位刪除
+====================================
+若需刪除某欄位，可將欄位值設定為`NULL`
+
+```r
+iris$Species<-NULL ##刪除Species欄位
+head(iris)
+```
+
+```
+  Sepal.Length Sepal.Width Petal.Length Petal.Width
+1          5.1         3.5          1.4         0.2
+2          4.9         3.0          1.4         0.2
+3          4.7         3.2          1.3         0.2
+4          4.6         3.1          1.5         0.2
+5          5.0         3.6          1.4         0.2
+6          5.4         3.9          1.7         0.4
+```
+
 資料表 data.table
 ======================================================== 
 type:sub-section
@@ -630,9 +664,7 @@ iris$Species[1:10] ##原始值，印出第1~10個元素
 ```
 
 ```
- [1] setosa     versicolor setosa     setosa     setosa     setosa    
- [7] setosa     setosa     setosa     setosa    
-Levels: setosa versicolor virginica
+NULL
 ```
 
 ```r
@@ -640,9 +672,7 @@ table(iris$Species) ##統計結果
 ```
 
 ```
-
-    setosa versicolor  virginica 
-        49         51         50 
+< table of extent 0 >
 ```
 
 str()

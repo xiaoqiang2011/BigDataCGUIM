@@ -1,7 +1,6 @@
 資料處理與清洗
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/04/10 & 17
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -134,20 +133,22 @@ incremental:true
 回想起DCard(爬蟲結果不代表本人意見)的資料．．．
 
 ```r
-library(rvest) ##載入
+library(rvest) ##(爬蟲結果不代表本人意見)
 DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
 DCardContent<-read_html(DCardCGU)
-post_title <- DCardContent %>% html_nodes(".PostEntry_titleUnread_ycJL0") %>% html_text()
-post_comment<- DCardContent %>% html_nodes(".PostEntry_commentUnread_1cVyd") %>% html_text()
-post_like<- DCardContent %>% html_nodes(".PostLikeCount_likeCount_2uhBH") %>% html_text()
-DCardCGU_posts <- data.frame(title = post_title, commentN=post_comment,
-                             likeN=post_like,stringsAsFactors = F)
+post_title <- DCardContent %>% html_nodes(".PostEntry_unread_2U217") %>% html_text()
+post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
+post_like<- DCardContent %>% html_nodes(".Like_counter_1enlP") %>% html_text()
+DCardCGU_posts <- 
+    data.frame(title = post_title,
+               author=post_author, 
+               likeN=post_like)
 ```
 
 資料型別轉換練習
 ====================================
 type:alert
-評論數和按讚數都是字串型別 (chr)
+按讚數是字串型別 (chr)
 
 ```r
 str(DCardCGU_posts)
@@ -155,11 +156,11 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title   : chr  "長庚怪事真的很多" "路跑卡，讓子彈飛一會" "過關卡" "香緹早餐" ...
- $ commentN: chr  "2" "1" "0" "1" ...
- $ likeN   : chr  "1" "7" "1" "12" ...
+ $ title : Factor w/ 29 levels "暗網","班代開會",..: 19 20 22 21 27 25 24 15 5 14 ...
+ $ author: Factor w/ 3 levels "長庚大學","長庚大學 電機工程學系",..: 1 3 1 1 1 1 1 1 1 1 ...
+ $ likeN : Factor w/ 12 levels "0","1","10","13",..: 1 7 10 2 9 6 12 6 2 9 ...
 ```
-該如何將這兩個欄位轉成數字呢？
+該如何將這按讚數欄位轉成數字呢？
 
 文字字串處理
 ====================================
@@ -377,7 +378,7 @@ incremental:true
 library(rvest) ##載入
 DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
 DCardContent<-read_html(DCardCGU)
-DCardContentNode <-  html_nodes(DCardContent, ".PostEntry_excerpt_A0Bmh")
+DCardContentNode <-  html_nodes(DCardContent, ".PostEntry_excerpt_2eHlN")
 post_contentShort<- html_text(DCardContentNode)
 ```
 
@@ -888,14 +889,16 @@ incremental:true
 又再一次想起DCard(爬蟲結果不代表本人意見)的資料．．．
 
 ```r
-library(rvest) ##載入
+library(rvest) ##(爬蟲結果不代表本人意見)
 DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
 DCardContent<-read_html(DCardCGU)
-post_title <- DCardContent %>% html_nodes(".PostEntry_titleUnread_ycJL0") %>% html_text()
-post_comment<- DCardContent %>% html_nodes(".PostEntry_commentUnread_1cVyd") %>% html_text()
-post_like<- DCardContent %>% html_nodes(".PostLikeCount_likeCount_2uhBH") %>% html_text()
-DCardCGU_posts <- data.frame(title = post_title, commentN=post_comment,
-                             likeN=post_like,stringsAsFactors = F)
+post_title <- DCardContent %>% html_nodes(".PostEntry_unread_2U217") %>% html_text()
+post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
+post_like<- DCardContent %>% html_nodes(".Like_counter_1enlP") %>% html_text()
+DCardCGU_posts <- 
+    data.frame(title = post_title,
+               author=post_author, 
+               likeN=post_like)
 ```
 
 資料框排序練習
@@ -908,13 +911,12 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title   : chr  "長庚怪事真的很多" "路跑卡，讓子彈飛一會" "過關卡" "香緹早餐" ...
- $ commentN: chr  "2" "1" "0" "1" ...
- $ likeN   : chr  "1" "7" "1" "12" ...
+ $ title : Factor w/ 29 levels "暗網","班代開會",..: 19 20 22 21 27 25 24 15 5 14 ...
+ $ author: Factor w/ 3 levels "長庚大學","長庚大學 電機工程學系",..: 1 3 1 1 1 1 1 1 1 1 ...
+ $ likeN : Factor w/ 12 levels "0","1","10","13",..: 1 7 10 2 9 6 12 6 2 9 ...
 ```
-- 將DCardCGU_posts按照評論數由高到低排序
 - 將DCardCGU_posts按照按讚數由高到低排序
-- 提示：要將評論數與按讚數**轉成數值**
+- 提示：要將按讚數**轉成數值**
 
 資料組合
 ====================================

@@ -784,7 +784,7 @@ hljs.initHighlightingOnLoad();
   <div class="slides">
 
 <section data-state="section" data-transition="linear" data-transition-speed="default">
-<h1>資料處理與清洗</h1><p>曾意儒 Yi-Ju Tseng<br/>2017&#x2F;04&#x2F;10 &amp; 17</p>
+<h1>資料處理與清洗</h1><p>曾意儒 Yi-Ju Tseng</p>
 
 <div class="slideContent" >
 
@@ -936,14 +936,16 @@ as.numeric(cha)
 <div class="slideContent" >
 <p>回想起DCard(爬蟲結果不代表本人意見)的資料．．．</p>
 
-<pre class="fragment"><code class="r">library(rvest) ##載入
+<pre class="fragment"><code class="r">library(rvest) ##(爬蟲結果不代表本人意見)
 DCardCGU&lt;-&quot;https://www.dcard.tw/f/cgu?latest=true&quot;
 DCardContent&lt;-read_html(DCardCGU)
-post_title &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_titleUnread_ycJL0&quot;) %&gt;% html_text()
-post_comment&lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_commentUnread_1cVyd&quot;) %&gt;% html_text()
-post_like&lt;- DCardContent %&gt;% html_nodes(&quot;.PostLikeCount_likeCount_2uhBH&quot;) %&gt;% html_text()
-DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
-                             likeN=post_like,stringsAsFactors = F)
+post_title &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_unread_2U217&quot;) %&gt;% html_text()
+post_author&lt;- DCardContent %&gt;% html_nodes(&quot;.PostAuthor_root_3vAJf&quot;) %&gt;% html_text()
+post_like&lt;- DCardContent %&gt;% html_nodes(&quot;.Like_counter_1enlP&quot;) %&gt;% html_text()
+DCardCGU_posts &lt;- 
+    data.frame(title = post_title,
+               author=post_author, 
+               likeN=post_like)
 </code></pre>
 
 </div>
@@ -952,18 +954,18 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 <section data-state="alert" data-transition="linear" data-transition-speed="default">
 <h3>資料型別轉換練習</h3>
 <div class="slideContent" >
-<p>評論數和按讚數都是字串型別 (chr)</p>
+<p>按讚數是字串型別 (chr)</p>
 
 <pre><code class="r">str(DCardCGU_posts)
 </code></pre>
 
 <pre><code>&#39;data.frame&#39;:   30 obs. of  3 variables:
- $ title   : chr  &quot;長庚怪事真的很多&quot; &quot;路跑卡，讓子彈飛一會&quot; &quot;過關卡&quot; &quot;香緹早餐&quot; ...
- $ commentN: chr  &quot;2&quot; &quot;1&quot; &quot;0&quot; &quot;1&quot; ...
- $ likeN   : chr  &quot;1&quot; &quot;7&quot; &quot;1&quot; &quot;12&quot; ...
+ $ title : Factor w/ 29 levels &quot;暗網&quot;,&quot;班代開會&quot;,..: 19 20 22 21 27 25 24 15 5 14 ...
+ $ author: Factor w/ 3 levels &quot;長庚大學&quot;,&quot;長庚大學 電機工程學系&quot;,..: 1 3 1 1 1 1 1 1 1 1 ...
+ $ likeN : Factor w/ 12 levels &quot;0&quot;,&quot;1&quot;,&quot;10&quot;,&quot;13&quot;,..: 1 7 10 2 9 6 12 6 2 9 ...
 </code></pre>
 
-<p>該如何將這兩個欄位轉成數字呢？</p>
+<p>該如何將這按讚數欄位轉成數字呢？</p>
 
 </div>
 
@@ -1205,7 +1207,7 @@ grep(&quot;a&quot;,c(&quot;Alex&quot;,&quot;Tom&quot;,&quot;Amy&quot;,&quot;Joy&
 <pre class="fragment"><code class="r">library(rvest) ##載入
 DCardCGU&lt;-&quot;https://www.dcard.tw/f/cgu?latest=true&quot;
 DCardContent&lt;-read_html(DCardCGU)
-DCardContentNode &lt;-  html_nodes(DCardContent, &quot;.PostEntry_excerpt_A0Bmh&quot;)
+DCardContentNode &lt;-  html_nodes(DCardContent, &quot;.PostEntry_excerpt_2eHlN&quot;)
 post_contentShort&lt;- html_text(DCardContentNode)
 </code></pre>
 
@@ -2531,14 +2533,16 @@ iris[grepl(&quot;color&quot;,iris$Species),] ##Species包含&quot;color&quot;的
 <div class="slideContent" >
 <p>又再一次想起DCard(爬蟲結果不代表本人意見)的資料．．．</p>
 
-<pre class="fragment"><code class="r">library(rvest) ##載入
+<pre class="fragment"><code class="r">library(rvest) ##(爬蟲結果不代表本人意見)
 DCardCGU&lt;-&quot;https://www.dcard.tw/f/cgu?latest=true&quot;
 DCardContent&lt;-read_html(DCardCGU)
-post_title &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_titleUnread_ycJL0&quot;) %&gt;% html_text()
-post_comment&lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_commentUnread_1cVyd&quot;) %&gt;% html_text()
-post_like&lt;- DCardContent %&gt;% html_nodes(&quot;.PostLikeCount_likeCount_2uhBH&quot;) %&gt;% html_text()
-DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
-                             likeN=post_like,stringsAsFactors = F)
+post_title &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_unread_2U217&quot;) %&gt;% html_text()
+post_author&lt;- DCardContent %&gt;% html_nodes(&quot;.PostAuthor_root_3vAJf&quot;) %&gt;% html_text()
+post_like&lt;- DCardContent %&gt;% html_nodes(&quot;.Like_counter_1enlP&quot;) %&gt;% html_text()
+DCardCGU_posts &lt;- 
+    data.frame(title = post_title,
+               author=post_author, 
+               likeN=post_like)
 </code></pre>
 
 </div>
@@ -2551,15 +2555,14 @@ DCardCGU_posts &lt;- data.frame(title = post_title, commentN=post_comment,
 </code></pre>
 
 <pre><code>&#39;data.frame&#39;:   30 obs. of  3 variables:
- $ title   : chr  &quot;長庚怪事真的很多&quot; &quot;路跑卡，讓子彈飛一會&quot; &quot;過關卡&quot; &quot;香緹早餐&quot; ...
- $ commentN: chr  &quot;2&quot; &quot;1&quot; &quot;0&quot; &quot;1&quot; ...
- $ likeN   : chr  &quot;1&quot; &quot;7&quot; &quot;1&quot; &quot;12&quot; ...
+ $ title : Factor w/ 29 levels &quot;暗網&quot;,&quot;班代開會&quot;,..: 19 20 22 21 27 25 24 15 5 14 ...
+ $ author: Factor w/ 3 levels &quot;長庚大學&quot;,&quot;長庚大學 電機工程學系&quot;,..: 1 3 1 1 1 1 1 1 1 1 ...
+ $ likeN : Factor w/ 12 levels &quot;0&quot;,&quot;1&quot;,&quot;10&quot;,&quot;13&quot;,..: 1 7 10 2 9 6 12 6 2 9 ...
 </code></pre>
 
 <ul>
-<li>將DCardCGU_posts按照評論數由高到低排序</li>
 <li>將DCardCGU_posts按照按讚數由高到低排序</li>
-<li>提示：要將評論數與按讚數<strong>轉成數值</strong></li>
+<li>提示：要將按讚數<strong>轉成數值</strong></li>
 </ul>
 
 </div>

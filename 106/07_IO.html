@@ -784,7 +784,7 @@ hljs.initHighlightingOnLoad();
   <div class="slides">
 
 <section data-state="section" data-transition="linear" data-transition-speed="default">
-<h1>資料讀取與匯出</h1><p>曾意儒 Yi-Ju Tseng<br/>2017&#x2F;03&#x2F;20 &amp; 27</p>
+<h1>資料讀取與匯出</h1><p>曾意儒 Yi-Ju Tseng</p>
 
 <div class="slideContent" >
 
@@ -972,7 +972,7 @@ dataset &lt;- read_excel(&quot;檔案路徑與名稱&quot;)
 <li class="fragment">方法一</li>
 <li class="fragment">方法二</li>
 </ul></li>
-<li class="fragment">匯入後，檢查匯入的資料，資料內有幾筆觀察值？每筆觀察值中有幾個欄位？</li>
+<li class="fragment">匯入後，<strong>檢查</strong>匯入的資料，資料內有幾筆觀察值？每筆觀察值中有幾個欄位？</li>
 </ul>
 
 </div>
@@ -981,7 +981,7 @@ dataset &lt;- read_excel(&quot;檔案路徑與名稱&quot;)
 <section data-state="sub-section" data-transition="linear" data-transition-speed="default">
 <h2>R物件 .rds</h2>
 <div class="slideContent" >
-<p>如果在R程式內處理完資料後，必須儲存一份以供後續分析，使用R物件儲存是最佳的方式</p>
+<p>如果在R程式內處理完資料後，必須儲存一份資料以供後續分析，使用<strong>R物件</strong>儲存是最佳的方式</p>
 
 <ul>
 <li>檔案小</li>
@@ -1001,7 +1001,7 @@ dataset &lt;- read_excel(&quot;檔案路徑與名稱&quot;)
 <div class="slideContent" >
 <ul>
 <li><code>source</code>函數</li>
-<li>讀R的Obejct or script, <strong>執行</strong></li>
+<li>讀R的Obejct or script, 並<strong>執行</strong></li>
 <li><strong>實際操作範例</strong>
 
 <ul>
@@ -1172,7 +1172,8 @@ dataset &lt;- read_excel(&quot;檔案路徑與名稱&quot;)
 <div class="slideContent" >
 <ul>
 <li><a href="http://data.taipei/opendata/datalist/datasetMeta/download?id=961ca397-4a59-45e8-b312-697f26b059dc&amp;rid=190796c8-7c56-42e0-8068-39242b8ec927">臺北市水質監測資訊</a></li>
-<li>安裝<code>XML</code> package</li>
+<li>安裝<code>XML</code> package（只需安裝一次）</li>
+<li>載入<code>XML</code> package</li>
 <li><code>xmlParse()</code>函數將XML檔案匯入</li>
 </ul>
 
@@ -1185,13 +1186,31 @@ waterQ &lt;- xmlParse(waterURL)
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>xpath?</h3>
+<h3>XPath?</h3>
 <div class="slideContent" >
 <ul>
 <li>XML路徑語言（XML Path Language）</li>
 <li>基於XML的樹狀結構，提供在資料結構樹中找尋節點的能力</li>
 <li><a href="https://zh.wikipedia.org/wiki/XPath">維基百科</a></li>
+<li><a href="http://tech-marsw.logdown.com/blog/2016/01/11/parsing-lxml-xpath-sheet">中文教學</a></li>
+<li><a href="https://www.w3schools.com/xml/xpath_syntax.asp">W3C教學</a></li>
 </ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>列舉XPath常用的語法</h3>
+<div class="slideContent" >
+<pre><code>// : 子結點資料
+</code></pre>
+
+<p>如所有連結標籤 //a</p>
+
+<pre><code>@ : 屬性資料
+</code></pre>
+
+<p>如所有連結標籤內的連結網址 //a/@href</p>
 
 </div>
 
@@ -1227,6 +1246,18 @@ xpathSApply(waterQ,&quot;//longitude&quot;,xmlValue)[1:10]
 <pre><code> [1] &quot;121.56094&quot; &quot;121.54401&quot; &quot;121.55557&quot; &quot;121.53476&quot; &quot;121.54043&quot;
  [6] &quot;121.55661&quot; &quot;121.55360&quot; &quot;121.53551&quot; &quot;121.59892&quot; &quot;121.60829&quot;
 </code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>xpathSApply vs. xpathApply</h3>
+<div class="slideContent" >
+<ul>
+<li>xpathSApply: 回傳的物件是Vector 向量</li>
+<li>xpathApply: 回傳的物件是List 列表</li>
+<li>延伸閱讀: <a href="http://blog.bryanbigdata.com/2014/06/r-applysapplylapply.html">apply家族介紹</a></li>
+</ul>
 
 </div>
 
@@ -1290,9 +1321,9 @@ htmlCode[3:5]
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>網頁爬蟲 Webscraping-逐行讀取</h3>
+<h3>網頁爬蟲 Webscraping-XML工具</h3>
 <div class="slideContent" >
-<p>讀取完網頁後，使用XML工具分析擷取網頁 (<code>XML</code> package)</p>
+<p>或是使用XML工具分析擷取網頁 (<code>XML</code> package)</p>
 
 <pre><code class="r">html &lt;- htmlParse(&quot;http://im.cgu.edu.tw/bin/home.php&quot;)
 xpathSApply(html, &quot;//title&quot;, xmlValue)
@@ -1312,13 +1343,26 @@ xpathSApply(html, &quot;//title&quot;, xmlValue)
 <pre><code class="r">xpathSApply(html, &quot;//span[@class=&#39;ptname &#39;]&quot;, xmlValue)
 </code></pre>
 
-<pre><code> [1] &quot;畢業專題成果展&quot;       &quot;碩士班計畫書審查&quot;     &quot;畢業校友資料登錄&quot;    
- [4] &quot;長庚大學首頁&quot;         &quot;校務資訊系統&quot;         &quot;人事教育訓練資訊網&quot;  
- [7] &quot;資管系導師名單&quot;       &quot;TA課後輔導值班表&quot;     &quot;碩博士論文網&quot;        
-[10] &quot;國內資管系所&quot;         &quot;資管系內部行政系統&quot;   &quot;資管系分機表&quot;        
-[13] &quot;資管系學會&quot;           &quot;工商管理學系/研究所&quot;  &quot;工業設計學系/研究所&quot; 
-[16] &quot;管理學院&quot;             &quot;醫務管理學系/研究所&quot;  &quot;商管專業學院&quot;        
-[19] &quot;企業管理研究所博士班&quot; &quot;長庚大學行事曆&quot;      
+<pre><code> [1] &quot;大數據資料科學與產業應用學程&quot;      
+ [2] &quot;資訊與醫療安全學程&quot;                
+ [3] &quot;物聯網產業創新應用學程&quot;            
+ [4] &quot;機器人智能互動與創新應用(暑期)學程&quot;
+ [5] &quot;校務資訊系統&quot;                      
+ [6] &quot;人事教育訓練資訊網&quot;                
+ [7] &quot;畢業校友登錄系統&quot;                  
+ [8] &quot;碩博士論文網&quot;                      
+ [9] &quot;資管系導師名單&quot;                    
+[10] &quot;國內資管系所&quot;                      
+[11] &quot;資管系內部行政系統&quot;                
+[12] &quot;資管系分機表&quot;                      
+[13] &quot;資管系學會&quot;                        
+[14] &quot;管理學院&quot;                          
+[15] &quot;醫務管理學系&quot;                      
+[16] &quot;工商管理學系&quot;                      
+[17] &quot;工業設計學系&quot;                      
+[18] &quot;企業管理研究所博士班&quot;              
+[19] &quot;商管專業學院&quot;                      
+[20] &quot;長庚大學行事曆&quot;                    
 </code></pre>
 
 </div>
@@ -1340,19 +1384,36 @@ xpathSApply(html, &quot;//title&quot;, xmlValue)
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
+<h3>CSS Selector 語法介紹</h3>
+<div class="slideContent" >
+<ul>
+<li><a href="https://www.w3schools.com/cssref/css_selectors.asp">參考資料</a>
+
+<ul>
+<li><strong>.</strong>xxx：select elements with class=&ldquo;xxx&rdquo;</li>
+<li><strong>#</strong>xxx：select elements with id=&ldquo;xxx&rdquo;</li>
+<li><strong>[</strong>yyy<strong>]</strong>：select elements with attribute yyy</li>
+<li><strong>[</strong>yyy=zzz<strong>]</strong>：select elements with attribute yyy=&ldquo;zzz&rdquo;</li>
+</ul></li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
 <h3>網頁爬蟲 Webscraping-rvest</h3>
 <div class="slideContent" >
 <pre><code class="r">library(rvest) ##載入
-YahooNewsurl&lt;-&quot;https://tw.news.yahoo.com/&quot;
-news_title &lt;- read_html(YahooNewsurl) %&gt;% html_nodes(&quot;.tpl-title a&quot;) %&gt;% html_text()
-news_url &lt;- read_html(YahooNewsurl) %&gt;% html_nodes(&quot;.tpl-title a&quot;) %&gt;% html_attr(&quot;href&quot;)
-Yahoo_news &lt;- data.frame(title = news_title, url=news_url)
-head(Yahoo_news)
+Repoterurl&lt;-&quot;https://www.twreporter.org/&quot;
+news_title &lt;- read_html(Repoterurl) %&gt;% html_nodes(&quot;.hzKrPP&quot;) %&gt;% html_text()
+news_url &lt;- read_html(Repoterurl) %&gt;% html_nodes(&quot;.hzKrPP a&quot;) %&gt;% html_attr(&quot;href&quot;)
+news &lt;- data.frame(title = news_title, url=news_url)
+head(news)
 </code></pre>
 
-<pre><code>                                    title                                                           url
-1         曾1妻5妾好風光 男星慘賣豪宅還債 /從1妻5妾的風光到變賣豪宅還債-網友噓雷洪：活該-091741737.html
-2          美報告：美棄「一中」台灣更危險               /美報告-美拋棄-中-台灣處境更危險-081036215.html
+<pre><code>                                                     title                                                    url
+1                           陳藹文／追傳奇的傳奇：夏子之光                                  /a/bookreview-natsuko
+2                   再見東聲：頭份最後一間老戲院的映演歲月                  /a/opinion-goodbye-dong-sheng-theater
 </code></pre>
 
 </div>
@@ -1363,23 +1424,20 @@ head(Yahoo_news)
 <div class="slideContent" >
 <ul>
 <li>擷取條件的撰寫會因網頁語法不同而有差異</li>
-<li>使用<strong>Google Chrome開發工具</strong>輔助觀察擷取資料的條件</li>
-<li>使用<strong>xpath-helper</strong>輔助xpath標籤的擷取</li>
+<li>使用<strong>Google Chrome開發工具</strong>輔助觀察擷取資料的條件
+
+<ul>
+<li>或使用<strong>SelectorGadget</strong>輔助</li>
+<li>或使用<strong>xpath-helper</strong>輔助xpath標籤的擷取</li>
+</ul></li>
 <li>觀察需要擷取的資料所在HTML片段
 
 <ul>
-<li>新聞清單被包含在<code>ul</code>標籤下</li>
-<li>且css class為<code>tpl-title yom-list list-style-none</code></li>
+<li>且css class為<code>latest-section__ItemFrame-gk5lu9-1 hzKrPP</code></li>
 </ul></li>
 </ul>
 
-<pre><code>&lt;ul class=&quot;tpl-title yom-list list-style-none&quot; id=&quot;yui_3_9_1_1_1486568229946_2408&quot;&gt;
-&lt;li class=&quot;list-story first&quot; id=&quot;yui_3_9_1_1_1486568229946_2407&quot;&gt;
-&lt;div class=&quot;txt&quot; id=&quot;yui_3_9_1_1_1486568229946_2406&quot;&gt;
-&lt;a href=&quot;/從1妻5妾的風光到變賣豪宅還債-網友噓雷洪：活該-091741737.html&quot; class=&quot;title &quot; data-ylk=&quot;pkg:96a0ca11-47bc-3100-81ad-0a288707f150;ver:60cdb126-ee0c-11e6-bb9b-8a777738a932;lt:i;pos:1;&quot; data-rapid_p=&quot;1&quot;&gt;曾1妻5妾好風光 男星慘賣豪宅還債&lt;/a&gt;
-&lt;cite id=&quot;yui_3_9_1_1_1486568229946_2405&quot;&gt;
-&lt;span class=&quot;provider&quot; id=&quot;yui_3_9_1_1_1486568229946_2404&quot;&gt;Yahoo奇摩娛樂新聞&lt;/span&gt;
-&lt;/cite&gt;&lt;/div&gt;&lt;/li&gt;
+<pre><code>&lt;div class=&quot;latest-section__ItemFrame-gk5lu9-1 hzKrPP&quot;&gt;&lt;a href=&quot;/a/bookreview-natsuko&quot;&gt;&lt;div class=&quot;hover-effect__HoverEffect-s1mpr2b0-0 kfSlYe&quot;&gt;&lt;div class=&quot;latest-section__ImageFrame-gk5lu9-2 jUFDxW&quot;&gt;&lt;div class=&quot;img-wrapper__ImgObjectFit-ketl5c-0 jYnMAC&quot;&gt;&lt;img alt=&quot;陳藹文／追傳奇的傳奇：夏子之光&quot; src=&quot;https://www.twreporter.org/images/20180305174703-97e2a0058b900aec1df1fce4ecdd876f-mobile.png&quot; srcSet=&quot;&quot; style=&quot;transform:translateZ(0)&quot;/&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;latest-section__ContentFrame-gk5lu9-3 hlpTZa&quot;&gt;&lt;div class=&quot;latest-section__Category-gk5lu9-4 kniurW category-name__CategoryName-s1o0c9ma-0 ivjNw&quot;&gt;評論&lt;/div&gt;&lt;div class=&quot;latest-section__Title-gk5lu9-5 clMzIT&quot;&gt;陳藹文／追傳奇的傳奇：夏子之光&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/a&gt;&lt;/div&gt;
 ....
 </code></pre>
 
@@ -1392,10 +1450,9 @@ head(Yahoo_news)
 <pre><code class="r">library(rvest) ##(爬蟲結果不代表本人意見)
 DCardCGU&lt;-&quot;https://www.dcard.tw/f/cgu?latest=true&quot;
 DCardContent&lt;-read_html(DCardCGU)
-post_title &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_titleUnread_ycJL0&quot;) %&gt;% html_text()
-post_contentShort&lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_excerpt_A0Bmh&quot;) %&gt;% html_text()
+post_title &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_unread_2U217&quot;) %&gt;% html_text()
+post_contentShort&lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_excerpt_2eHlN&quot;) %&gt;% html_text()
 post_author&lt;- DCardContent %&gt;% html_nodes(&quot;.PostAuthor_root_3vAJf&quot;) %&gt;% html_text()
-post_comment&lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_commentUnread_1cVyd&quot;) %&gt;% html_text()
 </code></pre>
 
 </div>
@@ -1405,12 +1462,14 @@ post_comment&lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_commentUnread_
 <h3>網頁爬蟲 DCard實作 -2</h3>
 <div class="slideContent" >
 <pre><code class="r">##(爬蟲結果不代表本人意見)
-post_like&lt;- DCardContent %&gt;% html_nodes(&quot;.PostLikeCount_likeCount_2uhBH&quot;) %&gt;% html_text()
-post_url &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_entry_2rsgm&quot;) %&gt;% html_attr(&quot;href&quot;)
-DCardCGU_posts &lt;- data.frame(title = post_title, author=post_author, 
-                            content=post_contentShort, commentN=post_comment, 
-                            likeN=post_like,
-                            url=paste0(&quot;https://www.dcard.tw&quot;,post_url))
+post_like&lt;- DCardContent %&gt;% html_nodes(&quot;.Like_counter_1enlP&quot;) %&gt;% html_text()
+post_url &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_unread_2U217&quot;) %&gt;% html_attr(&quot;href&quot;)
+DCardCGU_posts &lt;- 
+    data.frame(title = post_title,
+               author=post_author, 
+               content=post_contentShort, 
+               likeN=post_like,
+               url=paste0(&quot;https://www.dcard.tw&quot;,post_url))
 </code></pre>
 
 </div>
@@ -1419,44 +1478,58 @@ DCardCGU_posts &lt;- data.frame(title = post_title, author=post_author,
 <section data-transition="linear" data-transition-speed="default">
 <h3>網頁爬蟲 DCard實作 -3</h3>
 <div class="slideContent" >
-<pre><code class="r">##(爬蟲結果不代表本人意見)
-knitr::kable(
-    DCardCGU_posts[1:5,c(&quot;title&quot;,&quot;author&quot;,&quot;commentN&quot;)]) 
+<pre><code class="r">DCardCGU_posts[1:5,c(&quot;title&quot;,&quot;author&quot;,&quot;likeN&quot;)]
 </code></pre>
 
 <table><thead>
 <tr>
 <th align="left">title</th>
 <th align="left">author</th>
-<th align="left">commentN</th>
+<th align="left">likeN</th>
 </tr>
 </thead><tbody>
 <tr>
-<td align="left">需要愛健身愛運動的人的關心</td>
+<td align="left">一醫的自動繳費機</td>
+<td align="left">長庚大學</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">醫生命</td>
+<td align="left">長庚大學 電子工程學系</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">長庚畢業能去聯發科台積電嗎</td>
+<td align="left">長庚大學</td>
+<td align="left">6</td>
+</tr>
+<tr>
+<td align="left">遺失宿舍鑰匙</td>
 <td align="left">長庚大學</td>
 <td align="left">1</td>
 </tr>
 <tr>
-<td align="left">想請問包裹問題</td>
+<td align="left">轉系</td>
 <td align="left">長庚大學</td>
-<td align="left">5</td>
-</tr>
-<tr>
-<td align="left">長庚有人在玩dj或是聽電子音樂的嗎？</td>
-<td align="left">長庚大學</td>
-<td align="left">19</td>
-</tr>
-<tr>
-<td align="left">長庚盃撞球比賽開打囉！</td>
-<td align="left">長庚大學 資訊工程學系</td>
-<td align="left">0</td>
-</tr>
-<tr>
-<td align="left">多元通識：領導統御</td>
-<td align="left">長庚大學</td>
-<td align="left">3</td>
+<td align="left">4</td>
 </tr>
 </tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>進階爬蟲</h3>
+<div class="slideContent" >
+<ul>
+<li>瀑布式網頁爬蟲
+
+<ul>
+<li>觀察Google Chrome 開發者工具，在Network內找到api呼叫方式</li>
+<li>搭配使用RSelenium 模擬瀏覽狀態</li>
+<li>操作範例 <a href="https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/105/RSelenium_rvest.md">爬DCard實作R Code</a></li>
+</ul></li>
+</ul>
 
 </div>
 
@@ -1465,26 +1538,9 @@ knitr::kable(
 <h3>爬蟲練習</h3>
 <div class="slideContent" >
 <ul>
-<li><a href="https://www.ptt.cc/bbs/PokemonGo/index.html">Ptt PokemonGo 版</a></li>
+<li><a href="https://www.ptt.cc/bbs/Tech_Job/index.html">Ptt Tech_Job 版</a></li>
 <li>試著爬出所有<strong>標題</strong></li>
 <li>爬出的第三個標題是？</li>
-</ul>
-
-</div>
-
-</section>
-<section data-state="alert" data-transition="linear" data-transition-speed="default">
-<h3>作業三</h3>
-<div class="slideContent" >
-<ul>
-<li>點開GitHub<a href="https://classroom.github.com/assignment-invitations/0f06e7531342a6519abc76a5e05a44a9">作業邀請連結</a></li>
-<li>GitHub自動將作業模板新增至你的個人帳號</li>
-<li>將作業Repo clone至本機端</li>
-<li>按照作業模板(README.Rmd)指示，直接修改</li>
-<li>Knit出Markdown報告！</li>
-<li>Commit &amp; Sync</li>
-<li>將<strong>Repo網址</strong>與<strong>SHA號碼</strong>繳交至eLearning系統</li>
-<li>4/3 (一) 11:59pm繳交</li>
 </ul>
 
 </div>
@@ -1499,36 +1555,13 @@ knitr::kable(
 
 <ul>
 <li class="fragment"><a href="https://www.dcard.tw/_api/forums/cgu/posts">https://www.dcard.tw/_api/forums/cgu/posts</a></li>
-<li class="fragment"><a href="https://www.dcard.tw/_api/posts/225917717">https://www.dcard.tw/_api/posts/225917717</a></li>
-<li class="fragment"><a href="https://www.dcard.tw/_api/posts/225917717/comments">https://www.dcard.tw/_api/posts/225917717/comments</a></li>
+<li class="fragment"><a href="https://www.dcard.tw/_api/posts/228454694">https://www.dcard.tw/_api/posts/228454694</a></li>
+<li class="fragment"><a href="https://www.dcard.tw/_api/posts/228454694/comments">https://www.dcard.tw/_api/posts/228454694/comments</a></li>
 </ul></li>
-<li class="fragment">隱私問題 （去年的OkCupid事件）
+<li class="fragment">隱私問題 （2016年的OkCupid事件）
 
 <ul>
 <li class="fragment"><a href="https://motherboard.vice.com/en_us/article/70000-okcupid-users-just-had-their-data-published">70,000 OkCupid Users Just Had Their Data Published</a></li>
-</ul></li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>進階爬蟲</h3>
-<div class="slideContent" >
-<ul>
-<li><p>CSS Selector 語法介紹 <a href="https://www.w3schools.com/cssref/css_selectors.asp">參考資料</a></p>
-
-<ul>
-<li><strong>.</strong>xxx：select elements with class=&ldquo;xxx&rdquo;</li>
-<li><strong>#</strong>xxx：select elements with id=&ldquo;xxx&rdquo;</li>
-<li><strong>[</strong>yyy<strong>]</strong>：select elements with attribute yyy</li>
-<li><strong>[</strong>yyy=zzz<strong>]</strong>：select elements with attribute yyy=&ldquo;zzz&rdquo;</li>
-</ul></li>
-<li><p>瀑布式網頁爬蟲</p>
-
-<ul>
-<li>觀察Google Chrome 開發者工具，在Network內找到api呼叫方式</li>
-<li>搭配使用RSelenium 模擬瀏覽狀態 <a href="https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/105/RSelenium_rvest.md">DCard實作R Code</a></li>
 </ul></li>
 </ul>
 
@@ -1571,9 +1604,9 @@ knitr::kable(
 <h3>API - Open Data</h3>
 <div class="column column1 slideContent" >
 <ul>
-<li><a href="http://data.taipei/opendata/datalist/datasetMeta?oid=6a3e862a-e1cb-4e44-b989-d35609559463">臺北市開放認養動物</a>資料</li>
-<li>每日更新</li>
-<li>不可能每日手動下載</li>
+<li><a href="http://data.tycg.gov.tw/opendata/datalist/datasetMeta?oid=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c">桃園公共自行車即時服務資料</a>資料</li>
+<li>即時更新</li>
+<li>不可能手動下載</li>
 <li>提供透過<strong>API</strong>下載的服務</li>
 <li>透過API下載的資料格式: <strong>JSON格式</strong></li>
 </ul>
@@ -1585,12 +1618,11 @@ knitr::kable(
 
 
 <ul>
-<li><a href="http://data.taipei/opendata/datalist/datasetMeta/outboundDesc?id=6a3e862a-e1cb-4e44-b989-d35609559463&amp;rid=f4a75ba9-7721-4363-884d-c3820b0b917c">臺北市開放認養動物API資訊</a>
+<li><a href="http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&amp;rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f">桃園公共自行車即時服務資料API資訊</a>
 
 <ul>
 <li><strong>資料集ID</strong>: 紀錄資料的基本參數，如包含欄位、更新頻率等</li>
 <li><strong>資料RID</strong>: 資料集</li>
-<li>擷取範例</li>
 </ul></li>
 </ul>
 
@@ -1639,11 +1671,12 @@ knitr::kable(
 <ul>
 <li>使用<code>GET()</code>函數處理資料擷取網址</li>
 </ul></li>
+<li>API網址參考<a href="http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&amp;rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f">桃園公共自行車即時服務資料API資訊</a></li>
 </ul>
 
 <pre><code class="r">library(jsonlite)
 library(RCurl)
-PetData&lt;-fromJSON(&quot;http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&amp;rid=f4a75ba9-7721-4363-884d-c3820b0b917c&quot;)
+APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json&quot;)
 </code></pre>
 
 </div>
@@ -1654,40 +1687,38 @@ PetData&lt;-fromJSON(&quot;http://data.taipei/opendata/datalist/apiAccess?scope=
 <div class="slideContent" >
 <ul>
 <li>轉存為<code>列表list</code>的型態</li>
-<li>五個子元素(offset, limit, count, sort, results)</li>
-<li>results子元素的類別為資料框data.frame</li>
+<li>兩個子元素(success, result)</li>
+<li>result中records子元素的類別為資料框data.frame</li>
 </ul>
 
-<pre><code class="r">str(PetData)
+<pre><code class="r">str(APIData)
 </code></pre>
 
-<pre><code>List of 1
- $ result:List of 5
-  ..$ offset : int 0
-  ..$ limit  : int 10000
-  ..$ count  : int 307
-  ..$ sort   : chr &quot;&quot;
-  ..$ results:&#39;data.frame&#39;: 307 obs. of  20 variables:
-  .. ..$ _id            : chr [1:307] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
-  .. ..$ Name           : chr [1:307] &quot;&quot; &quot;&quot; &quot;花俏&quot; &quot;麥茶&quot; ...
-  .. ..$ Sex            : chr [1:307] &quot;雄&quot; &quot;雌&quot; &quot;雌&quot; &quot;雄&quot; ...
-  .. ..$ Type           : chr [1:307] &quot;貓&quot; &quot;犬&quot; &quot;貓&quot; &quot;貓&quot; ...
-  .. ..$ Build          : chr [1:307] &quot;中&quot; &quot;中&quot; &quot;中&quot; &quot;中&quot; ...
-  .. ..$ Age            : chr [1:307] &quot;成年&quot; &quot;老年&quot; &quot;成年&quot; &quot;成年&quot; ...
-  .. ..$ Variety        : chr [1:307] &quot;米克斯&quot; &quot;米克斯&quot; &quot;米克斯&quot; &quot;米克斯&quot; ...
-  .. ..$ Reason         : chr [1:307] &quot;動物救援&quot; &quot;動物救援&quot; &quot;動物救援&quot; &quot;動物管制&quot; ...
-  .. ..$ AcceptNum      : chr [1:307] &quot;106032203&quot; &quot;106031503&quot; &quot;106031204&quot; &quot;106031003&quot; ...
-  .. ..$ ChipNum        : chr [1:307] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
-  .. ..$ IsSterilization: chr [1:307] &quot;未絕育&quot; &quot;未絕育&quot; &quot;未絕育&quot; &quot;未絕育&quot; ...
-  .. ..$ HairType       : chr [1:307] &quot;黃白&quot; &quot;黑&quot; &quot;三花&quot; &quot;黃白&quot; ...
-  .. ..$ Note           : chr [1:307] &quot;神經症狀&quot; &quot;虛弱、瘦、左側大範圍外傷、無法站立&quot; &quot;大家好~我的名字叫花俏，漂亮的我想要找個長期飯票，這個人會是你嗎?讓我們給彼此一個機會吧!!\n&quot; &quot;大家好，我叫麥茶，\n淡淡憂鬱的我有吸引你嗎？\n個性有點緊張、怕人，\n要花時間慢慢培養感情，等待我熟悉，\n你願意給我機會，讓我進&quot;| __truncated__ ...
-  .. ..$ Resettlement   : chr [1:307] &quot;臺北市動物之家 收容編號106032203&quot; &quot;臺北市動物之家 收容編號：106031503&quot; &quot;臺北市動物之家 收容編號106031204&quot; &quot;臺北市動物之家 收容編號106031003&quot; ...
-  .. ..$ Phone          : chr [1:307] &quot;02-87913063&quot; &quot;02-8791-3063&quot; &quot;02-87913062&quot; &quot;02-87913062&quot; ...
-  .. ..$ Email          : chr [1:307] &quot;tcapoa8@mail.taipei.gov.tw&quot; &quot;tcapoa8@mail.taipei.gov.tw&quot; &quot;tcapoa8@mail.taipei.gov.tw&quot; &quot;tcapoa8@mail.taipei.gov.tw&quot; ...
-  .. ..$ ChildreAnlong  : chr [1:307] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
-  .. ..$ AnimalAnlong   : chr [1:307] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
-  .. ..$ Bodyweight     : chr [1:307] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
-  .. ..$ ImageName      : chr [1:307] &quot;http://163.29.39.183/uploads/images/medium/9fe8fb19-ed6f-41a2-b25c-719a80559085.jpg&quot; &quot;http://163.29.39.183/uploads/images/medium/6b77ae0f-e893-4bca-af97-c6e9afd36d2e.jpg&quot; &quot;http://163.29.39.183/uploads/images/medium/e0de6dfd-332e-459b-b157-36b006a1924c.jpg&quot; &quot;http://163.29.39.183/uploads/images/medium/c5983ea5-b55a-4bd1-bb3b-2c03f8e496a2.jpg&quot; ...
+<pre><code>List of 2
+ $ success: logi TRUE
+ $ result :List of 5
+  ..$ resource_id: chr &quot;a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f&quot;
+  ..$ fields     :&#39;data.frame&#39;: 15 obs. of  2 variables:
+  .. ..$ type: chr [1:15] &quot;int4&quot; &quot;text&quot; &quot;text&quot; &quot;text&quot; ...
+  .. ..$ id  : chr [1:15] &quot;_id&quot; &quot;sno&quot; &quot;sna&quot; &quot;tot&quot; ...
+  ..$ records    :&#39;data.frame&#39;: 100 obs. of  15 variables:
+  .. ..$ _id    : int [1:100] 1 2 3 4 5 6 7 8 9 10 ...
+  .. ..$ sarea  : chr [1:100] &quot;中壢區&quot; &quot;中壢區&quot; &quot;中壢區&quot; &quot;中壢區&quot; ...
+  .. ..$ sareaen: chr [1:100] &quot;Zhongli Dist.&quot; &quot;Zhongli Dist.&quot; &quot;Zhongli Dist.&quot; &quot;Zhongli Dist.&quot; ...
+  .. ..$ sna    : chr [1:100] &quot;中央大學圖書館&quot; &quot;中壢高中&quot; &quot;中正公園(中美路)&quot; &quot;中壢火車站(前站)&quot; ...
+  .. ..$ aren   : chr [1:100] &quot;No.300, Zhongda Rd.&quot; &quot;No.215, Sec. 2, Zhongyang W. Rd. (opposite)&quot; &quot;No.101 to No.113, Zhongmei Rd. (opposite)&quot; &quot;No.139, Zhonghe Rd. (opposite)&quot; ...
+  .. ..$ sno    : chr [1:100] &quot;2001&quot; &quot;2002&quot; &quot;2003&quot; &quot;2004&quot; ...
+  .. ..$ tot    : chr [1:100] &quot;60&quot; &quot;52&quot; &quot;54&quot; &quot;98&quot; ...
+  .. ..$ snaen  : chr [1:100] &quot;National Central University Library&quot; &quot;Jhungli Senior High School&quot; &quot;Zhongzheng Park&quot; &quot;TRA Zhongli Station (Front)&quot; ...
+  .. ..$ bemp   : chr [1:100] &quot;56&quot; &quot;42&quot; &quot;10&quot; &quot;48&quot; ...
+  .. ..$ ar     : chr [1:100] &quot;中大路300號(中央大學校內圖書館前)&quot; &quot;中央西路二段215號對面人行道&quot; &quot;中美路101號-113號對面人行道&quot; &quot;中和路139號對面圓環&quot; ...
+  .. ..$ act    : chr [1:100] &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...
+  .. ..$ lat    : chr [1:100] &quot;24.968128&quot; &quot;24.960815&quot; &quot;24.959113&quot; &quot;24.953874&quot; ...
+  .. ..$ lng    : chr [1:100] &quot;121.194666&quot; &quot;121.212038&quot; &quot;121.224805&quot; &quot;121.2256&quot; ...
+  .. ..$ sbi    : chr [1:100] &quot;4&quot; &quot;8&quot; &quot;43&quot; &quot;47&quot; ...
+  .. ..$ mday   : chr [1:100] &quot;20180311143920&quot; &quot;20180311143916&quot; &quot;20180311143931&quot; &quot;20180311143927&quot; ...
+  ..$ total      : int 186
+  ..$ limit      : int 100
 </code></pre>
 
 </div>
@@ -1700,109 +1731,109 @@ PetData&lt;-fromJSON(&quot;http://data.taipei/opendata/datalist/apiAccess?scope=
 <li>使用<code>$</code>符號截取元素與子元素</li>
 </ul>
 
-<pre><code class="r">head(PetData$result$results)
+<pre><code class="r">head(APIData$result$records)
 </code></pre>
 
 <table><thead>
 <tr>
-<th align="left">_id</th>
-<th align="left">Name</th>
-<th align="left">Sex</th>
-<th align="left">Type</th>
-<th align="left">Build</th>
-<th align="left">Age</th>
-<th align="left">Variety</th>
-<th align="left">Reason</th>
-<th align="left">AcceptNum</th>
+<th align="right">_id</th>
+<th align="left">sarea</th>
+<th align="left">sareaen</th>
+<th align="left">sna</th>
+<th align="left">aren</th>
+<th align="left">sno</th>
+<th align="left">tot</th>
+<th align="left">snaen</th>
+<th align="left">bemp</th>
 </tr>
 </thead><tbody>
 <tr>
-<td align="left">1</td>
-<td align="left"></td>
-<td align="left">雄</td>
-<td align="left">貓</td>
-<td align="left">中</td>
-<td align="left">成年</td>
-<td align="left">米克斯</td>
-<td align="left">動物救援</td>
-<td align="left">106032203</td>
+<td align="right">1</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中央大學圖書館</td>
+<td align="left">No.300, Zhongda Rd.</td>
+<td align="left">2001</td>
+<td align="left">60</td>
+<td align="left">National Central University Library</td>
+<td align="left">56</td>
 </tr>
 <tr>
-<td align="left">2</td>
-<td align="left"></td>
-<td align="left">雌</td>
-<td align="left">犬</td>
-<td align="left">中</td>
-<td align="left">老年</td>
-<td align="left">米克斯</td>
-<td align="left">動物救援</td>
-<td align="left">106031503</td>
+<td align="right">2</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中壢高中</td>
+<td align="left">No.215, Sec. 2, Zhongyang W. Rd. (opposite)</td>
+<td align="left">2002</td>
+<td align="left">52</td>
+<td align="left">Jhungli Senior High School</td>
+<td align="left">42</td>
 </tr>
 <tr>
-<td align="left">3</td>
-<td align="left">花俏</td>
-<td align="left">雌</td>
-<td align="left">貓</td>
-<td align="left">中</td>
-<td align="left">成年</td>
-<td align="left">米克斯</td>
-<td align="left">動物救援</td>
-<td align="left">106031204</td>
+<td align="right">3</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中正公園(中美路)</td>
+<td align="left">No.101 to No.113, Zhongmei Rd. (opposite)</td>
+<td align="left">2003</td>
+<td align="left">54</td>
+<td align="left">Zhongzheng Park</td>
+<td align="left">10</td>
 </tr>
 <tr>
-<td align="left">4</td>
-<td align="left">麥茶</td>
-<td align="left">雄</td>
-<td align="left">貓</td>
-<td align="left">中</td>
-<td align="left">成年</td>
-<td align="left">米克斯</td>
-<td align="left">動物管制</td>
-<td align="left">106031003</td>
+<td align="right">4</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中壢火車站(前站)</td>
+<td align="left">No.139, Zhonghe Rd. (opposite)</td>
+<td align="left">2004</td>
+<td align="left">98</td>
+<td align="left">TRA Zhongli Station (Front)</td>
+<td align="left">48</td>
 </tr>
 <tr>
-<td align="left">5</td>
-<td align="left">山姆</td>
-<td align="left">雄</td>
-<td align="left">貓</td>
-<td align="left">中</td>
-<td align="left">成年</td>
-<td align="left">米克斯</td>
-<td align="left">民眾拾獲</td>
-<td align="left">106031002</td>
+<td align="right">5</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中原大學</td>
+<td align="left">No.200, Zhongbei Rd.</td>
+<td align="left">2005</td>
+<td align="left">82</td>
+<td align="left">Chung Yuan Christian University</td>
+<td align="left">67</td>
 </tr>
 <tr>
-<td align="left">6</td>
-<td align="left"></td>
-<td align="left">雌</td>
-<td align="left">犬</td>
-<td align="left">幼</td>
-<td align="left">幼齡</td>
-<td align="left">米克斯</td>
-<td align="left">民眾拾獲</td>
-<td align="left">106031021</td>
+<td align="right">6</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">銀河廣場</td>
+<td align="left">No.48, Jiuhe 1st St. (opposite)</td>
+<td align="left">2006</td>
+<td align="left">58</td>
+<td align="left">Galaxy Square</td>
+<td align="left">39</td>
 </tr>
 <tr>
-<td align="left">7</td>
-<td align="left"></td>
-<td align="left">雌</td>
-<td align="left">貓</td>
-<td align="left">中</td>
-<td align="left">成年</td>
-<td align="left">米克斯</td>
-<td align="left">動物管制</td>
-<td align="left">106030909</td>
+<td align="right">7</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中壢區公所</td>
+<td align="left">No.380, Huanbei Rd.</td>
+<td align="left">2007</td>
+<td align="left">40</td>
+<td align="left">Civil Affairs Office of Zhongli District</td>
+<td align="left">19</td>
 </tr>
 <tr>
-<td align="left">8</td>
-<td align="left">瑛瑛</td>
-<td align="left">雌</td>
-<td align="left">貓</td>
-<td align="left">中</td>
-<td align="left">成年</td>
-<td align="left">米克斯</td>
-<td align="left">動物救援</td>
-<td align="left">106030808</td>
+<td align="right">8</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">新明橋</td>
+<td align="left">No.269 to No.373, Sec. 2, Yuanhua Rd. (opposite)</td>
+<td align="left">2008</td>
+<td align="left">58</td>
+<td align="left">Xinming Bridge</td>
+<td align="left">0</td>
 </tr>
 </tbody></table>
 
@@ -1812,9 +1843,9 @@ PetData&lt;-fromJSON(&quot;http://data.taipei/opendata/datalist/apiAccess?scope=
 <section data-transition="linear" data-transition-speed="default">
 <h3>JSON檔案解析</h3>
 <div class="slideContent" >
-<p>分析各項<strong>開放認養理由</strong>出現次數</p>
+<p>分析各項<strong>地區</strong>車站數</p>
 
-<pre><code class="r">table(PetData$result$results$Reason)
+<pre><code class="r">table(APIData$result$records$sarea)
 </code></pre>
 
 <table><thead>
@@ -1824,28 +1855,40 @@ PetData&lt;-fromJSON(&quot;http://data.taipei/opendata/datalist/apiAccess?scope=
 </tr>
 </thead><tbody>
 <tr>
-<td align="left"></td>
-<td align="right">26</td>
+<td align="left">八德區</td>
+<td align="right">5</td>
 </tr>
 <tr>
-<td align="left">動物救援</td>
-<td align="right">93</td>
+<td align="left">大溪區</td>
+<td align="right">2</td>
 </tr>
 <tr>
-<td align="left">動物管制</td>
-<td align="right">121</td>
+<td align="left">大園區</td>
+<td align="right">2</td>
 </tr>
 <tr>
-<td align="left">民眾不擬續養</td>
-<td align="right">44</td>
+<td align="left">龜山區</td>
+<td align="right">10</td>
 </tr>
 <tr>
-<td align="left">民眾拾獲</td>
-<td align="right">23</td>
+<td align="left">蘆竹區</td>
+<td align="right">7</td>
+</tr>
+<tr>
+<td align="left">平鎮區</td>
+<td align="right">7</td>
+</tr>
+<tr>
+<td align="left">桃園區</td>
+<td align="right">32</td>
+</tr>
+<tr>
+<td align="left">中壢區</td>
+<td align="right">35</td>
 </tr>
 </tbody></table>
 
-<p>分析可知開放認養理由以動物管制居多</p>
+<p>分析可知中壢區車站較多</p>
 
 </div>
 
@@ -1927,7 +1970,7 @@ str(myjson)
 <pre><code class="r">library(httr)
 token&lt;-&quot;your access token&quot; #將access token複製到此處 
 FBData = GET(
-    paste0(&quot;https://graph.facebook.com/v2.8/tsaiingwen?fields=posts%7Bmessage%7D&amp;access_token=&quot;,
+    paste0(&quot;https://graph.facebook.com/v2.12/tsaiingwen?fields=posts%7Bmessage%7D&amp;access_token=&quot;,
            token))
 names(FBData)
 </code></pre>
@@ -1966,17 +2009,10 @@ names(json1)
 
 <pre><code>[[1]]
 [[1]]$message
-[1] &quot;「國機國造」不是夢想，而是一個行動。今天啟動的高級教練機「自研自製」任務，是國防自主的重要里程碑。我們不只要讓戰機起飛，更要讓產業起飛。\n\n國防產業同樣是「5+2」關鍵產業之一，所以，除了要如期、如質完成新式高教機的「自研自製」外，也要重新厚植台灣的航太工業人才鏈，以及加強相關產業的連結、轉型和升級。\n\n國防自主沒有捷徑，只有努力再努力、堅持再堅持。今天，我們重新跨出歷史性的一步。&quot;
+[1] &quot;「我們是寫歷史的那張白紙。」在國防部軍情局牆上的這句話，意思是不論歷史如何演變，情報人員的貢獻和血淚，往往不為外人所知，只能留白。軍情局設置了一面無名英雄紀念碑，就是為了紀念數千名弟兄姊妹的血和淚。\n\n今天我到軍情局勉勵官兵，並且在紀念碑前致敬，感謝這些弟兄姊妹用生命守護台灣的自由民主。\n\n軍情局近來也持續在內部推動政治檔案的整理工作。在民主時代，把社會的信任和支持建立起來，情報工作的推展會更加順利，期許軍情局繼續努力。&quot;
 
 [[1]]$id
-[1] &quot;46251501064_10154006497451065&quot;
-
-[[2]]
-[[2]]$message
-[1] &quot;今天，智慧機械推動辦公室正式啟動。「落實產學合作」、「支持創新研發」、「強化行銷通路」是辦公室的三項重點任務。\n\n智慧機械是「5+2」關鍵產業的其中之一。政府有決心。我相信，所有的機械業者－無論做的是螺桿、刀庫、控制器或是工作母機，大家也都有很強的決心，要走向創新、走向智慧化、走向品牌。我們是一個團隊，我們一起加油！&quot;
-
-[[2]]$id
-[1] &quot;46251501064_10154006456601065&quot;
+[1] &quot;46251501064_10154992163696065&quot;
 </code></pre>
 
 </div>
@@ -1988,7 +2024,7 @@ names(json1)
 <pre><code class="r">json1$posts$data[[1]]$message
 </code></pre>
 
-<pre><code>##[1] &quot;「國機國造」不是夢想，而是一個行動。今天啟動的高級教練機「自研自製」任務，是國防自主的重要里程碑。我們不只要讓戰機起飛，更要讓產業起飛。\n\n國防產業同樣是「5+2」關鍵產業之一，所以，除了要如期、如質完成新式高教機的「自研自製」外，也要重新厚植台灣的航太工業人才鏈，以及加強相關產業的連結、轉型和升級。\n\n國防自主沒有捷徑，只有努力再努力、堅持再堅持。今天，我們重新跨出歷史性的一步。&quot;
+<pre><code>[1] &quot;「我們是寫歷史的那張白紙。」在國防部軍情局牆上的這句話，意思是不論歷史如何演變，情報人員的貢獻和血淚，往往不為外人所知，只能留白。軍情局設置了一面無名英雄紀念碑，就是為了紀念數千名弟兄姊妹的血和淚。\n\n今天我到軍情局勉勵官兵，並且在紀念碑前致敬，感謝這些弟兄姊妹用生命守護台灣的自由民主。\n\n軍情局近來也持續在內部推動政治檔案的整理工作。在民主時代，把社會的信任和支持建立起來，情報工作的推展會更加順利，期許軍情局繼續努力。&quot;
 </code></pre>
 
 </div>
@@ -2004,7 +2040,7 @@ token&lt;-&quot;your token&quot; #將token複製到此處
 getPage(&quot;tsaiingwen&quot;, token,n = 5)
 </code></pre>
 
-<p>課堂操作</p>
+<p>實際操作</p>
 
 <pre><code>4 posts       from_id           from_name
 1 46251501064 蔡英文 Tsai Ing-wen
@@ -2043,7 +2079,7 @@ getPage(&quot;tsaiingwen&quot;, token,n = 5)
 </ul>
 
 <pre><code class="r">lastDate&lt;-Sys.Date()
-DateVector&lt;-seq(as.Date(&quot;2017-01-01&quot;),lastDate,by=&quot;5 days&quot;)
+DateVector&lt;-seq(as.Date(&quot;2018-01-01&quot;),lastDate,by=&quot;5 days&quot;)
 DateVectorStr&lt;-as.character(DateVector)
 DateVectorStr
 </code></pre>
@@ -2072,14 +2108,6 @@ nrow(totalPage)
 
 <pre><code>## [1] 42
 </code></pre>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>作業三！？</h3>
-<div class="slideContent" >
-<p>好像有什麼有關的訊息在上一張投影片？！</p>
 
 </div>
 

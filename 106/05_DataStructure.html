@@ -841,6 +841,25 @@ hljs.initHighlightingOnLoad();
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
+<h3>向量元素之資料型態必須相同</h3>
+<div class="slideContent" >
+<ul>
+<li>在同一向量中，所有元素之<strong>資料型態必須相同</strong></li>
+<li>上述<code>vec</code>向量，元素均為文字型態</li>
+<li>若放不同類別的資料進同一個向量，資料型態會被自動轉為相同</li>
+</ul>
+
+<pre><code class="r">a&lt;-c(TRUE, &quot;a&quot;,1)
+str(a)
+</code></pre>
+
+<pre><code> chr [1:3] &quot;TRUE&quot; &quot;a&quot; &quot;1&quot;
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
 <h3>向量 Vector 取值</h3>
 <div class="slideContent" >
 <p>若要將<code>vec</code>向量的第<strong>4</strong>個元素取出，可使用<strong>向量名稱[元素位置]</strong>: </p>
@@ -1316,6 +1335,27 @@ Levels: setosa versicolor virginica
 </div>
 
 </section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>資料框欄位刪除</h3>
+<div class="slideContent" >
+<p>若需刪除某欄位，可將欄位值設定為<code>NULL</code></p>
+
+<pre><code class="r">iris$Species&lt;-NULL ##刪除Species欄位
+head(iris)
+</code></pre>
+
+<pre><code>  Sepal.Length Sepal.Width Petal.Length Petal.Width
+1          5.1         3.5          1.4         0.2
+2          4.9         3.0          1.4         0.2
+3          4.7         3.2          1.3         0.2
+4          4.6         3.1          1.5         0.2
+5          5.0         3.6          1.4         0.2
+6          5.4         3.9          1.7         0.4
+</code></pre>
+
+</div>
+
+</section>
 <section data-state="sub-section" data-transition="linear" data-transition-speed="default">
 <h2>資料表 data.table</h2>
 <div class="slideContent" >
@@ -1496,17 +1536,13 @@ Colorado      7.9     204       78 38.7
 <pre><code class="r">iris$Species[1:10] ##原始值，印出第1~10個元素
 </code></pre>
 
-<pre><code> [1] setosa     versicolor setosa     setosa     setosa     setosa    
- [7] setosa     setosa     setosa     setosa    
-Levels: setosa versicolor virginica
+<pre><code>NULL
 </code></pre>
 
 <pre><code class="r">table(iris$Species) ##統計結果
 </code></pre>
 
-<pre><code>
-    setosa versicolor  virginica 
-        49         51         50 
+<pre><code>&lt; table of extent 0 &gt;
 </code></pre>
 
 </div>
