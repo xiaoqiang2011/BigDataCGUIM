@@ -1,11 +1,11 @@
 資料讀取與匯出 課堂練習
 ================
-
+### 問題
 #### 有一個網路上的csv檔，下載網址為https://goo.gl/RdngMn ，請問如何以撰寫程式碼的方式匯入R中作分析? <br/>
 
 #### 匯入後，此表格有幾個欄位?
 
-#### 解答
+### 解答
 
 ``` r
 library(readr)
@@ -18,6 +18,8 @@ data_csv<-read_csv("https://goo.gl/RdngMn")
     ## )
 
     ## See spec(...) for full column specifications.
+
+**注意**：上述輸出**Parsed with column specification:...**是指將每個欄位指定成特定資料型態，並非錯誤訊息。
 
 ``` r
 length(data_csv)  ##欄位數寫法1
@@ -39,21 +41,27 @@ ncol(data_csv)    ##欄位數寫法3
 
 <hr/>
 
+### 問題
+
 #### 下列哪幾種檔案可以匯入R作分析?
 
-#### 解答
+### 解答
 
-Excel檔、MySQL資料庫檔、純文字檔 (.txt)、圖片檔
+Excel檔、MySQL資料庫檔、純文字檔 (.txt)、圖片檔等，部分清單參見[課堂講義](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/07_IO.md)
 
 <hr/>
 
+### 問題
+
 #### Open Data常用的資料格式有哪幾個?
 
-#### 解答
+### 解答
 
 csv檔、JSON檔、XML檔
 
 <hr/>
+
+### 問題
 
 #### 嘗試在政府資料開放平臺中，找到紫外線即時監測資料，並嘗試將XML檔案讀到R中，取出所有測站的名稱與紫外線強度資料。
 
@@ -62,7 +70,7 @@ Windows電腦有編碼問題，若讀出資料是亂碼，請將資料轉成BIG5
 -   `xmlParse(xml檔案路徑)`
 -   `xpathSApply(資料集,要選取的資料XML的tag名稱,xmlValue)`
 
-#### 解答
+### 解答
 
 ``` r
 # 資料下載網址：http://opendata2.epa.gov.tw/UV/UV.xml　（紫外線即時監測資料）
