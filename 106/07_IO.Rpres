@@ -316,6 +316,118 @@ xpathSApply(waterQ,"//longitude",xmlValue)[1:10]
 ```
 
 
+
+API
+====================================
+type:sub-section
+- 應用程式介面
+- **A**pplication **P**rogramming **I**nterfaces
+- 為了讓第三方的開發者可以額外開發應用程式來強化他們的產品，推出可以與系統溝通的介面
+- 有API輔助可將資料擷取過程自動化
+    -  以下載Open Data為例，若檔案更新頻繁，使用手動下載相當耗時
+- [維基百科](https://zh.wikipedia.org/zh-tw/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%8F%A3)
+
+API - Open Data
+====================================
+- [桃園公共自行車即時服務資料](http://data.tycg.gov.tw/opendata/datalist/datasetMeta?oid=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c)資料
+- 即時更新
+- 不可能手動下載
+- 提供透過**API**下載的服務
+- 透過API下載的資料格式: **JSON格式**
+
+***
+
+- [桃園公共自行車即時服務資料API資訊](http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f)
+    - **資料集ID**: 紀錄資料的基本參數，如包含欄位、更新頻率等
+    - **資料RID**: 資料集
+
+
+
+JSON格式檔案
+====================================
+type:sub-section
+
+- JSON (**J**ava**s**cript **O**bject **N**otation)
+- 輕量級的資料交換語言
+- From **a**pplication **p**rogramming **i**nterfaces (APIs)
+- JavaScript、Java、Node.js應用
+- 一些NoSQL資料庫用JSON儲存資料：**MongoDB**
+- [Wiki](http://en.wikipedia.org/wiki/JSON)
+
+JSON資料儲存格式
+====================================
+- Numbers (double)
+- Strings (double quoted)
+- Boolean (_true_ or _false_)
+- Array (ordered, comma separated enclosed in square brackets _[]_)
+- Object (unorderd, comma separated collection of **key:value** pairs in curley brackets _{}_)
+
+[JSON檔案範例](https://api.github.com/users/yijutseng/repos)
+
+
+JSON檔案匯入
+====================================
+- `jsonlite` package (套件使用前必須安裝)
+- `fromJSON()`函數載入JSON資料
+- 如果API網址為**https**，則需使用 `httr` package
+    - 使用`GET()`函數處理資料擷取網址
+- API網址參考[桃園公共自行車即時服務資料API資訊](http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f)
+```{r message=FALSE,warning=FALSE}
+library(jsonlite)
+library(RCurl)
+APIData<-fromJSON("http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json")
+```
+
+JSON檔案匯入
+====================================
+- 轉存為`列表list`的型態
+- 兩個子元素(success, result)
+- result中records子元素的類別為資料框data.frame
+```{r message=FALSE,warning=FALSE}
+str(APIData)
+```
+
+JSON檔案解析
+====================================
+- 使用`$`符號截取元素與子元素
+```{r readJSON,eval=F}
+head(APIData$result$records)
+```
+```{r readJSONk,echo=F}
+knitr::kable(APIData$result$records[1:8,1:9]) 
+```
+
+JSON檔案解析
+====================================
+分析各項**地區**車站數
+```{r readJSON1,eval=F}
+table(APIData$result$records$sarea)
+```
+```{r readJSON1k,echo=F}
+knitr::kable(data.frame(table(APIData$result$records$sarea)))
+```
+分析可知中壢區車站較多
+
+JSON檔案匯入練習
+====================================
+type:alert
+incremental:true
+
+- 練習用資料：[「臺北市今日施工資訊」API存取](http://data.taipei/opendata/datalist/datasetMeta/outboundDesc?id=4d29818c-a3ee-425d-b88a-22ac0c24c712&rid=201d8ae8-dffc-4d17-ae1f-e58d8a95b162)
+- 使用檔案匯入**範例**，將資料匯入R中
+    - 提示：**fromJSON**
+- 使用str()函數觀察匯入的資料
+- 請問今日施工資料有幾筆觀察值？幾個欄位？
+
+將資料框轉為JSON格式
+====================================
+- `jsonlite` package
+- `toJSON()` 函數
+```{r writeJSON}
+myjson <- toJSON(iris, pretty=TRUE)
+str(myjson)
+```
+
 網頁爬蟲 Webscraping
 ====================================
 type:sub-section
@@ -479,119 +591,6 @@ incremental:true
 - R Bloggers 有很多[爬蟲範例](http://www.r-bloggers.com/?s=Web+Scraping)（英文）
 - [Ptt爬蟲實作](http://bryannotes.blogspot.tw/2014/08/r-ptt-wantedsocial-network-analysis.html)
 - [大數學堂 網頁爬蟲課程](http://www.largitdata.com/course_list/1)
-
-
-API
-====================================
-type:sub-section
-- 應用程式介面
-- **A**pplication **P**rogramming **I**nterfaces
-- 為了讓第三方的開發者可以額外開發應用程式來強化他們的產品，推出可以與系統溝通的介面
-- 有API輔助可將資料擷取過程自動化
-    -  以下載Open Data為例，若檔案更新頻繁，使用手動下載相當耗時
-- [維基百科](https://zh.wikipedia.org/zh-tw/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%8F%A3)
-
-API - Open Data
-====================================
-- [桃園公共自行車即時服務資料](http://data.tycg.gov.tw/opendata/datalist/datasetMeta?oid=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c)資料
-- 即時更新
-- 不可能手動下載
-- 提供透過**API**下載的服務
-- 透過API下載的資料格式: **JSON格式**
-
-***
-
-- [桃園公共自行車即時服務資料API資訊](http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f)
-    - **資料集ID**: 紀錄資料的基本參數，如包含欄位、更新頻率等
-    - **資料RID**: 資料集
-
-
-
-JSON格式檔案
-====================================
-type:sub-section
-
-- JSON (**J**ava**s**cript **O**bject **N**otation)
-- 輕量級的資料交換語言
-- From **a**pplication **p**rogramming **i**nterfaces (APIs)
-- JavaScript、Java、Node.js應用
-- 一些NoSQL資料庫用JSON儲存資料：**MongoDB**
-- [Wiki](http://en.wikipedia.org/wiki/JSON)
-
-JSON資料儲存格式
-====================================
-- Numbers (double)
-- Strings (double quoted)
-- Boolean (_true_ or _false_)
-- Array (ordered, comma separated enclosed in square brackets _[]_)
-- Object (unorderd, comma separated collection of **key:value** pairs in curley brackets _{}_)
-
-[JSON檔案範例](https://api.github.com/users/yijutseng/repos)
-
-
-JSON檔案匯入
-====================================
-- `jsonlite` package (套件使用前必須安裝)
-- `fromJSON()`函數載入JSON資料
-- 如果API網址為**https**，則需使用 `httr` package
-    - 使用`GET()`函數處理資料擷取網址
-- API網址參考[桃園公共自行車即時服務資料API資訊](http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f)
-```{r message=FALSE,warning=FALSE}
-library(jsonlite)
-library(RCurl)
-APIData<-fromJSON("http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json")
-```
-
-JSON檔案匯入
-====================================
-- 轉存為`列表list`的型態
-- 兩個子元素(success, result)
-- result中records子元素的類別為資料框data.frame
-```{r message=FALSE,warning=FALSE}
-str(APIData)
-```
-
-JSON檔案解析
-====================================
-- 使用`$`符號截取元素與子元素
-```{r readJSON,eval=F}
-head(APIData$result$records)
-```
-```{r readJSONk,echo=F}
-knitr::kable(APIData$result$records[1:8,1:9]) 
-```
-
-JSON檔案解析
-====================================
-分析各項**地區**車站數
-```{r readJSON1,eval=F}
-table(APIData$result$records$sarea)
-```
-```{r readJSON1k,echo=F}
-knitr::kable(data.frame(table(APIData$result$records$sarea)))
-```
-分析可知中壢區車站較多
-
-JSON檔案匯入練習
-====================================
-type:alert
-incremental:true
-
-- 練習用資料：[「臺北市今日施工資訊」API存取](http://data.taipei/opendata/datalist/datasetMeta/outboundDesc?id=4d29818c-a3ee-425d-b88a-22ac0c24c712&rid=201d8ae8-dffc-4d17-ae1f-e58d8a95b162)
-- 使用檔案匯入**範例**，將資料匯入R中
-    - 提示：**fromJSON**
-- 使用str()函數觀察匯入的資料
-- 請問今日施工資料有幾筆觀察值？幾個欄位？
-
-將資料框轉為JSON格式
-====================================
-- `jsonlite` package
-- `toJSON()` 函數
-```{r writeJSON}
-myjson <- toJSON(iris, pretty=TRUE)
-str(myjson)
-```
-
 
 
 從Facebook匯入
