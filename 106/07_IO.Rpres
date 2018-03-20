@@ -523,7 +523,7 @@ head(news)
 library(rvest) ##(爬蟲結果不代表本人意見)
 DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
 DCardContent<-read_html(DCardCGU)
-post_title <- DCardContent %>% html_nodes(".PostEntry_unread_2U217") %>% html_text()
+post_title <- DCardContent %>% html_nodes(".PostEntry_title_H5o4d") %>% html_text()
 post_contentShort<- DCardContent %>% html_nodes(".PostEntry_excerpt_2eHlN") %>% html_text()
 post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
 ```
