@@ -316,6 +316,27 @@ xpathSApply(waterQ,"//longitude",xmlValue)[1:10]
 ```
 
 
+JSON格式檔案
+====================================
+type:sub-section
+
+- JSON (**J**ava**s**cript **O**bject **N**otation)
+- 輕量級的資料交換語言
+- From **a**pplication **p**rogramming **i**nterfaces (APIs)
+- JavaScript、Java、Node.js應用
+- 一些NoSQL資料庫用JSON儲存資料：**MongoDB**
+- [Wiki](http://en.wikipedia.org/wiki/JSON)
+
+JSON資料儲存格式
+====================================
+- Numbers (double)
+- Strings (double quoted)
+- Boolean (_true_ or _false_)
+- Array (ordered, comma separated enclosed in square brackets _[]_)
+- Object (unorderd, comma separated collection of **key:value** pairs in curley brackets _{}_)
+
+[JSON檔案範例](https://api.github.com/users/yijutseng/repos)
+
 
 API
 ====================================
@@ -341,28 +362,6 @@ API - Open Data
     - **資料集ID**: 紀錄資料的基本參數，如包含欄位、更新頻率等
     - **資料RID**: 資料集
 
-
-
-JSON格式檔案
-====================================
-type:sub-section
-
-- JSON (**J**ava**s**cript **O**bject **N**otation)
-- 輕量級的資料交換語言
-- From **a**pplication **p**rogramming **i**nterfaces (APIs)
-- JavaScript、Java、Node.js應用
-- 一些NoSQL資料庫用JSON儲存資料：**MongoDB**
-- [Wiki](http://en.wikipedia.org/wiki/JSON)
-
-JSON資料儲存格式
-====================================
-- Numbers (double)
-- Strings (double quoted)
-- Boolean (_true_ or _false_)
-- Array (ordered, comma separated enclosed in square brackets _[]_)
-- Object (unorderd, comma separated collection of **key:value** pairs in curley brackets _{}_)
-
-[JSON檔案範例](https://api.github.com/users/yijutseng/repos)
 
 
 JSON檔案匯入

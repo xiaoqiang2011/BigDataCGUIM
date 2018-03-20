@@ -1281,6 +1281,352 @@ xpathSApply(waterQ,&quot;//longitude&quot;,xmlValue)[1:10]
 
 </section>
 <section data-state="sub-section" data-transition="linear" data-transition-speed="default">
+<h2>JSON格式檔案</h2>
+<div class="slideContent" >
+<ul>
+<li>JSON (<strong>J</strong>ava<strong>s</strong>cript <strong>O</strong>bject <strong>N</strong>otation)</li>
+<li>輕量級的資料交換語言</li>
+<li>From <strong>a</strong>pplication <strong>p</strong>rogramming <strong>i</strong>nterfaces (APIs)</li>
+<li>JavaScript、Java、Node.js應用</li>
+<li>一些NoSQL資料庫用JSON儲存資料：<strong>MongoDB</strong></li>
+<li><a href="http://en.wikipedia.org/wiki/JSON">Wiki</a></li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>JSON資料儲存格式</h3>
+<div class="slideContent" >
+<ul>
+<li>Numbers (double)</li>
+<li>Strings (double quoted)</li>
+<li>Boolean (<em>true</em> or <em>false</em>)</li>
+<li>Array (ordered, comma separated enclosed in square brackets <em>[]</em>)</li>
+<li>Object (unorderd, comma separated collection of <strong>key:value</strong> pairs in curley brackets <em>{}</em>)</li>
+</ul>
+
+<p><a href="https://api.github.com/users/yijutseng/repos">JSON檔案範例</a></p>
+
+</div>
+
+</section>
+<section data-state="sub-section" data-transition="linear" data-transition-speed="default">
+<h2>API</h2>
+<div class="slideContent" >
+<ul>
+<li>應用程式介面</li>
+<li><strong>A</strong>pplication <strong>P</strong>rogramming <strong>I</strong>nterfaces</li>
+<li>為了讓第三方的開發者可以額外開發應用程式來強化他們的產品，推出可以與系統溝通的介面</li>
+<li>有API輔助可將資料擷取過程自動化
+
+<ul>
+<li> 以下載Open Data為例，若檔案更新頻繁，使用手動下載相當耗時</li>
+</ul></li>
+<li><a href="https://zh.wikipedia.org/zh-tw/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%8F%A3">維基百科</a></li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>API - Open Data</h3>
+<div class="column column1 slideContent" >
+<ul>
+<li><a href="http://data.tycg.gov.tw/opendata/datalist/datasetMeta?oid=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c">桃園公共自行車即時服務資料</a>資料</li>
+<li>即時更新</li>
+<li>不可能手動下載</li>
+<li>提供透過<strong>API</strong>下載的服務</li>
+<li>透過API下載的資料格式: <strong>JSON格式</strong></li>
+</ul>
+
+
+</div>
+
+<div class="column column2 slideContent" >
+
+
+<ul>
+<li><a href="http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&amp;rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f">桃園公共自行車即時服務資料API資訊</a>
+
+<ul>
+<li><strong>資料集ID</strong>: 紀錄資料的基本參數，如包含欄位、更新頻率等</li>
+<li><strong>資料RID</strong>: 資料集</li>
+</ul></li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>JSON檔案匯入</h3>
+<div class="slideContent" >
+<ul>
+<li><code>jsonlite</code> package (套件使用前必須安裝)</li>
+<li><code>fromJSON()</code>函數載入JSON資料</li>
+<li>如果API網址為<strong>https</strong>，則需使用 <code>httr</code> package
+
+<ul>
+<li>使用<code>GET()</code>函數處理資料擷取網址</li>
+</ul></li>
+<li>API網址參考<a href="http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&amp;rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f">桃園公共自行車即時服務資料API資訊</a></li>
+</ul>
+
+<pre><code class="r">library(jsonlite)
+library(RCurl)
+APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json&quot;)
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>JSON檔案匯入</h3>
+<div class="slideContent" >
+<ul>
+<li>轉存為<code>列表list</code>的型態</li>
+<li>兩個子元素(success, result)</li>
+<li>result中records子元素的類別為資料框data.frame</li>
+</ul>
+
+<pre><code class="r">str(APIData)
+</code></pre>
+
+<pre><code>List of 2
+ $ success: logi TRUE
+ $ result :List of 5
+  ..$ resource_id: chr &quot;a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f&quot;
+  ..$ fields     :&#39;data.frame&#39;: 15 obs. of  2 variables:
+  .. ..$ type: chr [1:15] &quot;int4&quot; &quot;text&quot; &quot;text&quot; &quot;text&quot; ...
+  .. ..$ id  : chr [1:15] &quot;_id&quot; &quot;sno&quot; &quot;sna&quot; &quot;tot&quot; ...
+  ..$ records    :&#39;data.frame&#39;: 100 obs. of  15 variables:
+  .. ..$ _id    : int [1:100] 1 2 3 4 5 6 7 8 9 10 ...
+  .. ..$ sarea  : chr [1:100] &quot;中壢區&quot; &quot;中壢區&quot; &quot;中壢區&quot; &quot;中壢區&quot; ...
+  .. ..$ sareaen: chr [1:100] &quot;Zhongli Dist.&quot; &quot;Zhongli Dist.&quot; &quot;Zhongli Dist.&quot; &quot;Zhongli Dist.&quot; ...
+  .. ..$ sna    : chr [1:100] &quot;中央大學圖書館&quot; &quot;中壢高中&quot; &quot;中正公園(中美路)&quot; &quot;中壢火車站(前站)&quot; ...
+  .. ..$ aren   : chr [1:100] &quot;No.300, Zhongda Rd.&quot; &quot;No.215, Sec. 2, Zhongyang W. Rd. (opposite)&quot; &quot;No.101 to No.113, Zhongmei Rd. (opposite)&quot; &quot;No.139, Zhonghe Rd. (opposite)&quot; ...
+  .. ..$ sno    : chr [1:100] &quot;2001&quot; &quot;2002&quot; &quot;2003&quot; &quot;2004&quot; ...
+  .. ..$ tot    : chr [1:100] &quot;60&quot; &quot;52&quot; &quot;54&quot; &quot;98&quot; ...
+  .. ..$ snaen  : chr [1:100] &quot;National Central University Library&quot; &quot;Jhungli Senior High School&quot; &quot;Zhongzheng Park&quot; &quot;TRA Zhongli Station (Front)&quot; ...
+  .. ..$ bemp   : chr [1:100] &quot;11&quot; &quot;15&quot; &quot;33&quot; &quot;65&quot; ...
+  .. ..$ ar     : chr [1:100] &quot;中大路300號(中央大學校內圖書館前)&quot; &quot;中央西路二段215號對面人行道&quot; &quot;中美路101號-113號對面人行道&quot; &quot;中和路139號對面圓環&quot; ...
+  .. ..$ act    : chr [1:100] &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...
+  .. ..$ lat    : chr [1:100] &quot;24.968128&quot; &quot;24.960815&quot; &quot;24.959113&quot; &quot;24.953874&quot; ...
+  .. ..$ lng    : chr [1:100] &quot;121.194666&quot; &quot;121.212038&quot; &quot;121.224805&quot; &quot;121.2256&quot; ...
+  .. ..$ sbi    : chr [1:100] &quot;48&quot; &quot;37&quot; &quot;20&quot; &quot;30&quot; ...
+  .. ..$ mday   : chr [1:100] &quot;20180320185436&quot; &quot;20180320185422&quot; &quot;20180320185433&quot; &quot;20180320185416&quot; ...
+  ..$ total      : int 186
+  ..$ limit      : int 100
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>JSON檔案解析</h3>
+<div class="slideContent" >
+<ul>
+<li>使用<code>$</code>符號截取元素與子元素</li>
+</ul>
+
+<pre><code class="r">head(APIData$result$records)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="right">_id</th>
+<th align="left">sarea</th>
+<th align="left">sareaen</th>
+<th align="left">sna</th>
+<th align="left">aren</th>
+<th align="left">sno</th>
+<th align="left">tot</th>
+<th align="left">snaen</th>
+<th align="left">bemp</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">1</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中央大學圖書館</td>
+<td align="left">No.300, Zhongda Rd.</td>
+<td align="left">2001</td>
+<td align="left">60</td>
+<td align="left">National Central University Library</td>
+<td align="left">11</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中壢高中</td>
+<td align="left">No.215, Sec. 2, Zhongyang W. Rd. (opposite)</td>
+<td align="left">2002</td>
+<td align="left">52</td>
+<td align="left">Jhungli Senior High School</td>
+<td align="left">15</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中正公園(中美路)</td>
+<td align="left">No.101 to No.113, Zhongmei Rd. (opposite)</td>
+<td align="left">2003</td>
+<td align="left">54</td>
+<td align="left">Zhongzheng Park</td>
+<td align="left">33</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中壢火車站(前站)</td>
+<td align="left">No.139, Zhonghe Rd. (opposite)</td>
+<td align="left">2004</td>
+<td align="left">98</td>
+<td align="left">TRA Zhongli Station (Front)</td>
+<td align="left">65</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中原大學</td>
+<td align="left">No.200, Zhongbei Rd.</td>
+<td align="left">2005</td>
+<td align="left">82</td>
+<td align="left">Chung Yuan Christian University</td>
+<td align="left">32</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">銀河廣場</td>
+<td align="left">No.48, Jiuhe 1st St. (opposite)</td>
+<td align="left">2006</td>
+<td align="left">58</td>
+<td align="left">Galaxy Square</td>
+<td align="left">35</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">中壢區公所</td>
+<td align="left">No.380, Huanbei Rd.</td>
+<td align="left">2007</td>
+<td align="left">40</td>
+<td align="left">Civil Affairs Office of Zhongli District</td>
+<td align="left">21</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td align="left">中壢區</td>
+<td align="left">Zhongli Dist.</td>
+<td align="left">新明橋</td>
+<td align="left">No.269 to No.373, Sec. 2, Yuanhua Rd. (opposite)</td>
+<td align="left">2008</td>
+<td align="left">58</td>
+<td align="left">Xinming Bridge</td>
+<td align="left">0</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>JSON檔案解析</h3>
+<div class="slideContent" >
+<p>分析各項<strong>地區</strong>車站數</p>
+
+<pre><code class="r">table(APIData$result$records$sarea)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">Var1</th>
+<th align="right">Freq</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">八德區</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td align="left">大園區</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td align="left">大溪區</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td align="left">中壢區</td>
+<td align="right">35</td>
+</tr>
+<tr>
+<td align="left">平鎮區</td>
+<td align="right">7</td>
+</tr>
+<tr>
+<td align="left">桃園區</td>
+<td align="right">32</td>
+</tr>
+<tr>
+<td align="left">龜山區</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td align="left">蘆竹區</td>
+<td align="right">7</td>
+</tr>
+</tbody></table>
+
+<p>分析可知中壢區車站較多</p>
+
+</div>
+
+</section>
+<section data-state="alert" data-transition="linear" data-transition-speed="default">
+<h3>JSON檔案匯入練習</h3>
+<div class="slideContent" >
+<ul>
+<li class="fragment">練習用資料：<a href="http://data.taipei/opendata/datalist/datasetMeta/outboundDesc?id=4d29818c-a3ee-425d-b88a-22ac0c24c712&amp;rid=201d8ae8-dffc-4d17-ae1f-e58d8a95b162">「臺北市今日施工資訊」API存取</a></li>
+<li class="fragment">使用檔案匯入<strong>範例</strong>，將資料匯入R中
+
+<ul>
+<li class="fragment">提示：<strong>fromJSON</strong></li>
+</ul></li>
+<li class="fragment">使用str()函數觀察匯入的資料</li>
+<li class="fragment">請問今日施工資料有幾筆觀察值？幾個欄位？</li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>將資料框轉為JSON格式</h3>
+<div class="slideContent" >
+<ul>
+<li><code>jsonlite</code> package</li>
+<li><code>toJSON()</code> 函數</li>
+</ul>
+
+<pre><code class="r">myjson &lt;- toJSON(iris, pretty=TRUE)
+str(myjson)
+</code></pre>
+
+<pre><code>Class &#39;json&#39;  chr &quot;[\n  {\n    \&quot;Sepal.Length\&quot;: 5.1,\n    \&quot;Sepal.Width\&quot;: 3.5,\n    \&quot;Petal.Length\&quot;: 1.4,\n    \&quot;Petal.Width\&quot;:&quot;| __truncated__
+</code></pre>
+
+</div>
+
+</section>
+<section data-state="sub-section" data-transition="linear" data-transition-speed="default">
 <h2>網頁爬蟲 Webscraping</h2>
 <div class="slideContent" >
 <ul>
@@ -1312,9 +1658,9 @@ close(con)
 htmlCode[3:5]
 </code></pre>
 
-<pre><code>[1] &quot;&lt;head&gt;&quot;                                                                                                                                       
-[2] &quot;&lt;meta http-equiv=\&quot;Content-Type\&quot; content=\&quot;text/html; charset=utf-8\&quot; /&gt;&quot;                                                                    
-[3] &quot;&lt;meta http-equiv=\&quot;X-UA-Compatible\&quot; content=\&quot;IE=EmulateIE7\&quot; /&gt;&lt;meta name=\&quot;keywords\&quot; content=\&quot;請填寫網站關鍵記事，用半角逗號(,)隔開\&quot; /&gt;&quot;
+<pre><code>[1] &quot;&lt;head&gt;&quot;                                                                                                                                                                                    
+[2] &quot;&lt;meta http-equiv=\&quot;Content-Type\&quot; content=\&quot;text/html; charset=utf-8\&quot; /&gt;&quot;                                                                                                                 
+[3] &quot;&lt;meta http-equiv=\&quot;X-UA-Compatible\&quot; content=\&quot;IE=EmulateIE7\&quot; /&gt;&lt;meta name=\&quot;keywords\&quot; content=\&quot;隢‵撖怎雯蝡\x97閮\xba\xbc\xe5\x8d\xa7\u0080\x99\x9f(,)\xe9\x9a\x96\x8b\&quot; /&gt;&quot;
 </code></pre>
 
 </div>
@@ -1489,29 +1835,29 @@ DCardCGU_posts &lt;-
 </tr>
 </thead><tbody>
 <tr>
-<td align="left">一醫的自動繳費機</td>
-<td align="left">長庚大學</td>
-<td align="left">0</td>
-</tr>
-<tr>
-<td align="left">醫生命</td>
-<td align="left">長庚大學 電子工程學系</td>
-<td align="left">3</td>
-</tr>
-<tr>
-<td align="left">長庚畢業能去聯發科台積電嗎</td>
-<td align="left">長庚大學</td>
-<td align="left">6</td>
-</tr>
-<tr>
-<td align="left">遺失宿舍鑰匙</td>
+<td align="left">啦啦啦啦啦</td>
 <td align="left">長庚大學</td>
 <td align="left">1</td>
 </tr>
 <tr>
-<td align="left">轉系</td>
-<td align="left">長庚大學</td>
+<td align="left">同學臭臭的怎麼辦</td>
+<td align="left">長庚大學 電子工程學系</td>
 <td align="left">4</td>
+</tr>
+<tr>
+<td align="left">WTF室友</td>
+<td align="left">長庚大學 生物醫學系</td>
+<td align="left">42</td>
+</tr>
+<tr>
+<td align="left">活二的歌唱比賽</td>
+<td align="left">長庚大學</td>
+<td align="left">7</td>
+</tr>
+<tr>
+<td align="left">明德7樓脫水機</td>
+<td align="left">長庚大學</td>
+<td align="left">11</td>
 </tr>
 </tbody></table>
 
@@ -1578,352 +1924,6 @@ DCardCGU_posts &lt;-
 <li><a href="http://bryannotes.blogspot.tw/2014/08/r-ptt-wantedsocial-network-analysis.html">Ptt爬蟲實作</a></li>
 <li><a href="http://www.largitdata.com/course_list/1">大數學堂 網頁爬蟲課程</a></li>
 </ul>
-
-</div>
-
-</section>
-<section data-state="sub-section" data-transition="linear" data-transition-speed="default">
-<h2>API</h2>
-<div class="slideContent" >
-<ul>
-<li>應用程式介面</li>
-<li><strong>A</strong>pplication <strong>P</strong>rogramming <strong>I</strong>nterfaces</li>
-<li>為了讓第三方的開發者可以額外開發應用程式來強化他們的產品，推出可以與系統溝通的介面</li>
-<li>有API輔助可將資料擷取過程自動化
-
-<ul>
-<li> 以下載Open Data為例，若檔案更新頻繁，使用手動下載相當耗時</li>
-</ul></li>
-<li><a href="https://zh.wikipedia.org/zh-tw/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%8F%A3">維基百科</a></li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>API - Open Data</h3>
-<div class="column column1 slideContent" >
-<ul>
-<li><a href="http://data.tycg.gov.tw/opendata/datalist/datasetMeta?oid=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c">桃園公共自行車即時服務資料</a>資料</li>
-<li>即時更新</li>
-<li>不可能手動下載</li>
-<li>提供透過<strong>API</strong>下載的服務</li>
-<li>透過API下載的資料格式: <strong>JSON格式</strong></li>
-</ul>
-
-
-</div>
-
-<div class="column column2 slideContent" >
-
-
-<ul>
-<li><a href="http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&amp;rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f">桃園公共自行車即時服務資料API資訊</a>
-
-<ul>
-<li><strong>資料集ID</strong>: 紀錄資料的基本參數，如包含欄位、更新頻率等</li>
-<li><strong>資料RID</strong>: 資料集</li>
-</ul></li>
-</ul>
-
-</div>
-
-</section>
-<section data-state="sub-section" data-transition="linear" data-transition-speed="default">
-<h2>JSON格式檔案</h2>
-<div class="slideContent" >
-<ul>
-<li>JSON (<strong>J</strong>ava<strong>s</strong>cript <strong>O</strong>bject <strong>N</strong>otation)</li>
-<li>輕量級的資料交換語言</li>
-<li>From <strong>a</strong>pplication <strong>p</strong>rogramming <strong>i</strong>nterfaces (APIs)</li>
-<li>JavaScript、Java、Node.js應用</li>
-<li>一些NoSQL資料庫用JSON儲存資料：<strong>MongoDB</strong></li>
-<li><a href="http://en.wikipedia.org/wiki/JSON">Wiki</a></li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>JSON資料儲存格式</h3>
-<div class="slideContent" >
-<ul>
-<li>Numbers (double)</li>
-<li>Strings (double quoted)</li>
-<li>Boolean (<em>true</em> or <em>false</em>)</li>
-<li>Array (ordered, comma separated enclosed in square brackets <em>[]</em>)</li>
-<li>Object (unorderd, comma separated collection of <strong>key:value</strong> pairs in curley brackets <em>{}</em>)</li>
-</ul>
-
-<p><a href="https://api.github.com/users/yijutseng/repos">JSON檔案範例</a></p>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>JSON檔案匯入</h3>
-<div class="slideContent" >
-<ul>
-<li><code>jsonlite</code> package (套件使用前必須安裝)</li>
-<li><code>fromJSON()</code>函數載入JSON資料</li>
-<li>如果API網址為<strong>https</strong>，則需使用 <code>httr</code> package
-
-<ul>
-<li>使用<code>GET()</code>函數處理資料擷取網址</li>
-</ul></li>
-<li>API網址參考<a href="http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&amp;rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f">桃園公共自行車即時服務資料API資訊</a></li>
-</ul>
-
-<pre><code class="r">library(jsonlite)
-library(RCurl)
-APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json&quot;)
-</code></pre>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>JSON檔案匯入</h3>
-<div class="slideContent" >
-<ul>
-<li>轉存為<code>列表list</code>的型態</li>
-<li>兩個子元素(success, result)</li>
-<li>result中records子元素的類別為資料框data.frame</li>
-</ul>
-
-<pre><code class="r">str(APIData)
-</code></pre>
-
-<pre><code>List of 2
- $ success: logi TRUE
- $ result :List of 5
-  ..$ resource_id: chr &quot;a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f&quot;
-  ..$ fields     :&#39;data.frame&#39;: 15 obs. of  2 variables:
-  .. ..$ type: chr [1:15] &quot;int4&quot; &quot;text&quot; &quot;text&quot; &quot;text&quot; ...
-  .. ..$ id  : chr [1:15] &quot;_id&quot; &quot;sno&quot; &quot;sna&quot; &quot;tot&quot; ...
-  ..$ records    :&#39;data.frame&#39;: 100 obs. of  15 variables:
-  .. ..$ _id    : int [1:100] 1 2 3 4 5 6 7 8 9 10 ...
-  .. ..$ sarea  : chr [1:100] &quot;中壢區&quot; &quot;中壢區&quot; &quot;中壢區&quot; &quot;中壢區&quot; ...
-  .. ..$ sareaen: chr [1:100] &quot;Zhongli Dist.&quot; &quot;Zhongli Dist.&quot; &quot;Zhongli Dist.&quot; &quot;Zhongli Dist.&quot; ...
-  .. ..$ sna    : chr [1:100] &quot;中央大學圖書館&quot; &quot;中壢高中&quot; &quot;中正公園(中美路)&quot; &quot;中壢火車站(前站)&quot; ...
-  .. ..$ aren   : chr [1:100] &quot;No.300, Zhongda Rd.&quot; &quot;No.215, Sec. 2, Zhongyang W. Rd. (opposite)&quot; &quot;No.101 to No.113, Zhongmei Rd. (opposite)&quot; &quot;No.139, Zhonghe Rd. (opposite)&quot; ...
-  .. ..$ sno    : chr [1:100] &quot;2001&quot; &quot;2002&quot; &quot;2003&quot; &quot;2004&quot; ...
-  .. ..$ tot    : chr [1:100] &quot;60&quot; &quot;52&quot; &quot;54&quot; &quot;98&quot; ...
-  .. ..$ snaen  : chr [1:100] &quot;National Central University Library&quot; &quot;Jhungli Senior High School&quot; &quot;Zhongzheng Park&quot; &quot;TRA Zhongli Station (Front)&quot; ...
-  .. ..$ bemp   : chr [1:100] &quot;56&quot; &quot;42&quot; &quot;10&quot; &quot;48&quot; ...
-  .. ..$ ar     : chr [1:100] &quot;中大路300號(中央大學校內圖書館前)&quot; &quot;中央西路二段215號對面人行道&quot; &quot;中美路101號-113號對面人行道&quot; &quot;中和路139號對面圓環&quot; ...
-  .. ..$ act    : chr [1:100] &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...
-  .. ..$ lat    : chr [1:100] &quot;24.968128&quot; &quot;24.960815&quot; &quot;24.959113&quot; &quot;24.953874&quot; ...
-  .. ..$ lng    : chr [1:100] &quot;121.194666&quot; &quot;121.212038&quot; &quot;121.224805&quot; &quot;121.2256&quot; ...
-  .. ..$ sbi    : chr [1:100] &quot;4&quot; &quot;8&quot; &quot;43&quot; &quot;47&quot; ...
-  .. ..$ mday   : chr [1:100] &quot;20180311143920&quot; &quot;20180311143916&quot; &quot;20180311143931&quot; &quot;20180311143927&quot; ...
-  ..$ total      : int 186
-  ..$ limit      : int 100
-</code></pre>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>JSON檔案解析</h3>
-<div class="slideContent" >
-<ul>
-<li>使用<code>$</code>符號截取元素與子元素</li>
-</ul>
-
-<pre><code class="r">head(APIData$result$records)
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="right">_id</th>
-<th align="left">sarea</th>
-<th align="left">sareaen</th>
-<th align="left">sna</th>
-<th align="left">aren</th>
-<th align="left">sno</th>
-<th align="left">tot</th>
-<th align="left">snaen</th>
-<th align="left">bemp</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="right">1</td>
-<td align="left">中壢區</td>
-<td align="left">Zhongli Dist.</td>
-<td align="left">中央大學圖書館</td>
-<td align="left">No.300, Zhongda Rd.</td>
-<td align="left">2001</td>
-<td align="left">60</td>
-<td align="left">National Central University Library</td>
-<td align="left">56</td>
-</tr>
-<tr>
-<td align="right">2</td>
-<td align="left">中壢區</td>
-<td align="left">Zhongli Dist.</td>
-<td align="left">中壢高中</td>
-<td align="left">No.215, Sec. 2, Zhongyang W. Rd. (opposite)</td>
-<td align="left">2002</td>
-<td align="left">52</td>
-<td align="left">Jhungli Senior High School</td>
-<td align="left">42</td>
-</tr>
-<tr>
-<td align="right">3</td>
-<td align="left">中壢區</td>
-<td align="left">Zhongli Dist.</td>
-<td align="left">中正公園(中美路)</td>
-<td align="left">No.101 to No.113, Zhongmei Rd. (opposite)</td>
-<td align="left">2003</td>
-<td align="left">54</td>
-<td align="left">Zhongzheng Park</td>
-<td align="left">10</td>
-</tr>
-<tr>
-<td align="right">4</td>
-<td align="left">中壢區</td>
-<td align="left">Zhongli Dist.</td>
-<td align="left">中壢火車站(前站)</td>
-<td align="left">No.139, Zhonghe Rd. (opposite)</td>
-<td align="left">2004</td>
-<td align="left">98</td>
-<td align="left">TRA Zhongli Station (Front)</td>
-<td align="left">48</td>
-</tr>
-<tr>
-<td align="right">5</td>
-<td align="left">中壢區</td>
-<td align="left">Zhongli Dist.</td>
-<td align="left">中原大學</td>
-<td align="left">No.200, Zhongbei Rd.</td>
-<td align="left">2005</td>
-<td align="left">82</td>
-<td align="left">Chung Yuan Christian University</td>
-<td align="left">67</td>
-</tr>
-<tr>
-<td align="right">6</td>
-<td align="left">中壢區</td>
-<td align="left">Zhongli Dist.</td>
-<td align="left">銀河廣場</td>
-<td align="left">No.48, Jiuhe 1st St. (opposite)</td>
-<td align="left">2006</td>
-<td align="left">58</td>
-<td align="left">Galaxy Square</td>
-<td align="left">39</td>
-</tr>
-<tr>
-<td align="right">7</td>
-<td align="left">中壢區</td>
-<td align="left">Zhongli Dist.</td>
-<td align="left">中壢區公所</td>
-<td align="left">No.380, Huanbei Rd.</td>
-<td align="left">2007</td>
-<td align="left">40</td>
-<td align="left">Civil Affairs Office of Zhongli District</td>
-<td align="left">19</td>
-</tr>
-<tr>
-<td align="right">8</td>
-<td align="left">中壢區</td>
-<td align="left">Zhongli Dist.</td>
-<td align="left">新明橋</td>
-<td align="left">No.269 to No.373, Sec. 2, Yuanhua Rd. (opposite)</td>
-<td align="left">2008</td>
-<td align="left">58</td>
-<td align="left">Xinming Bridge</td>
-<td align="left">0</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>JSON檔案解析</h3>
-<div class="slideContent" >
-<p>分析各項<strong>地區</strong>車站數</p>
-
-<pre><code class="r">table(APIData$result$records$sarea)
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">Var1</th>
-<th align="right">Freq</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">八德區</td>
-<td align="right">5</td>
-</tr>
-<tr>
-<td align="left">大溪區</td>
-<td align="right">2</td>
-</tr>
-<tr>
-<td align="left">大園區</td>
-<td align="right">2</td>
-</tr>
-<tr>
-<td align="left">龜山區</td>
-<td align="right">10</td>
-</tr>
-<tr>
-<td align="left">蘆竹區</td>
-<td align="right">7</td>
-</tr>
-<tr>
-<td align="left">平鎮區</td>
-<td align="right">7</td>
-</tr>
-<tr>
-<td align="left">桃園區</td>
-<td align="right">32</td>
-</tr>
-<tr>
-<td align="left">中壢區</td>
-<td align="right">35</td>
-</tr>
-</tbody></table>
-
-<p>分析可知中壢區車站較多</p>
-
-</div>
-
-</section>
-<section data-state="alert" data-transition="linear" data-transition-speed="default">
-<h3>JSON檔案匯入練習</h3>
-<div class="slideContent" >
-<ul>
-<li class="fragment">練習用資料：<a href="http://data.taipei/opendata/datalist/datasetMeta/outboundDesc?id=4d29818c-a3ee-425d-b88a-22ac0c24c712&amp;rid=201d8ae8-dffc-4d17-ae1f-e58d8a95b162">「臺北市今日施工資訊」API存取</a></li>
-<li class="fragment">使用檔案匯入<strong>範例</strong>，將資料匯入R中
-
-<ul>
-<li class="fragment">提示：<strong>fromJSON</strong></li>
-</ul></li>
-<li class="fragment">使用str()函數觀察匯入的資料</li>
-<li class="fragment">請問今日施工資料有幾筆觀察值？幾個欄位？</li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>將資料框轉為JSON格式</h3>
-<div class="slideContent" >
-<ul>
-<li><code>jsonlite</code> package</li>
-<li><code>toJSON()</code> 函數</li>
-</ul>
-
-<pre><code class="r">myjson &lt;- toJSON(iris, pretty=TRUE)
-str(myjson)
-</code></pre>
-
-<pre><code>Class &#39;json&#39;  chr &quot;[\n  {\n    \&quot;Sepal.Length\&quot;: 5.1,\n    \&quot;Sepal.Width\&quot;: 3.5,\n    \&quot;Petal.Length\&quot;: 1.4,\n    \&quot;Petal.Width\&quot;: 0.2,\n    \&quot;Spe&quot;| __truncated__
-</code></pre>
 
 </div>
 
