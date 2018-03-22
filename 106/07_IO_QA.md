@@ -52,9 +52,11 @@ ncol(data_csv)    ##欄位數寫法3
 依據資料型態至`Import Datasets` 選擇匯入方式，以此題而言，資料為CSV格式，故選`From CSV...`<br/>
 <br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/import2_0320.jpg)<br />
 
-**注意：**<br/>
-若複製檔案路徑，需使用"/"，並在檔案路徑後加上檔名及副檔名<br/>
+**注意：**
+若複製檔案路徑，需使用```/```，並在檔案路徑後加上檔名及副檔名
+
 更改變數名稱、檔案輸入相關選項可參考[課堂講義](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/07_IO.md)
+
 <hr/>
 
 ### 問題
