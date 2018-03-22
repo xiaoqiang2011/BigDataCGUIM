@@ -7,6 +7,8 @@
 
 ### 解答
 
+**直接寫程式碼**
+
 ``` r
 library(readr)
 data_csv<-read_csv("https://goo.gl/RdngMn")
@@ -20,6 +22,10 @@ data_csv<-read_csv("https://goo.gl/RdngMn")
     ## See spec(...) for full column specifications.
 
 **注意**：上述輸出**Parsed with column specification:...**是指將每個欄位指定成特定資料型態，並非錯誤訊息。
+
+若複製檔案路徑，需使用```/```，並在檔案路徑後加上檔名及副檔名，需以雙引號```""```包住整個路徑。
+
+如：```read_csv("C:/Users/DH_LAB/Desktop/106_student.csv")```
 
 ``` r
 length(data_csv)  ##欄位數寫法1
@@ -39,6 +45,16 @@ ncol(data_csv)    ##欄位數寫法3
 
     ## [1] 22
 
+
+**直接匯入資料** 
+
+<br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/import1_0320.JPG)<br />
+依據資料型態至`Import Datasets` 選擇匯入方式，以此題而言，資料為CSV格式，故選`From CSV...`<br/>
+<br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/import2_0320.jpg)<br />
+
+**注意：**<br/>
+若複製檔案路徑，需使用"/"，並在檔案路徑後加上檔名及副檔名<br/>
+更改變數名稱、檔案輸入相關選項可參考[課堂講義](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/07_IO.md)
 <hr/>
 
 ### 問題
