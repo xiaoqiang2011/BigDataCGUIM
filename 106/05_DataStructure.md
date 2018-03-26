@@ -325,6 +325,53 @@ incremental:true
 - 發現學校名稱打錯了，應該是CGUST，請改列表資料
 - 在列表中新增學期資料，並設定為上學期
 
+
+列表資料名稱修改
+======================================================== 
+列表資料的名稱修改可考慮搭配`names()`函數與向量元素修改
+
+```r
+#檢查原本的名字
+names(listSample) #original name
+```
+
+```
+[1] "Students" "Year"     "Score"    "School"   "Gender"  
+```
+
+```r
+#將第一個名字改成NewName
+names(listSample)[1]<-"NewName"
+#檢查新的名字
+names(listSample) #modified name
+```
+
+```
+[1] "NewName" "Year"    "Score"   "School"  "Gender" 
+```
+
+
+列表資料中的向量也可新增元素
+======================================================== 
+把原有`listSample$Gender`的向量取出，並加上`?`，最後寫回`listSample$Gender`
+
+```r
+listSample$Gender
+```
+
+```
+[1] "M" "F" "M" "F" "M"
+```
+
+```r
+listSample$Gender<-c(listSample$Gender,"?")
+listSample$Gender
+```
+
+```
+[1] "M" "F" "M" "F" "M" "?"
+```
+
 矩陣 matrix
 ======================================================== 
 type:sub-section
@@ -701,11 +748,11 @@ str(listSample)
 
 ```
 List of 5
- $ Students: chr [1:5] "小明" "大雄" "胖虎" "小新" ...
- $ Year    : num 2017
- $ Score   : num [1:4] 60 50 80 40
- $ School  : chr "CGU"
- $ Gender  : chr [1:5] "M" "F" "M" "F" ...
+ $ NewName: chr [1:5] "小明" "大雄" "胖虎" "小新" ...
+ $ Year   : num 2017
+ $ Score  : num [1:4] 60 50 80 40
+ $ School : chr "CGU"
+ $ Gender : chr [1:6] "M" "F" "M" "F" ...
 ```
 
 

@@ -205,6 +205,29 @@ incremental:true
 - 發現學校名稱打錯了，應該是CGUST，請改列表資料
 - 在列表中新增學期資料，並設定為上學期
 
+
+列表資料名稱修改
+======================================================== 
+列表資料的名稱修改可考慮搭配`names()`函數與向量元素修改
+```{r}
+#檢查原本的名字
+names(listSample) #original name
+#將第一個名字改成NewName
+names(listSample)[1]<-"NewName"
+#檢查新的名字
+names(listSample) #modified name
+```
+
+
+列表資料中的向量也可新增元素
+======================================================== 
+把原有`listSample$Gender`的向量取出，並加上`?`，最後寫回`listSample$Gender`
+```{r}
+listSample$Gender
+listSample$Gender<-c(listSample$Gender,"?")
+listSample$Gender
+```
+
 矩陣 matrix
 ======================================================== 
 type:sub-section

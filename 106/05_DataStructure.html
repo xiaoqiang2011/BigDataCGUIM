@@ -1165,6 +1165,51 @@ listSample[[1]]
 </div>
 
 </section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>列表資料名稱修改</h3>
+<div class="slideContent" >
+<p>列表資料的名稱修改可考慮搭配<code>names()</code>函數與向量元素修改</p>
+
+<pre><code class="r">#檢查原本的名字
+names(listSample) #original name
+</code></pre>
+
+<pre><code>[1] &quot;Students&quot; &quot;Year&quot;     &quot;Score&quot;    &quot;School&quot;   &quot;Gender&quot;  
+</code></pre>
+
+<pre><code class="r">#將第一個名字改成NewName
+names(listSample)[1]&lt;-&quot;NewName&quot;
+#檢查新的名字
+names(listSample) #modified name
+</code></pre>
+
+<pre><code>[1] &quot;NewName&quot; &quot;Year&quot;    &quot;Score&quot;   &quot;School&quot;  &quot;Gender&quot; 
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>列表資料中的向量也可新增元素</h3>
+<div class="slideContent" >
+<p>把原有<code>listSample$Gender</code>的向量取出，並加上<code>?</code>，最後寫回<code>listSample$Gender</code></p>
+
+<pre><code class="r">listSample$Gender
+</code></pre>
+
+<pre><code>[1] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; &quot;M&quot;
+</code></pre>
+
+<pre><code class="r">listSample$Gender&lt;-c(listSample$Gender,&quot;?&quot;)
+listSample$Gender
+</code></pre>
+
+<pre><code>[1] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;?&quot;
+</code></pre>
+
+</div>
+
+</section>
 <section data-state="sub-section" data-transition="linear" data-transition-speed="default">
 <h2>矩陣 matrix</h2>
 <div class="slideContent" >
@@ -1575,11 +1620,11 @@ Colorado      7.9     204       78 38.7
 </code></pre>
 
 <pre><code>List of 5
- $ Students: chr [1:5] &quot;小明&quot; &quot;大雄&quot; &quot;胖虎&quot; &quot;小新&quot; ...
- $ Year    : num 2017
- $ Score   : num [1:4] 60 50 80 40
- $ School  : chr &quot;CGU&quot;
- $ Gender  : chr [1:5] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
+ $ NewName: chr [1:5] &quot;小明&quot; &quot;大雄&quot; &quot;胖虎&quot; &quot;小新&quot; ...
+ $ Year   : num 2017
+ $ Score  : num [1:4] 60 50 80 40
+ $ School : chr &quot;CGU&quot;
+ $ Gender : chr [1:6] &quot;M&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot; ...
 </code></pre>
 
 </div>
