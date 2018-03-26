@@ -959,8 +959,8 @@ DCardCGU_posts &lt;-
 </code></pre>
 
 <pre><code>&#39;data.frame&#39;:   30 obs. of  2 variables:
- $ title: chr  &quot;1211&quot; &quot;怎麼有人這麼棒&quot; &quot;萊爾富取貨&quot; &quot;明德一拉拉熊&quot; ...
- $ likeN: chr  &quot;3&quot; &quot;10&quot; &quot;2&quot; &quot;9&quot; ...
+ $ title: chr  &quot;1211&quot; &quot;萊爾富取貨&quot; &quot;明德一拉拉熊&quot; &quot;原來長庚可以釣魚欸&quot; ...
+ $ likeN: chr  &quot;3&quot; &quot;2&quot; &quot;9&quot; &quot;11&quot; ...
 </code></pre>
 
 <p>該如何將這按讚數欄位轉成數字呢？</p>
@@ -1079,13 +1079,9 @@ DCardCGU_posts &lt;-
 <pre><code>[1] &quot;HelloWorld&quot;
 </code></pre>
 
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>基本處理-文字取代</h3>
-<div class="slideContent" >
-<p>gsub(<code>想要換掉的舊字串</code>,<code>想要換成的新字串</code>,<code>欲作取代的完整字串</code>)</p>
+<p>基本處理-文字取代
+====================================f
+gsub(<code>想要換掉的舊字串</code>,<code>想要換成的新字串</code>,<code>欲作取代的完整字串</code>)</p>
 
 <pre><code class="r">gsub(&quot;o&quot;,&quot;0&quot;,&quot;Hello World&quot;)
 </code></pre>
@@ -1219,6 +1215,29 @@ post_contentShort&lt;- html_text(DCardContentNode)
 <li class="fragment">在post_contentShort中，出現“資管”字串的文章位置(index)</li>
 <li class="fragment">將post_contentShort中的文章用逗號（全形，）切割</li>
 <li class="fragment">將post_contentShort中的文章用逗號或問號或句號（全形，？。）切割</li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>正規標示式</h3>
+<div class="slideContent" >
+<ul>
+<li>字串處理通常會搭配正規表示式 (Regular Expression)</li>
+<li>請見<a href="https://blog.yjtseng.info/post/regexpr/">範例</a>，有興趣的同學可以參考</li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>結巴斷詞</h3>
+<div class="slideContent" >
+<ul>
+<li>一大串文字該怎麼分析？</li>
+<li>中文常用結巴套件</li>
+<li>詳見<a href="https://blog.yjtseng.info/post/jiebar/">範例</a></li>
 </ul>
 
 </div>
@@ -2553,9 +2572,9 @@ DCardCGU_posts &lt;-
 </code></pre>
 
 <pre><code>&#39;data.frame&#39;:   30 obs. of  3 variables:
- $ title : Factor w/ 29 levels &quot;#求卦 生醫男都這樣嗎&quot;,..: 3 26 13 15 22 21 18 29 28 9 ...
- $ author: Factor w/ 4 levels &quot;長庚大學&quot;,&quot;長庚大學 電子工程學系&quot;,..: 1 1 1 1 1 1 1 3 2 1 ...
- $ likeN : Factor w/ 20 levels &quot;1&quot;,&quot;10&quot;,&quot;11&quot;,..: 10 2 5 20 3 13 3 19 10 14 ...
+ $ title : Factor w/ 29 levels &quot;#求卦 生醫男都這樣嗎&quot;,..: 3 13 15 23 22 18 29 28 9 4 ...
+ $ author: Factor w/ 4 levels &quot;長庚大學&quot;,&quot;長庚大學 電子工程學系&quot;,..: 1 1 1 1 1 1 3 2 1 1 ...
+ $ likeN : Factor w/ 21 levels &quot;1&quot;,&quot;10&quot;,&quot;11&quot;,..: 10 5 21 3 13 3 20 10 15 21 ...
 </code></pre>
 
 <ul>

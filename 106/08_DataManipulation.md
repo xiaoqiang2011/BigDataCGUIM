@@ -155,8 +155,8 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  2 variables:
- $ title: chr  "1211" "怎麼有人這麼棒" "萊爾富取貨" "明德一拉拉熊" ...
- $ likeN: chr  "3" "10" "2" "9" ...
+ $ title: chr  "1211" "萊爾富取貨" "明德一拉拉熊" "原來長庚可以釣魚欸" ...
+ $ likeN: chr  "3" "2" "9" "11" ...
 ```
 該如何將這按讚數欄位轉成數字呢？
 
@@ -263,7 +263,7 @@ paste0("Hello", "World")
 ```
 
 基本處理-文字取代
-====================================
+====================================f
 gsub(`想要換掉的舊字串`,`想要換成的新字串`,`欲作取代的完整字串`)
 
 ```r
@@ -388,6 +388,17 @@ incremental:true
 - 在post_contentShort中，出現“資管”字串的文章位置(index)
 - 將post_contentShort中的文章用逗號（全形，）切割
 - 將post_contentShort中的文章用逗號或問號或句號（全形，？。）切割
+
+正規標示式
+====================================
+- 字串處理通常會搭配正規表示式 (Regular Expression)
+- 請見[範例](https://blog.yjtseng.info/post/regexpr/)，有興趣的同學可以參考
+
+結巴斷詞
+====================================
+- 一大串文字該怎麼分析？
+- 中文常用結巴套件
+- 詳見[範例](https://blog.yjtseng.info/post/jiebar/)
 
 子集Subset - 一維資料
 ====================================
@@ -909,9 +920,9 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title : Factor w/ 29 levels "#求卦 生醫男都這樣嗎",..: 3 26 13 15 22 21 18 29 28 9 ...
- $ author: Factor w/ 4 levels "長庚大學","長庚大學 電子工程學系",..: 1 1 1 1 1 1 1 3 2 1 ...
- $ likeN : Factor w/ 20 levels "1","10","11",..: 10 2 5 20 3 13 3 19 10 14 ...
+ $ title : Factor w/ 29 levels "#求卦 生醫男都這樣嗎",..: 3 13 15 23 22 18 29 28 9 4 ...
+ $ author: Factor w/ 4 levels "長庚大學","長庚大學 電子工程學系",..: 1 1 1 1 1 1 3 2 1 1 ...
+ $ likeN : Factor w/ 21 levels "1","10","11",..: 10 5 21 3 13 3 20 10 15 21 ...
 ```
 - 將DCardCGU_posts按照按讚數由高到低排序
 - 提示：要將按讚數**轉成數值**
