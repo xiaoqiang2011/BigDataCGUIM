@@ -28,7 +28,7 @@ type:sub-section
 Each column is a variable. Each row is an observation.
 
 - 一個欄位（Column）內只有一個數值，最好要有凡人看得懂的Column Name
-- 不同的觀察值應該要在不同行（Row）
+- 不同的觀察值應該要在不同列（Row）
 - 一張表裡面，有所有分析需要的資料
 - 如果一定要多張表，中間一定要有index可以把表串起來
 - One file, one table
@@ -137,12 +137,11 @@ library(rvest) ##(爬蟲結果不代表本人意見)
 DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
 DCardContent<-read_html(DCardCGU)
 post_title <- DCardContent %>% html_nodes(".PostEntry_unread_2U217") %>% html_text()
-post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
 post_like<- DCardContent %>% html_nodes(".Like_counter_1enlP") %>% html_text()
 DCardCGU_posts <- 
     data.frame(title = post_title,
-               author=post_author, 
-               likeN=post_like)
+               likeN=post_like,
+               stringsAsFactors = F)
 ```
 
 資料型別轉換練習
@@ -155,10 +154,9 @@ str(DCardCGU_posts)
 ```
 
 ```
-'data.frame':	30 obs. of  3 variables:
- $ title : Factor w/ 29 levels "暗網","班代開會",..: 19 20 22 21 27 25 24 15 5 14 ...
- $ author: Factor w/ 3 levels "長庚大學","長庚大學 電機工程學系",..: 1 3 1 1 1 1 1 1 1 1 ...
- $ likeN : Factor w/ 12 levels "0","1","10","13",..: 1 7 10 2 9 6 12 6 2 9 ...
+'data.frame':	30 obs. of  2 variables:
+ $ title: chr  "1211" "怎麼有人這麼棒" "萊爾富取貨" "明德一拉拉熊" ...
+ $ likeN: chr  "3" "10" "2" "9" ...
 ```
 該如何將這按讚數欄位轉成數字呢？
 
@@ -181,7 +179,7 @@ type:sub-section
 
 基本處理-切割
 ====================================
-strsplit (欲切割的字串,用什麼符號切割)
+strsplit (`欲切割的字串`,`用什麼符號切割`)
 
 ```r
 strsplit ("Hello World"," ")
@@ -194,7 +192,7 @@ strsplit ("Hello World"," ")
 
 基本處理-切割（多字元）|
 ====================================
-strsplit (欲切割的字串,切割符號1|切割符號2|...)
+strsplit (`欲切割的字串`,`切割符號1|切割符號2|...`)
 
 ```r
 strsplit ("Hello World"," |o")
@@ -266,7 +264,7 @@ paste0("Hello", "World")
 
 基本處理-文字取代
 ====================================
-gsub(想要換掉的舊字串,想要換成的新字串,欲作取代的完整字串)
+gsub(`想要換掉的舊字串`,`想要換成的新字串`,`欲作取代的完整字串`)
 
 ```r
 gsub("o","0","Hello World")
@@ -307,8 +305,8 @@ str_trim(" Hello World ")
 - 通常使用在**比對文字向量**
 - **有分大小寫**
 - 依照回傳值的型態不同，有兩種常用函數
-    - 回傳符合條件之向量位置(index) `grep(搜尋條件,要搜尋的向量)`
-    - 回傳每個向量是否符合條件(TRUE or FALSE) `grepl(搜尋條件,要搜尋的向量)`
+    - 回傳符合條件之**向量位置(index)** `grep(搜尋條件,要搜尋的向量)`
+    - 回傳每個向量**是否**符合條件(TRUE or FALSE) `grepl(搜尋條件,要搜尋的向量)`
 
 
 ```r
@@ -462,7 +460,7 @@ type:sub-section
 - 可針對列(Row)和行(Column)做子集
 - 使用`[ ]`，但因應二維資料的需求，以`,`分隔列與行的篩選條件
 - 資料篩選原則為**前Row,後Column**，**前列,後行**
-- 若不想篩選列，則在`,`前方保持**空白**即可。
+- 若不想篩選列，則在**,**前方保持**空白**即可。
 - 篩選方式可輸入**位置(index)**、**欄位名稱**或輸入**布林變數(TRUE/FALSE)**
     - 輸入位置: `dataFrame[row index,column index]`
     - 輸入布林變數: `dataFrame[c(T,F,T),c(T,F,T)]`
@@ -911,9 +909,9 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title : Factor w/ 29 levels "暗網","班代開會",..: 19 20 22 21 27 25 24 15 5 14 ...
- $ author: Factor w/ 3 levels "長庚大學","長庚大學 電機工程學系",..: 1 3 1 1 1 1 1 1 1 1 ...
- $ likeN : Factor w/ 12 levels "0","1","10","13",..: 1 7 10 2 9 6 12 6 2 9 ...
+ $ title : Factor w/ 29 levels "#求卦 生醫男都這樣嗎",..: 3 26 13 15 22 21 18 29 28 9 ...
+ $ author: Factor w/ 4 levels "長庚大學","長庚大學 電子工程學系",..: 1 1 1 1 1 1 1 3 2 1 ...
+ $ likeN : Factor w/ 20 levels "1","10","11",..: 10 2 5 20 3 13 3 19 10 14 ...
 ```
 - 將DCardCGU_posts按照按讚數由高到低排序
 - 提示：要將按讚數**轉成數值**
@@ -1129,8 +1127,8 @@ inner_join(nameDF,scoreDF,by="ID")
 
 資料結合 - left_join()
 ====================================
-保留左邊的表所有的列
-使用方法 `left_join(x, y, by = )`
+- 保留左邊的表所有的列
+- 使用方法 `left_join(x, y, by = )`
 
 
 ```r
@@ -1149,8 +1147,8 @@ left_join(nameDF,scoreDF,by="ID")
 
 資料結合 - right_join()
 ====================================
-保留右邊的表所有的列
-使用方法 `right_join(x, y, by = )`
+- 保留右邊的表所有的列
+- 使用方法 `right_join(x, y, by = )`
 
 
 ```r
@@ -1187,8 +1185,8 @@ full_join(nameDF,scoreDF,by="ID")
 
 資料結合 - semi_join()
 ====================================
-留下左邊的ID也有出現在右邊的表的列，右表資料不會輸出
-使用方法 `semi_join(x, y, by = )`
+- 留下左邊的ID也有出現在右邊的表的列，右表資料不會輸出
+- 使用方法 `semi_join(x, y, by = )`
 
 
 ```r
