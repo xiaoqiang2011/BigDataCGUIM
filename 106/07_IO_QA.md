@@ -285,7 +285,7 @@ head(PPT_Job_title_total) # 為求版面精簡，僅列出前六列資料
 <br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/Graph%20API%20chosen.JPG)<br />
 -   若想使用下一步的方法一，則可勾選**用戶數據權限**的**user_likes**
   
-2.  找最有興趣的粉絲專頁
+2.  找最有興趣的粉絲專頁<br />
     
 **方法一**
     
