@@ -46,6 +46,7 @@ ncol(data_csv)    ##欄位數寫法3
 ```
 
     ## [1] 22
+    
 
 **直接匯入資料**
 
@@ -226,14 +227,13 @@ PPT_Job_text[4]
 <br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/PPT_extract.JPG)<br />
 
 <hr/>
+
 ### 問題
 
 #### 剛剛爬請試著爬PTT科技工作版https://www.ptt.cc/bbs/Tech_Job/index.html
 ，只能取出一頁標題，觀察網頁，發現可以一直按”上頁”查看之前的文章，請問如何一次爬十頁的文章呢?提示: 每頁有個編號，搭配for迴圈
 
 ### 解答
-
-邏輯：
 
 1.  觀察各頁網址的規則
 2.  以paste0連接網址，paste0("第一個字串","第二個字串",....,"第n個字串")
@@ -283,19 +283,21 @@ head(PPT_Job_title_total) # 為求版面精簡，僅列出前六列資料
 
 2.  找最有興趣的粉絲專頁
     
-    **方法一**
+    * 方法一
     
-    - 在**搜尋欄位**打**likes**後按**提交**，則會出現按過讚的粉絲專頁、粉絲專頁ID及專業建立的時間，可將要爬文的粉專ID帶入```getPage()```中
+    ** 在**搜尋欄位**打**likes**後按**提交**，則會出現按過讚的粉絲專頁、粉絲專頁ID及專業建立的時間，可將要爬文的粉專ID帶入```getPage()```中
     
 <br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/Graph%20API%20chosen_2.JPG)<br />
-    **方法二**
+
+    * 方法二
     
-    - 在Facebook搜尋粉絲專頁名稱後，左側專頁大頭貼下方有粉絲專頁名稱及其帳號，可將要爬文的粉專帳號帶入```getPage()```中
+    ** 在Facebook搜尋粉絲專頁名稱後，左側專頁大頭貼下方有粉絲專頁名稱及其帳號，可將要爬文的粉專帳號帶入```getPage()```中
+    
 <br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/Graph%20API%20chosen_3.JPG)<br />
     
 3.  使用```for```迴圈將每日所爬到的網頁資料```tempPage```存在```total_Page```中
 
-* 注意：由於爬下來的貼文```tempPage```為資料框形式，需使用`rbind`將兩表格以row的形式結合
+    ** 注意：由於爬下來的貼文```tempPage```為資料框形式，需使用`rbind`將兩表格以row的形式結合
 
 
 ```{r }
@@ -325,7 +327,6 @@ max(totalPage$likes_count)
 ### 問題
 
 #### 試著擷取桃園市公共自行車服務資料http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json
-
 並將記錄所有車站的位置與腳踏車數的資料框整個擷取出來，並檢查此資料框有幾個欄位?幾個觀察值?。貼上程式碼回答。
 
 ### 解答
