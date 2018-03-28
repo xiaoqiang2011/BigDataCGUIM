@@ -164,7 +164,7 @@ UV_dataset
 
 ### 解答
 
-列表
+列表 list
 
 <hr/>
 
@@ -174,13 +174,16 @@ UV_dataset
 
 ### 解答
 
-有API輔助可將資料擷取過程自動化
+有API輔助可將資料擷取過程自動化。
+API的簡介可以參考影片
+- https://www.youtube.com/watch?v=zvKadd9Cflc
+- https://www.youtube.com/watch?v=hd6X8O6oZKw
 
 <hr/>
 
 ### 問題
 
-#### 請試著爬PTT科技工作版https://www.ptt.cc/bbs/Tech\_Job/index.html ，取出所有標題，請問第四個標題是?
+#### 請試著爬PTT科技工作版https://www.ptt.cc/bbs/Tech_Job/index.html ，取出所有標題，請問第四個標題是?
 
 ### 解答
 
@@ -219,13 +222,15 @@ PPT_Job_text<-html_text(PPT_Job_nodes)
 PPT_Job_text[4]
 ```
 
-使用SelectorGadget找CSS:
+使用**SelectorGadget**找CSS:
 
 1.  綠色為要選取的項目（左鍵點一下）
 2.  黃色表與綠色相同的元件
 3.  紅色為不想選取的元件（黃色處左鍵再點一次）
 
 <br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/PPT_extract.JPG)<br />
+
+可參考[SelectorGadget官網](http://selectorgadget.com/)
 
 <hr/>
 
@@ -236,9 +241,9 @@ PPT_Job_text[4]
 ### 解答
 
 1.  觀察各頁網址的規則
-2.  以```paste0```連接網址，```paste0("第一個字串","第二個字串",....,"第n個字串")```
+2.  以`paste0`連接網址，`paste0("第一個字串","第二個字串",....,"第n個字串")`
 3.  以Selectorgadget 找出要爬的內容的CSS
-4.  在每次迴圈中，將每頁爬到的標題```PPT_Job_title```存到完整資料```PPT_Job_title_total```中
+4.  在每次迴圈中，將每頁爬到的標題`PPT_Job_title`存到完整資料`PPT_Job_title_total`中
 
 **由於爬下來的標題`PPT_Job_title`為向量，需使用`c()`將兩向量結合**
 
@@ -246,12 +251,12 @@ PPT_Job_text[4]
 library(rvest)
 PPT_Job_title_total<-NULL
 for (i in c(3009:2999)){
-PPT_Job_title<-
-  read_html(paste0("https://www.ptt.cc/bbs/Tech_Job/index",i,".html"))%>%
-  html_nodes(".title a")%>%
-  html_text()
-  
-PPT_Job_title_total<-c(PPT_Job_title_total,PPT_Job_title)}
+    PPT_Job_title<-
+        read_html(paste0("https://www.ptt.cc/bbs/Tech_Job/index",i,".html"))%>%
+        html_nodes(".title a")%>%
+        html_text()
+    PPT_Job_title_total<-c(PPT_Job_title_total,PPT_Job_title)
+}
 head(PPT_Job_title_total) # 為求版面精簡，僅列出前六列資料
 ```
 
