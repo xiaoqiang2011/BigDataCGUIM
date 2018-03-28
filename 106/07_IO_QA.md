@@ -3,9 +3,7 @@
 
 ### 問題
 
-#### 有一個網路上的csv檔，下載網址為https://goo.gl/RdngMn ，請問如何以撰寫程式碼的方式匯入R中作分析? <br/>
-
-#### 匯入後，此表格有幾個欄位?
+#### 有一個網路上的csv檔，下載網址為https://goo.gl/RdngMn ，請問如何以撰寫程式碼的方式匯入R中作分析? 匯入後，此表格有幾個欄位?
 
 ### 解答
 
@@ -186,10 +184,10 @@ UV_dataset
 
 ### 解答
 
--   使用read\_html(“欲擷取的網站網址”)函數讀取網頁
--   使用html\_nodes()函數擷取所需內容 (條件為CSS或xpath標籤)
--   使用html\_text()函數處理/清洗擷取內容，留下需要的資料
--   使用html\_attr()函數擷取資料參數（如連結url）
+-   使用read_html(“欲擷取的網站網址”)函數讀取網頁
+-   使用html_nodes()函數擷取所需內容 (條件為CSS或xpath標籤)
+-   使用html_text()函數處理/清洗擷取內容，留下需要的資料
+-   使用html_attr()函數擷取資料參數（如連結url）
 
 ### 解答
 
@@ -238,9 +236,9 @@ PPT_Job_text[4]
 ### 解答
 
 1.  觀察各頁網址的規則
-2.  以paste0連接網址，paste0("第一個字串","第二個字串",....,"第n個字串")
+2.  以```paste0```連接網址，```paste0("第一個字串","第二個字串",....,"第n個字串")```
 3.  以Selectorgadget 找出要爬的內容的CSS
-4.  在每次迴圈中，將每頁爬到的標題(PPT_Job_title)存到完整資料(PPT_Job_title_total)中
+4.  在每次迴圈中，將每頁爬到的標題```PPT_Job_title```存到完整資料```PPT_Job_title_total```中
 
 **由於爬下來的標題`PPT_Job_title`為向量，需使用`c()`將兩向量結合**
 
@@ -282,7 +280,6 @@ head(PPT_Job_title_total) # 為求版面精簡，僅列出前六列資料
 <br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/Graph%20API%20chosen.JPG)<br />
 -   若想使用下一步的方法一，則可勾選**用戶數據權限**的**user_likes**
   
-
 2.  找最有興趣的粉絲專頁
     
 **方法一**
