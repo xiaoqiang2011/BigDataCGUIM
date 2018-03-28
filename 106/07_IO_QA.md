@@ -285,13 +285,13 @@ head(PPT_Job_title_total) # 為求版面精簡，僅列出前六列資料
 
 2.  找最有興趣的粉絲專頁<br />
     
-   **方法一**
+**方法一**
     
 -   在**搜尋欄位**打**likes**後按**提交**，則會出現按過讚的粉絲專頁、粉絲專頁ID及專業建立的時間，可將要爬文的粉專ID帶入```getPage()```中
     
 <br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/Graph%20API%20chosen_2.JPG)<br />
 
-   **方法二**
+**方法二**
 
 -   在Facebook搜尋粉絲專頁名稱後，左側專頁大頭貼下方有粉絲專頁名稱及其帳號，可將要爬文的粉專帳號帶入```getPage()```中
     
