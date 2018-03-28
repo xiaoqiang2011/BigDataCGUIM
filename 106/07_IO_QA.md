@@ -65,6 +65,7 @@ ncol(data_csv)    ##欄位數寫法3
 Excel檔、MySQL資料庫檔、純文字檔 (.txt)、圖片檔等，部分清單參見[課堂講義](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/07_IO.md)
 
 <hr/>
+
 ### 問題
 
 #### Open Data常用的資料格式有哪幾個?
@@ -74,6 +75,7 @@ Excel檔、MySQL資料庫檔、純文字檔 (.txt)、圖片檔等，部分清單
 csv檔、JSON檔、XML檔
 
 <hr/>
+
 ### 問題
 
 #### 嘗試在政府資料開放平臺中，找到紫外線即時監測資料，並嘗試將XML檔案讀到R中，取出所有測站的名稱與紫外線強度資料。
@@ -155,6 +157,7 @@ UV_dataset
     ## 34     花蓮 0.00
 
 <hr/>
+
 ### 問題
 
 #### 使用jsonlite匯入JSON檔後，一開始的資料結構會是?
@@ -164,6 +167,7 @@ UV_dataset
 列表
 
 <hr/>
+
 ### 問題
 
 #### 為什麼我們需要API來擷取資料?
@@ -171,6 +175,7 @@ UV_dataset
 ### 解答
 
 <hr/>
+
 ### 問題
 
 #### 請試著爬PTT科技工作版https://www.ptt.cc/bbs/Tech\_Job/index.html，取出所有標題，請問第四個標題是?
@@ -200,8 +205,6 @@ PPT_Job<-read_html("https://www.ptt.cc/bbs/Tech_Job/index.html")%>%
 PPT_Job[4]
 ```
 
-    ## [1] "[公告] 置底 檢舉/推薦 文章"
-
 #### 分開寫法
 
 ``` r
@@ -214,8 +217,6 @@ PPT_Job_text<-html_text(PPT_Job_nodes)
 PPT_Job_text[4]
 ```
 
-    ## [1] "[公告] 置底 檢舉/推薦 文章"
-
 使用SelectorGadget找CSS:
 
 1.  綠色為要選取的項目（左鍵點一下）
@@ -227,7 +228,8 @@ PPT_Job_text[4]
 <hr/>
 ### 問題
 
-#### 剛剛爬請試著爬PTT科技工作版https://www.ptt.cc/bbs/Tech\_Job/index.html，只能取出一頁標題，觀察網頁，發現可以一直按”上頁”查看之前的文章，請問如何一次爬十頁的文章呢?提示: 每頁有個編號，搭配for迴圈
+#### 剛剛爬請試著爬PTT科技工作版https://www.ptt.cc/bbs/Tech_Job/index.html
+，只能取出一頁標題，觀察網頁，發現可以一直按”上頁”查看之前的文章，請問如何一次爬十頁的文章呢?提示: 每頁有個編號，搭配for迴圈
 
 ### 解答
 
@@ -236,9 +238,9 @@ PPT_Job_text[4]
 1.  觀察各頁網址的規則
 2.  以paste0連接網址，paste0("第一個字串","第二個字串",....,"第n個字串")
 3.  以Selectorgadget 找出要爬的內容的CSS
-4.  在每次迴圈中，將每頁爬到的標題(PPT\_Job\_title)存到完整資料(PPT\_Job\_title\_total)中
+4.  在每次迴圈中，將每頁爬到的標題(PPT_Job_title)存到完整資料(PPT_Job_title_total)中
 
-\*\* 由於爬下來的標題(PPT\_Job\_title)為向量，需使用`c()`將兩向量結合 \*\*
+**由於爬下來的標題`PPT_Job_title`為向量，需使用`c()`將兩向量結合**
 
 ``` r
 library(rvest)
@@ -261,279 +263,64 @@ head(PPT_Job_title_total) # 為求版面精簡，僅列出前六列資料
     ## [6] "[討論] 公司的社團"
 
 <hr/>
+
 ### 問題
 
 #### 請試著用Rfacebook套件爬你最有興趣的粉絲專頁，抓取今年度(2018/01/01-今天)的貼文，平均按讚數是多少?按讚數最高的是哪一篇，內容是什麼?
 
-\*\* 貼上程式碼，並貼上按讚數最高那篇的內文 \*\*
+**貼上程式碼，並貼上按讚數最高那篇的內文**
 
-\*\* 提示: seq since until for迴圈 \*\*
+**提示: seq since until for迴圈**
 
 ### 解答
 
-1.  至Graph API拿token <https://developers.facebook.com/tools/explorer/>
+1.  至Graph API登入Facebook帳號拿token <https://developers.facebook.com/tools/explorer/>
+
+   -  取得權限部份，可勾選**活動、社團和粉絲專頁內的選項**
+<br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/Graph%20API%20chosen.JPG)<br />
+   -  若想使用下一步的方法一，則可勾選**用戶數據權限**的**user_likes**
+  
+
 2.  找最有興趣的粉絲專頁
-3.  時間區間
-4.  使用for迴圈將每日所爬到的網頁資料存在total\_Page中
-
-\*\* 注意：由於爬下來的標題(PPT\_Job\_title)為向量，需使用`rbind`將兩表格以row的形式結合 \*\*
-
-    ## Loading required package: httr
-
-    ## Loading required package: rjson
-
-    ## Loading required package: httpuv
-
-    ## 
-    ## Attaching package: 'Rfacebook'
-
-    ## The following object is masked from 'package:methods':
-    ## 
-    ##     getGroup
-
-    ## 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 1 posts 1 posts 1 posts 2 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 2 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 2 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 1 posts 1 posts 3 posts 1 posts 3 posts 1 posts 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## 0 posts
-
-    ## No public posts were found : Men.Envy.Children
-
-    ## [1] 639.7879
-
-    ## [1] 1640
+    
+    **方法一**
+    
+    - 在**搜尋欄位**打**likes**後按**提交**，則會出現按過讚的粉絲專頁、粉絲專頁ID及專業建立的時間，可將要爬文的粉專ID帶入```getPage()```中
+    
+<br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/Graph%20API%20chosen_2.JPG)<br />
+    **方法二**
+    
+    - 在Facebook搜尋粉絲專頁名稱後，左側專頁大頭貼下方有粉絲專頁名稱及其帳號，可將要爬文的粉專帳號帶入```getPage()```中
+<br /> ![test](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/Graph%20API%20chosen_3.JPG)<br />
+    
+3.  使用```for```迴圈將每日所爬到的網頁資料```tempPage```存在```total_Page```中
+
+* 注意：由於爬下來的貼文```tempPage```為資料框形式，需使用`rbind`將兩表格以row的形式結合
+
+
+```{r }
+#install.packages("Rfacebook") #若該電腦未裝此套件才需安裝
+library(Rfacebook) 
+token<-"EAACEdEose0cBAKBftGdcaxDbzZBlhxLNYkLqrU6CpMjEMVjFpb2gRNmEGnyoWZCMcImLNpkKRbC1HA3nGs6IwMCgmOnkHyHimYJgcAS4OQVQpiGFgGtV2K5GBSkSewAutsxpPBZCbOYcX9ZCpDPwYWA3aCGbgFEPR7Hjhn9oDMhcFpxFzRGWjYZBS5uTnDxQZD"   #將token複製到此處  
+
+lastDate<-Sys.Date()  #系統日期
+DateVector<-seq(as.Date("2018-01-01"),lastDate,by="1 days")
+DateVectorStr<-as.character(DateVector)
+
+totalPage<-NULL
+
+for(i in 1:(length(DateVectorStr)-1)){
+    tempPage<-getPage("Men.Envy.Children", token,
+                since = DateVectorStr[i],
+                until = DateVectorStr[i+1])
+    totalPage<-rbind(totalPage,tempPage)
+}
+
+mean(totalPage$likes_count)
+max(totalPage$likes_count)
+```
+
+<hr/>
 
 ### 問題
 
