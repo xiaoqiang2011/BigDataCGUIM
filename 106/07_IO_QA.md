@@ -283,7 +283,7 @@ head(PPT_Job_title_total) # 為求版面精簡，僅列出前六列資料
 -   若想使用下一步的方法一，則可勾選**用戶數據權限**的**user_likes**
   
 
-2.  找最有興趣的粉絲專頁<br />
+2.  找最有興趣的粉絲專頁
     
 **方法一**
     
@@ -328,8 +328,7 @@ max(totalPage$likes_count)
 
 ### 問題
 
-#### 試著擷取桃園市公共自行車服務資料http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json
-#### 並將記錄所有車站的位置與腳踏車數的資料框整個擷取出來，並檢查此資料框有幾個欄位?幾個觀察值?。貼上程式碼回答。
+#### 試著擷取桃園市公共自行車服務資料http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json 並將記錄所有車站的位置與腳踏車數的資料框整個擷取出來，並檢查此資料框有幾個欄位?幾個觀察值?。貼上程式碼回答。
 
 ### 解答
 
