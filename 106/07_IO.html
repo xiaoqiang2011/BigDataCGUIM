@@ -1408,13 +1408,13 @@ APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714
   .. ..$ sno    : chr [1:100] &quot;2001&quot; &quot;2002&quot; &quot;2003&quot; &quot;2004&quot; ...
   .. ..$ tot    : chr [1:100] &quot;60&quot; &quot;52&quot; &quot;54&quot; &quot;98&quot; ...
   .. ..$ snaen  : chr [1:100] &quot;National Central University Library&quot; &quot;Jhungli Senior High School&quot; &quot;Zhongzheng Park&quot; &quot;TRA Zhongli Station (Front)&quot; ...
-  .. ..$ bemp   : chr [1:100] &quot;23&quot; &quot;28&quot; &quot;25&quot; &quot;67&quot; ...
+  .. ..$ bemp   : chr [1:100] &quot;0&quot; &quot;0&quot; &quot;-2&quot; &quot;0&quot; ...
   .. ..$ ar     : chr [1:100] &quot;中大路300號(中央大學校內圖書館前)&quot; &quot;中央西路二段215號對面人行道&quot; &quot;中美路101號-113號對面人行道&quot; &quot;中和路139號對面圓環&quot; ...
-  .. ..$ act    : chr [1:100] &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; ...
+  .. ..$ act    : chr [1:100] &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...
   .. ..$ lat    : chr [1:100] &quot;24.968128&quot; &quot;24.960815&quot; &quot;24.959113&quot; &quot;24.953874&quot; ...
   .. ..$ lng    : chr [1:100] &quot;121.194666&quot; &quot;121.212038&quot; &quot;121.224805&quot; &quot;121.2256&quot; ...
-  .. ..$ sbi    : chr [1:100] &quot;36&quot; &quot;24&quot; &quot;28&quot; &quot;28&quot; ...
-  .. ..$ mday   : chr [1:100] &quot;20180321003418&quot; &quot;20180321003432&quot; &quot;20180321003434&quot; &quot;20180321003418&quot; ...
+  .. ..$ sbi    : chr [1:100] &quot;0&quot; &quot;0&quot; &quot;0&quot; &quot;0&quot; ...
+  .. ..$ mday   : chr [1:100] &quot;20180401001924&quot; &quot;20180401001929&quot; &quot;20180401001934&quot; &quot;20180401001938&quot; ...
   ..$ total      : int 186
   ..$ limit      : int 100
 </code></pre>
@@ -1454,7 +1454,7 @@ APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714
 <td align="left">2001</td>
 <td align="left">60</td>
 <td align="left">National Central University Library</td>
-<td align="left">23</td>
+<td align="left">0</td>
 </tr>
 <tr>
 <td align="right">2</td>
@@ -1465,7 +1465,7 @@ APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714
 <td align="left">2002</td>
 <td align="left">52</td>
 <td align="left">Jhungli Senior High School</td>
-<td align="left">28</td>
+<td align="left">0</td>
 </tr>
 <tr>
 <td align="right">3</td>
@@ -1476,7 +1476,7 @@ APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714
 <td align="left">2003</td>
 <td align="left">54</td>
 <td align="left">Zhongzheng Park</td>
-<td align="left">25</td>
+<td align="left">-2</td>
 </tr>
 <tr>
 <td align="right">4</td>
@@ -1487,7 +1487,7 @@ APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714
 <td align="left">2004</td>
 <td align="left">98</td>
 <td align="left">TRA Zhongli Station (Front)</td>
-<td align="left">67</td>
+<td align="left">0</td>
 </tr>
 <tr>
 <td align="right">5</td>
@@ -1498,7 +1498,7 @@ APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714
 <td align="left">2005</td>
 <td align="left">82</td>
 <td align="left">Chung Yuan Christian University</td>
-<td align="left">32</td>
+<td align="left">-4</td>
 </tr>
 <tr>
 <td align="right">6</td>
@@ -1509,7 +1509,7 @@ APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714
 <td align="left">2006</td>
 <td align="left">58</td>
 <td align="left">Galaxy Square</td>
-<td align="left">22</td>
+<td align="left">0</td>
 </tr>
 <tr>
 <td align="right">7</td>
@@ -1520,7 +1520,7 @@ APIData&lt;-fromJSON(&quot;http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714
 <td align="left">2007</td>
 <td align="left">40</td>
 <td align="left">Civil Affairs Office of Zhongli District</td>
-<td align="left">21</td>
+<td align="left">0</td>
 </tr>
 <tr>
 <td align="right">8</td>
@@ -1794,7 +1794,7 @@ head(news)
 <h3>網頁爬蟲 DCard實作 -1</h3>
 <div class="slideContent" >
 <pre><code class="r">library(rvest) ##(爬蟲結果不代表本人意見)
-DCardCGU&lt;-&quot;https://www.dcard.tw/f/cgu?latest=true&quot;
+DCardCGU&lt;-&quot;https://www.dcard.tw/f/cgu&quot;
 DCardContent&lt;-read_html(DCardCGU)
 post_title &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_title_H5o4d&quot;) %&gt;% html_text()
 post_contentShort&lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_excerpt_2eHlN&quot;) %&gt;% html_text()
@@ -1809,7 +1809,7 @@ post_author&lt;- DCardContent %&gt;% html_nodes(&quot;.PostAuthor_root_3vAJf&quo
 <div class="slideContent" >
 <pre><code class="r">##(爬蟲結果不代表本人意見)
 post_like&lt;- DCardContent %&gt;% html_nodes(&quot;.Like_counter_1enlP&quot;) %&gt;% html_text()
-post_url &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_unread_2U217&quot;) %&gt;% html_attr(&quot;href&quot;)
+post_url &lt;- DCardContent %&gt;% html_nodes(&quot;.PostEntry_root_V6g0r&quot;) %&gt;% html_attr(&quot;href&quot;)
 DCardCGU_posts &lt;- 
     data.frame(title = post_title,
                author=post_author, 
@@ -1824,7 +1824,7 @@ DCardCGU_posts &lt;-
 <section data-transition="linear" data-transition-speed="default">
 <h3>網頁爬蟲 DCard實作 -3</h3>
 <div class="slideContent" >
-<pre><code class="r">DCardCGU_posts[1:5,c(&quot;title&quot;,&quot;author&quot;,&quot;likeN&quot;)]
+<pre><code class="r">DCardCGU_posts[1:4,c(&quot;title&quot;,&quot;author&quot;,&quot;likeN&quot;)]
 </code></pre>
 
 <table><thead>
@@ -1835,29 +1835,24 @@ DCardCGU_posts &lt;-
 </tr>
 </thead><tbody>
 <tr>
-<td align="left">小黑貓再見</td>
-<td align="left">長庚大學</td>
-<td align="left">9</td>
+<td align="left">學弟認命當墊底吧 我想過啊</td>
+<td align="left">長庚大學 化工與材料工程學系</td>
+<td align="left">36</td>
 </tr>
 <tr>
-<td align="left">明德K中情侶請閉嘴</td>
+<td align="left">假賣二手 真坑人 ㄏㄏ</td>
 <td align="left">長庚大學</td>
-<td align="left">7</td>
+<td align="left">14</td>
 </tr>
 <tr>
-<td align="left">#失物招領</td>
+<td align="left">校車</td>
 <td align="left">長庚大學</td>
-<td align="left">2</td>
-</tr>
-<tr>
-<td align="left">長庚是不是有人吸毒?</td>
-<td align="left">長庚大學 電子工程學系</td>
 <td align="left">6</td>
 </tr>
 <tr>
-<td align="left">啦啦啦啦啦</td>
+<td align="left">校車司機</td>
 <td align="left">長庚大學</td>
-<td align="left">8</td>
+<td align="left">0</td>
 </tr>
 </tbody></table>
 
