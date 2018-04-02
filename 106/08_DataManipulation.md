@@ -155,8 +155,8 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  2 variables:
- $ title: chr  "關於請假" "樓下音樂小聲點" "馬英九還我牛" "1211" ...
- $ likeN: chr  "4" "5" "6" "3" ...
+ $ title: chr  "據德10樓洗衣間" "解剖期中" "9U-4535的車主不會停車就不要開車" "鍋媽 壽喜燒" ...
+ $ likeN: chr  "2" "1" "1" "12" ...
 ```
 該如何將這按讚數欄位轉成數字呢？
 
@@ -920,9 +920,9 @@ str(DCardCGU_posts)
 
 ```
 'data.frame':	30 obs. of  3 variables:
- $ title : Factor w/ 29 levels "#求卦 生醫男都這樣嗎",..: 7 15 16 3 14 18 24 23 20 29 ...
- $ author: Factor w/ 4 levels "長庚大學","長庚大學 電子工程學系",..: 1 1 1 1 1 1 1 1 1 3 ...
- $ likeN : Factor w/ 19 levels "1","10","11",..: 13 15 16 11 6 4 4 15 3 19 ...
+ $ title : Factor w/ 29 levels "（徵）音樂夥伴",..: 16 15 5 11 22 6 1 17 7 10 ...
+ $ author: Factor w/ 4 levels "長庚大學","長庚大學 電子工程學系",..: 1 1 1 1 4 1 1 1 3 2 ...
+ $ likeN : Factor w/ 17 levels "1","12","14",..: 6 1 1 2 2 1 16 1 3 7 ...
 ```
 - 將DCardCGU_posts按照按讚數由高到低排序
 - 提示：要將按讚數**轉成數值**
@@ -1227,9 +1227,9 @@ type:alert
 type:sub-section
 
 - 在資料處理的過程中，常因各種需求，需要執行長寬表互換的動作
-- reshape2 package提供完整的轉換功能
-    - 寬表轉長表 `melt(資料框/寬表,id.vars=需要保留的欄位)`
-    - 長表轉寬表 `dcast(資料框/長表,寬表分列依據~分欄位依據)`
+- tidyr package提供完整的轉換功能
+    - 寬表轉長表 `gather(資料框/寬表,key="主鍵欄位名稱",value="數值欄位名稱",要轉換的資料1,要轉換的資料2,...)`
+    - 長表轉寬表 `spread(資料框/長表,key="要展開的欄位名稱",value="數值欄位名稱")`
     
 長表與寬表
 ====================================
@@ -1245,54 +1245,56 @@ head(airquality,3)
 |    36|     118|  8.0|   72|     5|   2|
 |    12|     149| 12.6|   74|     5|   3|
 
-寬表轉長表 melt（）
+寬表轉長表 gather（）
 ====================================
 
 - 保留Month和Day兩個欄位
-- 將其他欄位的名稱整合至variable欄位，數值整合至value欄位
+- 將其他欄位的名稱整合至Type欄位，數值整合至Value欄位
 
 ```r
-library(reshape2)
-airqualityM<-melt(airquality,id.vars = c("Month","Day")) ##欄位需要保留"Month","Day"
+library(tidyr)
+airqualityL<-gather(airquality,
+                    key=Type,value=Value,
+                    Ozone,Solar.R,Wind,Temp) ##欄位Ozone,Solar.R,Wind,Temp轉成單一欄位
 ```
 
 ```r
-head(airqualityM)
+head(airqualityL)
 ```
 
-| Month| Day|variable | value|
-|-----:|---:|:--------|-----:|
-|     5|   1|Ozone    |    41|
-|     5|   2|Ozone    |    36|
-|     5|   3|Ozone    |    12|
-|     5|   4|Ozone    |    18|
-|     5|   5|Ozone    |    NA|
-|     5|   6|Ozone    |    28|
+| Month| Day|Type  | Value|
+|-----:|---:|:-----|-----:|
+|     5|   1|Ozone |    41|
+|     5|   2|Ozone |    36|
+|     5|   3|Ozone |    12|
+|     5|   4|Ozone |    18|
+|     5|   5|Ozone |    NA|
+|     5|   6|Ozone |    28|
 
-長表轉寬表 dcast（）
+長表轉寬表 spread（）
 ====================================
 
-- `airqualityM`資料框中，剩下Month, Day, variable, value等四個欄位 (Column)，屬於長表
-- variable欄位的值轉換為新欄位，並將value欄位填回新增的欄位
+- `airqualityL`資料框中，剩下Month, Day, Type, Value等四個欄位 (Column)，屬於長表
+- Type欄位的值轉換為新欄位，並將Value欄位填回新增的欄位
 
 
 ```r
 #欄位保留"Month","Day"外，其他欄位由variable定義
-airqualityCast<-dcast(airqualityM, Month +Day~variable) 
+airqualityW<-spread(airqualityL, key=Type,value=Value) 
 ```
 
 ```r
-head(airqualityCast)
+head(airqualityW)
 ```
 
-| Month| Day| Ozone| Solar.R| Wind| Temp|
+| Month| Day| Ozone| Solar.R| Temp| Wind|
 |-----:|---:|-----:|-------:|----:|----:|
-|     5|   1|    41|     190|  7.4|   67|
-|     5|   2|    36|     118|  8.0|   72|
-|     5|   3|    12|     149| 12.6|   74|
-|     5|   4|    18|     313| 11.5|   62|
-|     5|   5|    NA|      NA| 14.3|   56|
-|     5|   6|    28|      NA| 14.9|   66|
+|     5|   1|    41|     190|   67|  7.4|
+|     5|   2|    36|     118|   72|  8.0|
+|     5|   3|    12|     149|   74| 12.6|
+|     5|   4|    18|     313|   62| 11.5|
+|     5|   5|    NA|      NA|   56| 14.3|
+|     5|   6|    28|      NA|   66| 14.9|
 
 寬表轉長表練習
 ====================================
@@ -1303,13 +1305,6 @@ incremental:true
 - 保留YEAR和WEEK欄位，將各州資料轉換成長表
 - 檢查長表的內容與資料型態，共有幾個觀察值?幾個變數?
 
-寬表 長表 互換
-====================================
-也可使用tidyr package做到一樣的功能
-**gather()**、**spread()**
-
-- [官網](http://tidyr.tidyverse.org/)
-- [GitHub](https://github.com/tidyverse/tidyr)
 
 遺漏值處理
 ====================================

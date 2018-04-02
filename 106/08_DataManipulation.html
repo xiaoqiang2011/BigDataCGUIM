@@ -959,8 +959,8 @@ DCardCGU_posts &lt;-
 </code></pre>
 
 <pre><code>&#39;data.frame&#39;:   30 obs. of  2 variables:
- $ title: chr  &quot;關於請假&quot; &quot;樓下音樂小聲點&quot; &quot;馬英九還我牛&quot; &quot;1211&quot; ...
- $ likeN: chr  &quot;4&quot; &quot;5&quot; &quot;6&quot; &quot;3&quot; ...
+ $ title: chr  &quot;據德10樓洗衣間&quot; &quot;解剖期中&quot; &quot;9U-4535的車主不會停車就不要開車&quot; &quot;鍋媽 壽喜燒&quot; ...
+ $ likeN: chr  &quot;2&quot; &quot;1&quot; &quot;1&quot; &quot;12&quot; ...
 </code></pre>
 
 <p>該如何將這按讚數欄位轉成數字呢？</p>
@@ -2576,9 +2576,9 @@ DCardCGU_posts &lt;-
 </code></pre>
 
 <pre><code>&#39;data.frame&#39;:   30 obs. of  3 variables:
- $ title : Factor w/ 29 levels &quot;#求卦 生醫男都這樣嗎&quot;,..: 7 15 16 3 14 18 24 23 20 29 ...
- $ author: Factor w/ 4 levels &quot;長庚大學&quot;,&quot;長庚大學 電子工程學系&quot;,..: 1 1 1 1 1 1 1 1 1 3 ...
- $ likeN : Factor w/ 19 levels &quot;1&quot;,&quot;10&quot;,&quot;11&quot;,..: 13 15 16 11 6 4 4 15 3 19 ...
+ $ title : Factor w/ 29 levels &quot;（徵）音樂夥伴&quot;,..: 16 15 5 11 22 6 1 17 7 10 ...
+ $ author: Factor w/ 4 levels &quot;長庚大學&quot;,&quot;長庚大學 電子工程學系&quot;,..: 1 1 1 1 4 1 1 1 3 2 ...
+ $ likeN : Factor w/ 17 levels &quot;1&quot;,&quot;12&quot;,&quot;14&quot;,..: 6 1 1 2 2 1 16 1 3 7 ...
 </code></pre>
 
 <ul>
@@ -3062,11 +3062,11 @@ semi_join(nameDF,scoreDF,by=&quot;ID&quot;)
 <div class="slideContent" >
 <ul>
 <li>在資料處理的過程中，常因各種需求，需要執行長寬表互換的動作</li>
-<li>reshape2 package提供完整的轉換功能
+<li>tidyr package提供完整的轉換功能
 
 <ul>
-<li>寬表轉長表 <code>melt(資料框/寬表,id.vars=需要保留的欄位)</code></li>
-<li>長表轉寬表 <code>dcast(資料框/長表,寬表分列依據~分欄位依據)</code></li>
+<li>寬表轉長表 <code>gather(資料框/寬表,key=&quot;主鍵欄位名稱&quot;,value=&quot;數值欄位名稱&quot;,要轉換的資料1,要轉換的資料2,...)</code></li>
+<li>長表轉寬表 <code>spread(資料框/長表,key=&quot;要展開的欄位名稱&quot;,value=&quot;數值欄位名稱&quot;)</code></li>
 </ul></li>
 </ul>
 
@@ -3121,26 +3121,28 @@ semi_join(nameDF,scoreDF,by=&quot;ID&quot;)
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>寬表轉長表 melt（）</h3>
+<h3>寬表轉長表 gather（）</h3>
 <div class="slideContent" >
 <ul>
 <li>保留Month和Day兩個欄位</li>
-<li>將其他欄位的名稱整合至variable欄位，數值整合至value欄位</li>
+<li>將其他欄位的名稱整合至Type欄位，數值整合至Value欄位</li>
 </ul>
 
-<pre><code class="r">library(reshape2)
-airqualityM&lt;-melt(airquality,id.vars = c(&quot;Month&quot;,&quot;Day&quot;)) ##欄位需要保留&quot;Month&quot;,&quot;Day&quot;
+<pre><code class="r">library(tidyr)
+airqualityL&lt;-gather(airquality,
+                    key=Type,value=Value,
+                    Ozone,Solar.R,Wind,Temp) ##欄位Ozone,Solar.R,Wind,Temp轉成單一欄位
 </code></pre>
 
-<pre><code class="r">head(airqualityM)
+<pre><code class="r">head(airqualityL)
 </code></pre>
 
 <table><thead>
 <tr>
 <th align="right">Month</th>
 <th align="right">Day</th>
-<th align="left">variable</th>
-<th align="right">value</th>
+<th align="left">Type</th>
+<th align="right">Value</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -3185,18 +3187,18 @@ airqualityM&lt;-melt(airquality,id.vars = c(&quot;Month&quot;,&quot;Day&quot;)) 
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>長表轉寬表 dcast（）</h3>
+<h3>長表轉寬表 spread（）</h3>
 <div class="slideContent" >
 <ul>
-<li><code>airqualityM</code>資料框中，剩下Month, Day, variable, value等四個欄位 (Column)，屬於長表</li>
-<li>variable欄位的值轉換為新欄位，並將value欄位填回新增的欄位</li>
+<li><code>airqualityL</code>資料框中，剩下Month, Day, Type, Value等四個欄位 (Column)，屬於長表</li>
+<li>Type欄位的值轉換為新欄位，並將Value欄位填回新增的欄位</li>
 </ul>
 
 <pre><code class="r">#欄位保留&quot;Month&quot;,&quot;Day&quot;外，其他欄位由variable定義
-airqualityCast&lt;-dcast(airqualityM, Month +Day~variable) 
+airqualityW&lt;-spread(airqualityL, key=Type,value=Value) 
 </code></pre>
 
-<pre><code class="r">head(airqualityCast)
+<pre><code class="r">head(airqualityW)
 </code></pre>
 
 <table><thead>
@@ -3205,8 +3207,8 @@ airqualityCast&lt;-dcast(airqualityM, Month +Day~variable)
 <th align="right">Day</th>
 <th align="right">Ozone</th>
 <th align="right">Solar.R</th>
-<th align="right">Wind</th>
 <th align="right">Temp</th>
+<th align="right">Wind</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -3214,48 +3216,48 @@ airqualityCast&lt;-dcast(airqualityM, Month +Day~variable)
 <td align="right">1</td>
 <td align="right">41</td>
 <td align="right">190</td>
-<td align="right">7.4</td>
 <td align="right">67</td>
+<td align="right">7.4</td>
 </tr>
 <tr>
 <td align="right">5</td>
 <td align="right">2</td>
 <td align="right">36</td>
 <td align="right">118</td>
-<td align="right">8.0</td>
 <td align="right">72</td>
+<td align="right">8.0</td>
 </tr>
 <tr>
 <td align="right">5</td>
 <td align="right">3</td>
 <td align="right">12</td>
 <td align="right">149</td>
-<td align="right">12.6</td>
 <td align="right">74</td>
+<td align="right">12.6</td>
 </tr>
 <tr>
 <td align="right">5</td>
 <td align="right">4</td>
 <td align="right">18</td>
 <td align="right">313</td>
-<td align="right">11.5</td>
 <td align="right">62</td>
+<td align="right">11.5</td>
 </tr>
 <tr>
 <td align="right">5</td>
 <td align="right">5</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
-<td align="right">14.3</td>
 <td align="right">56</td>
+<td align="right">14.3</td>
 </tr>
 <tr>
 <td align="right">5</td>
 <td align="right">6</td>
 <td align="right">28</td>
 <td align="right">NA</td>
-<td align="right">14.9</td>
 <td align="right">66</td>
+<td align="right">14.9</td>
 </tr>
 </tbody></table>
 
@@ -3269,20 +3271,6 @@ airqualityCast&lt;-dcast(airqualityM, Month +Day~variable)
 <li class="fragment">下載<a href="https://raw.githubusercontent.com/CGUIM-BigDataAnalysis/BigDataCGUIM/master/104/HEPATITIS_A_Cases.csv">寬表範例資料</a></li>
 <li class="fragment">保留YEAR和WEEK欄位，將各州資料轉換成長表</li>
 <li class="fragment">檢查長表的內容與資料型態，共有幾個觀察值?幾個變數?</li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>寬表 長表 互換</h3>
-<div class="slideContent" >
-<p>也可使用tidyr package做到一樣的功能
-<strong>gather()</strong>、<strong>spread()</strong></p>
-
-<ul>
-<li><a href="http://tidyr.tidyverse.org/">官網</a></li>
-<li><a href="https://github.com/tidyverse/tidyr">GitHub</a></li>
 </ul>
 
 </div>
