@@ -87,7 +87,7 @@ grep("電子",DCardCGU_posts$author)
 
 ### 問題
 
-#### 請試著爬PTT科技工作版https://www.ptt.cc/bbs/Tech\_Job/index.html，一次爬十頁的文章標題後，請試著找出標題中包含”面試”字串的位置，並試著將包含”面試”字串的標題單獨選出來
+#### 請試著爬PTT科技工作版https://www.ptt.cc/bbs/Tech\_Job/index.html ，一次爬十頁的文章標題後，請試著找出標題中包含”面試”字串的位置，並試著將包含”面試”字串的標題單獨選出來
 
 \*\* 提示: 上禮拜的詳解、標題存成向量就好、`grep()`或是`grepl()`、`[ ]`\*\*
 
@@ -182,7 +182,7 @@ length(grep("鴻海",PPT_Job_title_total))
 
     ## [1] 9
 
-#### 解法一
+#### 解法二
 
 1.  使用`grepl()`，可判斷資料是否符合字串，傳回值為`TRUE/FALSE`
 2.  由於`TRUE=1、FALSE=0`，可使用`sum()`找出選取的資料長度
@@ -252,7 +252,7 @@ table(ParkingData$result$record$areaName)
 
 #### 在桃園市政府資料開放平台中，找到路外停車資訊資料http://data.tycg.gov.tw/api/v1/rest/datastore/0daad6e6-0632-44f5-bd25-5e1de1e9146f?format=json ，請試著取出計費方式說明(payguide)的第6-7個字元，並存在新的欄位Price中。備註: 沒按照格式打的計費方式，取出的價錢會很怪，有興趣的同學可以試著想該怎麼處理所有的價錢資料。
 
-\*\* 提示: fromJSON()、$Price&lt;-、substr() \*\*
+**提示: fromJSON()、$Price&lt;-、substr()**
 
 ### 解答
 
