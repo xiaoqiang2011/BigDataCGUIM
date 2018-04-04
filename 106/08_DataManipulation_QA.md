@@ -87,7 +87,7 @@ grep("電子",DCardCGU_posts$author)
 
 ### 問題
 
-#### 請試著爬PTT科技工作版https://www.ptt.cc/bbs/Tech\_Job/index.html ，一次爬十頁的文章標題後，請試著找出標題中包含”面試”字串的位置，並試著將包含”面試”字串的標題單獨選出來
+#### 請試著爬PTT科技工作版https://www.ptt.cc/bbs/Tech_Job/index.html ，一次爬十頁的文章標題後，請試著找出標題中包含”面試”字串的位置，並試著將包含”面試”字串的標題單獨選出來
 
 **提示: 上禮拜的詳解、標題存成向量就好、`grep()`或是`grepl()`、`[ ]`**
 
