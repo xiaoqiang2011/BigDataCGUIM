@@ -481,7 +481,7 @@ totalPage[grepl("名",totalPage$message),]
 
 #### 呈上題，篩選出按讚數大於100的貼文相關資料，請問全部貼文數是多少?按讚數大於100的貼文數是多少?貼文按讚數大於100的比例是?
 
-**Rfacebook、getPage()、$、子集、nrow()**
+**`Rfacebook`、`getPage()`、`$`、子集、`nrow()`**
 
 ### 解答
 
@@ -511,7 +511,7 @@ nrow(totalPage[totalPage$likes_count>100,])/nrow(totalPage)
 
 #### 在桃園市政府資料開放平台中，找到路外停車資訊資料(每分鐘更新) <http://data.tycg.gov.tw/api/v1/rest/datastore/0daad6e6-0632-44f5-bd25-5e1de1e9146f?format=json> ，試著將資料使用API的方式讀入R，並找到存放資料的位置，請將資料依照總停車位(totalSpace)由多至少排序。
 
-**提示: fromJSON()、$、order() 、子集、as.numeric()**
+**提示: `fromJSON()`、`$`、`order()` 、子集、`as.numeric()`**
 
 ### 解答
 
@@ -523,7 +523,7 @@ nrow(totalPage[totalPage$likes_count>100,])/nrow(totalPage)
 
 #### 下載以下兩個檔案，並載入R，106各村里教育程度資料http://data.moi.gov.tw/MoiOD/System/DownloadFile.aspx?DATA=7DD5CC42-4EFA-4AFD-9004-AF576CB2B33710612 各村（里）戶籍人口統計月報表http://data.moi.gov.tw/MoiOD/System/DownloadFie.aspx?DATA=46D0FA91-0159-47B9-BA49-D158F5FD4443 依照區域別與村里名稱，將兩張表格結合，只留下有對應到的資料，請將資料依照106年12月的出生率(出生數/總人口數)由大到小排序。
 
-**提示: Inner_join()、order() 、新增出生率欄位**
+**提示: `Inner_join()`、`order()` 、新增出生率欄位**
 
 ### 解答
 
