@@ -61,6 +61,7 @@ DCardCGU_posts
     ## 11                 爐石傳說預購              長庚大學     0
 
 </hr>
+
 ### 問題
 
 #### 呈上題，選出作者欄位中，包含"電子"的資料位置
@@ -142,6 +143,7 @@ PPT_Job_title_total[grepl("面試",PPT_Job_title_total)]
     ## [13] "[請益] 住豪宅的話面試的地址資料該填嗎？"
 
 </hr>
+
 ### 問題
 
 #### 呈上題，請試著將”海邊”字串取代為”鴻海”、”滷肉”取代為”聯詠”，取代完畢後，請問”鴻海”出現在幾個標題中?
@@ -183,6 +185,7 @@ sum(grepl("鴻海",PPT_Job_title_total))
     ## [1] 11
 
 </hr>
+
 ### 問題
 
 #### 在桃園市政府資料開放平台中，找到路外停車資訊資料(每分鐘更新) <http://data.tycg.gov.tw/api/v1/rest/datastore/0daad6e6-0632-44f5-bd25-5e1de1e9146f?format=json> ，試著將資料使用API的方式讀入R，並找到存放資料的位置，請問，在資料中，各地區(`areaname`)有幾個停車場?
@@ -236,6 +239,7 @@ table(ParkingData$result$record$areaName)
     ##      7      4     18      8     14      2     12      2      7      5
 
 </hr>
+
 ### 問題
 
 #### 在桃園市政府資料開放平台中，找到路外停車資訊資料http://data.tycg.gov.tw/api/v1/rest/datastore/0daad6e6-0632-44f5-bd25-5e1de1e9146f?format=json ，請試著取出計費方式說明(payguide)的第6-7個字元，並存在新的欄位Price中。備註: 沒按照格式打的計費方式，取出的價錢會很怪，有興趣的同學可以試著想該怎麼處理所有的價錢資料。
@@ -291,6 +295,7 @@ str(ParkingData)
     ##   .. ..$ Price       : chr [1:79] "30" "30" "30" "20" ...
 
 </hr>
+
 ### 問題
 
 #### 請試著用Rfacebook套件，取出長庚大學 @cgu.edu.tw 粉絲專頁上去年至今 (2017/01/01到今天) 的所有貼文，並篩選出貼文文字中有出現”名”的貼文相關資料。
@@ -376,8 +381,9 @@ for(i in 1:(length(DateVectorStr)-1)){
     ## No public posts were found : cgu.edu.tw
 
     ## 1 posts 1 posts 6 posts 2 posts
+    
 
-\*\* 篩選貼文文字以`totalPage`進行子集`[]`篩選，`[]`逗號前篩選`row`、逗號後篩選`column` \*\*
+**篩選貼文文字以`totalPage`進行子集`[]`篩選，`[]`逗號前篩選`row`、逗號後篩選`column`**
 
 ``` r
 #篩選貼文文字中有"名"的貼文
@@ -470,15 +476,16 @@ totalPage[grepl("名",totalPage$message),]
     ## 56          67              0            5
 
 </hr>
+
 ### 問題
 
 #### 呈上題，篩選出按讚數大於100的貼文相關資料，請問全部貼文數是多少?按讚數大於100的貼文數是多少?貼文按讚數大於100的比例是?
 
-\*\* Rfacebook、getPage()、$、子集、nrow() \*\*
+**Rfacebook、getPage()、$、子集、nrow() **
 
 ### 解答
 
-\*\* `nrow`篩選二維資料 \*\*
+**`nrow`篩選二維資料 **
 
 ``` r
 nrow(totalPage)
@@ -499,22 +506,24 @@ nrow(totalPage[totalPage$likes_count>100,])/nrow(totalPage)
     ## [1] 0.15
 
 </hr>
+
 ### 問題
 
 #### 在桃園市政府資料開放平台中，找到路外停車資訊資料(每分鐘更新) <http://data.tycg.gov.tw/api/v1/rest/datastore/0daad6e6-0632-44f5-bd25-5e1de1e9146f?format=json> ，試著將資料使用API的方式讀入R，並找到存放資料的位置，請將資料依照總停車位(totalSpace)由多至少排序。
 
-\*\* 提示: fromJSON()、$、order() 、子集、as.numeric() \*\*
+**提示: fromJSON()、$、order() 、子集、as.numeric()**
 
 ### 解答
 
-\*\* `nrow`看資料列數 \*\*
+**`nrow`看資料列數**
 
 </hr>
+
 ### 問題
 
 #### 下載以下兩個檔案，並載入R，106各村里教育程度資料http://data.moi.gov.tw/MoiOD/System/DownloadFile.aspx?DATA=7DD5CC42-4EFA-4AFD-9004-AF576CB2B33710612各村（里）戶籍人口統計月報表http://data.moi.gov.tw/MoiOD/System/DownloadFie.aspx?DATA=46D0FA91-0159-47B9-BA49-D158F5FD4443依照區域別與村里名稱，將兩張表格結合，只留下有對應到的資料，請將資料依照106年12月的出生率(出生數/總人口數)由大到小排序。
 
-\*\* 提示: Inner\_join()、order() 、新增出生率欄位 \*\*
+**提示: Inner\_join()、order() 、新增出生率欄位 **
 
 ### 解答
 
