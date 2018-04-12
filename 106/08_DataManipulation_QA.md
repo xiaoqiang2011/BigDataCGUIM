@@ -481,11 +481,11 @@ totalPage[grepl("名",totalPage$message),]
 
 #### 呈上題，篩選出按讚數大於100的貼文相關資料，請問全部貼文數是多少?按讚數大於100的貼文數是多少?貼文按讚數大於100的比例是?
 
-**Rfacebook、getPage()、$、子集、nrow() **
+**Rfacebook、getPage()、$、子集、nrow()**
 
 ### 解答
 
-**`nrow`篩選二維資料 **
+**`nrow`篩選二維資料**
 
 ``` r
 nrow(totalPage)
@@ -521,9 +521,9 @@ nrow(totalPage[totalPage$likes_count>100,])/nrow(totalPage)
 
 ### 問題
 
-#### 下載以下兩個檔案，並載入R，106各村里教育程度資料http://data.moi.gov.tw/MoiOD/System/DownloadFile.aspx?DATA=7DD5CC42-4EFA-4AFD-9004-AF576CB2B33710612各村（里）戶籍人口統計月報表http://data.moi.gov.tw/MoiOD/System/DownloadFie.aspx?DATA=46D0FA91-0159-47B9-BA49-D158F5FD4443依照區域別與村里名稱，將兩張表格結合，只留下有對應到的資料，請將資料依照106年12月的出生率(出生數/總人口數)由大到小排序。
+#### 下載以下兩個檔案，並載入R，106各村里教育程度資料http://data.moi.gov.tw/MoiOD/System/DownloadFile.aspx?DATA=7DD5CC42-4EFA-4AFD-9004-AF576CB2B33710612 各村（里）戶籍人口統計月報表http://data.moi.gov.tw/MoiOD/System/DownloadFie.aspx?DATA=46D0FA91-0159-47B9-BA49-D158F5FD4443 依照區域別與村里名稱，將兩張表格結合，只留下有對應到的資料，請將資料依照106年12月的出生率(出生數/總人口數)由大到小排序。
 
-**提示: Inner\_join()、order() 、新增出生率欄位 **
+**提示: Inner_join()、order() 、新增出生率欄位**
 
 ### 解答
 
@@ -531,60 +531,19 @@ nrow(totalPage[totalPage$likes_count>100,])/nrow(totalPage)
 library(readr)
 ```
 
-    ## 
-    ## Attaching package: 'readr'
-
-    ## The following object is masked from 'package:rvest':
-    ## 
-    ##     guess_encoding
 
 ``` r
 library(dplyr)
 ```
 
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
 ``` r
 education_Level<-read_csv("http://data.moi.gov.tw/MoiOD/System/DownloadFile.aspx?DATA=7DD5CC42-4EFA-4AFD-9004-AF576CB2B337",skip = 1)
 ```
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   .default = col_integer(),
-    ##   區域別代碼 = col_double(),
-    ##   區域別 = col_character(),
-    ##   村里名稱 = col_character()
-    ## )
-
-    ## See spec(...) for full column specifications.
 
 ``` r
 demographic_Data<-read_csv("http://data.moi.gov.tw/MoiOD/System/DownloadFile.aspx?DATA=46D0FA91-0159-47B9-BA49-D158F5FD4443",skip = 1)
 ```
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   統計年月 = col_integer(),
-    ##   區域別 = col_character(),
-    ##   村里 = col_character(),
-    ##   出生數 = col_integer(),
-    ##   `出生數-男` = col_integer(),
-    ##   `出生數-女` = col_integer(),
-    ##   死亡數 = col_integer(),
-    ##   `死亡數-男` = col_integer(),
-    ##   `死亡數-女` = col_integer(),
-    ##   結婚對數 = col_integer(),
-    ##   離婚對數 = col_integer()
-    ## )
 
 ``` r
 #View(opendata10612M010)
