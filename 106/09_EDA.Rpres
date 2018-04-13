@@ -1,7 +1,6 @@
 探索式資料分析
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/04/17、05/01
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -17,8 +16,9 @@ type:sub-section
 
 - 什麼是探索式資料分析
 - 量化的分析方式
-- data.table
 - dplyr
+- data.table
+
 
 什麼是探索式資料分析
 ====================================
@@ -174,281 +174,6 @@ incremental:true
 - 若只用基本的內建函數計算，相當耗時
     - `data.table`和`dplyr` packages可以快速完成**分組分析**!
 
-data.table
-====================================
-type:sub-section 
-
-- 讀大型資料快
-    - 效能比較可參考[Benchmarks : Grouping](https://github.com/Rdatatable/data.table/wiki/Benchmarks-%3A-Grouping)
-- 分組計算方便
-
-data.table
-====================================
-- data.frame資料框型別的延伸
-- 比使用資料框快上數倍
-- 必須安裝並載入data.table package
-```{r eval=F}
-install.packages("data.table")#第一次使用需安裝
-```
-```{r message=F}
-library(data.table) ##載入
-```
-
-讀取資料的函數為`fread()`
-```{r eval=F}
-fread("檔案名稱")
-```
-
-data.frame轉data.table
-====================================
-- 使用`data.table()`函數將data.frame轉為data.table格式
-- data.table的資料型態為`data.table`以及`data.frame`
-    - data.table是data.frame資料框型別的延伸
-
-```{r message=F,warnings=F}
-library(SportsAnalytics)
-##讀取15-16球季的資料
-NBA1516<-fetch_NBAPlayerStatistics("15-16") 
-
-library(data.table)
-##轉換成data.table
-NBA1516DT<-data.table(NBA1516) 
-class(NBA1516DT)
-```
-
-SportsAnalytics提供的NBA資料
-====================================
-```{r message=F,warnings=F}
-str(NBA1516DT)
-```
-
-data.table 語法設計
-====================================
-`data.table`資料型態的特殊結構和語法設計，便於後續資料分析處理
-
-**DT[**`i`**,**`j`**,**`by`**=]**
-
-- `i` 觀察值 (Row) 篩選邏輯
-- `j` 所需欄位 (Column)
-- `by` 分組依據
-
-data.table 注意事項
-====================================
-
-- 各參數間需要以逗號 `,` 區隔
-- 但若只需使用前方參數，後方的 **,** 可省略
-    - 如只需使用 **i** 和 **j** 兩個參數，可以寫成 **DT[ i , j ]**。
-- 若只需使用後方參數，前方的 **,** 不可省略
-    - 如只需使用 **j** 一個參數，可以寫成 **DT[ , j ]**。
-
-
-i 觀察值篩選邏輯
-====================================
-- 篩選**觀察值**，也就是針對列(Row)做子集
-- 透過**布林值**的向量或是**元素索引(index)**向量指定篩選條件
-
-擷取球員**姓名包含James字串**的資料
-```{r eval=F}
-NBA1516DT[grepl('James',Name)]
-```
-```{r echo=F}
-knitr::kable(NBA1516DT[grepl('James',Name)]) 
-```
-
-複習：字串搜尋函數grepl
-====================================
-grepl(**欲搜尋的字串模板**,**字串向量**)，回傳T or F向量
-```{r}
-grepl('James',NBA1516DT$Name)
-```
-
-
-i 觀察值篩選邏輯
-====================================
-篩選所有**中鋒**，且**姓名包含"A"字串**的球員資料 (條件用**&**運算子串連)
-```{r  eval=F}
-NBA1516DT[grepl('A',Name)&Position=="C"]
-```
-```{r echo=F}
-knitr::kable(NBA1516DT[grepl('A',Name)&Position=="C"]) 
-```
-
-i 觀察值篩選邏輯
-====================================
-篩選各隊**出場數超過80場**的球員資料
-```{r eval=F}
-NBA1516DT[GamesPlayed>80]
-```
-```{r echo=F}
-knitr::kable(NBA1516DT[GamesPlayed>80]) 
-```
-
-data.table DT[i] 練習
-====================================
-type:alert
-incremental:true
-
-- 讀入NBA資料
-```{r,eval=F}
-library(SportsAnalytics) #如果沒安裝過，要先安裝
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
-```
-- 轉成data.table
-```{r,eval=F}
-library(data.table) #如果沒安裝過，要先安裝
-NBA1516DT<-data.table(NBA1516)
-```
-- 試著用data.table語法篩選出所有助攻數(Assists)超過100的球員資料
-- 有多少名球員符合條件? (篩選出幾筆觀察值?)
-
-data.table 與 data.frame
-====================================
-type:alert
-
-觀察值的篩選，用法有點像，又有點不像，到底差在哪裡？
-```{r eval=F}
-NBA1516DT[GamesPlayed>80]
-NBA1516[NBA1516$GamesPlayed>80,]
-```
-
-j 欄位選擇運算:決定輸出欄位
-====================================
-- 來決定輸出**欄位**
-- 可以是原始欄位
-- 也可以是**計算後**的欄位
-
-以計算所有球員的**平均出場數**為例：
-```{r}
-##因沒有篩選需求， , 前方留空
-NBA1516DT[,mean(GamesPlayed)]
-```
-
-j 欄位選擇運算:計算多個數值
-====================================
-- 也可以一次計算多個數值
-- 同時計算平均出場數、平均犯規次數以及平均抄截次數
-- 此時第二個欄位`j`需要使用**.()**或是**list()**包起來
-```{r}
-NBA1516DT[,.(mean(GamesPlayed),
-             mean(PersonalFouls),mean(Steals))]
-```
-
-j 欄位選擇運算:計算多個數值
-====================================
-- 也可以一次計算多個數值
-- 同時計算平均出場數、平均犯規次數以及平均抄截次數
-- 此時第二個欄位`j`需要使用**.()**或是**list()**包起來
-```{r}
-NBA1516DT[,list(mean(GamesPlayed),
-                mean(PersonalFouls),mean(Steals))]
-```
-
-j 欄位選擇運算:計算多個數值
-====================================
-- 自動被加上欄位名稱V1, V2, V3，可能會造成數據判別錯誤
-- 在新欄位定義的前方加上`欄位名稱=`，替欄位取名字
-```{r}
-NBA1516DT[,.(GPlayedMean=mean(GamesPlayed),
-             PFoulsMean=mean(PersonalFouls),
-             StealsMean=mean(Steals))]
-```
-
-j 欄位選擇運算:計算多個數值
-====================================
-不是只能算**平均值**，也可帶入其他函式做各式各樣的運算
-```{r}
-NBA1516DT[,
-    .(GPlayedMax=max(GamesPlayed), #最大值
-      TMadeMin=min(ThreesMade), #最小值
-      FGoalsMadeSD=sd(FieldGoalsMade))] #標準差
-```
-
-DT[i,j]
-====================================
-- 配合第一個參數一起使用
-- 計算出所有**出場數大於70**的球員，**平均投進幾顆三分球與兩分球**
-```{r}
-NBA1516DT[GamesPlayed>70,
-          .(TMadeMean=mean(ThreesMade), 
-            FGMadeMean=mean(FieldGoalsMade))]
-```
-
-data.table DT[i,j] 練習
-====================================
-type:alert
-incremental:true
-
-- 讀入NBA資料，轉成data.table
-```{r,eval=F}
-library(SportsAnalytics)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
-library(data.table)
-NBA1516DT<-data.table(NBA1516)
-```
-- 篩選出所有**助攻數(Assists)超過100**的球員資料
-- 計算這些球員的**平均抄截數Steals**與**平均籃板數TotalRebounds**
-
-
-by 分組依據
-====================================
-- 分組計算的依據
-- 計算**NBA各隊**的**球員數**與**平均助攻數**
-- 球員個數的計算在`data.table`內可使用`.N`指令
-- 平均使用`mean()`函數
-- `by=`後方加上分組依據(各隊Team)
-
-```{r eval=F}
-NBA1516DT[,.(.N,AssistsMean=mean(Assists)),
-          by=Team]
-```
-```{r echo=F}
-knitr::kable(head(NBA1516DT[,.(.N,AssistsMean=mean(Assists)),
-          by=Team],3)) 
-```
-
-DT[i,j,by]
-====================================
-- 三個參數結合使用
-- **NBA各隊**的**中鋒**，**球員數**和他們的**平均三分球出手次數**
-
-```{r eval=F}
-NBA1516DT[Position=="C",
-          .(.N,
-            TAttMean=mean(ThreesAttempted)),
-          by=Team]
-```
-```{r echo=F}
-knitr::kable(head(NBA1516DT[Position=="C",
-          .(.N,TAttMean=mean(ThreesAttempted)),
-          by=Team],5)) 
-```
-
-data.table 綜合練習
-====================================
-type:alert
-incremental:true
-
-- 讀入NBA資料
-```{r,eval=F}
-library(SportsAnalytics)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
-```
-- 轉成data.table
-```{r,eval=F}
-library(data.table)
-NBA1516DT<-data.table(NBA1516)
-```
-- 篩選出所有助攻數(Assists)超過100的球員資料
-- 計算這些球員的平均抄截數Steals與籃板數TotalRebounds
-- 以球隊做分組Team
-
-
-data.table 參考文件與資源
-====================================
-- [官網](https://github.com/Rdatatable/data.table/wiki)
-- 指令全集[The data.table R package cheat sheet](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf)
-- [A data.table R tutorial by DataCamp](https://www.datacamp.com/community/tutorials/data-table-r-tutorial#gs.vzMYa_k)
-- DataCamp [互動式教學課程](https://www.datacamp.com/courses/data-table-data-manipulation-r-tutorial)
 
 
 dplyr
@@ -804,5 +529,280 @@ dplyr 參考文件與資源
 - DataCamp互動式教學課程 [Data Manipulation in R with dplyr](https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial)
 
 
+data.table
+====================================
+type:sub-section 
+
+- 讀大型資料快
+    - 效能比較可參考[Benchmarks : Grouping](https://github.com/Rdatatable/data.table/wiki/Benchmarks-%3A-Grouping)
+- 分組計算方便
+
+data.table
+====================================
+- data.frame資料框型別的延伸
+- 比使用資料框快上數倍
+- 必須安裝並載入data.table package
+```{r eval=F}
+install.packages("data.table")#第一次使用需安裝
+```
+```{r message=F}
+library(data.table) ##載入
+```
+
+讀取資料的函數為`fread()`
+```{r eval=F}
+fread("檔案名稱")
+```
+
+data.frame轉data.table
+====================================
+- 使用`data.table()`函數將data.frame轉為data.table格式
+- data.table的資料型態為`data.table`以及`data.frame`
+    - data.table是data.frame資料框型別的延伸
+
+```{r message=F,warnings=F}
+library(SportsAnalytics)
+##讀取15-16球季的資料
+NBA1516<-fetch_NBAPlayerStatistics("15-16") 
+
+library(data.table)
+##轉換成data.table
+NBA1516DT<-data.table(NBA1516) 
+class(NBA1516DT)
+```
+
+SportsAnalytics提供的NBA資料
+====================================
+```{r message=F,warnings=F}
+str(NBA1516DT)
+```
+
+data.table 語法設計
+====================================
+`data.table`資料型態的特殊結構和語法設計，便於後續資料分析處理
+
+**DT[**`i`**,**`j`**,**`by`**=]**
+
+- `i` 觀察值 (Row) 篩選邏輯
+- `j` 所需欄位 (Column)
+- `by` 分組依據
+
+data.table 注意事項
+====================================
+
+- 各參數間需要以逗號 `,` 區隔
+- 但若只需使用前方參數，後方的 **,** 可省略
+    - 如只需使用 **i** 和 **j** 兩個參數，可以寫成 **DT[ i , j ]**。
+- 若只需使用後方參數，前方的 **,** 不可省略
+    - 如只需使用 **j** 一個參數，可以寫成 **DT[ , j ]**。
+
+
+i 觀察值篩選邏輯
+====================================
+- 篩選**觀察值**，也就是針對列(Row)做子集
+- 透過**布林值**的向量或是**元素索引(index)**向量指定篩選條件
+
+擷取球員**姓名包含James字串**的資料
+```{r eval=F}
+NBA1516DT[grepl('James',Name)]
+```
+```{r echo=F}
+knitr::kable(NBA1516DT[grepl('James',Name)]) 
+```
+
+複習：字串搜尋函數grepl
+====================================
+grepl(**欲搜尋的字串模板**,**字串向量**)，回傳T or F向量
+```{r}
+grepl('James',NBA1516DT$Name)
+```
+
+
+i 觀察值篩選邏輯
+====================================
+篩選所有**中鋒**，且**姓名包含"A"字串**的球員資料 (條件用**&**運算子串連)
+```{r  eval=F}
+NBA1516DT[grepl('A',Name)&Position=="C"]
+```
+```{r echo=F}
+knitr::kable(NBA1516DT[grepl('A',Name)&Position=="C"]) 
+```
+
+i 觀察值篩選邏輯
+====================================
+篩選各隊**出場數超過80場**的球員資料
+```{r eval=F}
+NBA1516DT[GamesPlayed>80]
+```
+```{r echo=F}
+knitr::kable(NBA1516DT[GamesPlayed>80]) 
+```
+
+data.table DT[i] 練習
+====================================
+type:alert
+incremental:true
+
+- 讀入NBA資料
+```{r,eval=F}
+library(SportsAnalytics) #如果沒安裝過，要先安裝
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+```
+- 轉成data.table
+```{r,eval=F}
+library(data.table) #如果沒安裝過，要先安裝
+NBA1516DT<-data.table(NBA1516)
+```
+- 試著用data.table語法篩選出所有助攻數(Assists)超過100的球員資料
+- 有多少名球員符合條件? (篩選出幾筆觀察值?)
+
+data.table 與 data.frame
+====================================
+type:alert
+
+觀察值的篩選，用法有點像，又有點不像，到底差在哪裡？
+```{r eval=F}
+NBA1516DT[GamesPlayed>80]
+NBA1516[NBA1516$GamesPlayed>80,]
+```
+
+j 欄位選擇運算:決定輸出欄位
+====================================
+- 來決定輸出**欄位**
+- 可以是原始欄位
+- 也可以是**計算後**的欄位
+
+以計算所有球員的**平均出場數**為例：
+```{r}
+##因沒有篩選需求， , 前方留空
+NBA1516DT[,mean(GamesPlayed)]
+```
+
+j 欄位選擇運算:計算多個數值
+====================================
+- 也可以一次計算多個數值
+- 同時計算平均出場數、平均犯規次數以及平均抄截次數
+- 此時第二個欄位`j`需要使用**.()**或是**list()**包起來
+```{r}
+NBA1516DT[,.(mean(GamesPlayed),
+             mean(PersonalFouls),mean(Steals))]
+```
+
+j 欄位選擇運算:計算多個數值
+====================================
+- 也可以一次計算多個數值
+- 同時計算平均出場數、平均犯規次數以及平均抄截次數
+- 此時第二個欄位`j`需要使用**.()**或是**list()**包起來
+```{r}
+NBA1516DT[,list(mean(GamesPlayed),
+                mean(PersonalFouls),mean(Steals))]
+```
+
+j 欄位選擇運算:計算多個數值
+====================================
+- 自動被加上欄位名稱V1, V2, V3，可能會造成數據判別錯誤
+- 在新欄位定義的前方加上`欄位名稱=`，替欄位取名字
+```{r}
+NBA1516DT[,.(GPlayedMean=mean(GamesPlayed),
+             PFoulsMean=mean(PersonalFouls),
+             StealsMean=mean(Steals))]
+```
+
+j 欄位選擇運算:計算多個數值
+====================================
+不是只能算**平均值**，也可帶入其他函式做各式各樣的運算
+```{r}
+NBA1516DT[,
+    .(GPlayedMax=max(GamesPlayed), #最大值
+      TMadeMin=min(ThreesMade), #最小值
+      FGoalsMadeSD=sd(FieldGoalsMade))] #標準差
+```
+
+DT[i,j]
+====================================
+- 配合第一個參數一起使用
+- 計算出所有**出場數大於70**的球員，**平均投進幾顆三分球與兩分球**
+```{r}
+NBA1516DT[GamesPlayed>70,
+          .(TMadeMean=mean(ThreesMade), 
+            FGMadeMean=mean(FieldGoalsMade))]
+```
+
+data.table DT[i,j] 練習
+====================================
+type:alert
+incremental:true
+
+- 讀入NBA資料，轉成data.table
+```{r,eval=F}
+library(SportsAnalytics)
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+library(data.table)
+NBA1516DT<-data.table(NBA1516)
+```
+- 篩選出所有**助攻數(Assists)超過100**的球員資料
+- 計算這些球員的**平均抄截數Steals**與**平均籃板數TotalRebounds**
+
+
+by 分組依據
+====================================
+- 分組計算的依據
+- 計算**NBA各隊**的**球員數**與**平均助攻數**
+- 球員個數的計算在`data.table`內可使用`.N`指令
+- 平均使用`mean()`函數
+- `by=`後方加上分組依據(各隊Team)
+
+```{r eval=F}
+NBA1516DT[,.(.N,AssistsMean=mean(Assists)),
+          by=Team]
+```
+```{r echo=F}
+knitr::kable(head(NBA1516DT[,.(.N,AssistsMean=mean(Assists)),
+          by=Team],3)) 
+```
+
+DT[i,j,by]
+====================================
+- 三個參數結合使用
+- **NBA各隊**的**中鋒**，**球員數**和他們的**平均三分球出手次數**
+
+```{r eval=F}
+NBA1516DT[Position=="C",
+          .(.N,
+            TAttMean=mean(ThreesAttempted)),
+          by=Team]
+```
+```{r echo=F}
+knitr::kable(head(NBA1516DT[Position=="C",
+          .(.N,TAttMean=mean(ThreesAttempted)),
+          by=Team],5)) 
+```
+
+data.table 綜合練習
+====================================
+type:alert
+incremental:true
+
+- 讀入NBA資料
+```{r,eval=F}
+library(SportsAnalytics)
+NBA1516<-fetch_NBAPlayerStatistics("15-16")
+```
+- 轉成data.table
+```{r,eval=F}
+library(data.table)
+NBA1516DT<-data.table(NBA1516)
+```
+- 篩選出所有助攻數(Assists)超過100的球員資料
+- 計算這些球員的平均抄截數Steals與籃板數TotalRebounds
+- 以球隊做分組Team
+
+
+data.table 參考文件與資源
+====================================
+- [官網](https://github.com/Rdatatable/data.table/wiki)
+- 指令全集[The data.table R package cheat sheet](https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf)
+- [A data.table R tutorial by DataCamp](https://www.datacamp.com/community/tutorials/data-table-r-tutorial#gs.vzMYa_k)
+- DataCamp [互動式教學課程](https://www.datacamp.com/courses/data-table-data-manipulation-r-tutorial)
 
 

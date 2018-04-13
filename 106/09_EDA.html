@@ -784,7 +784,7 @@ hljs.initHighlightingOnLoad();
   <div class="slides">
 
 <section data-state="section" data-transition="linear" data-transition-speed="default">
-<h1>探索式資料分析</h1><p>曾意儒 Yi-Ju Tseng<br/>2017&#x2F;04&#x2F;17、05&#x2F;01</p>
+<h1>探索式資料分析</h1><p>曾意儒 Yi-Ju Tseng</p>
 
 <div class="slideContent" >
 
@@ -805,8 +805,8 @@ hljs.initHighlightingOnLoad();
 <ul>
 <li>什麼是探索式資料分析</li>
 <li>量化的分析方式</li>
-<li>data.table</li>
 <li>dplyr</li>
+<li>data.table</li>
 </ul>
 
 </div>
@@ -1294,6 +1294,1542 @@ prop.table(mtTable)
 <ul>
 <li><code>data.table</code>和<code>dplyr</code> packages可以快速完成<strong>分組分析</strong>!</li>
 </ul></li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="sub-section" data-transition="linear" data-transition-speed="default">
+<h2>dplyr</h2>
+<div class="slideContent" >
+<ul>
+<li><a href="http://hadley.nz/">Hadley Wickham</a>開發</li>
+<li>使用以下函數分析整理資料：
+
+<ul>
+<li><code>select()</code>: 選要分析的欄位，欄位子集 (Column)</li>
+<li><code>filter()</code>: 選要分析的觀察值，觀察值子集 (Row)</li>
+<li><code>mutate()</code>: 增加新欄位</li>
+<li><code>summarise()</code>: 計算統計值</li>
+</ul></li>
+</ul>
+
+</div>
+
+</section>
+<section data-state="sub-section" data-transition="linear" data-transition-speed="default">
+<h2>dplyr</h2>
+<div class="slideContent" >
+<ul>
+<li>使用以下函數分析整理資料：
+
+<ul>
+<li><code>group_by()</code>: 分組依據</li>
+<li><code>arrange()</code>: 觀察值排序</li>
+<li><code>rename()</code>: 欄位重新命名</li>
+<li><code>%&gt;%</code>: the “pipe” operator 連結上數函式，將所有函式計算串在一起執行</li>
+</ul></li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>dplyr</h3>
+<div class="slideContent" >
+<p>如要使用必須安裝並載入<code>dplyr</code> package</p>
+
+<pre><code class="r">install.packages(&quot;dplyr&quot;) ##安裝
+</code></pre>
+
+<pre><code class="r">library(dplyr) ##載入
+</code></pre>
+
+<p>以上述NBA資料為例，首先先讀入資料</p>
+
+<pre><code class="r">library(SportsAnalytics)
+NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>欄位(Column)子集 select() </h3>
+<div class="slideContent" >
+<ul>
+<li>針對欄位 (Column)做子集</li>
+<li><code>select(資料名稱,欄位條件1,欄位條件2,...)</code></li>
+<li>條件1與條件2是使用<strong>或</strong>的連結概念</li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>欄位(Column)子集 select() </h3>
+<div class="slideContent" >
+<ul>
+<li><code>dplyr</code>提供幾個方便篩選名稱的函式：
+
+<ul>
+<li><code>starts_with()</code></li>
+<li><code>ends_with()</code></li>
+<li><code>contains()</code></li>
+<li><code>matches()</code>: matches a regular expression</li>
+<li><code>num_range()</code>: num_range(&ldquo;x&rdquo;, 8:11).</li>
+<li><code>one_of()</code>: variables in character vector</li>
+<li><code>everything()</code></li>
+</ul></li>
+</ul>
+
+<p>詳細說明可在R執行視窗中輸入<code>?select_helpers</code>查看。</p>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>欄位(Column)子集 select() </h3>
+<div class="slideContent" >
+<p>篩選欄位名稱為<code>Name</code>、開頭是<code>Threes</code>或是開頭是<code>FieldGoals</code>的欄位</p>
+
+<pre><code class="r">##等於NBA1516[,c(&quot;Name&quot;,&quot;ThreesMade&quot;,&quot;ThreesAttempted&quot;,
+##   &quot;FieldGoalsMade&quot;,&quot;FieldGoalsAttempted&quot;)]
+select1&lt;-
+    select(NBA1516,Name,starts_with(&quot;Threes&quot;),
+            starts_with(&quot;FieldGoals&quot;))
+head(select1)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">Name</th>
+<th align="right">ThreesMade</th>
+<th align="right">ThreesAttempted</th>
+<th align="right">FieldGoalsMade</th>
+<th align="right">FieldGoalsAttempted</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">Quincy Acy</td>
+<td align="right">19</td>
+<td align="right">49</td>
+<td align="right">119</td>
+<td align="right">214</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>欄位(Column)子集 select() </h3>
+<div class="slideContent" >
+<p>若想篩選欄位<code>Name</code>到欄位<code>FieldGoalsMade</code>間的所有欄位，可用<code>:</code>串連欄位名稱</p>
+
+<pre><code class="r">##等同於NBA1516[,2:7]
+select2&lt;-select(NBA1516,Name:FieldGoalsMade)
+head(select2,3)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Team</th>
+<th align="left">Position</th>
+<th align="right">GamesPlayed</th>
+<th align="right">TotalMinutesPlayed</th>
+<th align="right">FieldGoalsMade</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">Quincy Acy</td>
+<td align="left">SAC</td>
+<td align="left">SF</td>
+<td align="right">59</td>
+<td align="right">877</td>
+<td align="right">119</td>
+</tr>
+<tr>
+<td align="left">Jordan Adams</td>
+<td align="left">MEM</td>
+<td align="left">SG</td>
+<td align="right">2</td>
+<td align="right">15</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td align="left">Steven Adams</td>
+<td align="left">OKL</td>
+<td align="left">C</td>
+<td align="right">80</td>
+<td align="right">2019</td>
+<td align="right">261</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>欄位(Column)子集 select() </h3>
+<div class="slideContent" >
+<p>若想篩選欄位<code>Name</code>到欄位<code>FieldGoalsMade</code>間的所有欄位，但不想要<code>GamesPlayed</code>欄位</p>
+
+<ul>
+<li>用<code>:</code>串連欄位名稱</li>
+<li>用<code>-</code>去除不要的欄位</li>
+</ul>
+
+<pre><code class="r">##等同於NBA1516[,c(2:4,612)]
+select3&lt;-
+    select(NBA1516,Name:FieldGoalsMade,-GamesPlayed)
+head(select3,3)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">Name</th>
+<th align="left">Team</th>
+<th align="left">Position</th>
+<th align="right">TotalMinutesPlayed</th>
+<th align="right">FieldGoalsMade</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">Quincy Acy</td>
+<td align="left">SAC</td>
+<td align="left">SF</td>
+<td align="right">877</td>
+<td align="right">119</td>
+</tr>
+<tr>
+<td align="left">Jordan Adams</td>
+<td align="left">MEM</td>
+<td align="left">SG</td>
+<td align="right">15</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td align="left">Steven Adams</td>
+<td align="left">OKL</td>
+<td align="left">C</td>
+<td align="right">2019</td>
+<td align="right">261</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>觀察值(Row)子集 filter()</h3>
+<div class="slideContent" >
+<ul>
+<li>是針對列 (Row)做子集</li>
+<li><code>filter(資料名稱,篩選條件1,篩選條件2)</code>篩選條件們是用<strong>且</strong>的邏輯串連</li>
+<li><strong>出場分鐘數超過2850分鐘</strong>的球員資料，可輸入下列指令</li>
+</ul>
+
+<pre><code class="r">##等於NBA1516[NBA1516$TotalMinutesPlayed&gt;2850,]
+filter(NBA1516,TotalMinutesPlayed&gt;2850)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">League</th>
+<th align="left">Name</th>
+<th align="left">Team</th>
+<th align="left">Position</th>
+<th align="right">GamesPlayed</th>
+<th align="right">TotalMinutesPlayed</th>
+<th align="right">FieldGoalsMade</th>
+<th align="right">FieldGoalsAttempted</th>
+<th align="right">ThreesMade</th>
+<th align="right">ThreesAttempted</th>
+<th align="right">FreeThrowsMade</th>
+<th align="right">FreeThrowsAttempted</th>
+<th align="right">OffensiveRebounds</th>
+<th align="right">TotalRebounds</th>
+<th align="right">Assists</th>
+<th align="right">Steals</th>
+<th align="right">Turnovers</th>
+<th align="right">Blocks</th>
+<th align="right">PersonalFouls</th>
+<th align="right">Disqualifications</th>
+<th align="right">TotalPoints</th>
+<th align="right">Technicals</th>
+<th align="right">Ejections</th>
+<th align="right">FlagrantFouls</th>
+<th align="right">GamesStarted</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Trevor Ariza</td>
+<td align="left">HOU</td>
+<td align="left">SF</td>
+<td align="right">81</td>
+<td align="right">2860</td>
+<td align="right">357</td>
+<td align="right">858</td>
+<td align="right">185</td>
+<td align="right">497</td>
+<td align="right">126</td>
+<td align="right">161</td>
+<td align="right">67</td>
+<td align="right">366</td>
+<td align="right">188</td>
+<td align="right">161</td>
+<td align="right">113</td>
+<td align="right">26</td>
+<td align="right">177</td>
+<td align="right">0</td>
+<td align="right">1025</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">81</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">James Harden</td>
+<td align="left">HOU</td>
+<td align="left">SG</td>
+<td align="right">82</td>
+<td align="right">3121</td>
+<td align="right">710</td>
+<td align="right">1617</td>
+<td align="right">236</td>
+<td align="right">656</td>
+<td align="right">720</td>
+<td align="right">837</td>
+<td align="right">63</td>
+<td align="right">502</td>
+<td align="right">612</td>
+<td align="right">138</td>
+<td align="right">374</td>
+<td align="right">51</td>
+<td align="right">229</td>
+<td align="right">1</td>
+<td align="right">2376</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">82</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Gordon Hayward</td>
+<td align="left">UTA</td>
+<td align="left">SG</td>
+<td align="right">80</td>
+<td align="right">2889</td>
+<td align="right">521</td>
+<td align="right">1202</td>
+<td align="right">143</td>
+<td align="right">410</td>
+<td align="right">393</td>
+<td align="right">477</td>
+<td align="right">61</td>
+<td align="right">397</td>
+<td align="right">296</td>
+<td align="right">95</td>
+<td align="right">202</td>
+<td align="right">27</td>
+<td align="right">183</td>
+<td align="right">0</td>
+<td align="right">1578</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">80</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Kyle Lowry</td>
+<td align="left">TOR</td>
+<td align="left">PG</td>
+<td align="right">77</td>
+<td align="right">2853</td>
+<td align="right">512</td>
+<td align="right">1198</td>
+<td align="right">212</td>
+<td align="right">546</td>
+<td align="right">398</td>
+<td align="right">491</td>
+<td align="right">55</td>
+<td align="right">365</td>
+<td align="right">494</td>
+<td align="right">158</td>
+<td align="right">225</td>
+<td align="right">34</td>
+<td align="right">211</td>
+<td align="right">1</td>
+<td align="right">1634</td>
+<td align="right">9</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">77</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Khris Middleton</td>
+<td align="left">MIL</td>
+<td align="left">SF</td>
+<td align="right">79</td>
+<td align="right">2855</td>
+<td align="right">507</td>
+<td align="right">1144</td>
+<td align="right">143</td>
+<td align="right">362</td>
+<td align="right">277</td>
+<td align="right">312</td>
+<td align="right">45</td>
+<td align="right">301</td>
+<td align="right">331</td>
+<td align="right">131</td>
+<td align="right">180</td>
+<td align="right">19</td>
+<td align="right">204</td>
+<td align="right">1</td>
+<td align="right">1434</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">79</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Marcus Morris</td>
+<td align="left">DET</td>
+<td align="left">SF</td>
+<td align="right">80</td>
+<td align="right">2852</td>
+<td align="right">410</td>
+<td align="right">945</td>
+<td align="right">108</td>
+<td align="right">297</td>
+<td align="right">203</td>
+<td align="right">271</td>
+<td align="right">91</td>
+<td align="right">404</td>
+<td align="right">201</td>
+<td align="right">67</td>
+<td align="right">140</td>
+<td align="right">23</td>
+<td align="right">170</td>
+<td align="right">1</td>
+<td align="right">1131</td>
+<td align="right">11</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">80</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Kemba Walker</td>
+<td align="left">CHA</td>
+<td align="left">PG</td>
+<td align="right">81</td>
+<td align="right">2885</td>
+<td align="right">568</td>
+<td align="right">1332</td>
+<td align="right">182</td>
+<td align="right">490</td>
+<td align="right">371</td>
+<td align="right">438</td>
+<td align="right">56</td>
+<td align="right">358</td>
+<td align="right">421</td>
+<td align="right">127</td>
+<td align="right">171</td>
+<td align="right">39</td>
+<td align="right">111</td>
+<td align="right">0</td>
+<td align="right">1689</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">81</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>觀察值(Row)子集 filter()</h3>
+<div class="slideContent" >
+<p>也可選擇隊伍名稱為&quot;BOS&quot;或&quot;SAN&quot;的球員資料</p>
+
+<pre><code class="r">##等於NBA1516[NBA1516$Team %in% c(&quot;BOS&quot;,&quot;SAN&quot;),]
+filter(NBA1516,Team %in% c(&quot;BOS&quot;,&quot;SAN&quot;))
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">League</th>
+<th align="left">Name</th>
+<th align="left">Team</th>
+<th align="left">Position</th>
+<th align="right">GamesPlayed</th>
+<th align="right">TotalMinutesPlayed</th>
+<th align="right">FieldGoalsMade</th>
+<th align="right">FieldGoalsAttempted</th>
+<th align="right">ThreesMade</th>
+<th align="right">ThreesAttempted</th>
+<th align="right">FreeThrowsMade</th>
+<th align="right">FreeThrowsAttempted</th>
+<th align="right">OffensiveRebounds</th>
+<th align="right">TotalRebounds</th>
+<th align="right">Assists</th>
+<th align="right">Steals</th>
+<th align="right">Turnovers</th>
+<th align="right">Blocks</th>
+<th align="right">PersonalFouls</th>
+<th align="right">Disqualifications</th>
+<th align="right">TotalPoints</th>
+<th align="right">Technicals</th>
+<th align="right">Ejections</th>
+<th align="right">FlagrantFouls</th>
+<th align="right">GamesStarted</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Lamarcu Aldridge</td>
+<td align="left">SAN</td>
+<td align="left">PF</td>
+<td align="right">74</td>
+<td align="right">2260</td>
+<td align="right">536</td>
+<td align="right">1045</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">259</td>
+<td align="right">302</td>
+<td align="right">175</td>
+<td align="right">631</td>
+<td align="right">110</td>
+<td align="right">38</td>
+<td align="right">99</td>
+<td align="right">81</td>
+<td align="right">151</td>
+<td align="right">0</td>
+<td align="right">1331</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">74</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Kyle Anderson</td>
+<td align="left">SAN</td>
+<td align="left">SF</td>
+<td align="right">78</td>
+<td align="right">1247</td>
+<td align="right">138</td>
+<td align="right">296</td>
+<td align="right">12</td>
+<td align="right">37</td>
+<td align="right">62</td>
+<td align="right">83</td>
+<td align="right">25</td>
+<td align="right">245</td>
+<td align="right">123</td>
+<td align="right">60</td>
+<td align="right">59</td>
+<td align="right">29</td>
+<td align="right">97</td>
+<td align="right">0</td>
+<td align="right">350</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">11</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Matt Bonner</td>
+<td align="left">SAN</td>
+<td align="left">C</td>
+<td align="right">30</td>
+<td align="right">210</td>
+<td align="right">29</td>
+<td align="right">58</td>
+<td align="right">15</td>
+<td align="right">35</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">27</td>
+<td align="right">9</td>
+<td align="right">6</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">16</td>
+<td align="right">0</td>
+<td align="right">76</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Avery Bradley</td>
+<td align="left">BOS</td>
+<td align="left">PG</td>
+<td align="right">76</td>
+<td align="right">2536</td>
+<td align="right">456</td>
+<td align="right">1018</td>
+<td align="right">147</td>
+<td align="right">406</td>
+<td align="right">96</td>
+<td align="right">123</td>
+<td align="right">48</td>
+<td align="right">220</td>
+<td align="right">158</td>
+<td align="right">117</td>
+<td align="right">109</td>
+<td align="right">19</td>
+<td align="right">164</td>
+<td align="right">2</td>
+<td align="right">1155</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">72</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Rasual Butler</td>
+<td align="left">SAN</td>
+<td align="left">SF</td>
+<td align="right">46</td>
+<td align="right">432</td>
+<td align="right">49</td>
+<td align="right">105</td>
+<td align="right">15</td>
+<td align="right">49</td>
+<td align="right">11</td>
+<td align="right">16</td>
+<td align="right">3</td>
+<td align="right">56</td>
+<td align="right">24</td>
+<td align="right">13</td>
+<td align="right">8</td>
+<td align="right">23</td>
+<td align="right">11</td>
+<td align="right">0</td>
+<td align="right">124</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Coty Clarke</td>
+<td align="left">BOS</td>
+<td align="left">NA</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>觀察值(Row)子集 filter()</h3>
+<div class="slideContent" >
+<p>在<code>filter()</code>函式中可<strong>直接做變數計算</strong>後再篩選</p>
+
+<pre><code class="r">filter(NBA1516,
+       FieldGoalsMade/FieldGoalsAttempted&gt;0.7)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">League</th>
+<th align="left">Name</th>
+<th align="left">Team</th>
+<th align="left">Position</th>
+<th align="right">GamesPlayed</th>
+<th align="right">TotalMinutesPlayed</th>
+<th align="right">FieldGoalsMade</th>
+<th align="right">FieldGoalsAttempted</th>
+<th align="right">ThreesMade</th>
+<th align="right">ThreesAttempted</th>
+<th align="right">FreeThrowsMade</th>
+<th align="right">FreeThrowsAttempted</th>
+<th align="right">OffensiveRebounds</th>
+<th align="right">TotalRebounds</th>
+<th align="right">Assists</th>
+<th align="right">Steals</th>
+<th align="right">Turnovers</th>
+<th align="right">Blocks</th>
+<th align="right">PersonalFouls</th>
+<th align="right">Disqualifications</th>
+<th align="right">TotalPoints</th>
+<th align="right">Technicals</th>
+<th align="right">Ejections</th>
+<th align="right">FlagrantFouls</th>
+<th align="right">GamesStarted</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Th Antetokounmpo</td>
+<td align="left">NYK</td>
+<td align="left">SF</td>
+<td align="right">3</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Rakeem Christmas</td>
+<td align="left">IND</td>
+<td align="left">PF</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Deandre Jordan</td>
+<td align="left">LAC</td>
+<td align="left">C</td>
+<td align="right">77</td>
+<td align="right">2600</td>
+<td align="right">357</td>
+<td align="right">507</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">266</td>
+<td align="right">619</td>
+<td align="right">267</td>
+<td align="right">1059</td>
+<td align="right">90</td>
+<td align="right">52</td>
+<td align="right">107</td>
+<td align="right">176</td>
+<td align="right">207</td>
+<td align="right">1</td>
+<td align="right">980</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">77</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>觀察值(Row)子集 filter()</h3>
+<div class="slideContent" >
+<p>也可使用 <code>&amp;</code> 和 <code>|</code>等符號串連邏輯</p>
+
+<pre><code class="r">filter(NBA1516,
+       FieldGoalsMade/FieldGoalsAttempted&gt;0.7
+           &amp;GamesPlayed&gt;30)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">League</th>
+<th align="left">Name</th>
+<th align="left">Team</th>
+<th align="left">Position</th>
+<th align="right">GamesPlayed</th>
+<th align="right">TotalMinutesPlayed</th>
+<th align="right">FieldGoalsMade</th>
+<th align="right">FieldGoalsAttempted</th>
+<th align="right">ThreesMade</th>
+<th align="right">ThreesAttempted</th>
+<th align="right">FreeThrowsMade</th>
+<th align="right">FreeThrowsAttempted</th>
+<th align="right">OffensiveRebounds</th>
+<th align="right">TotalRebounds</th>
+<th align="right">Assists</th>
+<th align="right">Steals</th>
+<th align="right">Turnovers</th>
+<th align="right">Blocks</th>
+<th align="right">PersonalFouls</th>
+<th align="right">Disqualifications</th>
+<th align="right">TotalPoints</th>
+<th align="right">Technicals</th>
+<th align="right">Ejections</th>
+<th align="right">FlagrantFouls</th>
+<th align="right">GamesStarted</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Deandre Jordan</td>
+<td align="left">LAC</td>
+<td align="left">C</td>
+<td align="right">77</td>
+<td align="right">2600</td>
+<td align="right">357</td>
+<td align="right">507</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">266</td>
+<td align="right">619</td>
+<td align="right">267</td>
+<td align="right">1059</td>
+<td align="right">90</td>
+<td align="right">52</td>
+<td align="right">107</td>
+<td align="right">176</td>
+<td align="right">207</td>
+<td align="right">1</td>
+<td align="right">980</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">77</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-state="alert" data-transition="linear" data-transition-speed="default">
+<h3>dplyr 子集練習</h3>
+<div class="slideContent" >
+<ul>
+<li class="fragment">讀入NBA資料</li>
+</ul>
+
+<pre class="fragment"><code class="r">library(SportsAnalytics)
+library(dplyr)
+NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
+</code></pre>
+
+<ul>
+<li class="fragment">試著用dplyr語法篩選出所有<strong>助攻數(Assists)超過100</strong>且<strong>抄截數大於20</strong>的球員資料</li>
+<li class="fragment">只留下Name Team Position GamesPlayed TotalMinutesPlayed Assists Steals 七個欄位</li>
+<li class="fragment">用data.table寫出一樣的功能</li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>增加新欄位 mutate()</h3>
+<div class="slideContent" >
+<ul>
+<li>新增新欄位<code>FGRate</code>，欄位值為<code>FieldGoalsMade/FieldGoalsAttempted</code></li>
+</ul>
+
+<pre><code class="r">mutate1&lt;-
+    mutate(NBA1516,
+           FGRate=FieldGoalsMade/FieldGoalsAttempted)
+mutate1$FGRate[1:5]
+</code></pre>
+
+<pre><code>[1] 0.6 0.3 0.6 0.4 0.5
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>計算統計值 summarise() </h3>
+<div class="slideContent" >
+<ul>
+<li><strong>球員個數</strong>、<strong>不重複的隊伍數</strong>以及<strong>不重複的守備位置數</strong>等</li>
+<li>n(), n_distinct()</li>
+</ul>
+
+<pre><code class="r">summarise(NBA1516,
+          nPlayer=n(),
+          nTeam=n_distinct(Team),
+          nPos=n_distinct(Position))
+</code></pre>
+
+<pre><code>  nPlayer nTeam nPos
+1     476    31    6
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>計算統計值 summarise() </h3>
+<div class="slideContent" >
+<ul>
+<li>通常會與其他功能合併使用</li>
+<li>計算<strong>出場分鐘數大於2500分鐘</strong>的<strong>球員個數</strong>、<strong>平均投進的兩分球數</strong>以及<strong>平均投出的兩分球數</strong></li>
+</ul>
+
+<pre><code class="r">filter1&lt;-filter(NBA1516,TotalMinutesPlayed&gt;2500)
+summarise(filter1,
+          nPlayer=n(),
+          meanFGMade=mean(FieldGoalsMade),
+          meanFGAtt=mean(FieldGoalsAttempted))
+</code></pre>
+
+<pre><code>  nPlayer meanFGMade meanFGAtt
+1      40        512      1121
+</code></pre>
+
+</div>
+
+</section>
+<section data-state="alert" data-transition="linear" data-transition-speed="default">
+<h3>dplyr filter()+summarise() 練習</h3>
+<div class="slideContent" >
+<ul>
+<li class="fragment">讀入NBA資料</li>
+</ul>
+
+<pre class="fragment"><code class="r">library(SportsAnalytics)
+library(dplyr)
+NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
+</code></pre>
+
+<ul>
+<li class="fragment">試著用dplyr語法篩選出所有<strong>助攻數(Assists)超過100</strong>且<strong>抄截數大於20</strong>的球員資料</li>
+<li class="fragment">計算這些球員的<strong>平均出場數GamesPlayed</strong>，<strong>平均出場分鐘數TotalMinutesPlayed</strong></li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>pipe %&gt;%</h3>
+<div class="slideContent" >
+<ul>
+<li>直接用<strong>pipe</strong>符號<code>%&gt;%</code>將指令串連，減少暫存物件（filter1）的生成</li>
+</ul>
+
+<pre><code class="r">filter(NBA1516,TotalMinutesPlayed&gt;2500) %&gt;%
+    summarise(nPlayer=n(),
+        meanFGMade=mean(FieldGoalsMade),
+        meanFGAtt=mean(FieldGoalsAttempted))
+</code></pre>
+
+<pre><code>  nPlayer meanFGMade meanFGAtt
+1      40        512      1121
+</code></pre>
+
+</div>
+
+</section>
+<section data-state="alert" data-transition="linear" data-transition-speed="default">
+<h3>dplyr pipe %&gt;% 練習</h3>
+<div class="slideContent" >
+<ul>
+<li class="fragment">讀入NBA資料</li>
+</ul>
+
+<pre class="fragment"><code class="r">library(SportsAnalytics)
+NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
+library(dplyr)
+</code></pre>
+
+<ul>
+<li class="fragment">試著用dplyr語法篩選出所有<strong>助攻數(Assists)超過100</strong>且<strong>抄截數大於20</strong>的球員資料</li>
+<li class="fragment">計算這些球員的<strong>平均出場數GamesPlayed</strong>，<strong>平均出場分鐘數TotalMinutesPlayed</strong></li>
+<li class="fragment">用pipe <strong>%&gt;%</strong></li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>分組 group_by()</h3>
+<div class="slideContent" >
+<ul>
+<li>設定分組依據</li>
+<li>與<code>summarise()</code>函式合併使用</li>
+<li>計算各<strong>隊</strong>（以Team作為分組依據）的<strong>球員數</strong>、<strong>平均投進的兩分球數</strong>以及<strong>平均投出的兩分球數</strong></li>
+</ul>
+
+<pre><code class="r">group_by(NBA1516,Team)%&gt;%
+    summarise(nPlayer=n(),
+        meanFGMade=mean(FieldGoalsMade),
+        meanFGAtt=mean(FieldGoalsAttempted))
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">Team</th>
+<th align="right">nPlayer</th>
+<th align="right">meanFGMade</th>
+<th align="right">meanFGAtt</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">ATL</td>
+<td align="right">15</td>
+<td align="right">215</td>
+<td align="right">471</td>
+</tr>
+<tr>
+<td align="left">BOS</td>
+<td align="right">15</td>
+<td align="right">209</td>
+<td align="right">475</td>
+</tr>
+<tr>
+<td align="left">BRO</td>
+<td align="right">16</td>
+<td align="right">181</td>
+<td align="right">396</td>
+</tr>
+<tr>
+<td align="left">CHA</td>
+<td align="right">14</td>
+<td align="right">199</td>
+<td align="right">451</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>分組 group_by()</h3>
+<div class="slideContent" >
+<ul>
+<li>可設定<strong>多個</strong>分組依據</li>
+<li>計算各<strong>隊</strong>各<strong>守備位置</strong>（以Team和Position作為分組依據）的<strong>球員數</strong>、<strong>平均投進的兩分球數</strong>以及<strong>平均投出的兩分球數</strong></li>
+</ul>
+
+<pre><code class="r">group_by(NBA1516,Team,Position)%&gt;%
+  summarise(nPlayer=n(),
+        meanFGMade=mean(FieldGoalsMade),
+        meanFGAtt=mean(FieldGoalsAttempted))
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">Team</th>
+<th align="left">Position</th>
+<th align="right">nPlayer</th>
+<th align="right">meanFGMade</th>
+<th align="right">meanFGAtt</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">ATL</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="right">11</td>
+<td align="right">19</td>
+</tr>
+<tr>
+<td align="left">ATL</td>
+<td align="left">PF</td>
+<td align="right">6</td>
+<td align="right">247</td>
+<td align="right">516</td>
+</tr>
+<tr>
+<td align="left">ATL</td>
+<td align="left">PG</td>
+<td align="right">2</td>
+<td align="right">382</td>
+<td align="right">884</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>排序 arrange()</h3>
+<div class="slideContent" >
+<p>排序功能，預設為<strong>遞增排序</strong></p>
+
+<pre><code class="r">arrange(NBA1516,TotalMinutesPlayed)
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">League</th>
+<th align="left">Name</th>
+<th align="left">Team</th>
+<th align="left">Position</th>
+<th align="right">GamesPlayed</th>
+<th align="right">TotalMinutesPlayed</th>
+<th align="right">FieldGoalsMade</th>
+<th align="right">FieldGoalsAttempted</th>
+<th align="right">ThreesMade</th>
+<th align="right">ThreesAttempted</th>
+<th align="right">FreeThrowsMade</th>
+<th align="right">FreeThrowsAttempted</th>
+<th align="right">OffensiveRebounds</th>
+<th align="right">TotalRebounds</th>
+<th align="right">Assists</th>
+<th align="right">Steals</th>
+<th align="right">Turnovers</th>
+<th align="right">Blocks</th>
+<th align="right">PersonalFouls</th>
+<th align="right">Disqualifications</th>
+<th align="right">TotalPoints</th>
+<th align="right">Technicals</th>
+<th align="right">Ejections</th>
+<th align="right">FlagrantFouls</th>
+<th align="right">GamesStarted</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">NBA</td>
+<td align="left">J.j. O&#39;brien</td>
+<td align="left">UTA</td>
+<td align="left">SF</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Rakeem Christmas</td>
+<td align="left">IND</td>
+<td align="left">PF</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Th Antetokounmpo</td>
+<td align="left">NYK</td>
+<td align="left">SF</td>
+<td align="right">3</td>
+<td align="right">7</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Sam Dekker</td>
+<td align="left">HOU</td>
+<td align="left">SF</td>
+<td align="right">3</td>
+<td align="right">7</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Coty Clarke</td>
+<td align="left">BOS</td>
+<td align="left">NA</td>
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Jordan Adams</td>
+<td align="left">MEM</td>
+<td align="left">SG</td>
+<td align="right">2</td>
+<td align="right">15</td>
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">7</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>遞減排序 arrange()</h3>
+<div class="slideContent" >
+<p>使用<code>desc()</code>將要<strong>遞減排序</strong>的變數包起來，就可以遞減排序</p>
+
+<pre><code class="r">arrange(NBA1516,
+        desc(TotalMinutesPlayed),
+        desc(GamesPlayed))
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">League</th>
+<th align="left">Name</th>
+<th align="left">Team</th>
+<th align="left">Position</th>
+<th align="right">GamesPlayed</th>
+<th align="right">TotalMinutesPlayed</th>
+<th align="right">FieldGoalsMade</th>
+<th align="right">FieldGoalsAttempted</th>
+<th align="right">ThreesMade</th>
+<th align="right">ThreesAttempted</th>
+<th align="right">FreeThrowsMade</th>
+<th align="right">FreeThrowsAttempted</th>
+<th align="right">OffensiveRebounds</th>
+<th align="right">TotalRebounds</th>
+<th align="right">Assists</th>
+<th align="right">Steals</th>
+<th align="right">Turnovers</th>
+<th align="right">Blocks</th>
+<th align="right">PersonalFouls</th>
+<th align="right">Disqualifications</th>
+<th align="right">TotalPoints</th>
+<th align="right">Technicals</th>
+<th align="right">Ejections</th>
+<th align="right">FlagrantFouls</th>
+<th align="right">GamesStarted</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">NBA</td>
+<td align="left">James Harden</td>
+<td align="left">HOU</td>
+<td align="left">SG</td>
+<td align="right">82</td>
+<td align="right">3121</td>
+<td align="right">710</td>
+<td align="right">1617</td>
+<td align="right">236</td>
+<td align="right">656</td>
+<td align="right">720</td>
+<td align="right">837</td>
+<td align="right">63</td>
+<td align="right">502</td>
+<td align="right">612</td>
+<td align="right">138</td>
+<td align="right">374</td>
+<td align="right">51</td>
+<td align="right">229</td>
+<td align="right">1</td>
+<td align="right">2376</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">82</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Gordon Hayward</td>
+<td align="left">UTA</td>
+<td align="left">SG</td>
+<td align="right">80</td>
+<td align="right">2889</td>
+<td align="right">521</td>
+<td align="right">1202</td>
+<td align="right">143</td>
+<td align="right">410</td>
+<td align="right">393</td>
+<td align="right">477</td>
+<td align="right">61</td>
+<td align="right">397</td>
+<td align="right">296</td>
+<td align="right">95</td>
+<td align="right">202</td>
+<td align="right">27</td>
+<td align="right">183</td>
+<td align="right">0</td>
+<td align="right">1578</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">80</td>
+</tr>
+<tr>
+<td align="left">NBA</td>
+<td align="left">Kemba Walker</td>
+<td align="left">CHA</td>
+<td align="left">PG</td>
+<td align="right">81</td>
+<td align="right">2885</td>
+<td align="right">568</td>
+<td align="right">1332</td>
+<td align="right">182</td>
+<td align="right">490</td>
+<td align="right">371</td>
+<td align="right">438</td>
+<td align="right">56</td>
+<td align="right">358</td>
+<td align="right">421</td>
+<td align="right">127</td>
+<td align="right">171</td>
+<td align="right">39</td>
+<td align="right">111</td>
+<td align="right">0</td>
+<td align="right">1689</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">81</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>dplyr綜合範例</h3>
+<div class="slideContent" >
+<ul>
+<li>結合<code>group_by()</code>、<code>summarise()</code>、<code>arrange()</code>，可完成一連串的資料分析</li>
+<li>計算各<strong>隊</strong>各<strong>守備</strong>位置（以Team和Position作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數，並依平均投進的兩分球數<strong>由大到小排序</strong></li>
+</ul>
+
+<pre><code class="r">group_by(NBA1516,Team,Position) %&gt;%
+  summarise(nPlayer=n(),
+    meanFGMade=mean(FieldGoalsMade),
+    meanFGAtt=mean(FieldGoalsAttempted)) %&gt;%
+  arrange(desc(meanFGMade))
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">Team</th>
+<th align="left">Position</th>
+<th align="right">nPlayer</th>
+<th align="right">meanFGMade</th>
+<th align="right">meanFGAtt</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">GSW</td>
+<td align="left">PG</td>
+<td align="right">2</td>
+<td align="right">504</td>
+<td align="right">988</td>
+</tr>
+<tr>
+<td align="left">CLE</td>
+<td align="left">SF</td>
+<td align="right">2</td>
+<td align="right">440</td>
+<td align="right">864</td>
+</tr>
+<tr>
+<td align="left">ORL</td>
+<td align="left">SG</td>
+<td align="right">1</td>
+<td align="right">425</td>
+<td align="right">969</td>
+</tr>
+</tbody></table>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>修改欄位名稱 rename()</h3>
+<div class="slideContent" >
+<p><code>新名稱=舊名稱</code></p>
+
+<pre><code class="r">rename1&lt;-rename(NBA1516,Po=Position)
+rename1[1:5,1:5]
+</code></pre>
+
+<pre><code>  League          Name Team Po GamesPlayed
+1    NBA    Quincy Acy  SAC SF          59
+2    NBA  Jordan Adams  MEM SG           2
+3    NBA  Steven Adams  OKL  C          80
+4    NBA Arron Afflalo  NYK SG          71
+5    NBA Alexis Ajinca  NOR  C          59
+</code></pre>
+
+</div>
+
+</section>
+<section data-state="alert" data-transition="linear" data-transition-speed="default">
+<h3>dplyr 綜合練習</h3>
+<div class="slideContent" >
+<ul>
+<li class="fragment">讀入NBA資料</li>
+</ul>
+
+<pre class="fragment"><code class="r">library(SportsAnalytics)
+library(dplyr)
+NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
+</code></pre>
+
+<ul>
+<li class="fragment">試著用dplyr語法篩選出所有<strong>助攻數(Assists)超過100</strong>且<strong>抄截數大於20</strong>的球員資料</li>
+<li class="fragment">依<strong>守備位置</strong>Position分組，計算球員的平均<strong>出場數</strong>GamesPlayed，平均<strong>出場分鐘數</strong>TotalMinutesPlayed</li>
+<li class="fragment">依平均出場數GamesPlayed<strong>由大到小</strong>排序</li>
+<li class="fragment">用pipe <strong>%&gt;%</strong></li>
+</ul>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>dplyr 參考文件與資源</h3>
+<div class="slideContent" >
+<ul>
+<li><a href="https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html">Introduction to dplyr</a></li>
+<li>DataCamp互動式教學課程 <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a></li>
 </ul>
 
 </div>
@@ -3636,1542 +5172,6 @@ NBA1516DT&lt;-data.table(NBA1516)
 <li>指令全集<a href="https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf">The data.table R package cheat sheet</a></li>
 <li><a href="https://www.datacamp.com/community/tutorials/data-table-r-tutorial#gs.vzMYa_k">A data.table R tutorial by DataCamp</a></li>
 <li>DataCamp <a href="https://www.datacamp.com/courses/data-table-data-manipulation-r-tutorial">互動式教學課程</a></li>
-</ul>
-
-</div>
-
-</section>
-<section data-state="sub-section" data-transition="linear" data-transition-speed="default">
-<h2>dplyr</h2>
-<div class="slideContent" >
-<ul>
-<li><a href="http://hadley.nz/">Hadley Wickham</a>開發</li>
-<li>使用以下函數分析整理資料：
-
-<ul>
-<li><code>select()</code>: 選要分析的欄位，欄位子集 (Column)</li>
-<li><code>filter()</code>: 選要分析的觀察值，觀察值子集 (Row)</li>
-<li><code>mutate()</code>: 增加新欄位</li>
-<li><code>summarise()</code>: 計算統計值</li>
-</ul></li>
-</ul>
-
-</div>
-
-</section>
-<section data-state="sub-section" data-transition="linear" data-transition-speed="default">
-<h2>dplyr</h2>
-<div class="slideContent" >
-<ul>
-<li>使用以下函數分析整理資料：
-
-<ul>
-<li><code>group_by()</code>: 分組依據</li>
-<li><code>arrange()</code>: 觀察值排序</li>
-<li><code>rename()</code>: 欄位重新命名</li>
-<li><code>%&gt;%</code>: the “pipe” operator 連結上數函式，將所有函式計算串在一起執行</li>
-</ul></li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>dplyr</h3>
-<div class="slideContent" >
-<p>如要使用必須安裝並載入<code>dplyr</code> package</p>
-
-<pre><code class="r">install.packages(&quot;dplyr&quot;) ##安裝
-</code></pre>
-
-<pre><code class="r">library(dplyr) ##載入
-</code></pre>
-
-<p>以上述NBA資料為例，首先先讀入資料</p>
-
-<pre><code class="r">library(SportsAnalytics)
-NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
-</code></pre>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>欄位(Column)子集 select() </h3>
-<div class="slideContent" >
-<ul>
-<li>針對欄位 (Column)做子集</li>
-<li><code>select(資料名稱,欄位條件1,欄位條件2,...)</code></li>
-<li>條件1與條件2是使用<strong>或</strong>的連結概念</li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>欄位(Column)子集 select() </h3>
-<div class="slideContent" >
-<ul>
-<li><code>dplyr</code>提供幾個方便篩選名稱的函式：
-
-<ul>
-<li><code>starts_with()</code></li>
-<li><code>ends_with()</code></li>
-<li><code>contains()</code></li>
-<li><code>matches()</code>: matches a regular expression</li>
-<li><code>num_range()</code>: num_range(&ldquo;x&rdquo;, 8:11).</li>
-<li><code>one_of()</code>: variables in character vector</li>
-<li><code>everything()</code></li>
-</ul></li>
-</ul>
-
-<p>詳細說明可在R執行視窗中輸入<code>?select_helpers</code>查看。</p>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>欄位(Column)子集 select() </h3>
-<div class="slideContent" >
-<p>篩選欄位名稱為<code>Name</code>、開頭是<code>Threes</code>或是開頭是<code>FieldGoals</code>的欄位</p>
-
-<pre><code class="r">##等於NBA1516[,c(&quot;Name&quot;,&quot;ThreesMade&quot;,&quot;ThreesAttempted&quot;,
-##   &quot;FieldGoalsMade&quot;,&quot;FieldGoalsAttempted&quot;)]
-select1&lt;-
-    select(NBA1516,Name,starts_with(&quot;Threes&quot;),
-            starts_with(&quot;FieldGoals&quot;))
-head(select1)
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">Name</th>
-<th align="right">ThreesMade</th>
-<th align="right">ThreesAttempted</th>
-<th align="right">FieldGoalsMade</th>
-<th align="right">FieldGoalsAttempted</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">Quincy Acy</td>
-<td align="right">19</td>
-<td align="right">49</td>
-<td align="right">119</td>
-<td align="right">214</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>欄位(Column)子集 select() </h3>
-<div class="slideContent" >
-<p>若想篩選欄位<code>Name</code>到欄位<code>FieldGoalsMade</code>間的所有欄位，可用<code>:</code>串連欄位名稱</p>
-
-<pre><code class="r">##等同於NBA1516[,2:7]
-select2&lt;-select(NBA1516,Name:FieldGoalsMade)
-head(select2,3)
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">Name</th>
-<th align="left">Team</th>
-<th align="left">Position</th>
-<th align="right">GamesPlayed</th>
-<th align="right">TotalMinutesPlayed</th>
-<th align="right">FieldGoalsMade</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">Quincy Acy</td>
-<td align="left">SAC</td>
-<td align="left">SF</td>
-<td align="right">59</td>
-<td align="right">877</td>
-<td align="right">119</td>
-</tr>
-<tr>
-<td align="left">Jordan Adams</td>
-<td align="left">MEM</td>
-<td align="left">SG</td>
-<td align="right">2</td>
-<td align="right">15</td>
-<td align="right">2</td>
-</tr>
-<tr>
-<td align="left">Steven Adams</td>
-<td align="left">OKL</td>
-<td align="left">C</td>
-<td align="right">80</td>
-<td align="right">2019</td>
-<td align="right">261</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>欄位(Column)子集 select() </h3>
-<div class="slideContent" >
-<p>若想篩選欄位<code>Name</code>到欄位<code>FieldGoalsMade</code>間的所有欄位，但不想要<code>GamesPlayed</code>欄位</p>
-
-<ul>
-<li>用<code>:</code>串連欄位名稱</li>
-<li>用<code>-</code>去除不要的欄位</li>
-</ul>
-
-<pre><code class="r">##等同於NBA1516[,c(2:4,612)]
-select3&lt;-
-    select(NBA1516,Name:FieldGoalsMade,-GamesPlayed)
-head(select3,3)
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">Name</th>
-<th align="left">Team</th>
-<th align="left">Position</th>
-<th align="right">TotalMinutesPlayed</th>
-<th align="right">FieldGoalsMade</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">Quincy Acy</td>
-<td align="left">SAC</td>
-<td align="left">SF</td>
-<td align="right">877</td>
-<td align="right">119</td>
-</tr>
-<tr>
-<td align="left">Jordan Adams</td>
-<td align="left">MEM</td>
-<td align="left">SG</td>
-<td align="right">15</td>
-<td align="right">2</td>
-</tr>
-<tr>
-<td align="left">Steven Adams</td>
-<td align="left">OKL</td>
-<td align="left">C</td>
-<td align="right">2019</td>
-<td align="right">261</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>觀察值(Row)子集 filter()</h3>
-<div class="slideContent" >
-<ul>
-<li>是針對列 (Row)做子集</li>
-<li><code>filter(資料名稱,篩選條件1,篩選條件2)</code>篩選條件們是用<strong>且</strong>的邏輯串連</li>
-<li><strong>出場分鐘數超過2850分鐘</strong>的球員資料，可輸入下列指令</li>
-</ul>
-
-<pre><code class="r">##等於NBA1516[NBA1516$TotalMinutesPlayed&gt;2850,]
-filter(NBA1516,TotalMinutesPlayed&gt;2850)
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">League</th>
-<th align="left">Name</th>
-<th align="left">Team</th>
-<th align="left">Position</th>
-<th align="right">GamesPlayed</th>
-<th align="right">TotalMinutesPlayed</th>
-<th align="right">FieldGoalsMade</th>
-<th align="right">FieldGoalsAttempted</th>
-<th align="right">ThreesMade</th>
-<th align="right">ThreesAttempted</th>
-<th align="right">FreeThrowsMade</th>
-<th align="right">FreeThrowsAttempted</th>
-<th align="right">OffensiveRebounds</th>
-<th align="right">TotalRebounds</th>
-<th align="right">Assists</th>
-<th align="right">Steals</th>
-<th align="right">Turnovers</th>
-<th align="right">Blocks</th>
-<th align="right">PersonalFouls</th>
-<th align="right">Disqualifications</th>
-<th align="right">TotalPoints</th>
-<th align="right">Technicals</th>
-<th align="right">Ejections</th>
-<th align="right">FlagrantFouls</th>
-<th align="right">GamesStarted</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Trevor Ariza</td>
-<td align="left">HOU</td>
-<td align="left">SF</td>
-<td align="right">81</td>
-<td align="right">2860</td>
-<td align="right">357</td>
-<td align="right">858</td>
-<td align="right">185</td>
-<td align="right">497</td>
-<td align="right">126</td>
-<td align="right">161</td>
-<td align="right">67</td>
-<td align="right">366</td>
-<td align="right">188</td>
-<td align="right">161</td>
-<td align="right">113</td>
-<td align="right">26</td>
-<td align="right">177</td>
-<td align="right">0</td>
-<td align="right">1025</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">81</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">James Harden</td>
-<td align="left">HOU</td>
-<td align="left">SG</td>
-<td align="right">82</td>
-<td align="right">3121</td>
-<td align="right">710</td>
-<td align="right">1617</td>
-<td align="right">236</td>
-<td align="right">656</td>
-<td align="right">720</td>
-<td align="right">837</td>
-<td align="right">63</td>
-<td align="right">502</td>
-<td align="right">612</td>
-<td align="right">138</td>
-<td align="right">374</td>
-<td align="right">51</td>
-<td align="right">229</td>
-<td align="right">1</td>
-<td align="right">2376</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">82</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Gordon Hayward</td>
-<td align="left">UTA</td>
-<td align="left">SG</td>
-<td align="right">80</td>
-<td align="right">2889</td>
-<td align="right">521</td>
-<td align="right">1202</td>
-<td align="right">143</td>
-<td align="right">410</td>
-<td align="right">393</td>
-<td align="right">477</td>
-<td align="right">61</td>
-<td align="right">397</td>
-<td align="right">296</td>
-<td align="right">95</td>
-<td align="right">202</td>
-<td align="right">27</td>
-<td align="right">183</td>
-<td align="right">0</td>
-<td align="right">1578</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">80</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Kyle Lowry</td>
-<td align="left">TOR</td>
-<td align="left">PG</td>
-<td align="right">77</td>
-<td align="right">2853</td>
-<td align="right">512</td>
-<td align="right">1198</td>
-<td align="right">212</td>
-<td align="right">546</td>
-<td align="right">398</td>
-<td align="right">491</td>
-<td align="right">55</td>
-<td align="right">365</td>
-<td align="right">494</td>
-<td align="right">158</td>
-<td align="right">225</td>
-<td align="right">34</td>
-<td align="right">211</td>
-<td align="right">1</td>
-<td align="right">1634</td>
-<td align="right">9</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">77</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Khris Middleton</td>
-<td align="left">MIL</td>
-<td align="left">SF</td>
-<td align="right">79</td>
-<td align="right">2855</td>
-<td align="right">507</td>
-<td align="right">1144</td>
-<td align="right">143</td>
-<td align="right">362</td>
-<td align="right">277</td>
-<td align="right">312</td>
-<td align="right">45</td>
-<td align="right">301</td>
-<td align="right">331</td>
-<td align="right">131</td>
-<td align="right">180</td>
-<td align="right">19</td>
-<td align="right">204</td>
-<td align="right">1</td>
-<td align="right">1434</td>
-<td align="right">5</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">79</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Marcus Morris</td>
-<td align="left">DET</td>
-<td align="left">SF</td>
-<td align="right">80</td>
-<td align="right">2852</td>
-<td align="right">410</td>
-<td align="right">945</td>
-<td align="right">108</td>
-<td align="right">297</td>
-<td align="right">203</td>
-<td align="right">271</td>
-<td align="right">91</td>
-<td align="right">404</td>
-<td align="right">201</td>
-<td align="right">67</td>
-<td align="right">140</td>
-<td align="right">23</td>
-<td align="right">170</td>
-<td align="right">1</td>
-<td align="right">1131</td>
-<td align="right">11</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">80</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Kemba Walker</td>
-<td align="left">CHA</td>
-<td align="left">PG</td>
-<td align="right">81</td>
-<td align="right">2885</td>
-<td align="right">568</td>
-<td align="right">1332</td>
-<td align="right">182</td>
-<td align="right">490</td>
-<td align="right">371</td>
-<td align="right">438</td>
-<td align="right">56</td>
-<td align="right">358</td>
-<td align="right">421</td>
-<td align="right">127</td>
-<td align="right">171</td>
-<td align="right">39</td>
-<td align="right">111</td>
-<td align="right">0</td>
-<td align="right">1689</td>
-<td align="right">5</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">81</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>觀察值(Row)子集 filter()</h3>
-<div class="slideContent" >
-<p>也可選擇隊伍名稱為&quot;BOS&quot;或&quot;SAN&quot;的球員資料</p>
-
-<pre><code class="r">##等於NBA1516[NBA1516$Team %in% c(&quot;BOS&quot;,&quot;SAN&quot;),]
-filter(NBA1516,Team %in% c(&quot;BOS&quot;,&quot;SAN&quot;))
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">League</th>
-<th align="left">Name</th>
-<th align="left">Team</th>
-<th align="left">Position</th>
-<th align="right">GamesPlayed</th>
-<th align="right">TotalMinutesPlayed</th>
-<th align="right">FieldGoalsMade</th>
-<th align="right">FieldGoalsAttempted</th>
-<th align="right">ThreesMade</th>
-<th align="right">ThreesAttempted</th>
-<th align="right">FreeThrowsMade</th>
-<th align="right">FreeThrowsAttempted</th>
-<th align="right">OffensiveRebounds</th>
-<th align="right">TotalRebounds</th>
-<th align="right">Assists</th>
-<th align="right">Steals</th>
-<th align="right">Turnovers</th>
-<th align="right">Blocks</th>
-<th align="right">PersonalFouls</th>
-<th align="right">Disqualifications</th>
-<th align="right">TotalPoints</th>
-<th align="right">Technicals</th>
-<th align="right">Ejections</th>
-<th align="right">FlagrantFouls</th>
-<th align="right">GamesStarted</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Lamarcu Aldridge</td>
-<td align="left">SAN</td>
-<td align="left">PF</td>
-<td align="right">74</td>
-<td align="right">2260</td>
-<td align="right">536</td>
-<td align="right">1045</td>
-<td align="right">0</td>
-<td align="right">16</td>
-<td align="right">259</td>
-<td align="right">302</td>
-<td align="right">175</td>
-<td align="right">631</td>
-<td align="right">110</td>
-<td align="right">38</td>
-<td align="right">99</td>
-<td align="right">81</td>
-<td align="right">151</td>
-<td align="right">0</td>
-<td align="right">1331</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">74</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Kyle Anderson</td>
-<td align="left">SAN</td>
-<td align="left">SF</td>
-<td align="right">78</td>
-<td align="right">1247</td>
-<td align="right">138</td>
-<td align="right">296</td>
-<td align="right">12</td>
-<td align="right">37</td>
-<td align="right">62</td>
-<td align="right">83</td>
-<td align="right">25</td>
-<td align="right">245</td>
-<td align="right">123</td>
-<td align="right">60</td>
-<td align="right">59</td>
-<td align="right">29</td>
-<td align="right">97</td>
-<td align="right">0</td>
-<td align="right">350</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">11</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Matt Bonner</td>
-<td align="left">SAN</td>
-<td align="left">C</td>
-<td align="right">30</td>
-<td align="right">210</td>
-<td align="right">29</td>
-<td align="right">58</td>
-<td align="right">15</td>
-<td align="right">35</td>
-<td align="right">3</td>
-<td align="right">4</td>
-<td align="right">3</td>
-<td align="right">27</td>
-<td align="right">9</td>
-<td align="right">6</td>
-<td align="right">3</td>
-<td align="right">1</td>
-<td align="right">16</td>
-<td align="right">0</td>
-<td align="right">76</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">2</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Avery Bradley</td>
-<td align="left">BOS</td>
-<td align="left">PG</td>
-<td align="right">76</td>
-<td align="right">2536</td>
-<td align="right">456</td>
-<td align="right">1018</td>
-<td align="right">147</td>
-<td align="right">406</td>
-<td align="right">96</td>
-<td align="right">123</td>
-<td align="right">48</td>
-<td align="right">220</td>
-<td align="right">158</td>
-<td align="right">117</td>
-<td align="right">109</td>
-<td align="right">19</td>
-<td align="right">164</td>
-<td align="right">2</td>
-<td align="right">1155</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">72</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Rasual Butler</td>
-<td align="left">SAN</td>
-<td align="left">SF</td>
-<td align="right">46</td>
-<td align="right">432</td>
-<td align="right">49</td>
-<td align="right">105</td>
-<td align="right">15</td>
-<td align="right">49</td>
-<td align="right">11</td>
-<td align="right">16</td>
-<td align="right">3</td>
-<td align="right">56</td>
-<td align="right">24</td>
-<td align="right">13</td>
-<td align="right">8</td>
-<td align="right">23</td>
-<td align="right">11</td>
-<td align="right">0</td>
-<td align="right">124</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Coty Clarke</td>
-<td align="left">BOS</td>
-<td align="left">NA</td>
-<td align="right">4</td>
-<td align="right">8</td>
-<td align="right">2</td>
-<td align="right">4</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">6</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>觀察值(Row)子集 filter()</h3>
-<div class="slideContent" >
-<p>在<code>filter()</code>函式中可<strong>直接做變數計算</strong>後再篩選</p>
-
-<pre><code class="r">filter(NBA1516,
-       FieldGoalsMade/FieldGoalsAttempted&gt;0.7)
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">League</th>
-<th align="left">Name</th>
-<th align="left">Team</th>
-<th align="left">Position</th>
-<th align="right">GamesPlayed</th>
-<th align="right">TotalMinutesPlayed</th>
-<th align="right">FieldGoalsMade</th>
-<th align="right">FieldGoalsAttempted</th>
-<th align="right">ThreesMade</th>
-<th align="right">ThreesAttempted</th>
-<th align="right">FreeThrowsMade</th>
-<th align="right">FreeThrowsAttempted</th>
-<th align="right">OffensiveRebounds</th>
-<th align="right">TotalRebounds</th>
-<th align="right">Assists</th>
-<th align="right">Steals</th>
-<th align="right">Turnovers</th>
-<th align="right">Blocks</th>
-<th align="right">PersonalFouls</th>
-<th align="right">Disqualifications</th>
-<th align="right">TotalPoints</th>
-<th align="right">Technicals</th>
-<th align="right">Ejections</th>
-<th align="right">FlagrantFouls</th>
-<th align="right">GamesStarted</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Th Antetokounmpo</td>
-<td align="left">NYK</td>
-<td align="left">SF</td>
-<td align="right">3</td>
-<td align="right">7</td>
-<td align="right">3</td>
-<td align="right">4</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">6</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Rakeem Christmas</td>
-<td align="left">IND</td>
-<td align="left">PF</td>
-<td align="right">1</td>
-<td align="right">6</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Deandre Jordan</td>
-<td align="left">LAC</td>
-<td align="left">C</td>
-<td align="right">77</td>
-<td align="right">2600</td>
-<td align="right">357</td>
-<td align="right">507</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">266</td>
-<td align="right">619</td>
-<td align="right">267</td>
-<td align="right">1059</td>
-<td align="right">90</td>
-<td align="right">52</td>
-<td align="right">107</td>
-<td align="right">176</td>
-<td align="right">207</td>
-<td align="right">1</td>
-<td align="right">980</td>
-<td align="right">10</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">77</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>觀察值(Row)子集 filter()</h3>
-<div class="slideContent" >
-<p>也可使用 <code>&amp;</code> 和 <code>|</code>等符號串連邏輯</p>
-
-<pre><code class="r">filter(NBA1516,
-       FieldGoalsMade/FieldGoalsAttempted&gt;0.7
-           &amp;GamesPlayed&gt;30)
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">League</th>
-<th align="left">Name</th>
-<th align="left">Team</th>
-<th align="left">Position</th>
-<th align="right">GamesPlayed</th>
-<th align="right">TotalMinutesPlayed</th>
-<th align="right">FieldGoalsMade</th>
-<th align="right">FieldGoalsAttempted</th>
-<th align="right">ThreesMade</th>
-<th align="right">ThreesAttempted</th>
-<th align="right">FreeThrowsMade</th>
-<th align="right">FreeThrowsAttempted</th>
-<th align="right">OffensiveRebounds</th>
-<th align="right">TotalRebounds</th>
-<th align="right">Assists</th>
-<th align="right">Steals</th>
-<th align="right">Turnovers</th>
-<th align="right">Blocks</th>
-<th align="right">PersonalFouls</th>
-<th align="right">Disqualifications</th>
-<th align="right">TotalPoints</th>
-<th align="right">Technicals</th>
-<th align="right">Ejections</th>
-<th align="right">FlagrantFouls</th>
-<th align="right">GamesStarted</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Deandre Jordan</td>
-<td align="left">LAC</td>
-<td align="left">C</td>
-<td align="right">77</td>
-<td align="right">2600</td>
-<td align="right">357</td>
-<td align="right">507</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">266</td>
-<td align="right">619</td>
-<td align="right">267</td>
-<td align="right">1059</td>
-<td align="right">90</td>
-<td align="right">52</td>
-<td align="right">107</td>
-<td align="right">176</td>
-<td align="right">207</td>
-<td align="right">1</td>
-<td align="right">980</td>
-<td align="right">10</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">77</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-state="alert" data-transition="linear" data-transition-speed="default">
-<h3>dplyr 子集練習</h3>
-<div class="slideContent" >
-<ul>
-<li class="fragment">讀入NBA資料</li>
-</ul>
-
-<pre class="fragment"><code class="r">library(SportsAnalytics)
-library(dplyr)
-NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
-</code></pre>
-
-<ul>
-<li class="fragment">試著用dplyr語法篩選出所有<strong>助攻數(Assists)超過100</strong>且<strong>抄截數大於20</strong>的球員資料</li>
-<li class="fragment">只留下Name Team Position GamesPlayed TotalMinutesPlayed Assists Steals 七個欄位</li>
-<li class="fragment">用data.table寫出一樣的功能</li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>增加新欄位 mutate()</h3>
-<div class="slideContent" >
-<ul>
-<li>新增新欄位<code>FGRate</code>，欄位值為<code>FieldGoalsMade/FieldGoalsAttempted</code></li>
-</ul>
-
-<pre><code class="r">mutate1&lt;-
-    mutate(NBA1516,
-           FGRate=FieldGoalsMade/FieldGoalsAttempted)
-mutate1$FGRate[1:5]
-</code></pre>
-
-<pre><code>[1] 0.6 0.3 0.6 0.4 0.5
-</code></pre>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>計算統計值 summarise() </h3>
-<div class="slideContent" >
-<ul>
-<li><strong>球員個數</strong>、<strong>不重複的隊伍數</strong>以及<strong>不重複的守備位置數</strong>等</li>
-<li>n(), n_distinct()</li>
-</ul>
-
-<pre><code class="r">summarise(NBA1516,
-          nPlayer=n(),
-          nTeam=n_distinct(Team),
-          nPos=n_distinct(Position))
-</code></pre>
-
-<pre><code>  nPlayer nTeam nPos
-1     476    31    6
-</code></pre>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>計算統計值 summarise() </h3>
-<div class="slideContent" >
-<ul>
-<li>通常會與其他功能合併使用</li>
-<li>計算<strong>出場分鐘數大於2500分鐘</strong>的<strong>球員個數</strong>、<strong>平均投進的兩分球數</strong>以及<strong>平均投出的兩分球數</strong></li>
-</ul>
-
-<pre><code class="r">filter1&lt;-filter(NBA1516,TotalMinutesPlayed&gt;2500)
-summarise(filter1,
-          nPlayer=n(),
-          meanFGMade=mean(FieldGoalsMade),
-          meanFGAtt=mean(FieldGoalsAttempted))
-</code></pre>
-
-<pre><code>  nPlayer meanFGMade meanFGAtt
-1      40        512      1121
-</code></pre>
-
-</div>
-
-</section>
-<section data-state="alert" data-transition="linear" data-transition-speed="default">
-<h3>dplyr filter()+summarise() 練習</h3>
-<div class="slideContent" >
-<ul>
-<li class="fragment">讀入NBA資料</li>
-</ul>
-
-<pre class="fragment"><code class="r">library(SportsAnalytics)
-library(dplyr)
-NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
-</code></pre>
-
-<ul>
-<li class="fragment">試著用dplyr語法篩選出所有<strong>助攻數(Assists)超過100</strong>且<strong>抄截數大於20</strong>的球員資料</li>
-<li class="fragment">計算這些球員的<strong>平均出場數GamesPlayed</strong>，<strong>平均出場分鐘數TotalMinutesPlayed</strong></li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>pipe %&gt;%</h3>
-<div class="slideContent" >
-<ul>
-<li>直接用<strong>pipe</strong>符號<code>%&gt;%</code>將指令串連，減少暫存物件（filter1）的生成</li>
-</ul>
-
-<pre><code class="r">filter(NBA1516,TotalMinutesPlayed&gt;2500) %&gt;%
-    summarise(nPlayer=n(),
-        meanFGMade=mean(FieldGoalsMade),
-        meanFGAtt=mean(FieldGoalsAttempted))
-</code></pre>
-
-<pre><code>  nPlayer meanFGMade meanFGAtt
-1      40        512      1121
-</code></pre>
-
-</div>
-
-</section>
-<section data-state="alert" data-transition="linear" data-transition-speed="default">
-<h3>dplyr pipe %&gt;% 練習</h3>
-<div class="slideContent" >
-<ul>
-<li class="fragment">讀入NBA資料</li>
-</ul>
-
-<pre class="fragment"><code class="r">library(SportsAnalytics)
-NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
-library(dplyr)
-</code></pre>
-
-<ul>
-<li class="fragment">試著用dplyr語法篩選出所有<strong>助攻數(Assists)超過100</strong>且<strong>抄截數大於20</strong>的球員資料</li>
-<li class="fragment">計算這些球員的<strong>平均出場數GamesPlayed</strong>，<strong>平均出場分鐘數TotalMinutesPlayed</strong></li>
-<li class="fragment">用pipe <strong>%&gt;%</strong></li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>分組 group_by()</h3>
-<div class="slideContent" >
-<ul>
-<li>設定分組依據</li>
-<li>與<code>summarise()</code>函式合併使用</li>
-<li>計算各<strong>隊</strong>（以Team作為分組依據）的<strong>球員數</strong>、<strong>平均投進的兩分球數</strong>以及<strong>平均投出的兩分球數</strong></li>
-</ul>
-
-<pre><code class="r">group_by(NBA1516,Team)%&gt;%
-    summarise(nPlayer=n(),
-        meanFGMade=mean(FieldGoalsMade),
-        meanFGAtt=mean(FieldGoalsAttempted))
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">Team</th>
-<th align="right">nPlayer</th>
-<th align="right">meanFGMade</th>
-<th align="right">meanFGAtt</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">ATL</td>
-<td align="right">15</td>
-<td align="right">215</td>
-<td align="right">471</td>
-</tr>
-<tr>
-<td align="left">BOS</td>
-<td align="right">15</td>
-<td align="right">209</td>
-<td align="right">475</td>
-</tr>
-<tr>
-<td align="left">BRO</td>
-<td align="right">16</td>
-<td align="right">181</td>
-<td align="right">396</td>
-</tr>
-<tr>
-<td align="left">CHA</td>
-<td align="right">14</td>
-<td align="right">199</td>
-<td align="right">451</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>分組 group_by()</h3>
-<div class="slideContent" >
-<ul>
-<li>可設定<strong>多個</strong>分組依據</li>
-<li>計算各<strong>隊</strong>各<strong>守備位置</strong>（以Team和Position作為分組依據）的<strong>球員數</strong>、<strong>平均投進的兩分球數</strong>以及<strong>平均投出的兩分球數</strong></li>
-</ul>
-
-<pre><code class="r">group_by(NBA1516,Team,Position)%&gt;%
-  summarise(nPlayer=n(),
-        meanFGMade=mean(FieldGoalsMade),
-        meanFGAtt=mean(FieldGoalsAttempted))
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">Team</th>
-<th align="left">Position</th>
-<th align="right">nPlayer</th>
-<th align="right">meanFGMade</th>
-<th align="right">meanFGAtt</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">ATL</td>
-<td align="left">C</td>
-<td align="right">1</td>
-<td align="right">11</td>
-<td align="right">19</td>
-</tr>
-<tr>
-<td align="left">ATL</td>
-<td align="left">PF</td>
-<td align="right">6</td>
-<td align="right">247</td>
-<td align="right">516</td>
-</tr>
-<tr>
-<td align="left">ATL</td>
-<td align="left">PG</td>
-<td align="right">2</td>
-<td align="right">382</td>
-<td align="right">884</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>排序 arrange()</h3>
-<div class="slideContent" >
-<p>排序功能，預設為<strong>遞增排序</strong></p>
-
-<pre><code class="r">arrange(NBA1516,TotalMinutesPlayed)
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">League</th>
-<th align="left">Name</th>
-<th align="left">Team</th>
-<th align="left">Position</th>
-<th align="right">GamesPlayed</th>
-<th align="right">TotalMinutesPlayed</th>
-<th align="right">FieldGoalsMade</th>
-<th align="right">FieldGoalsAttempted</th>
-<th align="right">ThreesMade</th>
-<th align="right">ThreesAttempted</th>
-<th align="right">FreeThrowsMade</th>
-<th align="right">FreeThrowsAttempted</th>
-<th align="right">OffensiveRebounds</th>
-<th align="right">TotalRebounds</th>
-<th align="right">Assists</th>
-<th align="right">Steals</th>
-<th align="right">Turnovers</th>
-<th align="right">Blocks</th>
-<th align="right">PersonalFouls</th>
-<th align="right">Disqualifications</th>
-<th align="right">TotalPoints</th>
-<th align="right">Technicals</th>
-<th align="right">Ejections</th>
-<th align="right">FlagrantFouls</th>
-<th align="right">GamesStarted</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">NBA</td>
-<td align="left">J.j. O&#39;brien</td>
-<td align="left">UTA</td>
-<td align="left">SF</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Rakeem Christmas</td>
-<td align="left">IND</td>
-<td align="left">PF</td>
-<td align="right">1</td>
-<td align="right">6</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Th Antetokounmpo</td>
-<td align="left">NYK</td>
-<td align="left">SF</td>
-<td align="right">3</td>
-<td align="right">7</td>
-<td align="right">3</td>
-<td align="right">4</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">6</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Sam Dekker</td>
-<td align="left">HOU</td>
-<td align="left">SF</td>
-<td align="right">3</td>
-<td align="right">7</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Coty Clarke</td>
-<td align="left">BOS</td>
-<td align="left">NA</td>
-<td align="right">4</td>
-<td align="right">8</td>
-<td align="right">2</td>
-<td align="right">4</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">6</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Jordan Adams</td>
-<td align="left">MEM</td>
-<td align="left">SG</td>
-<td align="right">2</td>
-<td align="right">15</td>
-<td align="right">2</td>
-<td align="right">6</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">5</td>
-<td align="right">0</td>
-<td align="right">2</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">7</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>遞減排序 arrange()</h3>
-<div class="slideContent" >
-<p>使用<code>desc()</code>將要<strong>遞減排序</strong>的變數包起來，就可以遞減排序</p>
-
-<pre><code class="r">arrange(NBA1516,
-        desc(TotalMinutesPlayed),
-        desc(GamesPlayed))
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">League</th>
-<th align="left">Name</th>
-<th align="left">Team</th>
-<th align="left">Position</th>
-<th align="right">GamesPlayed</th>
-<th align="right">TotalMinutesPlayed</th>
-<th align="right">FieldGoalsMade</th>
-<th align="right">FieldGoalsAttempted</th>
-<th align="right">ThreesMade</th>
-<th align="right">ThreesAttempted</th>
-<th align="right">FreeThrowsMade</th>
-<th align="right">FreeThrowsAttempted</th>
-<th align="right">OffensiveRebounds</th>
-<th align="right">TotalRebounds</th>
-<th align="right">Assists</th>
-<th align="right">Steals</th>
-<th align="right">Turnovers</th>
-<th align="right">Blocks</th>
-<th align="right">PersonalFouls</th>
-<th align="right">Disqualifications</th>
-<th align="right">TotalPoints</th>
-<th align="right">Technicals</th>
-<th align="right">Ejections</th>
-<th align="right">FlagrantFouls</th>
-<th align="right">GamesStarted</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">NBA</td>
-<td align="left">James Harden</td>
-<td align="left">HOU</td>
-<td align="left">SG</td>
-<td align="right">82</td>
-<td align="right">3121</td>
-<td align="right">710</td>
-<td align="right">1617</td>
-<td align="right">236</td>
-<td align="right">656</td>
-<td align="right">720</td>
-<td align="right">837</td>
-<td align="right">63</td>
-<td align="right">502</td>
-<td align="right">612</td>
-<td align="right">138</td>
-<td align="right">374</td>
-<td align="right">51</td>
-<td align="right">229</td>
-<td align="right">1</td>
-<td align="right">2376</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">82</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Gordon Hayward</td>
-<td align="left">UTA</td>
-<td align="left">SG</td>
-<td align="right">80</td>
-<td align="right">2889</td>
-<td align="right">521</td>
-<td align="right">1202</td>
-<td align="right">143</td>
-<td align="right">410</td>
-<td align="right">393</td>
-<td align="right">477</td>
-<td align="right">61</td>
-<td align="right">397</td>
-<td align="right">296</td>
-<td align="right">95</td>
-<td align="right">202</td>
-<td align="right">27</td>
-<td align="right">183</td>
-<td align="right">0</td>
-<td align="right">1578</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">80</td>
-</tr>
-<tr>
-<td align="left">NBA</td>
-<td align="left">Kemba Walker</td>
-<td align="left">CHA</td>
-<td align="left">PG</td>
-<td align="right">81</td>
-<td align="right">2885</td>
-<td align="right">568</td>
-<td align="right">1332</td>
-<td align="right">182</td>
-<td align="right">490</td>
-<td align="right">371</td>
-<td align="right">438</td>
-<td align="right">56</td>
-<td align="right">358</td>
-<td align="right">421</td>
-<td align="right">127</td>
-<td align="right">171</td>
-<td align="right">39</td>
-<td align="right">111</td>
-<td align="right">0</td>
-<td align="right">1689</td>
-<td align="right">5</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">81</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>dplyr綜合範例</h3>
-<div class="slideContent" >
-<ul>
-<li>結合<code>group_by()</code>、<code>summarise()</code>、<code>arrange()</code>，可完成一連串的資料分析</li>
-<li>計算各<strong>隊</strong>各<strong>守備</strong>位置（以Team和Position作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數，並依平均投進的兩分球數<strong>由大到小排序</strong></li>
-</ul>
-
-<pre><code class="r">group_by(NBA1516,Team,Position) %&gt;%
-  summarise(nPlayer=n(),
-    meanFGMade=mean(FieldGoalsMade),
-    meanFGAtt=mean(FieldGoalsAttempted)) %&gt;%
-  arrange(desc(meanFGMade))
-</code></pre>
-
-<table><thead>
-<tr>
-<th align="left">Team</th>
-<th align="left">Position</th>
-<th align="right">nPlayer</th>
-<th align="right">meanFGMade</th>
-<th align="right">meanFGAtt</th>
-</tr>
-</thead><tbody>
-<tr>
-<td align="left">GSW</td>
-<td align="left">PG</td>
-<td align="right">2</td>
-<td align="right">504</td>
-<td align="right">988</td>
-</tr>
-<tr>
-<td align="left">CLE</td>
-<td align="left">SF</td>
-<td align="right">2</td>
-<td align="right">440</td>
-<td align="right">864</td>
-</tr>
-<tr>
-<td align="left">ORL</td>
-<td align="left">SG</td>
-<td align="right">1</td>
-<td align="right">425</td>
-<td align="right">969</td>
-</tr>
-</tbody></table>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>修改欄位名稱 rename()</h3>
-<div class="slideContent" >
-<p><code>新名稱=舊名稱</code></p>
-
-<pre><code class="r">rename1&lt;-rename(NBA1516,Po=Position)
-rename1[1:5,1:5]
-</code></pre>
-
-<pre><code>  League          Name Team Po GamesPlayed
-1    NBA    Quincy Acy  SAC SF          59
-2    NBA  Jordan Adams  MEM SG           2
-3    NBA  Steven Adams  OKL  C          80
-4    NBA Arron Afflalo  NYK SG          71
-5    NBA Alexis Ajinca  NOR  C          59
-</code></pre>
-
-</div>
-
-</section>
-<section data-state="alert" data-transition="linear" data-transition-speed="default">
-<h3>dplyr 綜合練習</h3>
-<div class="slideContent" >
-<ul>
-<li class="fragment">讀入NBA資料</li>
-</ul>
-
-<pre class="fragment"><code class="r">library(SportsAnalytics)
-library(dplyr)
-NBA1516&lt;-fetch_NBAPlayerStatistics(&quot;15-16&quot;)
-</code></pre>
-
-<ul>
-<li class="fragment">試著用dplyr語法篩選出所有<strong>助攻數(Assists)超過100</strong>且<strong>抄截數大於20</strong>的球員資料</li>
-<li class="fragment">依<strong>守備位置</strong>Position分組，計算球員的平均<strong>出場數</strong>GamesPlayed，平均<strong>出場分鐘數</strong>TotalMinutesPlayed</li>
-<li class="fragment">依平均出場數GamesPlayed<strong>由大到小</strong>排序</li>
-<li class="fragment">用pipe <strong>%&gt;%</strong></li>
-</ul>
-
-</div>
-
-</section>
-<section data-transition="linear" data-transition-speed="default">
-<h3>dplyr 參考文件與資源</h3>
-<div class="slideContent" >
-<ul>
-<li><a href="https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html">Introduction to dplyr</a></li>
-<li>DataCamp互動式教學課程 <a href="https://www.datacamp.com/courses/dplyr-data-manipulation-r-tutorial">Data Manipulation in R with dplyr</a></li>
 </ul>
 
 </div>
