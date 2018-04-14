@@ -168,7 +168,7 @@ type:alert
 incremental:true
 
 - 在mtcars資料集中，車子馬力(hp)的平均值？標準差？
-- 在mtcars資料集中，幾輪(cyl)的車子最多？
+- 在mtcars資料集中，幾個汽缸(cyl)的車子最多？
 - 在mtcars資料集中，油耗(mpg)的四分位數是多少？
 
 量化的分析方式: 雙變量
@@ -179,7 +179,7 @@ incremental:true
 
 量化的分析方式: 雙變量-列聯表
 ====================================
-輪子的數目與自手排的關係
+汽缸的數目與自手排的關係
 
 ```r
 table(mtcars$cyl,mtcars$am)
@@ -275,7 +275,7 @@ type:alert
 incremental:true
 
 - 在airquality資料集中，氣溫Temp和臭氧濃度Ozone的相關係數是多少？
-- 在mtcars資料集中，各輪數cyl中，各類前進檔數gear的比例是多少
+- 在mtcars資料集中，各汽缸數cyl中，各類前進檔數gear的比例是多少
 
 量化的分析方式 w/ R
 ====================================
