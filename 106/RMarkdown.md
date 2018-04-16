@@ -1,15 +1,12 @@
-R Markdown - HW2
+R Markdown and Markdown
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/03/06
 autosize: true
 font-family: 'Microsoft JhengHei'
 
 R Markdown
 ========================================================
-```{r echo=FALSE}
-knitr::include_graphics("figures/bandThree2.png")
-```
+![plot of chunk unnamed-chunk-1](figures/bandThree2.png)
 
 投影片和書都是以R Markdown為基礎編寫而成
 
@@ -34,27 +31,19 @@ R Markdown
 
 R Markdown - New File
 ========================================================
-```{r echo=FALSE}
-knitr::include_graphics("figures/RM.png")
-```
+![plot of chunk unnamed-chunk-2](figures/RM.png)
 
 R Markdown - 輸出文件
 ========================================================
-```{r echo=FALSE}
-knitr::include_graphics("figures/RMDoc.png")
-```
+![plot of chunk unnamed-chunk-3](figures/RMDoc.png)
 
 R Markdown - 輸出投影片
 ========================================================
-```{r echo=FALSE}
-knitr::include_graphics("figures/RMPre.png")
-```
+![plot of chunk unnamed-chunk-4](figures/RMPre.png)
 
 R Markdown - 輸出模板（GitHub）
 ========================================================
-```{r echo=FALSE}
-knitr::include_graphics("figures/RMTem.png")
-```
+![plot of chunk unnamed-chunk-5](figures/RMTem.png)
 
 
 R Markdown & Markdown 
@@ -91,9 +80,7 @@ R Markdown @RStudio
 ========================================================
 Step 1 開啟新的R Markdown 檔案
 
-```{r echo=FALSE}
-knitr::include_graphics("figures/RM.png")
-```
+![plot of chunk unnamed-chunk-6](figures/RM.png)
 
 R Markdown @RStudio
 ========================================================
@@ -101,9 +88,7 @@ Step 2 設定輸出格式
 
 最後要放上GitHub，所以選From Template裡的GitHub Document
 
-```{r echo=FALSE}
-knitr::include_graphics("figures/RMTem.png")
-```
+![plot of chunk unnamed-chunk-7](figures/RMTem.png)
 
 R Markdown @RStudio
 ========================================================
@@ -113,44 +98,59 @@ title: "Untitled"
 
 output: github_document
 
-```{r echo=FALSE}
-knitr::include_graphics("figures/RMMD.png")
-```
+![plot of chunk unnamed-chunk-8](figures/RMMD.png)
 
 R Code Chunk的參數
 ========================================================
 
 - eval：要不要**執行並顯示**在輸出的Markdown檔案內
-- echo：要不要一起**顯示程式碼**(不顯示程式碼仍會執行，但只顯示執行結果)
+  - T：執行+顯示
+  - F：只顯示，不執行
+- echo：要不要**顯示程式碼**(不顯示程式碼仍會執行，但只顯示執行結果)
+  - T：執行+顯示
+  - F：不顯示程式碼，只執行，並顯示結果
 - warning, error, message：要不要顯示錯誤訊息
+  - T：顯示
+  - F：不顯示
 - cache：是否要暫存結果
 
 Table
 ========================================================
 
 若需要輸出表格，預設的輸出方式如下：
-```{r}
+
+```r
 mtcars[1:5, 1:5]
+```
+
+```
+                   mpg cyl disp  hp drat
+Mazda RX4         21.0   6  160 110 3.90
+Mazda RX4 Wag     21.0   6  160 110 3.90
+Datsun 710        22.8   4  108  93 3.85
+Hornet 4 Drive    21.4   6  258 110 3.08
+Hornet Sportabout 18.7   8  360 175 3.15
 ```
 
 Table (knitr::kable)
 ========================================================
 
 如果想要呈現的更清楚，建議使用**knitr::kable**
-```{r}
+
+```r
 knitr::kable(
   mtcars[1:5, 1:5], caption = "A knitr kable."
 )
 ```
 
-HW2
-========================================================
-作業目的：練習撰寫R Markdown文件、熟悉GitHub操作方式、練習基礎的R程式碼
 
-- 點開GitHub[作業邀請連結](https://classroom.github.com/assignment-invitations/54dcfe8301e2ccc3605ac62e68e5f96b)
-- GitHub自動將作業模板新增至你的個人帳號
-- 將作業Repo clone至本機端
-- 按照作業模板指示完成第一份R的分析（？）報告！
-- Commit & Sync
-- 將Repo網址與SHA號碼繳交至eLearning系統
-- 3/20 (一) 11:59pm繳交
+
+|                  |  mpg| cyl| disp|  hp| drat|
+|:-----------------|----:|---:|----:|---:|----:|
+|Mazda RX4         | 21.0|   6|  160| 110| 3.90|
+|Mazda RX4 Wag     | 21.0|   6|  160| 110| 3.90|
+|Datsun 710        | 22.8|   4|  108|  93| 3.85|
+|Hornet 4 Drive    | 21.4|   6|  258| 110| 3.08|
+|Hornet Sportabout | 18.7|   8|  360| 175| 3.15|
+
+
