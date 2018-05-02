@@ -1,7 +1,6 @@
 資料視覺化
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/05/08 & 15
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -62,8 +61,8 @@ type:sub-section
 ====================================
 type:sub-section 
 
-- 基本功能(Base)：可自學
-- `lattice`：可自學
+- 基本功能(Base)：可[自學](https://www.statmethods.net/graphs/index.htmlhttps://www.datacamp.com/courses/data-visualization-in-r)
+- `lattice`：可[自學](https://www.datacamp.com/courses/data-visualization-in-r-with-lattice)
 - `ggplot2`
 
 ggplot2簡介
@@ -492,7 +491,7 @@ ggplot2 參考資料
 - [ggplot2 官網](http://ggplot2.tidyverse.org/)
 - [ggplot2 package source code](https://github.com/tidyverse/ggplot2)
 - [ggplot2 cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
-- [ggplot2 doc](http://docs.ggplot2.org/)
+- [ggplot2 doc](http://ggplot2.tidyverse.org/reference)
 
 
 ggplot2+地圖
@@ -559,19 +558,19 @@ ggmap package
 ##第一次使用前先安裝
 install.packages("ggmap") 
 ```
-- `get_map()`函式取得google map圖層
+- `get_googlemap()`函式取得google map圖層
     - location 地點，可以是地名，也可以是經緯度座標
     - zoom 放大倍率
     - language 地圖語言
 - `ggmap()`函式將取得的圖層畫出來
 
 
-get_map() + ggmap()
+get_googlemap() + ggmap()
 ====================================
 
 ```r
 library(ggmap)
-twmap <- get_map(location = 'Taiwan', 
+twmap <- get_googlemap(location = 'Taiwan', 
                  zoom = 7,
                  language = "zh-TW")
 ggmap(twmap)
@@ -598,19 +597,19 @@ head(WaterDataClean)
 
 ```
   _id update_date update_time       qua_id                code_name
-1   1  2017-05-12  20:30:00   CS00                       雙溪淨水場
-2   2  2017-05-12  20:30:00   CS01                         衛理女中
-3   3  2017-05-12  20:30:00   CS02         雙溪國小                
-4   4  2017-05-12  20:30:00   CS03                       華興加壓站
-5   5  2017-05-12  20:30:00   CX00                       長興淨水場
-6   6  2017-05-12  20:30:00   CX02                         市政大樓
+1   1  2018-05-03  00:00:00   CS00                       雙溪淨水場
+2   2  2018-05-03  00:00:00   CS01                         衛理女中
+3   3  2018-05-03  00:00:00   CS02         雙溪國小                
+4   4  2018-05-03  00:00:00   CS03                       華興加壓站
+5   5  2018-05-03  00:00:00   CX00                       長興淨水場
+6   6  2018-05-03  00:00:00   CX02                         市政大樓
   longitude latitude qua_cntu qua_cl qua_ph
-1  121.5609 25.11574     0.03   0.49    7.5
-2  121.5440 25.10325     0.08   0.29    7.7
-3  121.5556 25.10763     0.06   0.35    7.5
-4  121.5348 25.10356     0.14   0.46    7.4
-5  121.5404 25.01633     0.02   0.43    7.1
-6  121.5566 25.04250     0.03   0.45    7.3
+1  121.5609 25.11574     0.02   0.59    7.6
+2  121.5440 25.10325     0.09   0.37    7.6
+3  121.5556 25.10763     0.07   0.46    7.6
+4  121.5348 25.10356     0.12   0.53    7.4
+5  121.5404 25.01633     0.03   0.58    7.2
+6  121.5566 25.04250     0.05   0.57    7.1
 ```
 
 ggmap + open data 繪圖
@@ -618,7 +617,7 @@ ggmap + open data 繪圖
 
 ```r
 library(ggmap)
-TaipeiMap <- get_map(
+TaipeiMap <- get_googlemap(
     location = c(121.43,24.93,121.62,25.19), 
     zoom = 11, maptype = 'roadmap')
 TaipeiMapO <- ggmap(TaipeiMap)+ 
@@ -653,9 +652,6 @@ ggmap + extent
 
 ```r
 library(ggmap)
-TaipeiMap = get_map(
-    location = c(121.43,24.93,121.62,25.19), 
-    zoom = 14, maptype = 'roadmap')
 #extent = 'device' 滿版
 ggmap(TaipeiMap,extent = 'device') 
 ```
@@ -670,7 +666,7 @@ ggmap() 練習
 type:alert
 incremental:true
 
-- 利用get_map() + ggmap()取得桃園地區的google 圖層
+- 利用get_googlemap() + ggmap()取得桃園地區的google 圖層
     - location = 'Taoyuan'
     - zoom = 11
     - language = "zh-TW"
@@ -754,7 +750,7 @@ Density Map 作圖
 
 
 ```r
-USMap <- get_map(location = "United States", zoom = 4)
+USMap <- get_googlemap(location = "United States", zoom = 4)
 densityMap<-ggmap(USMap, extent = "device") + 
     geom_density2d(data = PopPoint, aes(x = lon, y = lat), size = 0.3) + 
     stat_density2d(data = PopPoint, 
@@ -775,7 +771,7 @@ ggmap 參考資料
 ====================================
 - [ggmap package source code](https://github.com/dkahle/ggmap)
 - [ggmap cheat sheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/ggmap/ggmapCheatsheet.pdf)
-- [ggmap doc](https://dl.dropboxusercontent.com/u/24648660/ggmap%20useR%202012.pdf)
+- [ggmap doc](https://cran.r-project.org/web/packages/ggmap/ggmap.pdf)
 
 Taiwan的面量圖
 ====================================
@@ -940,7 +936,7 @@ ggmap+面量圖
 
 ```r
 library(ggmap)
-twmap <- get_map(location = 'Taiwan', 
+twmap <- get_googlemap(location = 'Taiwan', 
                  zoom = 7,
                  language = "zh-TW")
 ggmap(twmap)+ #ggmap
@@ -1126,7 +1122,7 @@ treemap(GNI2014,
 ====================================
 type:sub-section 
 
-- 官方網站[文件](http://docs.ggplot2.org/current/)
+- 官方網站[文件](http://ggplot2.tidyverse.org/reference/)
 - RStudio製作的[ggplot cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf)
 - DataCamp課程1 [Data Visualization with ggplot2 (Part 1)](https://www.datacamp.com/courses/data-visualization-with-ggplot2-1)
 - DataCamp課程2 [Data Visualization with ggplot2 (Part 2)](https://www.datacamp.com/courses/data-visualization-with-ggplot2-2)
