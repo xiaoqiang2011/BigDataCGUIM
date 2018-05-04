@@ -1,7 +1,6 @@
 Pipelines For Data Analysis In R, part 1
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/05/06
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -15,9 +14,9 @@ navigation: slide
 
 在分析之前
 ========================================================
-- RStudio怎麼用？
-- R基本語法
-- R資料結構
+- RStudio怎麼用？[對應書本章節](https://yijutseng.github.io/DataScienceRBook/install.html#rstudio)
+- R基本語法: [對應書本章節](https://yijutseng.github.io/DataScienceRBook/intro.html)
+- R資料結構: [對應書本章節](https://yijutseng.github.io/DataScienceRBook/RDataStructure.html)
 
 
 RStudio Interface
@@ -55,6 +54,17 @@ Console視窗
 - `+` : 表示前面的程式碼還沒打完
     - 鍵入完整的程式碼
     - **Esc**跳出
+
+RStudio hands-on
+====================================
+type:alert
+incremental:true
+
+- 打開RStudio
+- 左上角**File**->**New Project** (如果原本沒有的話)
+- 左上角**File**->**New File**->**R Script** (如果原本沒有的話)
+- 在Console輸入1+，按Enter
+- 試著跳出打不完的程式碼，變回輸入模式`>`
 
 R = Base + Other Packages
 ========================================================
@@ -126,6 +136,13 @@ Variable 命名規則
 - 開頭只能是英文字，或 `.`
 - 大小寫敏感
 
+保留字檢查
+====================================
+type:alert
+incremental:true
+
+- 在Source code視窗輸入`TRUE`
+- 在Source code視窗輸入`True`
 
 資料型態
 ========================================================
@@ -280,6 +297,7 @@ TRUE & FALSE
 TRUE | TRUE
 TRUE | FALSE
 ```
+
 基本運算子: 反向布林變數 !
 ========================================================
 
@@ -317,6 +335,17 @@ mena(NA)
 # 找不到"knitr" package
 ```
 可能原因：沒安裝knitr package
+
+可能是最常見的錯誤訊息
+====================================
+type:alert
+incremental:true
+
+- 在Source code視窗輸入`fetch_NBAPlayerStatistics("16-17")`並執行
+- 試著安裝`SportsAnalytics`package
+- 試著載入`SportsAnalytics`package
+- 再次執行`fetch_NBAPlayerStatistics("16-17")`
+- 在Source code視窗輸入`library(knitr)`並執行
 
 Help
 ========================================================
