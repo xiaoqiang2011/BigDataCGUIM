@@ -18,7 +18,7 @@ rtest <- html_nodes(a,".PriceBreaks") %>% html_text()
 rtest
 rtest2 <- gsub("\n|\t|\r","q", rtest)
 rtest2
-strsplit (rtest2,"q")
+rtest3<-strsplit (rtest2,"q")
 rtest3
 ```
 
