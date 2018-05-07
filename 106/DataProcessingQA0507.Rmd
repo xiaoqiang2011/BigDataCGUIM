@@ -1,0 +1,47 @@
+---
+title: ""
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Original
+```{r}
+library(rvest)
+TargetURL <- ("https://www.mouser.tw/Semiconductors/Discrete-Semiconductors/Transistors/MOSFET/_/N-ax1sf/")
+Target <- read_html(TargetURL)
+a <- html_nodes(Target, ".SearchResultsTable")
+
+#直接修改目前情況
+rtest <- html_nodes(a,".PriceBreaks") %>% html_text()
+rtest
+rtest2 <- gsub("\n|\t|\r","q", rtest)
+rtest2
+rtest2.1<-gsub("q+", "q", rtest2)
+rtest2.1
+rtest2.2<-gsub("^q|q$", "", rtest2.1)
+rtest2.2
+rtest3 <- strsplit (rtest2.2,"q")
+rtest3
+```
+
+```{r}
+#更簡潔版
+rtest2New <- gsub("[\n|\t|\r]+","q", rtest)
+rtest2New
+rtest2New.1<-gsub("^q|q$", "", rtest2New)
+rtest2New.1
+rtest3New <- strsplit (rtest2New.1,"q")
+rtest3New
+```
+
+```{r}
+#更更簡潔版
+rtestFinal <- strsplit (rtest,"[\n|\t|\r]+")
+rtestFinal
+library(purrr)
+rtestFinal.1<-map(rtestFinal, tail, -1)
+rtestFinal.1
+```
