@@ -478,11 +478,12 @@ Choropleth map面量圖
 - `choroplethr` package來畫面量圖
 - 基於`ggplot2` package的`面量圖`做圖工具
 - 建議同時安裝`choroplethrMaps` package
-```{r,eval=F,warning=F,message=F}
+
+```{r, eval=F,warning=F,message=F}
 ##第一次使用前先安裝
-install.packages(c("choroplethr",
-                   "choroplethrMaps")) 
+#install.packages(c("choroplethr",                  "choroplethrMaps")) 
 ```
+
 ```{r, warning=F,message=F}
 library(choroplethr)
 ```
@@ -528,9 +529,9 @@ get_googlemap() + ggmap()
 ====================================
 ```{r, warning=F,message=F, fig.height=5}
 library(ggmap)
-twmap <- get_googlemap(location = 'Taiwan', 
-                 zoom = 7,
-                 language = "zh-TW")
+twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
+                  zoom = 7,
+                  language = "zh-TW")
 ggmap(twmap)
 ```
 
@@ -555,7 +556,7 @@ ggmap + open data 繪圖
 ```{r eval=F, message=F, warning=F}
 library(ggmap)
 TaipeiMap <- get_googlemap(
-    location = c(121.43,24.93,121.62,25.19), 
+    center  = c(lon=121.50,lat=25.06), 
     zoom = 11, maptype = 'roadmap')
 TaipeiMapO <- ggmap(TaipeiMap)+ 
     geom_point(data=WaterDataClean, 
@@ -572,7 +573,7 @@ ggmap + open data
 ```{r echo=FALSE, fig.height=8}
 library(ggmap)
 TaipeiMap <- get_googlemap(
-    location = c(121.43,24.93,121.62,25.19), 
+    center  = c(lon=121.50,lat=25.06), 
     zoom = 11, maptype = 'roadmap')
 TaipeiMapO <- ggmap(TaipeiMap)+ 
     geom_point(data=WaterDataClean, 
@@ -620,7 +621,7 @@ type:alert
 incremental:true
 
 - 利用get_googlemap() + ggmap()取得桃園地區的google 圖層
-    - location = 'Taoyuan'
+    - center = c(lon=121.20,lat=25.00)
     - zoom = 11
     - language = "zh-TW"
 - 在長庚大學所在地 （座標121.389539,25.035225）加上一個紅色的點
@@ -633,7 +634,7 @@ ggmap() 練習輸出圖檔
 ====================================
 ```{r echo=F, fig.height=8}
 twmap <- get_googlemap(
-    location = 'Taoyuan', 
+    center = c(lon=121.20,lat=25.00),
     zoom = 11,
     language = "zh-TW")
 ggmap(twmap)+
@@ -930,7 +931,7 @@ ggmap+面量圖
 ====================================
 ```{r, eval=F,warning=F,message=F, fig.height=6}
 library(ggmap)
-twmap <- get_googlemap(location = 'Taiwan', 
+twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
                  zoom = 7,
                  language = "zh-TW")
 ggmap(twmap)+ #ggmap

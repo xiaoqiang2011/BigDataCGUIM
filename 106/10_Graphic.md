@@ -511,11 +511,12 @@ Choropleth map面量圖
 - 基於`ggplot2` package的`面量圖`做圖工具
 - 建議同時安裝`choroplethrMaps` package
 
+
 ```r
 ##第一次使用前先安裝
-install.packages(c("choroplethr",
-                   "choroplethrMaps")) 
+#install.packages(c("choroplethr",                  "choroplethrMaps")) 
 ```
+
 
 ```r
 library(choroplethr)
@@ -570,9 +571,9 @@ get_googlemap() + ggmap()
 
 ```r
 library(ggmap)
-twmap <- get_googlemap(location = 'Taiwan', 
-                 zoom = 7,
-                 language = "zh-TW")
+twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
+                  zoom = 7,
+                  language = "zh-TW")
 ggmap(twmap)
 ```
 
@@ -597,19 +598,19 @@ head(WaterDataClean)
 
 ```
   _id update_date update_time       qua_id                code_name
-1   1  2018-05-05  13:30:00   CS00                       雙溪淨水場
-2   2  2018-05-05  13:30:00   CS01                         衛理女中
-3   3  2018-05-05  13:30:00   CS02         雙溪國小                
-4   4  2018-05-05  13:30:00   CS03                       華興加壓站
-5   5  2018-05-05  13:30:00   CX00                       長興淨水場
-6   6  2018-05-05  13:30:00   CX02                         市政大樓
+1   1  2018-05-10  00:15:00   CS00                       雙溪淨水場
+2   2  2018-05-10  00:15:00   CS01                         衛理女中
+3   3  2018-05-10  00:15:00   CS02         雙溪國小                
+4   4  2018-05-10  00:15:00   CS03                       華興加壓站
+5   5  2018-05-10  00:15:00   CX00                       長興淨水場
+6   6  2018-05-10  00:15:00   CX02                         市政大樓
   longitude latitude qua_cntu qua_cl qua_ph
-1  121.5609 25.11574     0.02   0.61    7.6
-2  121.5440 25.10325     0.10   0.39    7.6
-3  121.5556 25.10763     0.06   0.38    7.6
-4  121.5348 25.10356     0.06   0.42    7.4
-5  121.5404 25.01633     0.03   0.51    7.3
-6  121.5566 25.04250     0.05   0.59    7.2
+1  121.5609 25.11574     0.02   0.62    7.5
+2  121.5440 25.10325     0.12    0.4    7.4
+3  121.5556 25.10763     0.14    0.3    7.5
+4  121.5348 25.10356     0.10   0.31    7.4
+5  121.5404 25.01633     0.04   0.56    7.2
+6  121.5566 25.04250     0.07   0.57    7.2
 ```
 
 ggmap + open data 繪圖
@@ -618,7 +619,7 @@ ggmap + open data 繪圖
 ```r
 library(ggmap)
 TaipeiMap <- get_googlemap(
-    location = c(121.43,24.93,121.62,25.19), 
+    center  = c(lon=121.50,lat=25.06), 
     zoom = 11, maptype = 'roadmap')
 TaipeiMapO <- ggmap(TaipeiMap)+ 
     geom_point(data=WaterDataClean, 
@@ -667,7 +668,7 @@ type:alert
 incremental:true
 
 - 利用get_googlemap() + ggmap()取得桃園地區的google 圖層
-    - location = 'Taoyuan'
+    - center = c(lon=121.20,lat=25.00)
     - zoom = 11
     - language = "zh-TW"
 - 在長庚大學所在地 （座標121.389539,25.035225）加上一個紅色的點
@@ -936,7 +937,7 @@ ggmap+面量圖
 
 ```r
 library(ggmap)
-twmap <- get_googlemap(location = 'Taiwan', 
+twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
                  zoom = 7,
                  language = "zh-TW")
 ggmap(twmap)+ #ggmap
