@@ -519,7 +519,7 @@ ggmap package
 install.packages("ggmap") 
 ```
 - `get_googlemap()`函式取得google map圖層
-    - location 地點，可以是地名，也可以是經緯度座標
+    - center 中心點經緯度座標
     - zoom 放大倍率
     - language 地圖語言
 - `ggmap()`函式將取得的圖層畫出來
@@ -633,11 +633,11 @@ incremental:true
 ggmap() 練習輸出圖檔
 ====================================
 ```{r echo=F, fig.height=8}
-twmap <- get_googlemap(
+tymap <- get_googlemap(
     center = c(lon=121.20,lat=25.00),
     zoom = 11,
     language = "zh-TW")
-ggmap(twmap)+
+ggmap(tymap)+
     geom_point(aes(x=121.389539,
                    y=25.035225,
                    color="red"))
