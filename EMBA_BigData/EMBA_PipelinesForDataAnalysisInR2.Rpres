@@ -1,7 +1,6 @@
 Pipelines For Data Analysis In R, part 2
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/05/06
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -209,7 +208,7 @@ type:sub-section
 
 API - Open Data
 ====================================
-- [臺北市開放認養動物](http://data.taipei/opendata/datalist/datasetMeta?oid=6a3e862a-e1cb-4e44-b989-d35609559463)資料
+- [桃園公共自行車即時服務資料](http://data.tycg.gov.tw/opendata/datalist/datasetMeta?oid=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c)資料
 - 每日更新
 - 不可能每日手動下載
 - 提供透過**API**下載的服務
@@ -217,7 +216,7 @@ API - Open Data
 
 ***
 
-- [臺北市開放認養動物API資訊](http://data.taipei/opendata/datalist/datasetMeta/outboundDesc?id=6a3e862a-e1cb-4e44-b989-d35609559463&rid=f4a75ba9-7721-4363-884d-c3820b0b917c)
+- [桃園公共自行車即時服務資料API資訊](http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f)
     - **資料集ID**: 紀錄資料的基本參數，如包含欄位、更新頻率等
     - **資料RID**: 資料集
     - 擷取範例
@@ -241,41 +240,43 @@ JSON檔案匯入
 - `fromJSON()`函數載入JSON資料
 - 如果API網址為**https**，則需使用 `httr` package
     - 使用`GET()`函數處理資料擷取網址
+- API網址參考[桃園公共自行車即時服務資料API資訊](http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f)
 ```{r message=FALSE,warning=FALSE}
 library(jsonlite)
 library(RCurl)
-PetData<-fromJSON("http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=f4a75ba9-7721-4363-884d-c3820b0b917c")
+APIData<-fromJSON("http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json")
 ```
 
 JSON檔案匯入
 ====================================
 - 轉存為`列表list`的型態
-- 五個子元素(offset, limit, count, sort, results)
-- results子元素的類別為資料框data.frame
+- 兩個子元素(success, result)
+- result中records子元素的類別為資料框data.frame
 ```{r message=FALSE,warning=FALSE}
-str(PetData)
+str(APIData)
 ```
 
 JSON檔案解析
 ====================================
 - 使用`$`符號截取元素與子元素
 ```{r readJSON,eval=F}
-head(PetData$result$results)
+head(APIData$result$records)
 ```
 ```{r readJSONk,echo=F}
-knitr::kable(PetData$result$results[1:8,1:9]) 
+knitr::kable(APIData$result$records[1:8,1:9]) 
 ```
 
 JSON檔案解析
 ====================================
-分析各項**開放認養理由**出現次數
+分析各項**地區**車站數
 ```{r readJSON1,eval=F}
-table(PetData$result$results$Reason)
+table(APIData$result$records$sarea)
 ```
 ```{r readJSON1k,echo=F}
-knitr::kable(data.frame(table(PetData$result$results$Reason)))
+knitr::kable(data.frame(table(APIData$result$records$sarea)))
 ```
-分析可知開放認養理由以動物管制居多
+分析可知中壢區車站較多
+
 
 JSON檔案匯入練習
 ====================================
@@ -315,36 +316,30 @@ type:sub-section
 ====================================
 ```{r eval=F}
 library(rvest) ##載入
-YahooNewsurl<-"https://tw.news.yahoo.com/"
-news_title <- read_html(YahooNewsurl) %>% html_nodes(".tpl-title a") %>% html_text()
-news_url <- read_html(YahooNewsurl) %>% html_nodes(".tpl-title a") %>% html_attr("href")
-Yahoo_news <- data.frame(title = news_title, url=news_url)
-head(Yahoo_news)
+Repoterurl<-"https://www.twreporter.org/"
+news_title <- read_html(Repoterurl) %>% html_nodes(".hzKrPP") %>% html_text()
+news_url <- read_html(Repoterurl) %>% html_nodes(".hzKrPP a") %>% html_attr("href")
+news <- data.frame(title = news_title, url=news_url)
+head(news)
 ```
 
 ```
-                                    title                                                           url
-1         曾1妻5妾好風光 男星慘賣豪宅還債 /從1妻5妾的風光到變賣豪宅還債-網友噓雷洪：活該-091741737.html
-2          美報告：美棄「一中」台灣更危險               /美報告-美拋棄-中-台灣處境更危險-081036215.html
+                                                     title                                                    url
+1                           陳藹文／追傳奇的傳奇：夏子之光                                  /a/bookreview-natsuko
+2                   再見東聲：頭份最後一間老戲院的映演歲月                  /a/opinion-goodbye-dong-sheng-theater
 ```
 
 網頁爬蟲 Webscraping-rvest
 ====================================
 - 擷取條件的撰寫會因網頁語法不同而有差異
 - 使用**Google Chrome開發工具**輔助觀察擷取資料的條件
-- 使用**xpath-helper**輔助xpath標籤的擷取
+    - 或使用**SelectorGadget**輔助
+    - 或使用**xpath-helper**輔助xpath標籤的擷取
 - 觀察需要擷取的資料所在HTML片段
-    - 新聞清單被包含在`ul`標籤下
-    - 且css class為`tpl-title yom-list list-style-none`
+    - css class為`latest-section__ItemFrame-gk5lu9-1 hzKrPP`
 
 ```
-<ul class="tpl-title yom-list list-style-none" id="yui_3_9_1_1_1486568229946_2408">
-<li class="list-story first" id="yui_3_9_1_1_1486568229946_2407">
-<div class="txt" id="yui_3_9_1_1_1486568229946_2406">
-<a href="/從1妻5妾的風光到變賣豪宅還債-網友噓雷洪：活該-091741737.html" class="title " data-ylk="pkg:96a0ca11-47bc-3100-81ad-0a288707f150;ver:60cdb126-ee0c-11e6-bb9b-8a777738a932;lt:i;pos:1;" data-rapid_p="1">曾1妻5妾好風光 男星慘賣豪宅還債</a>
-<cite id="yui_3_9_1_1_1486568229946_2405">
-<span class="provider" id="yui_3_9_1_1_1486568229946_2404">Yahoo奇摩娛樂新聞</span>
-</cite></div></li>
+<div class="latest-section__ItemFrame-gk5lu9-1 hzKrPP"><a href="/a/bookreview-natsuko"><div class="hover-effect__HoverEffect-s1mpr2b0-0 kfSlYe"><div class="latest-section__ImageFrame-gk5lu9-2 jUFDxW"><div class="img-wrapper__ImgObjectFit-ketl5c-0 jYnMAC"><img alt="陳藹文／追傳奇的傳奇：夏子之光" src="https://www.twreporter.org/images/20180305174703-97e2a0058b900aec1df1fce4ecdd876f-mobile.png" srcSet="" style="transform:translateZ(0)"/></div></div><div class="latest-section__ContentFrame-gk5lu9-3 hlpTZa"><div class="latest-section__Category-gk5lu9-4 kniurW category-name__CategoryName-s1o0c9ma-0 ivjNw">評論</div><div class="latest-section__Title-gk5lu9-5 clMzIT">陳藹文／追傳奇的傳奇：夏子之光</div></div></div></a></div>
 ....
 ```
 
@@ -352,39 +347,44 @@ head(Yahoo_news)
 ====================================
 ```{r}
 library(rvest) ##(爬蟲結果不代表本人意見)
-DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
+DCardCGU<-"https://www.dcard.tw/f/cgu"
 DCardContent<-read_html(DCardCGU)
-post_title <- DCardContent %>% html_nodes(".PostEntry_titleUnread_ycJL0") %>% html_text()
-post_contentShort<- DCardContent %>% html_nodes(".PostEntry_excerpt_A0Bmh") %>% html_text()
+post_title <- DCardContent %>% html_nodes(".PostEntry_title_H5o4d") %>% html_text()
+post_contentShort<- DCardContent %>% html_nodes(".PostEntry_excerpt_2eHlN") %>% html_text()
 post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
-post_comment<- DCardContent %>% html_nodes(".PostEntry_commentUnread_1cVyd") %>% html_text()
 ```
 
 網頁爬蟲 DCard實作 -2
 ====================================
 ```{r}
 ##(爬蟲結果不代表本人意見)
-post_like<- DCardContent %>% html_nodes(".PostLikeCount_likeCount_2uhBH") %>% html_text()
-post_url <- DCardContent %>% html_nodes(".PostEntry_entry_2rsgm") %>% html_attr("href")
-DCardCGU_posts <- data.frame(title = post_title, author=post_author, 
-                            content=post_contentShort, commentN=post_comment, 
-                            likeN=post_like,
-                            url=paste0("https://www.dcard.tw",post_url))
+post_like<- DCardContent %>% html_nodes(".Like_counter_1enlP") %>% html_text()
+post_url <- DCardContent %>% html_nodes(".PostEntry_root_V6g0r") %>% html_attr("href")
+DCardCGU_posts <- 
+    data.frame(title = post_title,
+               author=post_author, 
+               content=post_contentShort, 
+               likeN=post_like,
+               url=paste0("https://www.dcard.tw",post_url))
 ```
 
 網頁爬蟲 DCard實作 -3
 ====================================
-```{r}
+```{r eval=F}
+DCardCGU_posts[1:4,c("title","author","likeN")]
+```
+```{r echo=F}
 ##(爬蟲結果不代表本人意見)
 knitr::kable(
-    DCardCGU_posts[1:5,c("title","author","commentN")]) 
+    DCardCGU_posts[1:4,c("title","author","likeN")]) 
 ```
 
+    
 爬蟲練習
 ====================================
 type:alert
 
-- [Ptt PokemonGo 版](https://www.ptt.cc/bbs/PokemonGo/index.html)
+- [Ptt Tech_Job 版](https://www.ptt.cc/bbs/Tech_Job/index.html)
 - 試著爬出所有**標題**
 - 爬出的第三個標題是？
 
@@ -421,7 +421,6 @@ incremental:true
 - R Bloggers 有很多[爬蟲範例](http://www.r-bloggers.com/?s=Web+Scraping)（英文）
 - [Ptt爬蟲實作](http://bryannotes.blogspot.tw/2014/08/r-ptt-wantedsocial-network-analysis.html)
 - [大數學堂 網頁爬蟲課程](http://www.largitdata.com/course_list/1)
-
 
 
 從Facebook匯入
@@ -468,7 +467,7 @@ Rfacebook package練習
 type:alert
 incremental:true
 - 取得Facebook access token
-- 使用Rfacebook package取得**CGSGA 長庚學生會**粉絲頁面的前五筆資料
+- 使用Rfacebook package取得**台灣人工智慧學校**粉絲頁面的前五筆資料
 - 第一筆資料的likes_count是多少?
 - 第二筆資料的shares_count是多少?
 
@@ -506,6 +505,17 @@ nrow(totalPage)
 ```
 ## [1] 42
 ```
+
+Facebook資料擷取練習
+====================================
+type:alert
+incremental:true
+
+- 桃園捷運 Taoyuan MRT (TaoyuanMRT) 粉絲頁
+- 分別擷取以下兩段時間的資料
+    - 2017/2/16~20 (自由試乘開始)
+    - 2017/3/2~6 (正式通車)
+- 比較兩區間平均按讚次數，留言次數與分享次數，觀察民眾對粉絲頁的熱度
 
 資料匯出
 ====================================

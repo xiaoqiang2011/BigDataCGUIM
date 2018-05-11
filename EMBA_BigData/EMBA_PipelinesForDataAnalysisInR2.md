@@ -1,7 +1,6 @@
 Pipelines For Data Analysis In R, part 2
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/05/06
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -222,7 +221,7 @@ type:sub-section
 
 API - Open Data
 ====================================
-- [臺北市開放認養動物](http://data.taipei/opendata/datalist/datasetMeta?oid=6a3e862a-e1cb-4e44-b989-d35609559463)資料
+- [桃園公共自行車即時服務資料](http://data.tycg.gov.tw/opendata/datalist/datasetMeta?oid=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c)資料
 - 每日更新
 - 不可能每日手動下載
 - 提供透過**API**下載的服務
@@ -230,7 +229,7 @@ API - Open Data
 
 ***
 
-- [臺北市開放認養動物API資訊](http://data.taipei/opendata/datalist/datasetMeta/outboundDesc?id=6a3e862a-e1cb-4e44-b989-d35609559463&rid=f4a75ba9-7721-4363-884d-c3820b0b917c)
+- [桃園公共自行車即時服務資料API資訊](http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f)
     - **資料集ID**: 紀錄資料的基本參數，如包含欄位、更新頻率等
     - **資料RID**: 資料集
     - 擷取範例
@@ -254,51 +253,50 @@ JSON檔案匯入
 - `fromJSON()`函數載入JSON資料
 - 如果API網址為**https**，則需使用 `httr` package
     - 使用`GET()`函數處理資料擷取網址
+- API網址參考[桃園公共自行車即時服務資料API資訊](http://data.tycg.gov.tw/opendata/datalist/datasetMeta/outboundDesc?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f)
 
 ```r
 library(jsonlite)
 library(RCurl)
-PetData<-fromJSON("http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=f4a75ba9-7721-4363-884d-c3820b0b917c")
+APIData<-fromJSON("http://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json")
 ```
 
 JSON檔案匯入
 ====================================
 - 轉存為`列表list`的型態
-- 五個子元素(offset, limit, count, sort, results)
-- results子元素的類別為資料框data.frame
+- 兩個子元素(success, result)
+- result中records子元素的類別為資料框data.frame
 
 ```r
-str(PetData)
+str(APIData)
 ```
 
 ```
-List of 1
- $ result:List of 5
-  ..$ offset : int 0
-  ..$ limit  : int 10000
-  ..$ count  : int 353
-  ..$ sort   : chr ""
-  ..$ results:'data.frame':	353 obs. of  20 variables:
-  .. ..$ _id            : chr [1:353] "1" "2" "3" "4" ...
-  .. ..$ Name           : chr [1:353] "心光" "琥碧" "芽美" "蛋頭" ...
-  .. ..$ Sex            : chr [1:353] "雌" "雌" "雌" "雄" ...
-  .. ..$ Type           : chr [1:353] "貓" "貓" "貓" "貓" ...
-  .. ..$ Build          : chr [1:353] "中" "中" "中" "中" ...
-  .. ..$ Age            : chr [1:353] "成年" "成年" "成年" "成年" ...
-  .. ..$ Variety        : chr [1:353] "米克斯" "米克斯" "米克斯" "米克斯" ...
-  .. ..$ Reason         : chr [1:353] "動物管制" "動物管制" "動物管制" "動物管制" ...
-  .. ..$ AcceptNum      : chr [1:353] "106042903" "106042715" "106042714" "106042409" ...
-  .. ..$ ChipNum        : chr [1:353] "" "" "" "" ...
-  .. ..$ IsSterilization: chr [1:353] "未絕育" "未絕育" "未絕育" "未絕育" ...
-  .. ..$ HairType       : chr [1:353] "虎斑白" "虎斑" "黑白" "虎斑白" ...
-  .. ..$ Note           : chr [1:353] "右眼混濁\n大家好~我的名字叫心光，我的眼睛不太好，希望還是有好心人願意來帶我回家!\n" "你好~我的名字叫琥碧，因在外流浪久了，所以警戒心較強，需要多一點的耐心與時間來適應喔~" "嗨~我的名字叫芽美，希望到動物之家後，能很快的被認養出去，請來幫我完成心願吧!!\n" "你好~我叫蛋頭，我的個性比較緊張，所以對我要慢慢來唷~讓我可以漸漸的敞開心房接納你~" ...
-  .. ..$ Resettlement   : chr [1:353] "臺北市動物之家 收容編號106042903" "臺北市動物之家 收容編號106042715" "臺北市動物之家 收容編號106042714" "臺北市動物之家 收容編號106042409" ...
-  .. ..$ Phone          : chr [1:353] "02-87913062" "02-87913062" "02-87913062" "02-87913062" ...
-  .. ..$ Email          : chr [1:353] "tcapoa8@mail.taipei.gov.tw" "tcapoa8@mail.taipei.gov.tw" "tcapoa8@mail.taipei.gov.tw" "tcapoa8@mail.taipei.gov.tw" ...
-  .. ..$ ChildreAnlong  : chr [1:353] "" "" "" "" ...
-  .. ..$ AnimalAnlong   : chr [1:353] "" "" "" "" ...
-  .. ..$ Bodyweight     : chr [1:353] "" "" "" "" ...
-  .. ..$ ImageName      : chr [1:353] "http://163.29.39.183/uploads/images/medium/9144b470-bf9f-4283-87e8-9166eeb0a6d7.jpg" "http://163.29.39.183/uploads/images/medium/c941382c-5b60-4137-8080-e928af0994c3.jpg" "http://163.29.39.183/uploads/images/medium/b545b4b6-22dd-4489-ade8-0cc846b4dd82.jpg" "http://163.29.39.183/uploads/images/medium/635cf5b8-89f3-4eca-bd3b-2af88101a1a9.jpg" ...
+List of 2
+ $ success: logi TRUE
+ $ result :List of 5
+  ..$ resource_id: chr "a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f"
+  ..$ fields     :'data.frame':	15 obs. of  2 variables:
+  .. ..$ type: chr [1:15] "int4" "text" "text" "text" ...
+  .. ..$ id  : chr [1:15] "_id" "sno" "sna" "tot" ...
+  ..$ records    :'data.frame':	100 obs. of  15 variables:
+  .. ..$ _id    : int [1:100] 1 2 3 4 5 6 7 8 9 10 ...
+  .. ..$ sarea  : chr [1:100] "中壢區" "中壢區" "中壢區" "中壢區" ...
+  .. ..$ sareaen: chr [1:100] "Zhongli Dist." "Zhongli Dist." "Zhongli Dist." "Zhongli Dist." ...
+  .. ..$ sna    : chr [1:100] "中央大學圖書館" "中壢高中" "中正公園(中美路)" "中壢火車站(前站)" ...
+  .. ..$ aren   : chr [1:100] "No.300, Zhongda Rd." "No.215, Sec. 2, Zhongyang W. Rd. (opposite)" "No.101 to No.113, Zhongmei Rd. (opposite)" "No.139, Zhonghe Rd. (opposite)" ...
+  .. ..$ sno    : chr [1:100] "2001" "2002" "2003" "2004" ...
+  .. ..$ tot    : chr [1:100] "60" "52" "54" "98" ...
+  .. ..$ snaen  : chr [1:100] "National Central University Library" "Jhungli Senior High School" "Zhongzheng Park" "TRA Zhongli Station (Front)" ...
+  .. ..$ bemp   : chr [1:100] "36" "26" "28" "69" ...
+  .. ..$ ar     : chr [1:100] "中大路300號(中央大學校內圖書館前)" "中央西路二段215號對面人行道" "中美路101號-113號對面人行道" "中和路139號對面圓環" ...
+  .. ..$ act    : chr [1:100] "1" "1" "1" "1" ...
+  .. ..$ lat    : chr [1:100] "24.968128" "24.960815" "24.959113" "24.953874" ...
+  .. ..$ lng    : chr [1:100] "121.194666" "121.212038" "121.224805" "121.2256" ...
+  .. ..$ sbi    : chr [1:100] "23" "26" "24" "25" ...
+  .. ..$ mday   : chr [1:100] "20180512002918" "20180512002916" "20180512002933" "20180512002942" ...
+  ..$ total      : int 190
+  ..$ limit      : int 100
 ```
 
 JSON檔案解析
@@ -306,36 +304,40 @@ JSON檔案解析
 - 使用`$`符號截取元素與子元素
 
 ```r
-head(PetData$result$results)
+head(APIData$result$records)
 ```
 
-|_id |Name  |Sex |Type |Build |Age  |Variety |Reason       |AcceptNum |
-|:---|:-----|:---|:----|:-----|:----|:-------|:------------|:---------|
-|1   |心光  |雌  |貓   |中    |成年 |米克斯  |動物管制     |106042903 |
-|2   |琥碧  |雌  |貓   |中    |成年 |米克斯  |動物管制     |106042715 |
-|3   |芽美  |雌  |貓   |中    |成年 |米克斯  |動物管制     |106042714 |
-|4   |蛋頭  |雄  |貓   |中    |成年 |米克斯  |動物管制     |106042409 |
-|5   |黑虎  |雄  |貓   |中    |老年 |米克斯  |民眾不擬續養 |106042309 |
-|6   |阿咪  |雌  |貓   |中    |成年 |米克斯  |民眾不擬續養 |106042308 |
-|7   |小花  |雌  |貓   |中    |成年 |米克斯  |民眾不擬續養 |106042306 |
-|8   |Tiger |雌  |貓   |中    |老年 |米克斯  |民眾不擬續養 |106042304 |
+| _id|sarea  |sareaen       |sna              |aren                                             |sno  |tot |snaen                                    |bemp |
+|---:|:------|:-------------|:----------------|:------------------------------------------------|:----|:---|:----------------------------------------|:----|
+|   1|中壢區 |Zhongli Dist. |中央大學圖書館   |No.300, Zhongda Rd.                              |2001 |60  |National Central University Library      |36   |
+|   2|中壢區 |Zhongli Dist. |中壢高中         |No.215, Sec. 2, Zhongyang W. Rd. (opposite)      |2002 |52  |Jhungli Senior High School               |26   |
+|   3|中壢區 |Zhongli Dist. |中正公園(中美路) |No.101 to No.113, Zhongmei Rd. (opposite)        |2003 |54  |Zhongzheng Park                          |28   |
+|   4|中壢區 |Zhongli Dist. |中壢火車站(前站) |No.139, Zhonghe Rd. (opposite)                   |2004 |98  |TRA Zhongli Station (Front)              |69   |
+|   5|中壢區 |Zhongli Dist. |中原大學         |No.200, Zhongbei Rd.                             |2005 |82  |Chung Yuan Christian University          |48   |
+|   6|中壢區 |Zhongli Dist. |銀河廣場         |No.48, Jiuhe 1st St. (opposite)                  |2006 |58  |Galaxy Square                            |34   |
+|   7|中壢區 |Zhongli Dist. |中壢區公所       |No.380, Huanbei Rd.                              |2007 |40  |Civil Affairs Office of Zhongli District |2    |
+|   8|中壢區 |Zhongli Dist. |新明橋           |No.269 to No.373, Sec. 2, Yuanhua Rd. (opposite) |2008 |58  |Xinming Bridge                           |0    |
 
 JSON檔案解析
 ====================================
-分析各項**開放認養理由**出現次數
+分析各項**地區**車站數
 
 ```r
-table(PetData$result$results$Reason)
+table(APIData$result$records$sarea)
 ```
 
-|Var1         | Freq|
-|:------------|----:|
-|             |   27|
-|動物管制     |  137|
-|動物救援     |  112|
-|民眾不擬續養 |   52|
-|民眾拾獲     |   25|
-分析可知開放認養理由以動物管制居多
+|Var1   | Freq|
+|:------|----:|
+|八德區 |    5|
+|大溪區 |    2|
+|大園區 |    2|
+|龜山區 |   10|
+|蘆竹區 |    7|
+|平鎮區 |    7|
+|桃園區 |   32|
+|中壢區 |   35|
+分析可知中壢區車站較多
+
 
 JSON檔案匯入練習
 ====================================
@@ -376,36 +378,30 @@ type:sub-section
 
 ```r
 library(rvest) ##載入
-YahooNewsurl<-"https://tw.news.yahoo.com/"
-news_title <- read_html(YahooNewsurl) %>% html_nodes(".tpl-title a") %>% html_text()
-news_url <- read_html(YahooNewsurl) %>% html_nodes(".tpl-title a") %>% html_attr("href")
-Yahoo_news <- data.frame(title = news_title, url=news_url)
-head(Yahoo_news)
+Repoterurl<-"https://www.twreporter.org/"
+news_title <- read_html(Repoterurl) %>% html_nodes(".hzKrPP") %>% html_text()
+news_url <- read_html(Repoterurl) %>% html_nodes(".hzKrPP a") %>% html_attr("href")
+news <- data.frame(title = news_title, url=news_url)
+head(news)
 ```
 
 ```
-                                    title                                                           url
-1         曾1妻5妾好風光 男星慘賣豪宅還債 /從1妻5妾的風光到變賣豪宅還債-網友噓雷洪：活該-091741737.html
-2          美報告：美棄「一中」台灣更危險               /美報告-美拋棄-中-台灣處境更危險-081036215.html
+                                                     title                                                    url
+1                           陳藹文／追傳奇的傳奇：夏子之光                                  /a/bookreview-natsuko
+2                   再見東聲：頭份最後一間老戲院的映演歲月                  /a/opinion-goodbye-dong-sheng-theater
 ```
 
 網頁爬蟲 Webscraping-rvest
 ====================================
 - 擷取條件的撰寫會因網頁語法不同而有差異
 - 使用**Google Chrome開發工具**輔助觀察擷取資料的條件
-- 使用**xpath-helper**輔助xpath標籤的擷取
+    - 或使用**SelectorGadget**輔助
+    - 或使用**xpath-helper**輔助xpath標籤的擷取
 - 觀察需要擷取的資料所在HTML片段
-    - 新聞清單被包含在`ul`標籤下
-    - 且css class為`tpl-title yom-list list-style-none`
+    - css class為`latest-section__ItemFrame-gk5lu9-1 hzKrPP`
 
 ```
-<ul class="tpl-title yom-list list-style-none" id="yui_3_9_1_1_1486568229946_2408">
-<li class="list-story first" id="yui_3_9_1_1_1486568229946_2407">
-<div class="txt" id="yui_3_9_1_1_1486568229946_2406">
-<a href="/從1妻5妾的風光到變賣豪宅還債-網友噓雷洪：活該-091741737.html" class="title " data-ylk="pkg:96a0ca11-47bc-3100-81ad-0a288707f150;ver:60cdb126-ee0c-11e6-bb9b-8a777738a932;lt:i;pos:1;" data-rapid_p="1">曾1妻5妾好風光 男星慘賣豪宅還債</a>
-<cite id="yui_3_9_1_1_1486568229946_2405">
-<span class="provider" id="yui_3_9_1_1_1486568229946_2404">Yahoo奇摩娛樂新聞</span>
-</cite></div></li>
+<div class="latest-section__ItemFrame-gk5lu9-1 hzKrPP"><a href="/a/bookreview-natsuko"><div class="hover-effect__HoverEffect-s1mpr2b0-0 kfSlYe"><div class="latest-section__ImageFrame-gk5lu9-2 jUFDxW"><div class="img-wrapper__ImgObjectFit-ketl5c-0 jYnMAC"><img alt="陳藹文／追傳奇的傳奇：夏子之光" src="https://www.twreporter.org/images/20180305174703-97e2a0058b900aec1df1fce4ecdd876f-mobile.png" srcSet="" style="transform:translateZ(0)"/></div></div><div class="latest-section__ContentFrame-gk5lu9-3 hlpTZa"><div class="latest-section__Category-gk5lu9-4 kniurW category-name__CategoryName-s1o0c9ma-0 ivjNw">評論</div><div class="latest-section__Title-gk5lu9-5 clMzIT">陳藹文／追傳奇的傳奇：夏子之光</div></div></div></a></div>
 ....
 ```
 
@@ -414,12 +410,11 @@ head(Yahoo_news)
 
 ```r
 library(rvest) ##(爬蟲結果不代表本人意見)
-DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
+DCardCGU<-"https://www.dcard.tw/f/cgu"
 DCardContent<-read_html(DCardCGU)
-post_title <- DCardContent %>% html_nodes(".PostEntry_titleUnread_ycJL0") %>% html_text()
-post_contentShort<- DCardContent %>% html_nodes(".PostEntry_excerpt_A0Bmh") %>% html_text()
+post_title <- DCardContent %>% html_nodes(".PostEntry_title_H5o4d") %>% html_text()
+post_contentShort<- DCardContent %>% html_nodes(".PostEntry_excerpt_2eHlN") %>% html_text()
 post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
-post_comment<- DCardContent %>% html_nodes(".PostEntry_commentUnread_1cVyd") %>% html_text()
 ```
 
 網頁爬蟲 DCard實作 -2
@@ -427,38 +422,36 @@ post_comment<- DCardContent %>% html_nodes(".PostEntry_commentUnread_1cVyd") %>%
 
 ```r
 ##(爬蟲結果不代表本人意見)
-post_like<- DCardContent %>% html_nodes(".PostLikeCount_likeCount_2uhBH") %>% html_text()
-post_url <- DCardContent %>% html_nodes(".PostEntry_entry_2rsgm") %>% html_attr("href")
-DCardCGU_posts <- data.frame(title = post_title, author=post_author, 
-                            content=post_contentShort, commentN=post_comment, 
-                            likeN=post_like,
-                            url=paste0("https://www.dcard.tw",post_url))
+post_like<- DCardContent %>% html_nodes(".Like_counter_1enlP") %>% html_text()
+post_url <- DCardContent %>% html_nodes(".PostEntry_root_V6g0r") %>% html_attr("href")
+DCardCGU_posts <- 
+    data.frame(title = post_title,
+               author=post_author, 
+               content=post_contentShort, 
+               likeN=post_like,
+               url=paste0("https://www.dcard.tw",post_url))
 ```
 
 網頁爬蟲 DCard實作 -3
 ====================================
 
 ```r
-##(爬蟲結果不代表本人意見)
-knitr::kable(
-    DCardCGU_posts[1:5,c("title","author","commentN")]) 
+DCardCGU_posts[1:4,c("title","author","likeN")]
 ```
 
+|title                      |author                |likeN |
+|:--------------------------|:---------------------|:-----|
+|#揪團 六福村❌聯誼❌科大幼保 |長庚大學 醫務管理學系 |24    |
+|免費吃喝玩樂旅推薦         |長庚大學              |11    |
+|宿舍抽籤疑似有黑箱         |長庚大學              |5     |
+|護夜最後一首歌             |長庚大學              |5     |
 
-
-|title            |author                |commentN |
-|:----------------|:---------------------|:--------|
-|明德寧靜寢室申請 |長庚大學              |1        |
-|尋找球鞋😭😭😭😭     |長庚大學 機械工程學系 |1        |
-|好漢坡的蛞蝓     |長庚大學              |2        |
-|騎車出去也要插隊 |長庚大學              |1        |
-|長庚看流星雨？   |長庚大學              |2        |
-
+    
 爬蟲練習
 ====================================
 type:alert
 
-- [Ptt PokemonGo 版](https://www.ptt.cc/bbs/PokemonGo/index.html)
+- [Ptt Tech_Job 版](https://www.ptt.cc/bbs/Tech_Job/index.html)
 - 試著爬出所有**標題**
 - 爬出的第三個標題是？
 
@@ -495,7 +488,6 @@ incremental:true
 - R Bloggers 有很多[爬蟲範例](http://www.r-bloggers.com/?s=Web+Scraping)（英文）
 - [Ptt爬蟲實作](http://bryannotes.blogspot.tw/2014/08/r-ptt-wantedsocial-network-analysis.html)
 - [大數學堂 網頁爬蟲課程](http://www.largitdata.com/course_list/1)
-
 
 
 從Facebook匯入
@@ -543,7 +535,7 @@ Rfacebook package練習
 type:alert
 incremental:true
 - 取得Facebook access token
-- 使用Rfacebook package取得**CGSGA 長庚學生會**粉絲頁面的前五筆資料
+- 使用Rfacebook package取得**台灣人工智慧學校**粉絲頁面的前五筆資料
 - 第一筆資料的likes_count是多少?
 - 第二筆資料的shares_count是多少?
 
@@ -583,6 +575,17 @@ nrow(totalPage)
 ```
 ## [1] 42
 ```
+
+Facebook資料擷取練習
+====================================
+type:alert
+incremental:true
+
+- 桃園捷運 Taoyuan MRT (TaoyuanMRT) 粉絲頁
+- 分別擷取以下兩段時間的資料
+    - 2017/2/16~20 (自由試乘開始)
+    - 2017/3/2~6 (正式通車)
+- 比較兩區間平均按讚次數，留言次數與分享次數，觀察民眾對粉絲頁的熱度
 
 資料匯出
 ====================================
@@ -774,10 +777,10 @@ str(DCardCGU_posts)
 ```
 
 ```
-'data.frame':	30 obs. of  3 variables:
- $ title   : chr  "明德寧靜寢室申請" "尋找球鞋\U0001f62d\U0001f62d\U0001f62d\U0001f62d" "好漢坡的蛞蝓" "騎車出去也要插隊" ...
- $ commentN: chr  "1" "1" "2" "1" ...
- $ likeN   : chr  "1" "1" "4" "6" ...
+'data.frame':	0 obs. of  3 variables:
+ $ title   : chr 
+ $ commentN: chr 
+ $ likeN   : chr 
 ```
 該如何將這兩個欄位轉成數字呢？
 
