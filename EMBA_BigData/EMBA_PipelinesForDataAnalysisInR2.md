@@ -288,13 +288,13 @@ List of 2
   .. ..$ sno    : chr [1:100] "2001" "2002" "2003" "2004" ...
   .. ..$ tot    : chr [1:100] "60" "52" "54" "98" ...
   .. ..$ snaen  : chr [1:100] "National Central University Library" "Jhungli Senior High School" "Zhongzheng Park" "TRA Zhongli Station (Front)" ...
-  .. ..$ bemp   : chr [1:100] "36" "26" "28" "69" ...
+  .. ..$ bemp   : chr [1:100] "35" "19" "24" "77" ...
   .. ..$ ar     : chr [1:100] "中大路300號(中央大學校內圖書館前)" "中央西路二段215號對面人行道" "中美路101號-113號對面人行道" "中和路139號對面圓環" ...
   .. ..$ act    : chr [1:100] "1" "1" "1" "1" ...
   .. ..$ lat    : chr [1:100] "24.968128" "24.960815" "24.959113" "24.953874" ...
   .. ..$ lng    : chr [1:100] "121.194666" "121.212038" "121.224805" "121.2256" ...
-  .. ..$ sbi    : chr [1:100] "23" "26" "24" "25" ...
-  .. ..$ mday   : chr [1:100] "20180512002918" "20180512002916" "20180512002933" "20180512002942" ...
+  .. ..$ sbi    : chr [1:100] "22" "33" "28" "17" ...
+  .. ..$ mday   : chr [1:100] "20180512123443" "20180512123429" "20180512123422" "20180512123428" ...
   ..$ total      : int 190
   ..$ limit      : int 100
 ```
@@ -309,13 +309,13 @@ head(APIData$result$records)
 
 | _id|sarea  |sareaen       |sna              |aren                                             |sno  |tot |snaen                                    |bemp |
 |---:|:------|:-------------|:----------------|:------------------------------------------------|:----|:---|:----------------------------------------|:----|
-|   1|中壢區 |Zhongli Dist. |中央大學圖書館   |No.300, Zhongda Rd.                              |2001 |60  |National Central University Library      |36   |
-|   2|中壢區 |Zhongli Dist. |中壢高中         |No.215, Sec. 2, Zhongyang W. Rd. (opposite)      |2002 |52  |Jhungli Senior High School               |26   |
-|   3|中壢區 |Zhongli Dist. |中正公園(中美路) |No.101 to No.113, Zhongmei Rd. (opposite)        |2003 |54  |Zhongzheng Park                          |28   |
-|   4|中壢區 |Zhongli Dist. |中壢火車站(前站) |No.139, Zhonghe Rd. (opposite)                   |2004 |98  |TRA Zhongli Station (Front)              |69   |
-|   5|中壢區 |Zhongli Dist. |中原大學         |No.200, Zhongbei Rd.                             |2005 |82  |Chung Yuan Christian University          |48   |
-|   6|中壢區 |Zhongli Dist. |銀河廣場         |No.48, Jiuhe 1st St. (opposite)                  |2006 |58  |Galaxy Square                            |34   |
-|   7|中壢區 |Zhongli Dist. |中壢區公所       |No.380, Huanbei Rd.                              |2007 |40  |Civil Affairs Office of Zhongli District |2    |
+|   1|中壢區 |Zhongli Dist. |中央大學圖書館   |No.300, Zhongda Rd.                              |2001 |60  |National Central University Library      |35   |
+|   2|中壢區 |Zhongli Dist. |中壢高中         |No.215, Sec. 2, Zhongyang W. Rd. (opposite)      |2002 |52  |Jhungli Senior High School               |19   |
+|   3|中壢區 |Zhongli Dist. |中正公園(中美路) |No.101 to No.113, Zhongmei Rd. (opposite)        |2003 |54  |Zhongzheng Park                          |24   |
+|   4|中壢區 |Zhongli Dist. |中壢火車站(前站) |No.139, Zhonghe Rd. (opposite)                   |2004 |98  |TRA Zhongli Station (Front)              |77   |
+|   5|中壢區 |Zhongli Dist. |中原大學         |No.200, Zhongbei Rd.                             |2005 |82  |Chung Yuan Christian University          |52   |
+|   6|中壢區 |Zhongli Dist. |銀河廣場         |No.48, Jiuhe 1st St. (opposite)                  |2006 |58  |Galaxy Square                            |8    |
+|   7|中壢區 |Zhongli Dist. |中壢區公所       |No.380, Huanbei Rd.                              |2007 |40  |Civil Affairs Office of Zhongli District |21   |
 |   8|中壢區 |Zhongli Dist. |新明橋           |No.269 to No.373, Sec. 2, Yuanhua Rd. (opposite) |2008 |58  |Xinming Bridge                           |0    |
 
 JSON檔案解析
@@ -439,12 +439,12 @@ DCardCGU_posts <-
 DCardCGU_posts[1:4,c("title","author","likeN")]
 ```
 
-|title                      |author                |likeN |
-|:--------------------------|:---------------------|:-----|
-|#揪團 六福村❌聯誼❌科大幼保 |長庚大學 醫務管理學系 |24    |
-|免費吃喝玩樂旅推薦         |長庚大學              |11    |
-|宿舍抽籤疑似有黑箱         |長庚大學              |5     |
-|護夜最後一首歌             |長庚大學              |5     |
+|title              |author   |likeN |
+|:------------------|:--------|:-----|
+|免費吃喝玩樂旅推薦 |長庚大學 |14    |
+|宿舍抽籤疑似有黑箱 |長庚大學 |6     |
+|想怎樣             |長庚大學 |3     |
+|星期二下午解剖課   |長庚大學 |1     |
 
     
 爬蟲練習
