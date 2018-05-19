@@ -1,7 +1,6 @@
 資料探勘
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/05/22
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -598,10 +597,8 @@ table(AdmitProb<0.5,mydata[mydata$Test==T,]$admit) # row,column
 knitr::include_graphics("figures/Cond.png")
 ```
 
-- TP: 有病且預測也有病
-- TN: 沒病且預測也沒病
-- FP: 沒病但是預測有病
-- FN: 有病但預測沒病
+- TP: 有病且預測也有病    FP: 沒病但是預測有病
+- TN: 沒病且預測也沒病    FN: 有病但預測沒病
 
 效能指標名詞解釋
 ====================================
@@ -646,8 +643,12 @@ str(AdmitAns)
 library(caret) # install.packages("caret") #計算參數的packages
 sensitivity(AdmitAns,mydata[mydata$Test==T,]$admit)
 specificity(AdmitAns,mydata[mydata$Test==T,]$admit)
+```
+
+效能指標
+====================================
+ 計算預測效能參數
+```{r warning=F,message=F,fig.height=4.5}
 posPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
 negPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
 ```
-
-
