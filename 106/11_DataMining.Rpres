@@ -456,6 +456,8 @@ type:alert
   - 剩下的1/3做驗證`Test set`
 - 以下圖的監督式學習流程圖為例，可以注意到綠色箭頭的資料集在訓練過程中從未被使用。
 
+模型驗證
+====================================
 ```{r echo=FALSE}
 knitr::include_graphics("figures/SupervisedLearning.png")
 ```
@@ -652,3 +654,16 @@ specificity(AdmitAns,mydata[mydata$Test==T,]$admit)
 posPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
 negPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
 ```
+
+預測模型建立與驗證綜合練習
+====================================
+type:alert
+
+- Sonar資料記載礦物與石頭接受各個不同角度的聲波撞擊後，接收到的回聲數值
+- 一共有60個參數，代表使用一特別角度的聲波撞擊礦石所得回聲
+- 分類結果為二元分類，包括礦物 (M) 與石頭 (R) 
+- 將資料隨機分為訓練組(2/3)與測試組(1/3)
+- 訓練模型並驗證！
+
+library(mlbench)
+data(Sonar) 
