@@ -1,7 +1,6 @@
 Pipelines For Data Analysis In R, part 3
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/05/06
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -947,21 +946,21 @@ ggmap package
 ##第一次使用前先安裝
 install.packages("ggmap") 
 ```
-- `get_map()`函式取得google map圖層
-    - location 地點，可以是地名，也可以是經緯度座標
+- `get_googlemap()`函式取得google map圖層
+    - center 中心點經緯度座標
     - zoom 放大倍率
     - language 地圖語言
 - `ggmap()`函式將取得的圖層畫出來
 
 
-get_map() + ggmap()
+get_googlemap() + ggmap()
 ====================================
 
 ```r
 library(ggmap)
-twmap <- get_map(location = 'Taiwan', 
-                 zoom = 7,
-                 language = "zh-TW")
+twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
+                  zoom = 7,
+                  language = "zh-TW")
 ggmap(twmap)
 ```
 
@@ -986,19 +985,19 @@ head(WaterDataClean)
 
 ```
   _id update_date update_time       qua_id                code_name
-1   1  2017-05-04  23:00:00   CS00                       雙溪淨水場
-2   2  2017-05-04  23:00:00   CS01                         衛理女中
-3   3  2017-05-04  23:00:00   CS02         雙溪國小                
-4   4  2017-05-04  23:00:00   CS03                       華興加壓站
-5   5  2017-05-04  23:00:00   CX00                       長興淨水場
-6   6  2017-05-04  23:00:00   CX02                         市政大樓
+1   1  2018-05-25  21:30:00   CS00                       雙溪淨水場
+2   2  2018-05-25  21:30:00   CS01                         衛理女中
+3   3  2018-05-25  21:30:00   CS02         雙溪國小                
+4   4  2018-05-25  21:30:00   CS03                       華興加壓站
+5   5  2018-05-25  21:30:00   CX00                       長興淨水場
+6   6  2018-05-25  21:30:00   CX02                         市政大樓
   longitude latitude qua_cntu qua_cl qua_ph
-1  121.5609 25.11574     0.02   0.54    7.4
-2  121.5440 25.10325     0.09   0.41    7.5
-3  121.5556 25.10763     0.06   0.42    7.4
-4  121.5348 25.10356     0.12   0.46    7.2
-5  121.5404 25.01633     0.03   0.44    7.2
-6  121.5566 25.04250     0.04   0.41    7.2
+1  121.5609 25.11574     0.05   0.61    7.7
+2  121.5440 25.10325     0.10   0.29    7.6
+3  121.5556 25.10763     0.06   0.47    7.7
+4  121.5348 25.10356     0.15   0.35    7.1
+5  121.5404 25.01633     0.03   0.58    7.3
+6  121.5566 25.04250     0.06    0.6    7.2
 ```
 
 ggmap + open data 繪圖
@@ -1006,8 +1005,8 @@ ggmap + open data 繪圖
 
 ```r
 library(ggmap)
-TaipeiMap <- get_map(
-    location = c(121.43,24.93,121.62,25.19), 
+TaipeiMap <- get_googlemap(
+    center  = c(lon=121.50,lat=25.06), 
     zoom = 11, maptype = 'roadmap')
 TaipeiMapO <- ggmap(TaipeiMap)+ 
     geom_point(data=WaterDataClean, 
@@ -1041,9 +1040,6 @@ ggmap + extent
 
 ```r
 library(ggmap)
-TaipeiMap = get_map(
-    location = c(121.43,24.93,121.62,25.19), 
-    zoom = 14, maptype = 'roadmap')
 #extent = 'device' 滿版
 ggmap(TaipeiMap,extent = 'device') 
 ```
@@ -1058,8 +1054,8 @@ ggmap() 練習
 type:alert
 incremental:true
 
-- 利用get_map() + ggmap()取得桃園地區的google 圖層
-    - location = 'Taoyuan'
+- 利用get_googlemap() + ggmap()取得桃園地區的google 圖層
+    - center = c(lon=121.20,lat=25.00)
     - zoom = 11
     - language = "zh-TW"
 - 在長庚大學所在地 （座標121.389539,25.035225）加上一個紅色的點

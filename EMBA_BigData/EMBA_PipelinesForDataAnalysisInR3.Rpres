@@ -1,7 +1,6 @@
 Pipelines For Data Analysis In R, part 3
 ========================================================
 author: 曾意儒 Yi-Ju Tseng
-date: 2017/05/06
 autosize: true
 font-family: 'Microsoft JhengHei'
 navigation: slide
@@ -758,20 +757,20 @@ ggmap package
 ##第一次使用前先安裝
 install.packages("ggmap") 
 ```
-- `get_map()`函式取得google map圖層
-    - location 地點，可以是地名，也可以是經緯度座標
+- `get_googlemap()`函式取得google map圖層
+    - center 中心點經緯度座標
     - zoom 放大倍率
     - language 地圖語言
 - `ggmap()`函式將取得的圖層畫出來
 
 
-get_map() + ggmap()
+get_googlemap() + ggmap()
 ====================================
 ```{r, warning=F,message=F, fig.height=5}
 library(ggmap)
-twmap <- get_map(location = 'Taiwan', 
-                 zoom = 7,
-                 language = "zh-TW")
+twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
+                  zoom = 7,
+                  language = "zh-TW")
 ggmap(twmap)
 ```
 
@@ -795,8 +794,8 @@ ggmap + open data 繪圖
 ====================================
 ```{r eval=F, message=F, warning=F}
 library(ggmap)
-TaipeiMap <- get_map(
-    location = c(121.43,24.93,121.62,25.19), 
+TaipeiMap <- get_googlemap(
+    center  = c(lon=121.50,lat=25.06), 
     zoom = 11, maptype = 'roadmap')
 TaipeiMapO <- ggmap(TaipeiMap)+ 
     geom_point(data=WaterDataClean, 
@@ -812,8 +811,8 @@ ggmap + open data
 ====================================
 ```{r echo=FALSE, fig.height=8}
 library(ggmap)
-TaipeiMap <- get_map(
-    location = c(121.43,24.93,121.62,25.19), 
+TaipeiMap <- get_googlemap(
+    center  = c(lon=121.50,lat=25.06), 
     zoom = 11, maptype = 'roadmap')
 TaipeiMapO <- ggmap(TaipeiMap)+ 
     geom_point(data=WaterDataClean, 
@@ -842,9 +841,6 @@ ggmap + extent
 透過設定`extent`參數可將地圖輸出樣式改為滿版
 ```{r eval=F,warning=F,message=F, fig.height=3}
 library(ggmap)
-TaipeiMap = get_map(
-    location = c(121.43,24.93,121.62,25.19), 
-    zoom = 14, maptype = 'roadmap')
 #extent = 'device' 滿版
 ggmap(TaipeiMap,extent = 'device') 
 ```
@@ -854,9 +850,6 @@ ggmap + extent
 透過設定`extent`參數可將地圖輸出樣式改為滿版
 ```{r echo=F,warning=F,message=F, fig.height=8}
 library(ggmap)
-TaipeiMap = get_map(
-    location = c(121.43,24.93,121.62,25.19), 
-    zoom = 14, maptype = 'roadmap')
 #extent = 'device' 滿版
 ggmap(TaipeiMap,extent = 'device') 
 ```
@@ -866,8 +859,8 @@ ggmap() 練習
 type:alert
 incremental:true
 
-- 利用get_map() + ggmap()取得桃園地區的google 圖層
-    - location = 'Taoyuan'
+- 利用get_googlemap() + ggmap()取得桃園地區的google 圖層
+    - center = c(lon=121.20,lat=25.00)
     - zoom = 11
     - language = "zh-TW"
 - 在長庚大學所在地 （座標121.389539,25.035225）加上一個紅色的點
@@ -879,14 +872,14 @@ incremental:true
 ggmap() 練習輸出圖檔
 ====================================
 ```{r echo=F, fig.height=8}
-twmap <- get_map(
-    location = 'Taoyuan', 
+tymap <- get_googlemap(
+    center = c(lon=121.20,lat=25.00),
     zoom = 11,
     language = "zh-TW")
-ggmap(twmap)+
+ggmap(tymap)+
     geom_point(aes(x=121.389539,
-                   y=25.035225,
-                   color="red"))
+                   y=25.035225),
+               color="red")
 ```
 
 

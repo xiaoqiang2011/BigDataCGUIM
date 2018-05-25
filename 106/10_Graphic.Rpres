@@ -639,8 +639,8 @@ tymap <- get_googlemap(
     language = "zh-TW")
 ggmap(tymap)+
     geom_point(aes(x=121.389539,
-                   y=25.035225,
-                   color="red"))
+                   y=25.035225),
+            color="red")
 ```
 
 
