@@ -30,7 +30,7 @@ qplot(Steals,TotalRebounds,
 
     ## `geom_smooth()` using method = 'loess'
 
-![](10_Graphic_QA_files/figure-markdown_github/unnamed-chunk-1-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-1-1.png)
 
 ``` r
 cor(NBA1617$Steals,NBA1617$TotalRebounds)
@@ -58,7 +58,7 @@ ggplot(NBA1617,
       geom_smooth(method = lm)
 ```
 
-![](10_Graphic_QA_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-2-1.png)
 
 <hr>
 ### 問題
@@ -71,45 +71,11 @@ ggplot(NBA1617,
 library(ggplot2)
 library(dplyr)
 ```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
 ``` r
 library(readr)
 
 company_data<-read_csv('http://data.gcis.nat.gov.tw/od/file?oid=9D63D882-9B21-4FAA-9A10-2D5E0D938A47')
 ```
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   `縣 市 別` = col_character(),
-    ##   總計家數 = col_integer(),
-    ##   總計資本額 = col_double(),
-    ##   無限公司家數 = col_integer(),
-    ##   無限公司資本額 = col_double(),
-    ##   兩合公司家數 = col_integer(),
-    ##   兩合公司資本額 = col_double(),
-    ##   有限公司家數 = col_integer(),
-    ##   有限公司資本額 = col_double(),
-    ##   股份有限公司家數 = col_integer(),
-    ##   股份有限公司資本額 = col_double(),
-    ##   外國公司在臺認許公司家數 = col_integer(),
-    ##   外國公司在臺認許公司在臺營運資金 = col_double(),
-    ##   大陸地區在臺許可公司家數 = col_integer(),
-    ##   大陸地區在臺許可公司在臺營運資金 = col_double(),
-    ##   外國公司代表人辦事處家數 = col_integer(),
-    ##   大陸地區在臺許可辦事處家數 = col_integer()
-    ## )
-
 ``` r
 #選取資料方式一
 company_data<-company_data%>%
@@ -125,9 +91,10 @@ company_data%>%
   geom_smooth(method= 'lm')
 ```
 
-![](10_Graphic_QA_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-3-1.png)
 
 <hr>
+
 ### 問題
 
 請載入2018年03月公司設立登記清冊 <http://data.gcis.nat.gov.tw/od/file?oid=21E005D7-B4EC-42FB-BDDA-66DB5235BEBB> ，請用視覺化探索式資料分析的方式，比較各縣市有幾家公司?(bar chart) 並用縣市做子圖，檢查資本額的分布情形(histograms)
@@ -143,30 +110,17 @@ company_data%>%
 ``` r
 company_2018<-read_csv('http://data.gcis.nat.gov.tw/od/file?oid=21E005D7-B4EC-42FB-BDDA-66DB5235BEBB')
 ```
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   序號 = col_integer(),
-    ##   統一編號 = col_integer(),
-    ##   公司名稱 = col_character(),
-    ##   公司所在地 = col_character(),
-    ##   代表人 = col_character(),
-    ##   資本額 = col_integer(),
-    ##   核准設立日期 = col_integer()
-    ## )
-
 ``` r
 #company_2018$公司所在地<-iconv(company_2018$公司所在地,'utf8','big5')
 company_2018$縣市別<-substring(company_2018$公司所在地,1,3)
 
-#
 company_2018%>% 
   ggplot(aes(x = 縣市別))+
   geom_bar()+
   theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
-![](10_Graphic_QA_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-4-1.png)
 
 ``` r
 company_2018%>% 
@@ -177,9 +131,10 @@ company_2018%>%
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](10_Graphic_QA_files/figure-markdown_github/unnamed-chunk-4-2.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-4-2.png)
 
 <hr>
+
 ### 問題
 
 下載動物認領養資料http://data.coa.gov.tw/Service/OpenData/AnimalOpenData.aspx ， 請用條狀圖呈現各收容所shelter\_name目前的收容動物數量，並以動物種類animal\_kind為基準做子圖，並試著將預設的灰底色去除(改為白底色)，最後將X軸名稱設定為”收容所”，Y軸名稱設定為”待領養動物數量”
@@ -205,12 +160,14 @@ animal%>%ggplot(aes(shelter_name))+
   theme(axis.text.x = element_text(angle = 90, hjust = 1,vjust = 0.5))
 ```
 
-![](10_Graphic_QA_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-5-1.png)
 
 <hr>
+
 ### 問題
 
-載入桃園市公共自行車的資料，<https://data.tycg.gov.tw/opendata/datalist/datasetMeta/download?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f> 處理完JSON檔後，將各站點用紅色的點標示在地圖上。 **提示: 經緯度、ggmap()，利用get\_googlemap() + ggmap()取得桃園地區的google 圖層 center = c(lon=121.20,lat=25.00) zoom = 11 language = "zh-TW"**
+載入桃園市公共自行車的資料，<https://data.tycg.gov.tw/opendata/datalist/datasetMeta/download?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f> 處理完JSON檔後，將各站點用紅色的點標示在地圖上。 
+**提示: 經緯度、ggmap()，利用get\_googlemap() + ggmap()取得桃園地區的google 圖層 center = c(lon=121.20,lat=25.00) zoom = 11 language = "zh-TW"**
 
 ### 解答
 
@@ -240,12 +197,13 @@ BikeMap <- ggmap(TaoyuanMap)+
 BikeMap+labs(x = '經度', y = '緯度')
 ```
 
-![](10_Graphic_QA_files/figure-markdown_github/cars-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/cars1.png)
 
 <hr>
+
 ### 問題
 
-載入桃園市公共自行車的資料，<https://data.tycg.gov.tw/opendata/datalist/datasetMeta/download?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f>　處理完JSON檔後，將各站點標示在地圖上，並將剩餘腳踏車數當作點的大小作圖(點越大表示車越多)。 提示: 經緯度、ggmap() 利用get\_googlemap() + ggmap()取得桃園地區的google 圖層 center = c(lon=121.20,lat=25.00) zoom = 11 language = "zh-TW"
+載入桃園市公共自行車的資料，<https://data.tycg.gov.tw/opendata/datalist/datasetMeta/download?id=5ca2bfc7-9ace-4719-88ae-4034b9a5a55c&rid=a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f>　處理完JSON檔後，將各站點標示在地圖上，並將剩餘腳踏車數當作點的大小作圖(點越大表示車越多)。 提示: 經緯度、`ggmap()` 利用`get_googlemap() + ggmap()`取得桃園地區的google 圖層 `center = c(lon=121.20,lat=25.00) zoom = 11 language = "zh-TW"`
 
 ### 解答
 
@@ -275,14 +233,15 @@ BikeMap <- ggmap(TaoyuanMap)+
 BikeMap+labs(x = '經度', y = '緯度')
 ```
 
-![](10_Graphic_QA_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-6-1.png)
 
 #### 與前一題不同的是`size`放置的位置，若`size` 放在`aes()`內，則表示`size`為一個變數。以此題為例，當某地`sbi(剩餘腳踏車數)`越多時，則地圖上的點會越大。當`size`放於`aes()`之外時，則作為一個圖形的參數，若設定`size = 2`，表示該圖上的所有點的`size`都被設為2。除了`size`外，相似的參數還有`color`(顏色)
 
 <hr>
+
 ### 問題
 
-下載動物認領養資料http://data.coa.gov.tw/Service/OpenData/AnimalOpenData.aspx， 請用條狀圖呈現各收容所shelter\_name目前的收容動物數量，並以動物種類animal\_kind為基準做子圖，並試著將預設的灰底色去除(改為白底色)，最後將X軸名稱設定為”收容所”，Y軸名稱設定為”待領養動物數量”
+下載動物認領養資料http://data.coa.gov.tw/Service/OpenData/AnimalOpenData.aspx， 請用條狀圖呈現各收容所`shelter_name`目前的收容動物數量，並以動物種類`animal_kind`為基準做子圖，並試著將預設的灰底色去除(改為白底色)，最後將X軸名稱設定為'收容所'，Y軸名稱設定為'待領養動物數量'
 
 ### 解答
 
@@ -300,9 +259,10 @@ ggplot(data=data,aes(x=shelter_name))+
  theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
-![](10_Graphic_QA_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-7-1.png)
 
 <hr>
+
 ### 問題
 
 下載登革熱案例資料，<https://od.cdc.gov.tw/eic/Dengue_Daily.csv> 將所有案例點依照最小統計區中心點畫密度圖，觀察登革熱案例從1998年至今的分布情形 提示: 案例數若不是1，請參考上課內容，作相對應的資料轉換(案例數2的要變成2 rows)
@@ -369,9 +329,10 @@ densityMap
 
     ## Warning: Removed 474 rows containing non-finite values (stat_density2d).
 
-![](10_Graphic_QA_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-8-1.png)
 
 <hr>
+
 ### 問題
 
 請試著載入NBA 17-18球季的資料，並用ggplot()畫散佈圖檢視抄截數和籃板數的關聯性，並用plotly package製作互動式圖表 (截圖上傳)
@@ -418,6 +379,6 @@ ggplotly(PlotNBA)
     ## We recommend that you use the dev version of ggplot2 with `ggplotly()`
     ## Install it with: `devtools::install_github('hadley/ggplot2')`
 
-![](10_Graphic_QA_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-9-1.png)
 
 <hr>
