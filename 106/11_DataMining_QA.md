@@ -29,12 +29,12 @@ model1
 
 -   模型方程式為medv = 31.86107 - 0.18855 x crim - 0.02047 x tax - 0.07644 x dis
 -   模型AIC值為3352
--   由此方程式的係數可知medv的值會與crim, tax, dis等三個變數成反比
-    <hr>
+-   由此方程式的係數可知`medv`的值會與`crim`, `tax`, `dis`等三個變數成反比
 
+<hr>
 ### 問題
 
-用`BostonHousing`資料 `install.packages(“mlbench”)` `library(mlbench)` `data(BostonHousing)` 使用`crim`、`tax`、`dis`欄位預測`medv`(Median value of owner-occupied homes in $1000's) `glm()`廣義線性迴歸
+用`BostonHousing`資料 `install.packages(“mlbench”)` `library(mlbench)` `data(BostonHousing)` 使用`crim`、`tax`、`dis`、`RM`、 `AGE`、 `CHAS`欄位預測`medv`(Median value of owner-occupied homes in $1000‘s)，請問跟上一題比較，所有參數都有用嗎? 哪一個模型配適度較高? `glm()`廣義線性迴歸
 
 ### 解答
 
@@ -52,6 +52,8 @@ model2$aic
 ```
 
     ## [1] 3219.644
+
+-   由於model2的AIC較model1的AIC小，可看出model2的模型配適度較佳
 
 ``` r
 summary(model2)
@@ -85,6 +87,8 @@ summary(model2)
     ## 
     ## Number of Fisher Scoring iterations: 2
 
+-   由model2中的p-value可知，所有變數在模型中均可合理存在(p-value&lt;0.05)
+
 ``` r
 model2$coefficients
 ```
@@ -94,8 +98,6 @@ model2$coefficients
     ##          age        chas1 
     ##  -0.08215356   3.97781599
 
--   由於model2的AIC較model1的AIC小，可看出model2的模型配適度較佳
--   由model2中的p-value可知，所有變數在模型中均可合理存在(P value&lt;0.05)
 -   model2的模型方程式為medv = -11.43069301 - 0.13321893 x crim - 0.01110297 x tax - 0.88334600 x dis + 7.58809421 x rm - 0.08215356 x age + 3.97781599 x chas1
 -   由此方程式可知medv的值會與`crim`, `tax`, `dis`, `age` 等四個變數成反比，與`rm`, `chas1`成正比
 
