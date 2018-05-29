@@ -629,7 +629,7 @@ sample(1:10,3) # 從1到10，隨機取三個數字
 ```
 
 ```
-[1] 2 4 5
+[1] 6 7 8
 ```
 
 ```r
@@ -637,16 +637,16 @@ sample(1:nrow(NBA1516),nrow(NBA1516)/3) #從第一列到最後一列，隨機取
 ```
 
 ```
-  [1] 211 186 154 264 288 124  36 251 310 315 375 187  33  48 306 229 119
- [18] 394  93  58  53 271 450 307 401  35 244  83 452 285 105  34 327 205
- [35] 381 174 430 255 268 370 286 471 440 169 164 427 320 239 221 100 208
- [52] 155 142 365  67 231 423 372 225  64 373 128 149  75 367  15 408 204
- [69] 256 136 396 238 212 447 343 364 357  81 243 305  11 150 157 110 400
- [86] 291 240 254  62  30 290 341 170 257 386  55 424 152  94 390 361 454
-[103] 196 116 404  50  70 123 201 385 145 317 444 308  59 151 473 265 402
-[120] 253 439  66  37 217  42 282 267 448  97  29 182 451 456 299 132 156
-[137] 148 414  61  76 137 218 172 461 326  91 274 431 378 277 322 379 117
-[154] 449 237  80 389 463
+  [1] 217 363 153 429 313  85  83 241  43 178 347 137  95 372 260 455  29
+ [18] 119 358 282  94 169 191 397  93 138 248 367 368 319 471  30  66 277
+ [35] 177  53 369  35 182   7 414 192 450 187 255 381 406 132 216 125 220
+ [52] 448  14 472 346 254  87 215  25 312 194 437 280 339 354 264 207 112
+ [69] 444 171 155 185  67 190 274 292 370   3 253  19  92 445 209 361 229
+ [86] 362 338 311 378 305 452 423 156 285 382 238  97  22  73 435 322 453
+[103] 293 388 233 210 157 371 100 464 239 466 431 237 392 103  18 184 252
+[120]  34 415 446  11 118  46 411 424 174  69  84 386 299 257 250 342 106
+[137] 440 222  33 408 439 321 172 390 304 335 433 243  82 176 376 235  24
+[154] 212 150 398 302 434
 ```
 
 Regression 迴歸驗證：資料分組
@@ -680,16 +680,16 @@ summary(fit)$coefficients
 ```
 
 ```
-                         Estimate  Std. Error    t value      Pr(>|t|)
-(Intercept)          11.896056136 7.903023357  1.5052538  1.332836e-01
-TotalMinutesPlayed   -0.004593742 0.007384858 -0.6220488  5.343700e-01
-FieldGoalsAttempted   0.999324144 0.023792382 42.0018532 1.584071e-129
-PositionPF          -18.846568506 8.301061901 -2.2703804  2.387502e-02
-PositionPG          -42.530473365 9.287921457 -4.5791164  6.785907e-06
-PositionSF          -23.620320926 9.465853032 -2.4953188  1.310760e-02
-PositionSG          -33.159676497 9.009946821 -3.6803410  2.749008e-04
-ThreesAttempted       0.170819212 0.028860892  5.9187087  8.642718e-09
-FreeThrowsAttempted   0.774965461 0.036775691 21.0727642  1.160257e-61
+                        Estimate  Std. Error    t value      Pr(>|t|)
+(Intercept)          23.88307019 8.083742451  2.9544571  3.373674e-03
+TotalMinutesPlayed   -0.00606794 0.007501636 -0.8088823  4.192072e-01
+FieldGoalsAttempted   0.99867492 0.023086786 43.2574250 6.746537e-133
+PositionPF          -28.15503610 8.607657450 -3.2709290  1.193529e-03
+PositionPG          -53.03896499 9.067613610 -5.8492749  1.260371e-08
+PositionSF          -31.27245026 9.263192988 -3.3759904  8.297842e-04
+PositionSG          -44.91117337 9.342047686 -4.8074228  2.394387e-06
+ThreesAttempted       0.19544407 0.029477317  6.6303209  1.500820e-10
+FreeThrowsAttempted   0.73189944 0.037561383 19.4854230  1.159595e-55
 ```
 
 Regression 迴歸驗證：逐步選擇模型
@@ -709,14 +709,14 @@ summary(finalModel_B)$coefficients
 
 ```
                        Estimate Std. Error   t value      Pr(>|t|)
-(Intercept)          10.1209087 7.36249637  1.374657  1.702338e-01
-FieldGoalsAttempted   0.9890916 0.01717259 57.597109 2.722123e-167
-PositionPF          -18.4553626 8.26898947 -2.231876  2.633986e-02
-PositionPG          -41.8966466 9.22269848 -4.542775  7.971116e-06
-PositionSF          -23.5115744 9.45484539 -2.486722  1.342031e-02
-PositionSG          -32.6187674 8.95898694 -3.640899  3.184267e-04
-ThreesAttempted       0.1712754 0.02882294  5.942330  7.573197e-09
-FreeThrowsAttempted   0.7750576 0.03673889 21.096377  8.123946e-62
+(Intercept)          21.3377362 7.44197238  2.867215  4.425605e-03
+FieldGoalsAttempted   0.9856299 0.01651085 59.695908 1.063403e-171
+PositionPF          -27.4935700 8.56393022 -3.210392  1.465013e-03
+PositionPG          -51.8691546 8.94653317 -5.797682  1.660035e-08
+PositionSF          -30.9059140 9.24692589 -3.342291  9.329944e-04
+PositionSG          -44.1050266 9.28353794 -4.750886  3.106518e-06
+ThreesAttempted       0.1950276 0.02945633  6.620905  1.579922e-10
+FreeThrowsAttempted   0.7320239 0.03754005 19.499812  9.009966e-56
 ```
 
 Regression 迴歸驗證：逐步選擇模型
@@ -734,14 +734,14 @@ summary(finalModel_Both)$coefficients
 
 ```
                        Estimate Std. Error   t value      Pr(>|t|)
-(Intercept)          10.1209087 7.36249637  1.374657  1.702338e-01
-FieldGoalsAttempted   0.9890916 0.01717259 57.597109 2.722123e-167
-PositionPF          -18.4553626 8.26898947 -2.231876  2.633986e-02
-PositionPG          -41.8966466 9.22269848 -4.542775  7.971116e-06
-PositionSF          -23.5115744 9.45484539 -2.486722  1.342031e-02
-PositionSG          -32.6187674 8.95898694 -3.640899  3.184267e-04
-ThreesAttempted       0.1712754 0.02882294  5.942330  7.573197e-09
-FreeThrowsAttempted   0.7750576 0.03673889 21.096377  8.123946e-62
+(Intercept)          21.3377362 7.44197238  2.867215  4.425605e-03
+FieldGoalsAttempted   0.9856299 0.01651085 59.695908 1.063403e-171
+PositionPF          -27.4935700 8.56393022 -3.210392  1.465013e-03
+PositionPG          -51.8691546 8.94653317 -5.797682  1.660035e-08
+PositionSF          -30.9059140 9.24692589 -3.342291  9.329944e-04
+PositionSG          -44.1050266 9.28353794 -4.750886  3.106518e-06
+ThreesAttempted       0.1950276 0.02945633  6.620905  1.579922e-10
+FreeThrowsAttempted   0.7320239 0.03754005 19.499812  9.009966e-56
 ```
 
 Regression 迴歸驗證：模型驗證
@@ -757,7 +757,7 @@ cor(x=predictPoint,
 ```
 
 ```
-[1] 0.9962858
+[1] 0.9965234
 ```
 
 Regression 迴歸驗證：模型驗證
@@ -788,7 +788,7 @@ mydata[sample(1:nrow(mydata),
 
 邏輯迴歸驗證
 ====================================
-- 要特別留意，當答案有正反兩面時，`Level 1 要放正面答案`-->有病/錄取...
+- 當答案有正反兩面時，建議`Level 2 放正面答案`-->有病/錄取...
 
 ```r
 # Training set : Test set學生數
@@ -800,7 +800,7 @@ c(sum(mydata$Test==F),sum(mydata$Test==T))
 ```
 
 ```r
-#修改一下factor的level: 改成Level 1為錄取，2為不錄取-->Level 1 要放正面答案
+#修改一下factor的level: 改成Level 2為錄取，1為不錄取-->Level 2 放正面答案
 mydata$admit<-factor(mydata$admit,levels=c(0,1))
 ```
 
@@ -829,28 +829,29 @@ summary(finalFit)
 ```
 
 Call:
-glm(formula = admit ~ gpa + rank, family = "binomial", data = mydata[mydata$Test == 
-    F, ])
+glm(formula = admit ~ gre + gpa + rank, family = "binomial", 
+    data = mydata[mydata$Test == F, ])
 
 Deviance Residuals: 
     Min       1Q   Median       3Q      Max  
--1.4153  -0.8708  -0.6502   1.1462   2.1654  
+-1.5172  -0.8561  -0.6686   1.1419   2.0499  
 
 Coefficients:
-            Estimate Std. Error z value Pr(>|z|)   
-(Intercept)  -3.5439     1.3371  -2.651  0.00804 **
-gpa           1.0219     0.3735   2.736  0.00622 **
-rank2        -0.4187     0.3869  -1.082  0.27913   
-rank3        -1.4079     0.4294  -3.279  0.00104 **
-rank4        -1.0794     0.4759  -2.268  0.02334 * 
+             Estimate Std. Error z value Pr(>|z|)   
+(Intercept) -4.107615   1.430787  -2.871  0.00409 **
+gre          0.002459   0.001333   1.844  0.06517 . 
+gpa          0.733298   0.406845   1.802  0.07148 . 
+rank2       -0.553140   0.380467  -1.454  0.14599   
+rank3       -1.106823   0.409576  -2.702  0.00688 **
+rank4       -1.141914   0.471160  -2.424  0.01537 * 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 332.54  on 266  degrees of freedom
-Residual deviance: 310.10  on 262  degrees of freedom
-AIC: 320.1
+    Null deviance: 326.03  on 266  degrees of freedom
+Residual deviance: 304.84  on 261  degrees of freedom
+AIC: 316.84
 
 Number of Fisher Scoring iterations: 4
 ```
@@ -871,8 +872,8 @@ head(AdmitProb)
 ```
 
 ```
-         1          3          7         12         13         15 
-0.08820592 0.33803768 0.21666503 0.15438263 0.44210524 0.22582139 
+        3         4         5         6         7        10 
+0.3632196 0.3616153 0.3405919 0.1275502 0.3247918 0.1810674 
 ```
 
 邏輯迴歸驗證：驗證
@@ -887,8 +888,8 @@ table(AdmitProb>0.5,
 ```
        
          0  1
-  FALSE 91 27
-  TRUE   5 10
+  FALSE 87 38
+  TRUE   2  6
 ```
 
 效能指標
@@ -933,8 +934,8 @@ table(AdmitProb>0.5,
 ```
        
          0  1
-  FALSE 91 27
-  TRUE   5 10
+  FALSE 87 38
+  TRUE   2  6
 ```
 ![plot of chunk unnamed-chunk-26](figures/para.png)
 
@@ -954,7 +955,7 @@ str(AdmitAns)
 
 ```
  Factor w/ 2 levels "0","1": 1 1 1 1 1 1 1 1 1 1 ...
- - attr(*, "names")= chr [1:133] "1" "3" "7" "12" ...
+ - attr(*, "names")= chr [1:133] "3" "4" "5" "6" ...
 ```
 
 效能指標
@@ -964,19 +965,23 @@ str(AdmitAns)
 ```r
 # install.packages("caret") #計算參數的packages
 library(caret)
-sensitivity(AdmitAns,mydata[mydata$Test==T,]$admit)
+sensitivity(AdmitAns,
+            mydata[mydata$Test==T,]$admit,
+            positive="1")
 ```
 
 ```
-[1] 0.9479167
+[1] 0.1363636
 ```
 
 ```r
-specificity(AdmitAns,mydata[mydata$Test==T,]$admit)
+specificity(AdmitAns,
+            mydata[mydata$Test==T,]$admit,
+            negative="0")
 ```
 
 ```
-[1] 0.2702703
+[1] 0.9775281
 ```
 
 效能指標
@@ -984,19 +989,23 @@ specificity(AdmitAns,mydata[mydata$Test==T,]$admit)
  計算預測效能參數
 
 ```r
-posPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
+posPredValue(AdmitAns,
+             mydata[mydata$Test==T,]$admit,
+             positive="1")
 ```
 
 ```
-[1] 0.7711864
+[1] 0.75
 ```
 
 ```r
-negPredValue(AdmitAns,mydata[mydata$Test==T,]$admit)
+negPredValue(AdmitAns,
+             mydata[mydata$Test==T,]$admit,
+             negative="0")
 ```
 
 ```
-[1] 0.6666667
+[1] 0.696
 ```
 
 預測模型建立與驗證綜合練習
