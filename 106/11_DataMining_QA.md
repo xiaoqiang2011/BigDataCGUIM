@@ -32,6 +32,7 @@ model1
 -   由此方程式的係數可知`medv`的值會與`crim`, `tax`, `dis`等三個變數成反比
 
 <hr>
+
 ### 問題
 
 用`BostonHousing`資料 `install.packages(“mlbench”)` `library(mlbench)` `data(BostonHousing)` 使用`crim`、`tax`、`dis`、`RM`、 `AGE`、 `CHAS`欄位預測`medv`(Median value of owner-occupied homes in $1000‘s)，請問跟上一題比較，所有參數都有用嗎? 哪一個模型配適度較高? `glm()`廣義線性迴歸
