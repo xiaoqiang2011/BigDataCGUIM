@@ -108,7 +108,7 @@ model2$coefficients
 
 ### 解答
 
-\*\* `~`左邊放要預測的變數，右邊放用來預測的變數，`~.`的用法表示以所有欄位進行預測 \*\*
+** `~`左邊放要預測的變數，右邊放用來預測的變數，`~.`的用法表示以所有欄位進行預測 **
 
 ``` r
 library(rpart)
@@ -117,11 +117,12 @@ irisTree <- rpart(Species~.,data = iris)
 prp(irisTree)
 ```
 
-![](11_DataMining_QA_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-5-1.png)
 
-此決策樹共有兩個節點(Petal.Length&lt;2.5及Petal.Width&lt;1.8)，可以這些特徵進行物種的分類
+此決策樹共有兩個節點(Petal.Length<2.5及Petal.Width<1.8)，可以這些特徵進行物種的分類
 
 <hr>
+
 ### 問題
 
 用`BostonHousing`資料 `install.packages(“mlbench”) library(mlbench) data(BostonHousing)` 使用全部的欄位預測`medv(Median value of owner-occupied homes in $1000‘s)`，並用雙向逐步回歸法尋找最佳參數組合，請問最後選出的參數是? `glm()`廣義線性迴歸 `stepAIC()`逐步回歸，記得選雙向
@@ -220,6 +221,7 @@ summary(BostonHousingModel)$coefficients
     ## lstat        -0.522553457 0.047424359 -11.018672 2.140586e-25
 
 <hr>
+
 ### 問題
 
 用BostonHousing資料install.packages(“mlbench”)library(mlbench)data(BostonHousing)分析前先將資料的1/3切成測試組，2/3切成訓練組，使用訓練組全部的欄位預測medv(Median value of owner-occupied homes in $1000‘s)，並用雙向逐步回歸法尋找最佳參數組合，請問最後選出的參數是?glm()廣義線性迴歸stepAIC()逐步回歸，記得選雙向
@@ -328,6 +330,7 @@ summary(BostonHousingModel2)$coefficients
     ## lstat        -0.598490415 0.061610702 -9.714066 9.302822e-20
 
 <hr>
+
 ### 問題
 
 用BostonHousing資料 install.packages(“mlbench”) library(mlbench) data(BostonHousing) 分析前先將資料的1/3切成測試組，2/3切成訓練組，使用訓練組全部的欄位預測medv(Median value of owner-occupied homes in $1000‘s)，並用雙向逐步回歸法尋找最佳參數組合與模型，並使用測試組做驗證，測試組的預測房價與真實房價的相關係數是? Glm()廣義線性迴歸 stepAIC()逐步回歸，記得選雙向 cor()
@@ -351,9 +354,10 @@ cor(x=predictPoint,
     ## [1] 0.8450472
 
 <hr>
+
 ### 問題
 
-用BostonHousing資料 install.packages(“mlbench”) library(mlbench) data(BostonHousing) 分析前先將資料的1/3切成測試組，2/3切成訓練組，使用訓練組全部的欄位預測medv(Median value of owner-occupied homes in $1000‘s)，並用雙向逐步回歸法尋找最佳參數組合與模型，並使用測試組做驗證，請用測試組的預測房價與真實房價畫散佈圖，並加上回歸線 Glm()廣義線性迴歸 stepAIC()逐步回歸，記得選雙向 ggplot() + geom\_point()
+用BostonHousing資料 install.packages(“mlbench”) library(mlbench) data(BostonHousing) 分析前先將資料的1/3切成測試組，2/3切成訓練組，使用訓練組全部的欄位預測medv(Median value of owner-occupied homes in $1000‘s)，並用雙向逐步回歸法尋找最佳參數組合與模型，並使用測試組做驗證，請用測試組的預測房價與真實房價畫散佈圖，並加上回歸線 Glm()廣義線性迴歸 stepAIC()逐步回歸，記得選雙向 ggplot() + geom_point()
 
 ### 解答
 
@@ -367,9 +371,10 @@ ggplot(compareTable,aes(x=real, y=predict))+
   geom_smooth(method = 'lm')
 ```
 
-![](11_DataMining_QA_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/blob/master/106/QA_figure/unnamed-chunk-9-1.png)
 
 <hr>
+
 ### 問題
 
 Sonar資料記載礦物與石頭接受各個不同角度的聲波撞擊後，接收到的回聲數值 一共有60個參數，代表使用一特別角度的聲波撞擊礦石所得回聲， 分類結果為二元分類，包括礦物 (M) 與石頭 (R) ， 將資料隨機分為訓練組(2/3)與測試組(1/3)， 使用決策樹演算法訓練模型並驗證，使用測試組資料計算正確率(猜對/全部)。 library(mlbench) data(Sonar)
