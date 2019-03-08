@@ -17,6 +17,7 @@ navigation: slide
 - 從檔案匯入
 - 從網路匯入
 - 從Facebook匯入
+- 從Twitter匯入
 - 資料匯出
 
 從檔案匯入
@@ -144,14 +145,14 @@ Tags, elements and attributes
 XML 可延伸標記式語言-讀取
 ====================================
 - [臺北市水質監測資訊](http://data.taipei/opendata/datalist/datasetMeta/download?id=961ca397-4a59-45e8-b312-697f26b059dc&rid=190796c8-7c56-42e0-8068-39242b8ec927)
-- 安裝`XML` package
+- 安裝`xml2` package
 - `xmlParse()`函數將XML檔案匯入
 
 
 ```r
-library(XML)
+library(xml2)
 waterURL<-"http://data.taipei/opendata/datalist/datasetMeta/download?id=961ca397-4a59-45e8-b312-697f26b059dc&rid=190796c8-7c56-42e0-8068-39242b8ec927"
-waterQ <- xmlParse(waterURL)
+waterQ <- read_xml(waterURL)
 ```
 
 xpath?
@@ -163,11 +164,13 @@ xpath?
 
 XML 可延伸標記式語言-解析
 ====================================
-使用`xpathSApply()`函數取得指定標籤內的資料
+使用`xml_find_all()`以及`xml_text()`函數取得指定標籤內的資料
 
 ```r
 #取得所有"code_name"標籤內的資料
-xpathSApply(waterQ,"//code_name",xmlValue)[1:10]
+code_name_xml<-xml_find_all(waterQ, ".//code_name")
+code_name<-xml_text(code_name_xml)
+code_name[1:10]
 ```
 
 ```
@@ -180,16 +183,18 @@ xpathSApply(waterQ,"//code_name",xmlValue)[1:10]
 
 XML 可延伸標記式語言-解析
 ====================================
-使用`xpathSApply()`函數取得指定標籤內的資料
+使用`xml_find_all()`以及`xml_text()`函數取得指定標籤內的資料
 
 ```r
 #取得各監測站的經度longitude
-xpathSApply(waterQ,"//longitude",xmlValue)[1:10]
+longitude_xml<-xml_find_all(waterQ, ".//longitude")
+longitude<-xml_text(longitude_xml)
+longitude[1:10]
 ```
 
 ```
- [1] "121.56094" "121.54401" "121.55557" "121.53476" "121.54043"
- [6] "121.55661" "121.55360" "121.53551" "121.59892" "121.60829"
+ [1] "121.569433" "121.55231"  "121.563886" "121.544384" "121.547873"
+ [6] "121.563997" "121.561975" "121.54342"  "121.607462" "121.616217"
 ```
 
 XML檔案匯入練習
@@ -201,10 +206,12 @@ incremental:true
 - 參考剛剛的水站範例
 
 ```r
-library(XML)
+library(xml2)
 waterURL<-"http://data.taipei/opendata/datalist/datasetMeta/download?id=961ca397-4a59-45e8-b312-697f26b059dc&rid=190796c8-7c56-42e0-8068-39242b8ec927"
-waterQ <- xmlParse(waterURL)
-xpathSApply(waterQ,"//longitude",xmlValue)[1:10]
+waterQ <- read_xml(waterURL)
+longitude_xml<-xml_find_all(waterQ, ".//longitude")
+longitude<-xml_text(longitude_xml)
+longitude[1:10]
 ```
 
 
@@ -274,7 +281,7 @@ str(APIData)
 ```
 List of 2
  $ success: logi TRUE
- $ result :List of 5
+ $ result :List of 6
   ..$ resource_id: chr "a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f"
   ..$ fields     :'data.frame':	15 obs. of  2 variables:
   .. ..$ type: chr [1:15] "int4" "text" "text" "text" ...
@@ -286,16 +293,17 @@ List of 2
   .. ..$ sna    : chr [1:100] "中央大學圖書館" "中壢高中" "中正公園(中美路)" "中壢火車站(前站)" ...
   .. ..$ aren   : chr [1:100] "No.300, Zhongda Rd." "No.215, Sec. 2, Zhongyang W. Rd. (opposite)" "No.101 to No.113, Zhongmei Rd. (opposite)" "No.139, Zhonghe Rd. (opposite)" ...
   .. ..$ sno    : chr [1:100] "2001" "2002" "2003" "2004" ...
-  .. ..$ tot    : chr [1:100] "60" "52" "54" "98" ...
+  .. ..$ tot    : chr [1:100] "60" "52" "54" "114" ...
   .. ..$ snaen  : chr [1:100] "National Central University Library" "Jhungli Senior High School" "Zhongzheng Park" "TRA Zhongli Station (Front)" ...
-  .. ..$ bemp   : chr [1:100] "35" "19" "24" "77" ...
+  .. ..$ bemp   : chr [1:100] "50" "29" "28" "84" ...
   .. ..$ ar     : chr [1:100] "中大路300號(中央大學校內圖書館前)" "中央西路二段215號對面人行道" "中美路101號-113號對面人行道" "中和路139號對面圓環" ...
   .. ..$ act    : chr [1:100] "1" "1" "1" "1" ...
   .. ..$ lat    : chr [1:100] "24.968128" "24.960815" "24.959113" "24.953874" ...
   .. ..$ lng    : chr [1:100] "121.194666" "121.212038" "121.224805" "121.2256" ...
-  .. ..$ sbi    : chr [1:100] "22" "33" "28" "17" ...
-  .. ..$ mday   : chr [1:100] "20180512123443" "20180512123429" "20180512123422" "20180512123428" ...
-  ..$ total      : int 190
+  .. ..$ sbi    : chr [1:100] "9" "22" "26" "26" ...
+  .. ..$ mday   : chr [1:100] "20190309005319" "20190309005318" "20190309005330" "20190309005316" ...
+  ..$ offset     : int 0
+  ..$ total      : int 284
   ..$ limit      : int 100
 ```
 
@@ -309,14 +317,14 @@ head(APIData$result$records)
 
 | _id|sarea  |sareaen       |sna              |aren                                             |sno  |tot |snaen                                    |bemp |
 |---:|:------|:-------------|:----------------|:------------------------------------------------|:----|:---|:----------------------------------------|:----|
-|   1|中壢區 |Zhongli Dist. |中央大學圖書館   |No.300, Zhongda Rd.                              |2001 |60  |National Central University Library      |35   |
-|   2|中壢區 |Zhongli Dist. |中壢高中         |No.215, Sec. 2, Zhongyang W. Rd. (opposite)      |2002 |52  |Jhungli Senior High School               |19   |
-|   3|中壢區 |Zhongli Dist. |中正公園(中美路) |No.101 to No.113, Zhongmei Rd. (opposite)        |2003 |54  |Zhongzheng Park                          |24   |
-|   4|中壢區 |Zhongli Dist. |中壢火車站(前站) |No.139, Zhonghe Rd. (opposite)                   |2004 |98  |TRA Zhongli Station (Front)              |77   |
-|   5|中壢區 |Zhongli Dist. |中原大學         |No.200, Zhongbei Rd.                             |2005 |82  |Chung Yuan Christian University          |52   |
-|   6|中壢區 |Zhongli Dist. |銀河廣場         |No.48, Jiuhe 1st St. (opposite)                  |2006 |58  |Galaxy Square                            |8    |
-|   7|中壢區 |Zhongli Dist. |中壢區公所       |No.380, Huanbei Rd.                              |2007 |40  |Civil Affairs Office of Zhongli District |21   |
-|   8|中壢區 |Zhongli Dist. |新明橋           |No.269 to No.373, Sec. 2, Yuanhua Rd. (opposite) |2008 |58  |Xinming Bridge                           |0    |
+|   1|中壢區 |Zhongli Dist. |中央大學圖書館   |No.300, Zhongda Rd.                              |2001 |60  |National Central University Library      |50   |
+|   2|中壢區 |Zhongli Dist. |中壢高中         |No.215, Sec. 2, Zhongyang W. Rd. (opposite)      |2002 |52  |Jhungli Senior High School               |29   |
+|   3|中壢區 |Zhongli Dist. |中正公園(中美路) |No.101 to No.113, Zhongmei Rd. (opposite)        |2003 |54  |Zhongzheng Park                          |28   |
+|   4|中壢區 |Zhongli Dist. |中壢火車站(前站) |No.139, Zhonghe Rd. (opposite)                   |2004 |114 |TRA Zhongli Station (Front)              |84   |
+|   5|中壢區 |Zhongli Dist. |中原大學         |No.200, Zhongbei Rd.                             |2005 |82  |Chung Yuan Christian University          |38   |
+|   6|中壢區 |Zhongli Dist. |銀河廣場         |No.48, Jiuhe 1st St. (opposite)                  |2006 |58  |Galaxy Square                            |26   |
+|   7|中壢區 |Zhongli Dist. |中壢區公所       |No.380, Huanbei Rd.                              |2007 |40  |Civil Affairs Office of Zhongli District |25   |
+|   8|中壢區 |Zhongli Dist. |新明橋           |No.269 to No.373, Sec. 2, Yuanhua Rd. (opposite) |2008 |58  |Xinming Bridge                           |30   |
 
 JSON檔案解析
 ====================================
@@ -328,14 +336,14 @@ table(APIData$result$records$sarea)
 
 |Var1   | Freq|
 |:------|----:|
+|中壢區 |   35|
 |八德區 |    5|
-|大溪區 |    2|
 |大園區 |    2|
-|龜山區 |   10|
-|蘆竹區 |    7|
+|大溪區 |    2|
 |平鎮區 |    7|
 |桃園區 |   32|
-|中壢區 |   35|
+|蘆竹區 |    7|
+|龜山區 |   10|
 分析可知中壢區車站較多
 
 
@@ -379,17 +387,24 @@ type:sub-section
 ```r
 library(rvest) ##載入
 Repoterurl<-"https://www.twreporter.org/"
-news_title <- read_html(Repoterurl) %>% html_nodes(".hzKrPP") %>% html_text()
-news_url <- read_html(Repoterurl) %>% html_nodes(".hzKrPP a") %>% html_attr("href")
+Repoterhtml<-read_html(Repoterurl)
+news_title <- Repoterhtml %>% 
+    html_nodes(".iEENPo") %>% html_text()
+news_url <- Repoterhtml %>% 
+    html_nodes(".hsSyKH a") %>% html_attr("href")
 news <- data.frame(title = news_title, url=news_url)
-head(news)
+head(news,2)
 ```
 
 ```
-                                                     title                                                    url
-1                           陳藹文／追傳奇的傳奇：夏子之光                                  /a/bookreview-natsuko
-2                   再見東聲：頭份最後一間老戲院的映演歲月                  /a/opinion-goodbye-dong-sheng-theater
+                                                       title
+1     黃偉翔／陷在招收外生和剝削學工之間，新南向專班錯在哪？
+2 在控制中復興，在復興中打壓──普立茲獎得主張彥談中國宗教治理
+                                                                      url
+1     /a/opinion-new-southbound-talent-development-program-intern-problem
+2 /a/interview-ian-johnson-the-soul-of-china-return-of-religion-after-mao
 ```
+
 
 網頁爬蟲 Webscraping-rvest
 ====================================
@@ -398,10 +413,10 @@ head(news)
     - 或使用**SelectorGadget**輔助
     - 或使用**xpath-helper**輔助xpath標籤的擷取
 - 觀察需要擷取的資料所在HTML片段
-    - css class為`latest-section__ItemFrame-gk5lu9-1 hzKrPP`
+    - css class為`latest-section__ItemFrame-keac6x-1 hsSyKH`
 
 ```
-<div class="latest-section__ItemFrame-gk5lu9-1 hzKrPP"><a href="/a/bookreview-natsuko"><div class="hover-effect__HoverEffect-s1mpr2b0-0 kfSlYe"><div class="latest-section__ImageFrame-gk5lu9-2 jUFDxW"><div class="img-wrapper__ImgObjectFit-ketl5c-0 jYnMAC"><img alt="陳藹文／追傳奇的傳奇：夏子之光" src="https://www.twreporter.org/images/20180305174703-97e2a0058b900aec1df1fce4ecdd876f-mobile.png" srcSet="" style="transform:translateZ(0)"/></div></div><div class="latest-section__ContentFrame-gk5lu9-3 hlpTZa"><div class="latest-section__Category-gk5lu9-4 kniurW category-name__CategoryName-s1o0c9ma-0 ivjNw">評論</div><div class="latest-section__Title-gk5lu9-5 clMzIT">陳藹文／追傳奇的傳奇：夏子之光</div></div></div></a></div>
+<div class="latest-section__ItemFrame-keac6x-1 hsSyKH"><a href="/a/opinion-new-southbound-talent-development-program-intern-problem"><div class="hover-effect__HoverEffect-sc-10n0hry-0 iRkkRY"><div class="latest-section__ImageFrame-keac6x-2 dyFjYc"><div class="img-wrapper__ImgObjectFit-clvi31-0 cprQrJ"><img alt="黃偉翔／新南向專班，找學生還是找廉價勞力_(照片/教育部高教司提供)" src="https://www.twreporter.org/images/20190308150442-52ed12aed14ade917f1c273f4037daf8-mobile.jpg" srcset="https://www.twreporter.org/images/20190308150442-52ed12aed14ade917f1c273f4037daf8-mobile.jpg 800w, https://www.twreporter.org/images/20190308150442-52ed12aed14ade917f1c273f4037daf8-w400.jpg 400w" sizes="(min-width: 1024px) 199px, (min-width: 768px) 160px, 136px" style="transform: translateZ(0px);" class=""></div></div><div class="latest-section__ContentFrame-keac6x-3 nhxeb">
 ....
 ```
 
@@ -412,9 +427,15 @@ head(news)
 library(rvest) ##(爬蟲結果不代表本人意見)
 DCardCGU<-"https://www.dcard.tw/f/cgu"
 DCardContent<-read_html(DCardCGU)
-post_title <- DCardContent %>% html_nodes(".PostEntry_title_H5o4d") %>% html_text()
-post_contentShort<- DCardContent %>% html_nodes(".PostEntry_excerpt_2eHlN") %>% html_text()
-post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
+post_title <- DCardContent %>% 
+    html_nodes(".PostEntry_title_H5o4dj") %>% 
+    html_text()
+post_contentShort<- DCardContent %>% 
+    html_nodes(".PostEntry_excerpt_2eHlNn") %>% 
+    html_text()
+post_author<- DCardContent %>% 
+    html_nodes(".PostAuthor_root_3vAJfe") %>% 
+    html_text()
 ```
 
 網頁爬蟲 DCard實作 -2
@@ -422,8 +443,10 @@ post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_tex
 
 ```r
 ##(爬蟲結果不代表本人意見)
-post_like<- DCardContent %>% html_nodes(".Like_counter_1enlP") %>% html_text()
-post_url <- DCardContent %>% html_nodes(".PostEntry_root_V6g0r") %>% html_attr("href")
+post_like<- DCardContent %>% 
+    html_nodes(".hlvyVg") %>% html_text()
+post_url <- DCardContent %>% 
+    html_nodes(".PostEntry_root_V6g0rd") %>% html_attr("href")
 DCardCGU_posts <- 
     data.frame(title = post_title,
                author=post_author, 
@@ -436,15 +459,51 @@ DCardCGU_posts <-
 ====================================
 
 ```r
-DCardCGU_posts[1:4,c("title","author","likeN")]
+DCardCGU_posts
 ```
 
-|title              |author   |likeN |
-|:------------------|:--------|:-----|
-|免費吃喝玩樂旅推薦 |長庚大學 |14    |
-|宿舍抽籤疑似有黑箱 |長庚大學 |6     |
-|想怎樣             |長庚大學 |3     |
-|星期二下午解剖課   |長庚大學 |1     |
+|title                                                 |author          |content                                                                                                                                                                                                                                        |likeN |url                                                                                          |
+|:-----------------------------------------------------|:---------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----|:--------------------------------------------------------------------------------------------|
+|是誰掉了排氣管                                        |長庚大學        |哪個施主捨我一根排氣管及一頂安全帽，不是我的喔，失主請自行到停車場後面找，不幫你送學務處  請見諒，慶幸不是見到自己的排氣管...，淦  垃圾不要亂丟，會刮到別人的車子                                                                              |15    |https://www.dcard.tw/f/cgu/p/230841097-是誰掉了排氣管                                        |
+|烘焙週預購~3/10號收單                                 |長庚大學        |大家知道3/11~3/15是什麼日子嗎？？沒錯！就是烘焙週拉！！，還記得上次可口的烤布蕾~提拉米蘇嗎！？這次烘焙社的同學們這次又要帶給大家其他好吃的甜點拉！上次因為價格卻步的同學這次千萬不要再錯過拉！                                                 |15    |https://www.dcard.tw/f/cgu/p/230840149-烘焙週預購~3／10號收單                                |
+|💓《大明星學堂-小煜》生命教育講座暨白色情人節特別活動💓 |長庚大學        |各位同學大家好～我們是榮耀團契社！，下星期就是白色情人節啦！！，大家準備跟你們心愛的人一起慶祝了嗎><，下星期四的情人節夜晚，我們會邀請棒棒堂的小煜到場，分享他在演藝圈的心得故事，與大家度過溫暖的情人節唷🤗                                    |14    |https://www.dcard.tw/f/cgu/p/230837127-💓《大明星學堂-小煜》生命教育講座暨白色情人節特別活動💓 |
+|TED 年會                                              |長庚大學        |想問一下，今年還有TEDxCGU嘛，好像沒看到消息🤔                                                                                                                                                                                                   |11    |https://www.dcard.tw/f/cgu/p/230837080-TED-年會                                              |
+|餿掉的販賣機巧克力拿鐵？                              |長庚大學        |有人也遇過一樣的問題嗎嗎嗎嗎嗎嗎嗎？？？？？                                                                                                                                                                                                   |10    |https://www.dcard.tw/f/cgu/p/230833943-餿掉的販賣機巧克力拿鐵？                              |
+|湖水綠手機殼的手機                                    |長庚大學        |同學你的手機在管院B0108，面對黑板，從左邊數來第四排第三個位子，的抽屜哦，我也不知道要拿去哪裡 就沒動它了，希望你去的時候它還在哈哈哈                                                                                                           |7     |https://www.dcard.tw/f/cgu/p/230839196-湖水綠手機殼的手機                                    |
+|同學你的錢包                                          |長庚大學        |在國會開院會，拾獲一個錢包，明天我同學會拿去學務處放，記得取ㄛ                                                                                                                                                                                 |7     |https://www.dcard.tw/f/cgu/p/230834429-同學你的錢包                                          |
+|尋找失物 約5cm的皮卡丘娃娃                            |長庚大學        |大約五公分的皮卡丘娃娃，因為看起來髒髒的怕被認為是垃圾qwq，3/7~3/8在校園內遺失的（｡•́ωก̀｡）…ｸﾞｽ，希望有看到的人能將它帶到失物招領那邊，我很努力祈禱將它帶到學務處失物那邊的人這學期歐趴的٩（ ‘ω’ ）                                              |3     |https://www.dcard.tw/f/cgu/p/230842776-尋找失物-約5cm的皮卡丘娃娃                            |
+|（歹罷狼X學生會）幸福路上放映加演講                   |長庚大學        |幸福這條路，踏上ㄌ，跪著也要走完。－改寫自PeterSu，今天是3月8日婦女節，你聽過林淑琪這位女孩嗎？《幸福路上》描繪一位台灣女孩林淑琪的成長故事，也是說著一段台灣的歷史。「那個當初的我現在好嗎？」                                                |2     |https://www.dcard.tw/f/cgu/p/230842884-（歹罷狼X學生會）幸福路上放映加演講                   |
+|想請問工商系的大大                                    |長庚大學        |你們有一門課每次上課都要穿西裝那是神麼課啊🤔🤣？？？                                                                                                                                                                                             |2     |https://www.dcard.tw/f/cgu/p/230842105-想請問工商系的大大                                    |
+|想請問化材系的同學                                    |長庚大學        |請問有人修過劉繼賢老師開的奈米生醫技術嗎？                                                                                                                                                                                                     |3     |https://www.dcard.tw/f/cgu/p/230832306-想請問化材系的同學                                    |
+|萊爾富無法送貨                                        |長庚大學        |長庚萊爾富是不是不能取貨了，求解                                                                                                                                                                                                               |3     |https://www.dcard.tw/f/cgu/p/230832299-萊爾富無法送貨                                        |
+|返鄉專車                                              |長庚大學        |科大那邊有開返鄉專車哦！，清明節想回家的同學，快點去報名吧！，報名到明天截止～返鄉專車報名進入最後一個星期，目前各車報名狀況，台中火車站 餘21人發車，彰化火車站 餘7人發車 快發車了，台南火車站 餘24人發車                                      |15    |https://www.dcard.tw/f/cgu/p/230832142-返鄉專車                                              |
+|吵死了                                                |長庚大學        |明德七樓走廊在吵屁？？不用睡覺哦吵死了                                                                                                                                                                                                         |5     |https://www.dcard.tw/f/cgu/p/230830088-吵死了                                                |
+|075-NEZ                                               |長庚大學        |同學 沒戴安全帽已經被拍下來檢舉囉，爽，又抓到一個                                                                                                                                                                                              |36    |https://www.dcard.tw/f/cgu/p/230828876-075-NEZ                                               |
+|大一學弟，拜託先不要                                  |長庚大學        |身為住在明德的老人，真心希望明德樓的學弟們可以在等電梯的時候離門遠一點，拜託裡面的人都還沒出來你也上不去啊...，每次都要貼著門，等到開門看到裡面有人才讓開，拜託不要這樣，蠻困擾的，（而且不是單一個案，遇到好多次了）                          |26    |https://www.dcard.tw/f/cgu/p/230828825-大一學弟，拜託先不要                                  |
+|求租套房推薦#長庚醫院#A8捷運站#華亞科學園區           |長庚大學        |大家好，最近畢業在林口找到工作想要在附近租房子，殊不知林口租房的網路資訊真的少的可憐，所以想上來詢問版友們有沒有推薦的租屋資訊可以讓我參考，拜託大家了                                                                                         |7     |https://www.dcard.tw/f/cgu/p/230826850-求租套房推薦＃長庚醫院＃A8捷運站＃華亞科學園區        |
+|一醫靠二醫廁所的女生                                  |長庚大學        |可以請妳們安靜一點嗎，一直雅純的喊 教授在上課你們知道嗎，身材很壯的那個女生就是在說你們，有點功德心                                                                                                                                            |12    |https://www.dcard.tw/f/cgu/p/230825754-一醫靠二醫廁所的女生                                  |
+|男朋友                                                |長庚大學        |最近身邊的朋友都一個個交到男朋友，要如何才能交到理想的男友勒？                                                                                                                                                                                 |24    |https://www.dcard.tw/f/cgu/p/230822815-男朋友                                                |
+|男朋友                                                |長庚大學        |最近身邊的朋友都一個個交到男朋友，要如何才能交到理想的男友勒？                                                                                                                                                                                 |6     |https://www.dcard.tw/f/cgu/p/230822813-男朋友                                                |
+|點名 曠課                                             |長庚大學        |上星期為了早點回家翹了課，不巧遇上老師點名。想請問一下老師記曠課在網路上顯示出來大概要多久？因為看了好幾次都沒顯示，不確定到底要不要請假還是老師記自己扣分的。同學是說老師直接在校務資訊系統上登記曠課，我的網頁看起來是這樣的                 |5     |https://www.dcard.tw/f/cgu/p/230822646-點名-曠課                                             |
+|大奶子傳奇                                            |長庚大學        |剛剛在院區，對面走過來一群人，其中一個就指著對面的大苑子，大喊，大奶子大奶子大奶子~，其他人也跟著起鬨，都不知道現在長庚學生素質那麼低誒🤨                                                                                                       |43    |https://www.dcard.tw/f/cgu/p/230821401-大奶子傳奇                                            |
+|理性                                                  |長庚大學        |首先聲明，我非常喜歡現在的學生會氣氛。我知道這裡是匿名發言，所以等等底下一定會有一堆不理性發言，理性者迴避即可。礙於我的身分我不便直接密粉專或留言，所以用這種最不應該的匿名方式，請見諒。po文目的只是想要學生會能看見，不是要大家筆戰傷感情。 |31    |https://www.dcard.tw/f/cgu/p/230820941-理性                                                  |
+|你的學生證                                            |長庚大學 醫學系 |你掉了你的學生證，但我沒空幫你拿去學務處，請自行領回                                                                                                                                                                                           |9     |https://www.dcard.tw/f/cgu/p/230820786-你的學生證                                            |
+|通識加簽問題                                          |長庚大學        |乳題，我記得以前通識是可以加簽的，現在聽說不給加簽？！，甚至是如果選課人數未達上限也不給過是嗎，有沒有八卦呀，祭品嘛，附上一隻喵喵                                                                                                             |7     |https://www.dcard.tw/f/cgu/p/230820366-通識加簽問題                                          |
+|人在做天在看                                          |長庚大學        |素質這麼低還想騎車出去啊，有沒有摩托車剛好被鎖的掛                                                                                                                                                                                             |25    |https://www.dcard.tw/f/cgu/p/230819860-人在做天在看                                          |
+|為什麼學校收信都收那麼久？                            |長庚大學        |呃...如題，為什麼學校每次收到信的時間都比同樣寄出時間不過是寄家裡的還要多至少一個禮拜呢？確定我沒有填宿舍也不是掛號也不是包裹，我固定填：333桃園市龜山區文化一路259號，舉例：同樣2/22從中壢寄出的成績單                                        |4     |https://www.dcard.tw/f/cgu/p/230819457-為什麼學校收信都收那麼久？                            |
+|出國讀研                                              |長庚大學        |想請問一下大家，長庚工學院的科系去外國讀研究所的人多嗎？會不會很難申請？我去網路上找基本上都只看到交換學生的心得，然後如果覺得這是伸手文的話很抱歉，但是如果大家知道一些資訊然後願意分享的話我很感激，謝謝                                     |4     |https://www.dcard.tw/f/cgu/p/230819446-出國讀研                                              |
+|有人遺失學生證                                        |長庚大學        |請認識他的鄉親父老兄弟姐妹們，提醒他學生證我已拿到教務處                                                                                                                                                                                       |1     |https://www.dcard.tw/f/cgu/p/230819048-有人遺失學生證                                        |
+|協尋手機                                              |長庚大學        |如標題  我朋友的手機掉在院區，找不到求如果有好心人撿到，請打這隻手機  0963973209，手機是i6，背殼圖案是上圖黃色的背殼，拜託大家                                                                                                                 |8     |https://www.dcard.tw/f/cgu/p/230818287-協尋手機                                              |
+|明德五樓的大棒棒 拜託還我褲子吧                       |長庚大學        |小弟3/4大約凌晨十二點多烘完衣服（右邊那台），一件levis淡藍色的牛仔褲就不見了，拜託那個善心人士把褲子還給我，非常感謝你幫我把衣服拿出來，但你收的費用也太貴了吧                                                                                 |18    |https://www.dcard.tw/f/cgu/p/230813931-明德五樓的大棒棒-拜託還我褲子吧                       |
+|線上簽核系統                                          |長庚大學        |因為系上的課程調動所以要另外借教室，可是在系統要選日期的時候都顯示不開放借用，已經確認該日期該時段為空堂了（T＿T），日期也確實是借用日兩天之後，到底是哪裡出問題                                                                               |2     |https://www.dcard.tw/f/cgu/p/230811188-線上簽核系統                                          |
+|成績單電子版                                          |長庚大學        |請問學校的成績單可以申請電子版的嗎？還是一定要自己掃描到電腦？                                                                                                                                                                                 |5     |https://www.dcard.tw/f/cgu/p/230809659-成績單電子版                                          |
+|同學你的機車鑰匙                                      |長庚大學        |同學你的機車鑰匙沒拔 幫你拔起來放在前面囉（而且還開著電                                                                                                                                                                                        |7     |https://www.dcard.tw/f/cgu/p/230807949-同學你的機車鑰匙                                      |
+|請益 陳世忠 溝通技巧與領導統御                        |長庚大學        |星期五才加選到陳世忠老師的溝通技巧，請問各位有修課的同學，前兩個禮拜有什麼上課注意事項或是要買課本做作業分組之類的嗎？祝好心人期末歐趴ʕ•ﻌ•ʔ                                                                                                    |9     |https://www.dcard.tw/f/cgu/p/230806270-請益-陳世忠-溝通技巧與領導統御                        |
+|666                                                   |長庚大學        |同學 原來長庚的霧這麼大 傻傻分不清楚                                                                                                                                                                                                           |33    |https://www.dcard.tw/f/cgu/p/230805443-666                                                   |
+|為什麼校車都要等超久？                                |長庚大學        |如題 至少半小時是基本 有時候直接等了快一小時都沒車 司機是去吃飯了嗎？                                                                                                                                                                          |19    |https://www.dcard.tw/f/cgu/p/230798848-為什麼校車都要等超久？                                |
+|有蛇注意                                              |長庚大學        |早上路過據德球場旁斜坡，大家走路小心注意腳邊                                                                                                                                                                                                   |50    |https://www.dcard.tw/f/cgu/p/230796900-有蛇注意                                              |
+|跟大學同學都該聊些什麼                                |長庚大學        |高中時總是特別憧憬大學生活，認為能擁有許多自由，想請問大家在學校都跟大學同學聊些什麼？                                                                                                                                                         |20    |https://www.dcard.tw/f/cgu/p/230794540-跟大學同學都該聊些什麼                                |
+|選課快要結束了啊啊啊                                  |長庚大學        |大家可以去看一下課表，確保有忘記推掉的課唷！不然要等期中才能停修囉（像我上次一樣，且只能停一科，還要維持最低大三以下12學分），第十週期中停修後：1.下學期不能超修25學分，2.也不能領當學期的獎學金                                               |23    |https://www.dcard.tw/f/cgu/p/230792348-選課快要結束了啊啊啊                                  |
 
     
 爬蟲練習
@@ -465,7 +524,7 @@ incremental:true
     - https://www.dcard.tw/_api/forums/cgu/posts
     - https://www.dcard.tw/_api/posts/225917717
     - https://www.dcard.tw/_api/posts/225917717/comments
-- 隱私問題 （去年的OkCupid事件）
+- 隱私問題 （OkCupid事件）
     - [70,000 OkCupid Users Just Had Their Data Published](https://motherboard.vice.com/en_us/article/70000-okcupid-users-just-had-their-data-published)
 
 進階爬蟲
@@ -500,6 +559,7 @@ Graph API in R
 ====================================
 type:sub-section
 
+- 在2018年的風波後，Graph API若要用在爬取公開粉專，須經過FB審核
 - [Graph API](https://developers.facebook.com/docs/graph-api?locale=zh_TW)
     - 根據篩選條件，回傳JSON格式的資料
 - [Graph API Explorer](https://developers.facebook.com/tools/explorer/)
@@ -512,15 +572,16 @@ type:sub-section
 Rfacebook package
 ====================================
 type:sub-section
+在2018年的風波後，Graph API若要用在爬取公開粉專，須經過FB審核，因此本課程目前無法示範粉絲專頁爬取
 
 使用 Rfacebook 取得 `tsaiingwen` 粉絲頁的資料
 
 ```r
 library(Rfacebook) #初次使用須先安裝
-token<-"your token" #將token複製到此處 
+token<-"your token" #將token複製到此處
 getPage("tsaiingwen", token,n = 5)
 ```
-課堂操作
+若經過審核，可得下列結果
 
 ```
 4 posts       from_id           from_name
@@ -530,62 +591,136 @@ getPage("tsaiingwen", token,n = 5)
 4 46251501064 蔡英文 Tsai Ing-wen
 ```
 
-Rfacebook package練習
+從Twitter匯入
+====================================
+type:section
+- Twitter API
+- rtweet package
+
+Twitter API
+====================================
+- https://developer.twitter.com/en/apps
+- 需有Twitter帳號並通過開發者審核
+
+rtweet package
+====================================
+
+```r
+## install rtweet from CRAN
+install.packages("rtweet")
+## load rtweet package
+library(rtweet)
+```
+
+rtweet package - token 設定
+====================================
+
+```r
+library(rtweet)
+create_token(
+  app = "teach0309",
+  consumer_key = "Wbba6ysyPKGstGAqohmtyWZOE",
+  consumer_secret = "GJweDzVvXGrbjz26bHTr3d6dFI7q9gFCH98f3Ct2yk3APPWigc",
+  access_token = "216362944-VbXiYOjGtENwSI6eJ9AoDK5OVvoQWlj7yIeXraGt",
+  access_secret = "jnfDCvuMdxdmxswUUPPi3gomxIWZq3BTdumykLJb7GW5A")
+```
+
+```
+<Token>
+<oauth_endpoint>
+ request:   https://api.twitter.com/oauth/request_token
+ authorize: https://api.twitter.com/oauth/authenticate
+ access:    https://api.twitter.com/oauth/access_token
+<oauth_app> teach0309
+  key:    Wbba6ysyPKGstGAqohmtyWZOE
+  secret: <hidden>
+<credentials> oauth_token, oauth_token_secret
+---
+```
+
+rtweet package - 搜尋hashtag
+====================================
+
+```r
+## search for 3000 tweets using the northkorea hashtag
+rt <- search_tweets(
+  "#northkorea", n = 3000, include_rts = FALSE
+)
+head(rt)
+```
+
+|user_id    |status_id           |created_at          |screen_name     |
+|:----------|:-------------------|:-------------------|:---------------|
+|22697810   |1104073627983597568 |2019-03-08 17:37:20 |StimsonCenter   |
+|1279628114 |1104073183668260864 |2019-03-08 17:35:34 |Cluelessoracle  |
+|1279628114 |1103381604288716800 |2019-03-06 19:47:28 |Cluelessoracle  |
+|2845987205 |1104073079951630337 |2019-03-08 17:35:09 |IamJPHogan      |
+|14375047   |1103435321562284033 |2019-03-06 23:20:56 |davidbrunnstrom |
+|14375047   |1102767558875324416 |2019-03-05 03:07:29 |davidbrunnstrom |
+
+rtweet package - 搜尋hashtag
+====================================
+![plot of chunk unnamed-chunk-22](EMBA_PipelinesForDataAnalysisInR2-figure/unnamed-chunk-22-1.png)
+
+rtweet package - 取得趨勢
+====================================
+
+```r
+sf <- get_trends("Japan")
+head(sf)
+```
+
+|trend  |url                                                     |promoted_content |query                       |
+|:------|:-------------------------------------------------------|:----------------|:---------------------------|
+|震度3  |http://twitter.com/search?q=%E9%9C%87%E5%BA%A63         |NA               |%E9%9C%87%E5%BA%A63         |
+|カメラ |http://twitter.com/search?q=%E3%82%AB%E3%83%A1%E3%83%A9 |NA               |%E3%82%AB%E3%83%A1%E3%83%A9 |
+|震度4  |http://twitter.com/search?q=%E9%9C%87%E5%BA%A64         |NA               |%E9%9C%87%E5%BA%A64         |
+|震度2  |http://twitter.com/search?q=%E9%9C%87%E5%BA%A62         |NA               |%E9%9C%87%E5%BA%A62         |
+
+rtweet package - 取得timeline
+====================================
+
+```r
+tmls <- get_timelines(c("realDonaldTrump", "BarackObama"), n = 3000)
+head(tmls)
+```
+
+|user_id  |screen_name     |text                                                                                                                                                                                                                                                                                    |source             |
+|:--------|:---------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------|
+|25073877 |realDonaldTrump |Bad lawyer and fraudster Michael Cohen said under sworn testimony that he never asked for a Pardon. His lawyers totally contradicted him. He lied! Additionally, he directly asked me for a pardon. I said NO. He lied again! He also badly wanted to work at the White House. He lied! |Twitter for iPhone |
+|25073877 |realDonaldTrump |Heading now to the Great State of Alabama!                                                                                                                                                                                                                                              |Twitter for iPhone |
+|25073877 |realDonaldTrump |On International Women’s Day, we honor women worldwide for their vital role in shaping and strengthening our communities, families, governments, and businesses...https://t.co/VVnkuBPmhA                                                                                               |Twitter for iPhone |
+|25073877 |realDonaldTrump |Women’s unemployment rate is down to 3.6% - was 7.9% in January, 2011. Things are looking good!                                                                                                                                                                                         |Twitter for iPhone |
+|25073877 |realDonaldTrump |We are apprehending record numbers of illegal immigrants - but we need the Wall to help our great Border Patrol Agents!                                                                                                                                                                 |Twitter for iPhone |
+|25073877 |realDonaldTrump |“This is as good a time as I can remember to be an American Worker. We have the strongest economy in the world.”  Stuart Varney @foxandfriends  So true!                                                                                                                                |Twitter for iPhone |
+
+rtweet package - 取得timeline
+====================================
+![plot of chunk unnamed-chunk-27](EMBA_PipelinesForDataAnalysisInR2-figure/unnamed-chunk-27-1.png)
+
+
+rtweet package - 取得followers
+====================================
+
+```r
+## get user IDs of accounts following 蔡英文 Tsai Ing-wen
+iingwen_flw <- get_followers("iingwen", n = 1000)
+## lookup data on those accounts
+iingwen_flw_data <- lookup_users(iingwen_flw$user_id)
+head(iingwen_flw_data)
+```
+
+
+
+rtweet package練習
 ====================================
 type:alert
 incremental:true
-- 取得Facebook access token
-- 使用Rfacebook package取得**台灣人工智慧學校**粉絲頁面的前五筆資料
-- 第一筆資料的likes_count是多少?
-- 第二筆資料的shares_count是多少?
+- 複製老師的Twitter access token
+- 使用rtweet package取得**蔡英文 Tsai Ing-wen**(iingwen)的timeline，共50筆tweets
+- 第一筆資料的retweet_count是多少?
+- 第二筆資料的favorite_count是多少?
 
-
-Rfacebook package
-====================================
-- 每次擷取資料的比數有上限（大概30筆）
-- 如需取得更多資料: 使用迴圈協助
-    -  **since** 和 **until**參數，可設定資料擷取區間。
-- 先取得日期向量，供後續迴圈做使用
-
-```r
-lastDate<-Sys.Date()
-DateVector<-seq(as.Date("2017-01-01"),lastDate,by="5 days")
-DateVectorStr<-as.character(DateVector)
-DateVectorStr
-```
-```
-## "2017-01-01" "2017-01-06" "2017-01-11" "2017-01-16" "2017-01-21" "2017-01-26" "2017-01-31" "2017-02-05"
-```
-
-Rfacebook package
-====================================
-利用上述日期向量資料，搭配迴圈，依序設定**since** 和 **until**參數
-
-```r
-totalPage<-NULL
-token<-'your token'
-for(i in 1:(length(DateVectorStr)-1)){
-    tempPage<-getPage("tsaiingwen", token,
-                since = DateVectorStr[i],
-                until = DateVectorStr[i+1])
-    totalPage<-rbind(totalPage,tempPage)
-}
-nrow(totalPage)
-```
-```
-## [1] 42
-```
-
-Facebook資料擷取練習
-====================================
-type:alert
-incremental:true
-
-- 桃園捷運 Taoyuan MRT (TaoyuanMRT) 粉絲頁
-- 分別擷取以下兩段時間的資料
-    - 2017/2/16~20 (自由試乘開始)
-    - 2017/3/2~6 (正式通車)
-- 比較兩區間平均按讚次數，留言次數與分享次數，觀察民眾對粉絲頁的熱度
 
 資料匯出
 ====================================
@@ -758,13 +893,24 @@ incremental:true
 
 ```r
 library(rvest) ##載入
-DCardCGU<-"https://www.dcard.tw/f/cgu?latest=true"
+DCardCGU<-"https://www.dcard.tw/f/cgu"
 DCardContent<-read_html(DCardCGU)
-post_title <- DCardContent %>% html_nodes(".PostEntry_titleUnread_ycJL0") %>% html_text()
-post_comment<- DCardContent %>% html_nodes(".PostEntry_commentUnread_1cVyd") %>% html_text()
-post_like<- DCardContent %>% html_nodes(".PostLikeCount_likeCount_2uhBH") %>% html_text()
-DCardCGU_posts <- data.frame(title = post_title, commentN=post_comment,
-                             likeN=post_like,stringsAsFactors = F)
+post_title <- DCardContent %>% 
+    html_nodes(".PostEntry_title_H5o4dj") %>% 
+    html_text()
+post_author<- DCardContent %>% 
+    html_nodes(".PostAuthor_root_3vAJfe") %>% 
+    html_text()
+post_like<- DCardContent %>% 
+    html_nodes(".hlvyVg") %>% html_text()
+post_url <- DCardContent %>% 
+    html_nodes(".PostEntry_root_V6g0rd") %>% html_attr("href")
+DCardCGU_posts <- 
+    data.frame(title = post_title,
+               author=post_author, 
+               likeN=post_like,
+               url=paste0("https://www.dcard.tw",post_url),
+               stringsAsFactors=F)
 ```
 
 資料型別轉換練習
@@ -777,10 +923,11 @@ str(DCardCGU_posts)
 ```
 
 ```
-'data.frame':	0 obs. of  3 variables:
- $ title   : chr 
- $ commentN: chr 
- $ likeN   : chr 
+'data.frame':	40 obs. of  4 variables:
+ $ title : chr  "是誰掉了排氣管" "烘焙週預購~3/10號收單" "\U0001f493《大明星學堂-小煜》生命教育講座暨白色情人節特別活動\U0001f493" "TED 年會" ...
+ $ author: chr  "長庚大學" "長庚大學" "長庚大學" "長庚大學" ...
+ $ likeN : chr  "15" "15" "14" "11" ...
+ $ url   : chr  "https://www.dcard.tw/f/cgu/p/230841097-是誰掉了排氣管" "https://www.dcard.tw/f/cgu/p/230840149-烘焙週預購~3／10號收單" "https://www.dcard.tw/f/cgu/p/230837127-\U0001f493《大明星學堂-小煜》生命教育講座暨白色情人節特別活動\U0001f493" "https://www.dcard.tw/f/cgu/p/230837080-TED-年會" ...
 ```
 該如何將這兩個欄位轉成數字呢？
 
@@ -1568,8 +1715,8 @@ semi_join(nameDF,scoreDF,by="ID")
 ====================================
 type:alert
 
-- 下載[105各村里教育程度資料](http://data.moi.gov.tw/MoiOD/Data/DataContent.aspx?oid=1F69C3BD-C367-4216-8969-14FDC609B4B0)
-- 下載[10512各村（里）戶籍人口統計月報表](http://data.moi.gov.tw/MoiOD/Data/DataContent.aspx?oid=4FB19859-0149-451E-A2F0-8388EF960415)
+- 下載[106各村里教育程度資料](https://data.moi.gov.tw/MoiOD/Data/DataDetail.aspx?oid=EC96FA1A-005C-4801-BBCD-5CD246CC9D80)
+- 下載[10612各村（里）戶籍人口統計月報表](https://data.moi.gov.tw/MoiOD/Data/DataDetail.aspx?oid=F4478CE5-7A72-4B14-B91A-F4701758328F)
 - 分別讀入兩個csv檔
 - 依照區域別與村里名稱，將兩張表格結合，只留下有對應到的資料
 - 請問結合後的資料有幾列？
