@@ -14,6 +14,7 @@ navigation: slide
 - 從檔案匯入
 - 從網路匯入
 - 從Facebook匯入
+- 從Twitter匯入
 - 資料匯出
 
 資料分析步驟
@@ -45,7 +46,7 @@ knitr::include_graphics("figures/import.png")
 
 Import Dataset功能 (RStudio)
 ====================================
-- 選取`From CSV`
+- 選取`From CSV` or `From text (readr)` or `From text (base)`
 - 點選`Browse`按鈕開啟檔案選取器
 
 ```{r echo=FALSE}
@@ -251,12 +252,22 @@ XML 可延伸標記式語言-讀取
 - 載入`XML` package
 - `xmlParse()`函數將XML檔案匯入
 
-```{r}
+```{r eval=F}
 library(XML)
 waterURL<-"http://data.taipei/opendata/datalist/datasetMeta/download?id=961ca397-4a59-45e8-b312-697f26b059dc&rid=190796c8-7c56-42e0-8068-39242b8ec927"
 waterQ <- xmlParse(waterURL)
 ```
 
+XML 可延伸標記式語言-讀取
+====================================
+- 若出現`Error: 1: Unknown IO error2: failed to load external entity`，是因為`XML套件`處理http轉https的功能的不好
+- 載入`httr`套件後，先使用`GET()`功能取用網址，再放入`xmlParse()`就不會有問題
+```{r}
+library(XML)
+library(httr)
+waterURL<-"http://data.taipei/opendata/datalist/datasetMeta/download?id=961ca397-4a59-45e8-b312-697f26b059dc&rid=190796c8-7c56-42e0-8068-39242b8ec927"
+waterQ <- xmlParse(GET(waterURL))
+```
 
 XPath?
 ====================================
@@ -315,6 +326,37 @@ waterQ <- xmlParse(waterURL)
 xpathSApply(waterQ,"//longitude",xmlValue)[1:10]
 ```
 
+XML 可延伸標記式語言-讀取 xml2套件
+====================================
+- [臺北市水質監測資訊](http://data.taipei/opendata/datalist/datasetMeta/download?id=961ca397-4a59-45e8-b312-697f26b059dc&rid=190796c8-7c56-42e0-8068-39242b8ec927)
+- 安裝`xml2` package
+- `xmlParse()`函數將XML檔案匯入
+
+```{r}
+library(xml2)
+waterURL<-"http://data.taipei/opendata/datalist/datasetMeta/download?id=961ca397-4a59-45e8-b312-697f26b059dc&rid=190796c8-7c56-42e0-8068-39242b8ec927"
+waterQ <- read_xml(waterURL)
+```
+
+XML 可延伸標記式語言-解析 xml2套件
+====================================
+使用`xml_find_all()`以及`xml_text()`函數取得指定標籤內的資料
+```{r}
+#取得所有"code_name"標籤內的資料
+code_name_xml<-xml_find_all(waterQ, ".//code_name")
+code_name<-xml_text(code_name_xml)
+code_name[1:10]
+```
+
+XML 可延伸標記式語言-解析 xml2套件
+====================================
+使用`xml_find_all()`以及`xml_text()`函數取得指定標籤內的資料
+```{r}
+#取得各監測站的經度longitude
+longitude_xml<-xml_find_all(waterQ, ".//longitude")
+longitude<-xml_text(longitude_xml)
+longitude[1:10]
+```
 
 JSON格式檔案
 ====================================
@@ -488,32 +530,31 @@ CSS Selector 語法介紹
     
 網頁爬蟲 Webscraping-rvest
 ====================================
-```{r eval=F}
+CSS標籤會因網站更新變化，若下列程式碼執行有問題，可自行使用SelectorGadget找尋適當的CSS標籤
+```{r}
 library(rvest) ##載入
 Repoterurl<-"https://www.twreporter.org/"
-news_title <- read_html(Repoterurl) %>% html_nodes(".hzKrPP") %>% html_text()
-news_url <- read_html(Repoterurl) %>% html_nodes(".hzKrPP a") %>% html_attr("href")
+Repoterhtml<-read_html(Repoterurl)
+news_title <- Repoterhtml %>% 
+    html_nodes(".kOkdzB") %>% html_text()
+news_url <- Repoterhtml %>% 
+    html_nodes(".WwRvZ a") %>% html_attr("href")
 news <- data.frame(title = news_title, url=news_url)
-head(news)
+head(news,2)
 ```
 
-```
-                                                     title                                                    url
-1                           陳藹文／追傳奇的傳奇：夏子之光                                  /a/bookreview-natsuko
-2                   再見東聲：頭份最後一間老戲院的映演歲月                  /a/opinion-goodbye-dong-sheng-theater
-```
 
 網頁爬蟲 Webscraping-rvest
 ====================================
-- 擷取條件的撰寫會因網頁語法不同而有差異
+- 擷取條件的撰寫會因網頁語法不同或更新而有差異
 - 使用**Google Chrome開發工具**輔助觀察擷取資料的條件
     - 或使用**SelectorGadget**輔助
     - 或使用**xpath-helper**輔助xpath標籤的擷取
 - 觀察需要擷取的資料所在HTML片段
-    - 且css class為`latest-section__ItemFrame-gk5lu9-1 hzKrPP`
+    - css class為`latest-section__ItemFrame-keac6x-1 hsSyKH`
 
 ```
-<div class="latest-section__ItemFrame-gk5lu9-1 hzKrPP"><a href="/a/bookreview-natsuko"><div class="hover-effect__HoverEffect-s1mpr2b0-0 kfSlYe"><div class="latest-section__ImageFrame-gk5lu9-2 jUFDxW"><div class="img-wrapper__ImgObjectFit-ketl5c-0 jYnMAC"><img alt="陳藹文／追傳奇的傳奇：夏子之光" src="https://www.twreporter.org/images/20180305174703-97e2a0058b900aec1df1fce4ecdd876f-mobile.png" srcSet="" style="transform:translateZ(0)"/></div></div><div class="latest-section__ContentFrame-gk5lu9-3 hlpTZa"><div class="latest-section__Category-gk5lu9-4 kniurW category-name__CategoryName-s1o0c9ma-0 ivjNw">評論</div><div class="latest-section__Title-gk5lu9-5 clMzIT">陳藹文／追傳奇的傳奇：夏子之光</div></div></div></a></div>
+<div class="latest-section__ItemFrame-keac6x-1 hsSyKH"><a href="/a/opinion-new-southbound-talent-development-program-intern-problem"><div class="hover-effect__HoverEffect-sc-10n0hry-0 iRkkRY"><div class="latest-section__ImageFrame-keac6x-2 dyFjYc"><div class="img-wrapper__ImgObjectFit-clvi31-0 cprQrJ"><img alt="黃偉翔／新南向專班，找學生還是找廉價勞力_(照片/教育部高教司提供)" src="https://www.twreporter.org/images/20190308150442-52ed12aed14ade917f1c273f4037daf8-mobile.jpg" srcset="https://www.twreporter.org/images/20190308150442-52ed12aed14ade917f1c273f4037daf8-mobile.jpg 800w, https://www.twreporter.org/images/20190308150442-52ed12aed14ade917f1c273f4037daf8-w400.jpg 400w" sizes="(min-width: 1024px) 199px, (min-width: 768px) 160px, 136px" style="transform: translateZ(0px);" class=""></div></div><div class="latest-section__ContentFrame-keac6x-3 nhxeb">
 ....
 ```
 
@@ -523,17 +564,25 @@ head(news)
 library(rvest) ##(爬蟲結果不代表本人意見)
 DCardCGU<-"https://www.dcard.tw/f/cgu"
 DCardContent<-read_html(DCardCGU)
-post_title <- DCardContent %>% html_nodes(".PostEntry_title_H5o4d") %>% html_text()
-post_contentShort<- DCardContent %>% html_nodes(".PostEntry_excerpt_2eHlN") %>% html_text()
-post_author<- DCardContent %>% html_nodes(".PostAuthor_root_3vAJf") %>% html_text()
+post_title <- DCardContent %>% 
+    html_nodes(".PostEntry_title_H5o4dj") %>% 
+    html_text()
+post_contentShort<- DCardContent %>% 
+    html_nodes(".PostEntry_excerpt_2eHlNn") %>% 
+    html_text()
+post_author<- DCardContent %>% 
+    html_nodes(".PostAuthor_root_3vAJfe") %>% 
+    html_text()
 ```
 
 網頁爬蟲 DCard實作 -2
 ====================================
 ```{r}
 ##(爬蟲結果不代表本人意見)
-post_like<- DCardContent %>% html_nodes(".Like_counter_1enlP") %>% html_text()
-post_url <- DCardContent %>% html_nodes(".PostEntry_root_V6g0r") %>% html_attr("href")
+post_like<- DCardContent %>% 
+    html_nodes(".hlvyVg") %>% html_text()
+post_url <- DCardContent %>% 
+    html_nodes(".PostEntry_root_V6g0rd") %>% html_attr("href")
 DCardCGU_posts <- 
     data.frame(title = post_title,
                author=post_author, 
@@ -545,12 +594,11 @@ DCardCGU_posts <-
 網頁爬蟲 DCard實作 -3
 ====================================
 ```{r eval=F}
-DCardCGU_posts[1:4,c("title","author","likeN")]
+DCardCGU_posts
 ```
 ```{r echo=F}
 ##(爬蟲結果不代表本人意見)
-knitr::kable(
-    DCardCGU_posts[1:4,c("title","author","likeN")]) 
+knitr::kable(DCardCGU_posts) 
 ```
 
 
@@ -602,6 +650,7 @@ Graph API in R
 ====================================
 type:sub-section
 
+- 在2018年的風波後，Graph API若要用在爬取公開粉專，須經過FB審核
 - [Graph API](https://developers.facebook.com/docs/graph-api?locale=zh_TW)
     - 根據篩選條件，回傳JSON格式的資料
 - [Graph API Explorer](https://developers.facebook.com/tools/explorer/)
@@ -610,73 +659,19 @@ type:sub-section
     - 可在[Graph API Explorer](https://developers.facebook.com/tools/explorer/)視窗右上角的**Get Token**按鈕取得
     - [官方文件](https://developers.facebook.com/docs/facebook-login/access-tokens/?locale=zh_TW)
 
-Graph API in R
-====================================
-```{r eval=FALSE, warning=F}
-library(httr)
-token<-"your access token" #將access token複製到此處 
-FBData = GET(
-    paste0("https://graph.facebook.com/v2.12/tsaiingwen?fields=posts%7Bmessage%7D&access_token=",
-           token))
-names(FBData)
-```
-
-```
-## [1] "url"         "status_code" "headers"     "all_headers" "cookies"     "content"     "date"       
-## [8] "times"       "request"     "handle"    
-```
-
-Graph API in R
-====================================
-```{r eval=FALSE}
-json1 = content(FBData)
-names(json1)
-```
-```
-## [1] "posts" "id"
-```
-```{r eval=FALSE}
-names(json1$posts)
-```
-```
-## [1] "data"   "paging"
-```
-Graph API in R
-====================================
-```{r eval=FALSE}
-head(json1$posts$data,2)
-```
-```
-[[1]]
-[[1]]$message
-[1] "「我們是寫歷史的那張白紙。」在國防部軍情局牆上的這句話，意思是不論歷史如何演變，情報人員的貢獻和血淚，往往不為外人所知，只能留白。軍情局設置了一面無名英雄紀念碑，就是為了紀念數千名弟兄姊妹的血和淚。\n\n今天我到軍情局勉勵官兵，並且在紀念碑前致敬，感謝這些弟兄姊妹用生命守護台灣的自由民主。\n\n軍情局近來也持續在內部推動政治檔案的整理工作。在民主時代，把社會的信任和支持建立起來，情報工作的推展會更加順利，期許軍情局繼續努力。"
-
-[[1]]$id
-[1] "46251501064_10154992163696065"
-```
-
-Graph API in R
-====================================
-```{r eval=FALSE}
-json1$posts$data[[1]]$message
-```
-```
-[1] "「我們是寫歷史的那張白紙。」在國防部軍情局牆上的這句話，意思是不論歷史如何演變，情報人員的貢獻和血淚，往往不為外人所知，只能留白。軍情局設置了一面無名英雄紀念碑，就是為了紀念數千名弟兄姊妹的血和淚。\n\n今天我到軍情局勉勵官兵，並且在紀念碑前致敬，感謝這些弟兄姊妹用生命守護台灣的自由民主。\n\n軍情局近來也持續在內部推動政治檔案的整理工作。在民主時代，把社會的信任和支持建立起來，情報工作的推展會更加順利，期許軍情局繼續努力。"
-```
-
-
 
 Rfacebook package
 ====================================
 type:sub-section
+在2018年的風波後，Graph API若要用在爬取公開粉專，須經過FB審核，因此本課程目前無法示範粉絲專頁爬取
 
 使用 Rfacebook 取得 `tsaiingwen` 粉絲頁的資料
 ```{r eval=FALSE}
 library(Rfacebook) #初次使用須先安裝
-token<-"your token" #將token複製到此處 
+token<-"your token" #將token複製到此處
 getPage("tsaiingwen", token,n = 5)
 ```
-實際操作
+若經過審核，可得下列結果
 
 ```
 4 posts       from_id           from_name
@@ -686,82 +681,142 @@ getPage("tsaiingwen", token,n = 5)
 4 46251501064 蔡英文 Tsai Ing-wen
 ```
 
-Rfacebook package練習
+從Twitter匯入
+====================================
+type:section
+- Twitter API
+- rtweet package
+
+Twitter API
+====================================
+- https://developer.twitter.com/en/apps
+- 需有Twitter帳號並通過開發者審核
+
+rtweet package
+====================================
+```{r eval=F}
+## install rtweet from CRAN
+install.packages("rtweet")
+## load rtweet package
+library(rtweet)
+```
+
+rtweet package - token 設定
+====================================
+```{r}
+library(rtweet)
+create_token(
+  app = "teach0309",
+  consumer_key = "Wbba6ysyPKGstGAqohmtyWZOE",
+  consumer_secret = "GJweDzVvXGrbjz26bHTr3d6dFI7q9gFCH98f3Ct2yk3APPWigc",
+  access_token = "216362944-VbXiYOjGtENwSI6eJ9AoDK5OVvoQWlj7yIeXraGt",
+  access_secret = "jnfDCvuMdxdmxswUUPPi3gomxIWZq3BTdumykLJb7GW5A")
+```
+
+rtweet package - 搜尋hashtag
+====================================
+```{r eval=F}
+## search for 3000 tweets using the northkorea hashtag
+rt <- search_tweets(
+  "#northkorea", n = 3000, include_rts = FALSE
+)
+head(rt)
+```
+```{r echo=F}
+rt <- search_tweets(
+  "#northkorea", n = 3000, include_rts = FALSE
+)
+knitr::kable(rt[1:6,1:4])
+```
+
+rtweet package - 搜尋hashtag
+====================================
+```{r echo=F}
+library(ggplot2)
+ts_plot(rt, "3 hours") +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(plot.title = ggplot2::element_text(face = "bold")) +
+  ggplot2::labs(
+    x = NULL, y = NULL,
+    title = "Frequency of #northkorea Twitter statuses",
+    subtitle = "Twitter status (tweet) counts aggregated using three-hour intervals",
+    caption = "\nSource: Data collected from Twitter's REST API via rtweet"
+  )
+```
+
+rtweet package - 取得趨勢
+====================================
+```{r eval=F}
+sf <- get_trends("Japan")
+head(sf)
+```
+```{r echo=F}
+sf <- get_trends("Japan")
+knitr::kable(sf[1:4,1:4])
+```
+
+rtweet package - 取得timeline
+====================================
+```{r eval=F}
+tmls <- get_timelines(c("realDonaldTrump", "BarackObama"), n = 3000)
+head(tmls)
+```
+```{r echo=F}
+tmls <- get_timelines(c("realDonaldTrump", "BarackObama"), n = 3000)
+knitr::kable(tmls[1:6,c("user_id","screen_name","text","source")])
+```
+
+rtweet package - 取得timeline
+====================================
+```{r echo=F}
+## plot the frequency of tweets for each user over time
+tmls %>%
+  dplyr::filter(created_at > "2017-10-29") %>%
+  dplyr::group_by(screen_name) %>%
+  ts_plot("days", trim = 1L) +
+  ggplot2::geom_point() +
+  ggplot2::theme_minimal() +
+  ggplot2::theme(
+    legend.title = ggplot2::element_blank(),
+    legend.position = "bottom",
+    plot.title = ggplot2::element_text(face = "bold")) +
+  ggplot2::labs(
+    x = NULL, y = NULL,
+    title = "Frequency of Twitter statuses posted by US President",
+    subtitle = "Twitter status (tweet) counts aggregated by day from October/November 2017",
+    caption = "\nSource: Data collected from Twitter's REST API via rtweet"
+  )
+
+```
+
+
+rtweet package - 取得followers
+====================================
+```{r eval=F}
+## get user IDs of accounts following 蔡英文 Tsai Ing-wen
+iingwen_flw <- get_followers("iingwen", n = 1000)
+## lookup data on those accounts
+iingwen_flw_data <- lookup_users(iingwen_flw$user_id)
+head(iingwen_flw_data)
+```
+```{r echo=F,eval=F}
+## get user IDs of accounts following 蔡英文 Tsai Ing-wen
+iingwen_flw <- get_followers("iingwen", n = 1000)
+## lookup data on those accounts
+iingwen_flw_data <- lookup_users(iingwen_flw$user_id[1:6])
+knitr::kable(iingwen_flw_data[1:6,c("user_id","name","location","friends_count")])
+```
+
+
+rtweet package練習
 ====================================
 type:alert
 incremental:true
-- 取得Facebook access token
-- 使用Rfacebook package取得**CGSGA 長庚學生會**粉絲頁面的前五筆資料
-- 第一筆資料的likes_count是多少?
-- 第二筆資料的shares_count是多少?
+- 複製老師的Twitter access token
+- 使用rtweet package取得**蔡英文 Tsai Ing-wen**(iingwen)的timeline，共50筆tweets
+- 第一筆資料的retweet_count是多少?
+- 第二筆資料的favorite_count是多少?
 
-
-Rfacebook package
-====================================
-- 每次擷取資料的比數有上限（大概30筆）
-- 如需取得更多資料: 使用迴圈協助
-    -  **since** 和 **until**參數，可設定資料擷取區間。
-- 先取得日期向量，供後續迴圈做使用
-```{r eval=FALSE}
-lastDate<-Sys.Date()
-DateVector<-seq(as.Date("2018-01-01"),lastDate,by="5 days")
-DateVectorStr<-as.character(DateVector)
-DateVectorStr
-```
-```
-## "2017-01-01" "2017-01-06" "2017-01-11" "2017-01-16" "2017-01-21" "2017-01-26" "2017-01-31" "2017-02-05"
-```
-
-Rfacebook package
-====================================
-利用上述日期向量資料，搭配迴圈，依序設定**since** 和 **until**參數
-```{r eval=FALSE}
-totalPage<-NULL
-token<-'your token'
-for(i in 1:(length(DateVectorStr)-1)){
-    tempPage<-getPage("tsaiingwen", token,
-                since = DateVectorStr[i],
-                until = DateVectorStr[i+1])
-    totalPage<-rbind(totalPage,tempPage)
-}
-nrow(totalPage)
-```
-```
-## [1] 42
-```
-
-
-Rfacebook 提供的其他函數
-====================================
-- getUsers()
-- getPost()
-- searchFacebook()
-- Check https://github.com/pablobarbera/Rfacebook
-- ?Rfacebook
-
-
-Facebook資料擷取練習
-====================================
-type:alert
-incremental:true
-
-- 桃園捷運 Taoyuan MRT (TaoyuanMRT) 粉絲頁
-- 分別擷取以下兩段時間的資料
-    - 2017/2/16~20 (自由試乘開始)
-    - 2017/3/2~6 (正式通車)
-- 比較兩區間平均按讚次數，留言次數與分享次數，觀察民眾對粉絲頁的熱度
-
-Facebook資料擷取練習
-====================================
-type:alert
-incremental:true
-
-- 嘗試看說明文件，使用以下函式
-    - getUsers()
-    - getPost()
-    - searchFacebook()
-
-- 檢查每個函式回傳的資料，各有幾個欄位？
 
 資料匯出
 ====================================
@@ -793,7 +848,7 @@ write.table() 練習
 type:alert
 incremental:true
 
-- 將剛剛擷取的桃園捷運 Taoyuan MRT 粉絲頁資料存成tab分隔的.txt檔案
+- 將剛剛擷取的**蔡英文 Tsai Ing-wen** twitter資料存成tab分隔的.txt檔案
 
 CSV檔 .csv
 ====================================
@@ -818,6 +873,6 @@ saveRDS() 練習
 type:alert
 incremental:true
 
-- 將剛剛擷取的桃園捷運 Taoyuan MRT 粉絲頁資料存成R物件檔案(.rds)
+- 將剛剛擷取的**蔡英文 Tsai Ing-wen** twitter資料存成R物件檔案(.rds)
 - 比較與txt檔案大小的差異
 
