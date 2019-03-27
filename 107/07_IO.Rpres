@@ -15,6 +15,7 @@ navigation: slide
 - 從網路匯入
 - 從Facebook匯入
 - 從Twitter匯入
+- 從YouTube匯入
 - 資料匯出
 
 資料分析步驟
@@ -330,7 +331,7 @@ XML 可延伸標記式語言-讀取 xml2套件
 ====================================
 - [臺北市水質監測資訊](http://data.taipei/opendata/datalist/datasetMeta/download?id=961ca397-4a59-45e8-b312-697f26b059dc&rid=190796c8-7c56-42e0-8068-39242b8ec927)
 - 安裝`xml2` package
-- `xmlParse()`函數將XML檔案匯入
+- `read_xml()`函數將XML檔案匯入
 
 ```{r}
 library(xml2)
@@ -716,15 +717,15 @@ create_token(
 rtweet package - 搜尋hashtag
 ====================================
 ```{r eval=F}
-## search for 3000 tweets using the northkorea hashtag
+## search for 1000 tweets using the northkorea hashtag
 rt <- search_tweets(
-  "#northkorea", n = 3000, include_rts = FALSE
+  "#northkorea", n = 1000, include_rts = FALSE
 )
 head(rt)
 ```
 ```{r echo=F}
 rt <- search_tweets(
-  "#northkorea", n = 3000, include_rts = FALSE
+  "#northkorea", n = 1000, include_rts = FALSE
 )
 knitr::kable(rt[1:6,1:4])
 ```
@@ -758,11 +759,11 @@ knitr::kable(sf[1:4,1:4])
 rtweet package - 取得timeline
 ====================================
 ```{r eval=F}
-tmls <- get_timelines(c("realDonaldTrump", "BarackObama"), n = 3000)
+tmls <- get_timelines(c("realDonaldTrump", "BarackObama"), n = 1000)
 head(tmls)
 ```
 ```{r echo=F}
-tmls <- get_timelines(c("realDonaldTrump", "BarackObama"), n = 3000)
+tmls <- get_timelines(c("realDonaldTrump", "BarackObama"), n = 1000)
 knitr::kable(tmls[1:6,c("user_id","screen_name","text","source")])
 ```
 
@@ -817,6 +818,236 @@ incremental:true
 - 第一筆資料的retweet_count是多少?
 - 第二筆資料的favorite_count是多少?
 
+參考資料
+====================================
+
+[rtweet官網](https://rtweet.info/)
+
+
+從YouTube匯入
+====================================
+type:section
+- YouTube API
+- tuber package
+
+
+
+YouTube API 
+====================================
+- 參考[Google Developer Console](https://developers.google.com/youtube/v3/getting-started) 說明申請使用API的權限
+- 開啟**YouTube Data API v3**的功能
+- 設定API金鑰
+- 設定OAuth 2.0 用戶端 ID
+
+tuber package - 用R爬取YouTube資料
+====================================
+- 建議從GitHub安裝開發版本
+- 在R中，可利用`devtools`套件輕鬆安裝GitHub上的開發版套件
+- 安裝後，仍須載入
+- 使用中若出現`Error: HTTP failure: 403`，表示今日API使用上限已到，明天請早
+```{r}
+#devtools::install_github("soodoku/tuber")
+library(tuber)
+```
+
+tuber package - 用R爬取YouTube資料
+====================================
+- 至[Google Developer Console](https://developers.google.com/youtube/v3/getting-started)複製**用戶端ID**以及**用戶端密碼**（此密碼已失效，請自行申請）
+- `yt_oauth()`函數會開瀏覽器，透過網頁授權
+```{r eval=F}
+clientID<-"172472044544-e7t61pjh2s27nelkm9k2hd4ug9848og9.apps.googleusercontent.com"
+clientKey<-"ALwGxLRX2592fSrxdviLKPCa"
+yt_oauth(clientID, clientKey,token = "")
+```
+
+tuber package - 取得單一影片統計數據
+====================================
+- 需至YouTube頁面複製**影片ID**
+```{r eval=F}
+stat<-get_stats(video_id = "GZ7EaieAXJ0")
+data.frame(stat)
+```
+|id          |viewCount |likeCount |dislikeCount |favoriteCount |commentCount |
+|:-----------|:---------|:---------|:------------|:-------------|:------------|
+|GZ7EaieAXJ0 |1899787   |51272     |1163         |0             |2125         |
+
+tuber package - 取得單一影片資訊
+====================================
+- 需至YouTube頁面複製**影片ID**
+```{r eval=F}
+detail<-get_video_details(video_id = "GZ7EaieAXJ0")
+str(detail$items[[1]]$snippet)
+```
+```
+List of 9
+ $ publishedAt         : chr "2019-01-17T04:02:27.000Z"
+ $ channelId           : chr "UCHfY_EOzB1i57hYLSw_rYMg"
+ $ title               : chr "蔡康永 x 理科太太 - 讀書人與理科人的情商對談"
+ $ description         : chr "把情緒完整吐露，就是個性直率？\n把情緒隱藏起來，就是社會化的表現？\n今天很榮幸與 蔡康永 上了一堂情商課\n快看讀"| __truncated__
+ $ thumbnails          :List of 5
+  ..$ default :List of 3
+  .. ..$ url   : chr "https://i.ytimg.com/vi/GZ7EaieAXJ0/default.jpg"
+  .. ..$ width : int 120
+  .. ..$ height: int 90
+  ..$ medium  :List of 3
+  .. ..$ url   : chr "https://i.ytimg.com/vi/GZ7EaieAXJ0/mqdefault.jpg"
+  .. ..$ width : int 320
+  .. ..$ height: int 180
+  ..$ high    :List of 3
+  .. ..$ url   : chr "https://i.ytimg.com/vi/GZ7EaieAXJ0/hqdefault.jpg"
+  .. ..$ width : int 480
+  .. ..$ height: int 360
+  ..$ standard:List of 3
+  .. ..$ url   : chr "https://i.ytimg.com/vi/GZ7EaieAXJ0/sddefault.jpg"
+  .. ..$ width : int 640
+  .. ..$ height: int 480
+  ..$ maxres  :List of 3
+  .. ..$ url   : chr "https://i.ytimg.com/vi/GZ7EaieAXJ0/maxresdefault.jpg"
+  .. ..$ width : int 1280
+  .. ..$ height: int 720
+ $ channelTitle        : chr "理科太太 Li Ke Tai Tai"
+ $ categoryId          : chr "27"
+ $ liveBroadcastContent: chr "none"
+ $ localized           :List of 2
+  ..$ title      : chr "蔡康永 x 理科太太 - 讀書人與理科人的情商對談"
+  ..$ description: chr "把情緒完整吐露，就是個性直率？\n把情緒隱藏起來，就是社會化的表現？\n今天很榮幸與 蔡康永 上了一堂情商課\n快看讀"| __truncated__
+```
+
+tuber package - 取得單一影片留言
+====================================
+- 需至YouTube頁面複製**影片ID**
+```{r eval=F}
+comm<-get_all_comments(video_id = "GZ7EaieAXJ0")
+comm
+```
+
+|authorDisplayName |textDisplay                                        |likeCount |
+|:-----------------|:--------------------------------------------------|:---------|
+|羽晨怡珊          |其實大家所說的情緒化意思是所有事情都是用情緒來解決 |0         |
+|Chad X            |看到这集跟蔡康永商业吹捧~~感觉这个频道不用再看了   |1         |
+|Jenny Chan        |好好奇怎麼跟小孩解釋什麼是情緒                     |0         |
+
+tuber package - 搜尋相關影片
+====================================
+- 輸入關鍵字搜尋相關影片
+```{r eval=F}
+search<-yt_search("理科太太",max_results = 10)
+```
+
+
+
+tuber package - 取得頻道內的影片清單
+====================================
+- 需至YouTube頁面複製**頻道ID**
+```{r eval=F}
+LiKe <- list_channel_resources(
+    filter = c(channel_id = 
+                   "UCHfY_EOzB1i57hYLSw_rYMg"))
+vids <- get_playlist_items(filter= c(playlist_id=playlist_id)) 
+```
+|contentDetails.videoId |contentDetails.videoPublishedAt |
+|:----------------------|:-------------------------------|
+|_YDD_kHCuCg            |2019-03-26T04:03:59.000Z        |
+|n_zK5PPg6bw            |2019-03-20T13:00:15.000Z        |
+|O3gpNqYVoj0            |2019-03-21T04:00:00.000Z        |
+|cN0ZiHneU4Q            |2019-03-24T13:00:12.000Z        |
+|gDuI8N36leQ            |2019-03-15T13:00:07.000Z        |
+|lcP9Gbh8hKs            |2019-03-16T13:00:15.000Z        |
+|QuoowVlITaw            |2019-03-14T04:00:03.000Z        |
+|xHxOqJ5EM3Q            |2019-03-12T04:00:01.000Z        |
+|yvsj6C0w0Ec            |2019-03-05T13:09:35.000Z        |
+|W75u4Tt8Ra4            |2019-03-25T04:03:14.000Z        |
+|YLQcKZd-d5k            |2019-03-02T10:05:41.000Z        |
+|vHyV83OZKOE            |2019-02-28T10:00:12.000Z        |
+|xQlVjj_20Gg            |2019-02-26T04:00:03.000Z        |
+|esrV9pM7YQ8            |2019-02-23T13:00:05.000Z        |
+|KaWkYsVZaz8            |2019-02-19T13:00:03.000Z        |
+|Ni8fE-HzGi4            |2019-02-16T13:00:03.000Z        |
+|mBkq_poiAd0            |2019-02-21T04:00:05.000Z        |
+|TtnluzLGxgk            |2019-02-14T04:00:02.000Z        |
+|n9Nuy2FWcqI            |2019-02-12T04:00:02.000Z        |
+|FTmw_8cAIek            |2019-02-04T04:00:00.000Z        |
+|Uur1dnJ9UZY            |2019-02-02T13:00:03.000Z        |
+|I3irjNKci7I            |2019-02-05T04:00:00.000Z        |
+|rfuN7LUtjRk            |2019-02-01T04:00:03.000Z        |
+|3QONDGuO3n0            |2019-02-07T04:00:00.000Z        |
+|QxO1GBXv1Rw            |2019-01-28T13:00:04.000Z        |
+|rDHuy_CW_fc            |2019-01-29T04:05:32.000Z        |
+|NPy-GuVy5J4            |2019-01-31T04:00:00.000Z        |
+|qo9gLmpgO4I            |2019-01-26T13:00:14.000Z        |
+|AvS5wIovCuQ            |2019-01-22T04:00:02.000Z        |
+|GZ7EaieAXJ0            |2019-01-17T04:02:27.000Z        |
+|yF2tLzQWyDg            |2019-01-19T04:00:02.000Z        |
+|ySRR4UE0bYo            |2019-01-15T04:00:59.000Z        |
+|BsDJWlSzH8U            |2019-01-12T13:00:02.000Z        |
+|gU3MYK0UtOQ            |2019-01-08T09:32:29.000Z        |
+|AXvd8ZteF5A            |2019-01-10T03:45:00.000Z        |
+|23KqaSIib9k            |2019-01-08T03:45:00.000Z        |
+|iIE43YlU4NE            |2019-01-06T13:00:11.000Z        |
+|yN30ndv6_eo            |2019-01-03T03:45:00.000Z        |
+|DW26tEKCEJ0            |2019-01-01T03:45:00.000Z        |
+|d72TqqXQ4sU            |2018-12-29T03:45:00.000Z        |
+|af8Q97JrgJk            |2018-12-27T13:00:02.000Z        |
+|QQfiNNwpIwI            |2018-12-25T03:13:10.000Z        |
+|0GtFuUrTf50            |2018-12-26T04:00:01.000Z        |
+|0z4s-wxGnUA            |2018-12-20T03:45:02.000Z        |
+|Q3BECUdgqy4            |2018-12-22T03:45:00.000Z        |
+|tTPDv7TGvbA            |2018-12-18T03:45:00.000Z        |
+|aRRlxfm2GvU            |2018-12-12T13:00:01.000Z        |
+|AE4R4rPBUJQ            |2018-12-11T03:45:01.000Z        |
+|Wl8CVBwDlRU            |2018-12-13T03:45:00.000Z        |
+|FOAKxPbTNKA            |2018-12-04T03:45:00.000Z        |
+
+
+tuber package - 取得頻道內的影片清單
+====================================
+- 需至YouTube頁面複製**頻道ID**
+```{r eval=F}
+vid_ids <- 
+    vids$contentDetails.videoId
+vid_ids
+```
+```
+ [1] "_YDD_kHCuCg" "n_zK5PPg6bw" "O3gpNqYVoj0" "cN0ZiHneU4Q" "gDuI8N36leQ"
+ [6] "lcP9Gbh8hKs" "QuoowVlITaw" "xHxOqJ5EM3Q" "yvsj6C0w0Ec" "W75u4Tt8Ra4"
+[11] "YLQcKZd-d5k" "vHyV83OZKOE" "xQlVjj_20Gg" "esrV9pM7YQ8" "KaWkYsVZaz8"
+[16] "Ni8fE-HzGi4" "mBkq_poiAd0" "TtnluzLGxgk" "n9Nuy2FWcqI" "FTmw_8cAIek"
+[21] "Uur1dnJ9UZY" "I3irjNKci7I" "rfuN7LUtjRk" "3QONDGuO3n0" "QxO1GBXv1Rw"
+[26] "rDHuy_CW_fc" "NPy-GuVy5J4" "qo9gLmpgO4I" "AvS5wIovCuQ" "GZ7EaieAXJ0"
+[31] "yF2tLzQWyDg" "ySRR4UE0bYo" "BsDJWlSzH8U" "gU3MYK0UtOQ" "AXvd8ZteF5A"
+[36] "23KqaSIib9k" "iIE43YlU4NE" "yN30ndv6_eo" "DW26tEKCEJ0" "d72TqqXQ4sU"
+[41] "af8Q97JrgJk" "QQfiNNwpIwI" "0GtFuUrTf50" "0z4s-wxGnUA" "Q3BECUdgqy4"
+[46] "tTPDv7TGvbA" "aRRlxfm2GvU" "AE4R4rPBUJQ" "Wl8CVBwDlRU" "FOAKxPbTNKA"
+```
+
+tuber package - 使用purrr套件實現for迴圈概念
+====================================
+- `map_df(影片編號向量,函數名稱)`意指將所有影片的資料內容逐一抓回
+```{r eval=F}
+library(purrr)
+res<-map_df(vid_ids,get_stats)
+head(res)
+```
+
+|id          |viewCount |likeCount |dislikeCount |favoriteCount |commentCount |
+|:-----------|:---------|:---------|:------------|:-------------|:------------|
+|_YDD_kHCuCg |57672     |2963      |69           |0             |214          |
+
+
+tuber package練習
+====================================
+type:alert
+incremental:true
+- 取得YouTube API用戶端ID與密碼
+- 使用tuber package取得**理科太太**(UCHfY_EOzB1i57hYLSw_rYMg)的影片清單
+- 擷取資料中，留言數最多的影片ID是?
+- 擷取資料中，觀看數最多的影片ID是?
+- 試著擷取留言數最多的影片的所有留言內容
+
+參考資料
+====================================
+
+[:sweet_potato: tuber](http://soodoku.github.io/tuber/)
 
 資料匯出
 ====================================
@@ -848,7 +1079,7 @@ write.table() 練習
 type:alert
 incremental:true
 
-- 將剛剛擷取的**蔡英文 Tsai Ing-wen** twitter資料存成tab分隔的.txt檔案
+- 將剛剛擷取的**理科太太影片評論資料**存成tab分隔的.txt檔案
 
 CSV檔 .csv
 ====================================
@@ -873,6 +1104,6 @@ saveRDS() 練習
 type:alert
 incremental:true
 
-- 將剛剛擷取的**蔡英文 Tsai Ing-wen** twitter資料存成R物件檔案(.rds)
+- 將剛剛擷取的**理科太太影片評論資料**存成R物件檔案(.rds)
 - 比較與txt檔案大小的差異
 
