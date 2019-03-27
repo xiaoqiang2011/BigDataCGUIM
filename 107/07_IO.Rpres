@@ -587,7 +587,6 @@ post_url <- DCardContent %>%
 DCardCGU_posts <- 
     data.frame(title = post_title,
                author=post_author, 
-               content=post_contentShort, 
                likeN=post_like,
                url=paste0("https://www.dcard.tw",post_url))
 ```
@@ -943,6 +942,7 @@ tuber package - 取得頻道內的影片清單
 LiKe <- list_channel_resources(
     filter = c(channel_id = 
                    "UCHfY_EOzB1i57hYLSw_rYMg"))
+playlist_id<-LiKe$items[[1]]$contentDetails$relatedPlaylists$uploads
 vids <- get_playlist_items(filter= c(playlist_id=playlist_id)) 
 ```
 |contentDetails.videoId |contentDetails.videoPublishedAt |
