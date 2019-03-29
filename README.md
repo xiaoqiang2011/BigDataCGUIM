@@ -2,12 +2,16 @@
 
 參考書: [資料科學與R語言](http://yijutseng.github.io/DataScienceRBook/)
 
+## 107學年 (2019, Spring)
+
+上課投影片與上課相關素材請參考**107**[資料夾](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/tree/master/107)
+
 ## 106學年 (2018, Spring)
 
 上課投影片與上課相關素材請參考**106**[資料夾](https://github.com/CGUIM-BigDataAnalysis/BigDataCGUIM/tree/master/106)
 
 ### 數位課程
-[YouTube頻道](https://www.youtube.com/channel/UC2ZZMRLibtq2fD-la4YV_nA)，每周三結束前更新
+[YouTube頻道](https://www.youtube.com/channel/UC2ZZMRLibtq2fD-la4YV_nA)
 
 ### 投影片
 第一章到第三章的課程投影片只提供PDF檔案，其他章節共提供三種檔案:
