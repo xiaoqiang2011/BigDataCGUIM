@@ -1023,8 +1023,10 @@ vid_ids
 tuber package - 使用purrr套件實現for迴圈概念
 ====================================
 - `map_df(影片編號向量,函數名稱)`意指將所有影片的資料內容逐一抓回
+- 若vid_ids的資料型態是factor，需轉成character
 ```{r eval=F}
 library(purrr)
+vid_ids<-as.character(vid_ids)
 res<-map_df(vid_ids,get_stats)
 head(res)
 ```
