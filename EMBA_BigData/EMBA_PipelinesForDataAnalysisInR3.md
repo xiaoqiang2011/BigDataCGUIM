@@ -171,7 +171,7 @@ sd(iris$Sepal.Length)
 
 量化的分析方式: 雙變量-列聯表
 ====================================
-輪子的數目與自手排的關係
+汽缸的數目與自手排的關係
 
 ```r
 table(mtcars$cyl,mtcars$am)
@@ -955,9 +955,12 @@ install.packages("ggmap")
 
 get_googlemap() + ggmap()
 ====================================
+- 使用`register_google(key = "your key")`帶入google金鑰
+- 投影片金鑰已失效，請自行至[Google Cloud Platform](https://console.cloud.google.com/)，點選**API及服務**申請**Maps Static API**後，複製**API key**
 
 ```r
 library(ggmap)
+register_google(key = "AIzaSyApRdSUi54irfyfGpYbi8c3fJbP__xzTiY")
 twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
                   zoom = 7,
                   language = "zh-TW")
@@ -974,7 +977,7 @@ ggmap + open data 資料載入
 ```r
 library(jsonlite)
 library(RCurl)
-WaterData<-fromJSON(getURL("http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=190796c8-7c56-42e0-8068-39242b8ec927"))
+WaterData<-fromJSON("http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=190796c8-7c56-42e0-8068-39242b8ec927")
 WaterDataFrame<-WaterData$result$results
 WaterDataFrame$longitude<-as.numeric(WaterDataFrame$longitude)
 WaterDataFrame$latitude<-as.numeric(WaterDataFrame$latitude)
@@ -984,20 +987,20 @@ head(WaterDataClean)
 ```
 
 ```
-  _id update_date update_time       qua_id                code_name
-1   1  2018-05-25  21:30:00   CS00                       雙溪淨水場
-2   2  2018-05-25  21:30:00   CS01                         衛理女中
-3   3  2018-05-25  21:30:00   CS02         雙溪國小                
-4   4  2018-05-25  21:30:00   CS03                       華興加壓站
-5   5  2018-05-25  21:30:00   CX00                       長興淨水場
-6   6  2018-05-25  21:30:00   CX02                         市政大樓
-  longitude latitude qua_cntu qua_cl qua_ph
-1  121.5609 25.11574     0.05   0.61    7.7
-2  121.5440 25.10325     0.10   0.29    7.6
-3  121.5556 25.10763     0.06   0.47    7.7
-4  121.5348 25.10356     0.15   0.35    7.1
-5  121.5404 25.01633     0.03   0.58    7.3
-6  121.5566 25.04250     0.06    0.6    7.2
+  update_date update_time qua_ph longitude       qua_id qua_cntu
+1  2019-04-13  00:00:00      7.4  121.5694 CS00             0.03
+2  2019-04-13  00:00:00      7.3  121.5523 CS01             0.09
+3  2019-04-13  00:00:00      7.5  121.5639 CS02             0.12
+4  2019-04-13  00:00:00      7.2  121.5444 CS03             0.23
+5  2019-04-13  00:00:00      7.3  121.5479 CX00             0.02
+6  2019-04-13  00:00:00      7.3  121.5640 CX02             0.06
+                 code_name latitude qua_cl _id
+1               雙溪淨水場 25.11419   0.51   1
+2                 衛理女中 25.10176   0.23   2
+3 雙溪國小                 25.10607   0.27   3
+4               華興加壓站 25.09952    0.5   4
+5               長興淨水場 25.01451   0.56   5
+6                 市政大樓 25.03753   0.36   6
 ```
 
 ggmap + open data 繪圖

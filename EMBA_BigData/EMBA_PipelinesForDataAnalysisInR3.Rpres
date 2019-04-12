@@ -111,7 +111,7 @@ sd(iris$Sepal.Length)
 
 量化的分析方式: 雙變量-列聯表
 ====================================
-輪子的數目與自手排的關係
+汽缸的數目與自手排的關係
 ```{r}
 table(mtcars$cyl,mtcars$am)
 ```
@@ -766,8 +766,11 @@ install.packages("ggmap")
 
 get_googlemap() + ggmap()
 ====================================
+- 使用`register_google(key = "your key")`帶入google金鑰
+- 投影片金鑰已失效，請自行至[Google Cloud Platform](https://console.cloud.google.com/)，點選**API及服務**申請**Maps Static API**後，複製**API key**
 ```{r, warning=F,message=F, fig.height=5}
 library(ggmap)
+register_google(key = "AIzaSyApRdSUi54irfyfGpYbi8c3fJbP__xzTiY")
 twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
                   zoom = 7,
                   language = "zh-TW")
@@ -781,7 +784,7 @@ ggmap + open data 資料載入
 ```{r message=F, warning=F}
 library(jsonlite)
 library(RCurl)
-WaterData<-fromJSON(getURL("http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=190796c8-7c56-42e0-8068-39242b8ec927"))
+WaterData<-fromJSON("http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=190796c8-7c56-42e0-8068-39242b8ec927")
 WaterDataFrame<-WaterData$result$results
 WaterDataFrame$longitude<-as.numeric(WaterDataFrame$longitude)
 WaterDataFrame$latitude<-as.numeric(WaterDataFrame$latitude)
