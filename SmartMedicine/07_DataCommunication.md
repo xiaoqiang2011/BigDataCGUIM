@@ -1,0 +1,87 @@
+資料視覺化
+========================================================
+author: 曾意儒 Yi-Ju Tseng
+autosize: true
+font-family: 'Microsoft JhengHei'
+navigation: slide
+
+
+對應書本章節
+========================================================
+[8 資料視覺化](http://yijutseng.github.io/DataScienceRBook/vis.html)
+
+大綱
+====================================
+type:sub-section 
+
+- 資料視覺化的目的
+- ggplot2
+
+
+資料視覺化的目的
+====================================
+type:sub-section 
+- 探索圖 (Exploratory graphs)
+    - 了解資料的特性
+    - 尋找資料的模式(patterns)
+    - 建議資料分析與建模的策略
+- 結果圖 (Final graphs)
+    - 結果呈現與溝通
+   
+    
+常用的畫圖套件
+====================================
+type:sub-section 
+
+- 基本功能(Base)：可[自學](https://www.statmethods.net/graphs/index.htmlhttps://www.datacamp.com/courses/data-visualization-in-r)
+- `lattice`：可[自學](https://www.datacamp.com/courses/data-visualization-in-r-with-lattice)
+- `ggplot2`
+
+ggplot2簡介
+====================================
+type:sub-section 
+
+- Dr. Leland Wilkinson [Grammar of Graphics](http://www.springer.com/us/book/9780387245447)
+
+“In brief, the grammar tells us that a statistical graphic is a `mapping` from data to `aesthetic` attributes (colour, shape, size) of `geometric` objects (points, lines, bars). The plot may also contain statistical transformations of the data and is drawn on a specific coordinate system”
+
+-from `ggplot2` book
+
+ggplot2簡介
+====================================
+- [Hadley Wickham](http://hadley.nz/)開發
+- 一直是最熱門的R packages之一
+- [ggplot2 GitHub](https://github.com/tidyverse/ggplot2)
+
+ggplot2 -- 不寫程式也能畫圖？
+====================================
+esquisse：RStudio外掛（addin），圖像化的畫圖工具，安裝完後啟動addin 
+
+```r
+install.packages("esquisse")
+esquisse::esquisser()
+```
+
+
+![plot of chunk unnamed-chunk-2](https://github.com/dreamRs/esquisse/raw/master/man/figures/esquisse.gif)
+
+
+互動式資料呈現
+====================================
+
+- [互動式資料呈現](http://yijutseng.github.io/DataScienceRBook/InteractiveGraphics.html)
+- [ggvis](http://yijutseng.github.io/DataScienceRBook/InteractiveGraphics.html#ggvis)
+- [googleVis](http://yijutseng.github.io/DataScienceRBook/InteractiveGraphics.html#googlevis)
+- [Plot.ly](http://yijutseng.github.io/DataScienceRBook/InteractiveGraphics.html#plot.ly)
+
+參考資料
+====================================
+type:sub-section 
+
+- 官方網站[文件](http://ggplot2.tidyverse.org/reference/)
+- RStudio製作的[ggplot cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/11/ggplot2-cheatsheet-2.1.pdf)
+- DataCamp課程1 [Data Visualization with ggplot2 (Part 1)](https://www.datacamp.com/courses/data-visualization-with-ggplot2-1)
+- DataCamp課程2 [Data Visualization with ggplot2 (Part 2)](https://www.datacamp.com/courses/data-visualization-with-ggplot2-2)
+- DataCamp課程3 [Data Visualization with ggplot2 (Part 3)](https://www.datacamp.com/courses/data-visualization-with-ggplot2-3)
+- [每個人心中都有一碗巷口的牛肉湯](http://tequila1979.blogspot.tw/2017/01/blog-post.html)
+
