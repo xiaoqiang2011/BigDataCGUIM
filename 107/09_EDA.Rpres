@@ -57,8 +57,8 @@ library(funModeling)
 ```{r eval=F}
 df_status(heart_disease)
 ```
-```{r echo=F}
-knitr::kable(df_status(heart_disease))
+```{r, echo=F}
+knitr::kable(df_status(heart_disease,print_results=F))
 ```
 
 探索式資料分析 - 快速查看
@@ -71,11 +71,11 @@ plot_num(heart_disease)
 探索式資料分析 - 快速查看
 ====================================
 用`profiling_num()`快速查看資料的統計數字
-```{r eval=F}
+```{r, eval=F}
 profiling_num(heart_disease)
 ```
-```{r echo=F}
-knitr::kable(profiling_num(heart_disease))
+```{r, echo=F}
+knitr::kable(profiling_num(heart_disease,print_results=F))
 ```
 
 探索式資料分析 - 快速查看
