@@ -39,6 +39,178 @@ type:sub-section
 
 透過探索性分析來**調整分析的方向**，減少因分析方向錯誤所造成的時間浪費。
 
+探索式資料分析 - 快速查看
+====================================
+首先安裝`funModeling`套件
+
+```r
+install.packages("funModeling")
+```
+並載入
+
+```r
+library(funModeling)
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`df_status()`快速查看資料的完整程度，以內建的`heart_disease`資料為例：
+
+```r
+df_status(heart_disease)
+```
+
+```
+                 variable q_zeros p_zeros q_na p_na q_inf p_inf    type
+1                     age       0    0.00    0 0.00     0     0 integer
+2                  gender       0    0.00    0 0.00     0     0  factor
+3              chest_pain       0    0.00    0 0.00     0     0  factor
+4  resting_blood_pressure       0    0.00    0 0.00     0     0 integer
+5       serum_cholestoral       0    0.00    0 0.00     0     0 integer
+6     fasting_blood_sugar     258   85.15    0 0.00     0     0  factor
+7         resting_electro     151   49.83    0 0.00     0     0  factor
+8          max_heart_rate       0    0.00    0 0.00     0     0 integer
+9             exer_angina     204   67.33    0 0.00     0     0 integer
+10                oldpeak      99   32.67    0 0.00     0     0 numeric
+11                  slope       0    0.00    0 0.00     0     0 integer
+12      num_vessels_flour     176   58.09    4 1.32     0     0 integer
+13                   thal       0    0.00    2 0.66     0     0  factor
+14 heart_disease_severity     164   54.13    0 0.00     0     0 integer
+15           exter_angina     204   67.33    0 0.00     0     0  factor
+16      has_heart_disease       0    0.00    0 0.00     0     0  factor
+   unique
+1      41
+2       2
+3       4
+4      50
+5     152
+6       2
+7       3
+8      91
+9       2
+10     40
+11      3
+12      4
+13      3
+14      5
+15      2
+16      2
+```
+
+
+
+|variable               | q_zeros| p_zeros| q_na| p_na| q_inf| p_inf|type    | unique|
+|:----------------------|-------:|-------:|----:|----:|-----:|-----:|:-------|------:|
+|age                    |       0|    0.00|    0| 0.00|     0|     0|integer |     41|
+|gender                 |       0|    0.00|    0| 0.00|     0|     0|factor  |      2|
+|chest_pain             |       0|    0.00|    0| 0.00|     0|     0|factor  |      4|
+|resting_blood_pressure |       0|    0.00|    0| 0.00|     0|     0|integer |     50|
+|serum_cholestoral      |       0|    0.00|    0| 0.00|     0|     0|integer |    152|
+|fasting_blood_sugar    |     258|   85.15|    0| 0.00|     0|     0|factor  |      2|
+|resting_electro        |     151|   49.83|    0| 0.00|     0|     0|factor  |      3|
+|max_heart_rate         |       0|    0.00|    0| 0.00|     0|     0|integer |     91|
+|exer_angina            |     204|   67.33|    0| 0.00|     0|     0|integer |      2|
+|oldpeak                |      99|   32.67|    0| 0.00|     0|     0|numeric |     40|
+|slope                  |       0|    0.00|    0| 0.00|     0|     0|integer |      3|
+|num_vessels_flour      |     176|   58.09|    4| 1.32|     0|     0|integer |      4|
+|thal                   |       0|    0.00|    2| 0.66|     0|     0|factor  |      3|
+|heart_disease_severity |     164|   54.13|    0| 0.00|     0|     0|integer |      5|
+|exter_angina           |     204|   67.33|    0| 0.00|     0|     0|factor  |      2|
+|has_heart_disease      |       0|    0.00|    0| 0.00|     0|     0|factor  |      2|
+
+探索式資料分析 - 快速查看
+====================================
+用`plot_num()`快速畫直方圖，查看數值資料的分佈
+
+```r
+plot_num(heart_disease)
+```
+
+![plot of chunk unnamed-chunk-5](06_DataExplore-figure/unnamed-chunk-5-1.png)
+
+探索式資料分析 - 快速查看
+====================================
+用`profiling_num()`快速查看資料的統計數字
+
+```r
+profiling_num(heart_disease)
+```
+
+```
+                variable   mean std_dev variation_coef p_01 p_05 p_25
+1                    age  54.44    9.04           0.17   35   40   48
+2 resting_blood_pressure 131.69   17.60           0.13  100  108  120
+3      serum_cholestoral 246.69   51.78           0.21  149  175  211
+4         max_heart_rate 149.61   22.88           0.15   95  108  134
+5            exer_angina   0.33    0.47           1.44    0    0    0
+6                oldpeak   1.04    1.16           1.12    0    0    0
+7                  slope   1.60    0.62           0.38    1    1    1
+8      num_vessels_flour   0.67    0.94           1.39    0    0    0
+9 heart_disease_severity   0.94    1.23           1.31    0    0    0
+   p_50  p_75  p_95  p_99 skewness kurtosis  iqr        range_98
+1  56.0  61.0  68.0  71.0    -0.21      2.5 13.0        [35, 71]
+2 130.0 140.0 160.0 180.0     0.70      3.8 20.0      [100, 180]
+3 241.0 275.0 326.9 406.7     1.13      7.4 64.0   [149, 406.74]
+4 153.0 166.0 181.9 192.0    -0.53      2.9 32.5 [95.02, 191.96]
+5   0.0   1.0   1.0   1.0     0.74      1.5  1.0          [0, 1]
+6   0.8   1.6   3.4   4.2     1.26      4.5  1.6        [0, 4.2]
+7   2.0   2.0   3.0   3.0     0.51      2.4  1.0          [1, 3]
+8   0.0   1.0   3.0   3.0     1.18      3.2  1.0          [0, 3]
+9   0.0   2.0   3.0   4.0     1.05      2.8  2.0          [0, 4]
+        range_80
+1       [42, 66]
+2     [110, 152]
+3 [188.8, 308.8]
+4   [116, 176.6]
+5         [0, 1]
+6       [0, 2.8]
+7         [1, 2]
+8         [0, 2]
+9         [0, 3]
+```
+
+
+
+|variable               |   mean| std_dev| variation_coef| p_01| p_05| p_25|  p_50|  p_75|  p_95|  p_99| skewness| kurtosis|  iqr|range_98        |range_80       |
+|:----------------------|------:|-------:|--------------:|----:|----:|----:|-----:|-----:|-----:|-----:|--------:|--------:|----:|:---------------|:--------------|
+|age                    |  54.44|    9.04|           0.17|   35|   40|   48|  56.0|  61.0|  68.0|  71.0|    -0.21|      2.5| 13.0|[35, 71]        |[42, 66]       |
+|resting_blood_pressure | 131.69|   17.60|           0.13|  100|  108|  120| 130.0| 140.0| 160.0| 180.0|     0.70|      3.9| 20.0|[100, 180]      |[110, 152]     |
+|serum_cholestoral      | 246.69|   51.78|           0.21|  149|  175|  211| 241.0| 275.0| 326.9| 406.7|     1.13|      7.4| 64.0|[149, 406.74]   |[188.8, 308.8] |
+|max_heart_rate         | 149.61|   22.88|           0.15|   95|  108|  134| 153.0| 166.0| 181.9| 192.0|    -0.53|      2.9| 32.5|[95.02, 191.96] |[116, 176.6]   |
+|exer_angina            |   0.33|    0.47|           1.44|    0|    0|    0|   0.0|   1.0|   1.0|   1.0|     0.74|      1.6|  1.0|[0, 1]          |[0, 1]         |
+|oldpeak                |   1.04|    1.16|           1.12|    0|    0|    0|   0.8|   1.6|   3.4|   4.2|     1.26|      4.5|  1.6|[0, 4.2]        |[0, 2.8]       |
+|slope                  |   1.60|    0.62|           0.38|    1|    1|    1|   2.0|   2.0|   3.0|   3.0|     0.51|      2.4|  1.0|[1, 3]          |[1, 2]         |
+|num_vessels_flour      |   0.67|    0.94|           1.39|    0|    0|    0|   0.0|   1.0|   3.0|   3.0|     1.18|      3.2|  1.0|[0, 3]          |[0, 2]         |
+|heart_disease_severity |   0.94|    1.23|           1.31|    0|    0|    0|   0.0|   2.0|   3.0|   4.0|     1.05|      2.8|  2.0|[0, 4]          |[0, 3]         |
+
+探索式資料分析 - 快速查看
+====================================
+用`cross_plot()`快速查看某欄位（類別）與某連續變項（年齡）的關係
+
+```r
+cross_plot(heart_disease, 
+           input=c("age"),
+           target="has_heart_disease")
+```
+
+![plot of chunk unnamed-chunk-8](06_DataExplore-figure/unnamed-chunk-8-1.png)
+
+探索式資料分析 - 快速查看
+====================================
+用`plotar()`快速查看某欄位（類別）與某連續變項（年齡）的關係
+
+```r
+plotar(data=heart_disease, input = c("age"),
+       target="has_heart_disease", 
+       plot_type="boxplot")
+```
+
+![plot of chunk unnamed-chunk-9](06_DataExplore-figure/unnamed-chunk-9-1.png)
+
+
+
+
+
 探索式資料分析
 ====================================
 
@@ -74,7 +246,7 @@ mean(iris$Sepal.Length)
 ```
 
 ```
-[1] 5.843333
+[1] 5.8
 ```
 
 ```r
@@ -151,7 +323,7 @@ var(iris$Sepal.Length)
 ```
 
 ```
-[1] 0.6856935
+[1] 0.69
 ```
 
 ```r
@@ -159,7 +331,7 @@ sd(iris$Sepal.Length)
 ```
 
 ```
-[1] 0.8280661
+[1] 0.83
 ```
 
 單變量分析練習
@@ -203,10 +375,10 @@ prop.table(mtTable)
 
 ```
    
-          0       1
-  4 0.09375 0.25000
-  6 0.12500 0.09375
-  8 0.37500 0.06250
+        0     1
+  4 0.094 0.250
+  6 0.125 0.094
+  8 0.375 0.062
 ```
 
 量化的分析方式: 雙變量-列聯表
@@ -218,10 +390,10 @@ prop.table(mtTable,margin = 1)
 
 ```
    
-            0         1
-  4 0.2727273 0.7272727
-  6 0.5714286 0.4285714
-  8 0.8571429 0.1428571
+       0    1
+  4 0.27 0.73
+  6 0.57 0.43
+  8 0.86 0.14
 ```
 
 ```r
@@ -230,10 +402,10 @@ prop.table(mtTable,margin = 2)
 
 ```
    
-            0         1
-  4 0.1578947 0.6153846
-  6 0.2105263 0.2307692
-  8 0.6315789 0.1538462
+       0    1
+  4 0.16 0.62
+  6 0.21 0.23
+  8 0.63 0.15
 ```
 
 量化的分析方式: 雙變量-共變異數
@@ -328,7 +500,7 @@ library(dplyr) ##載入
 
 ```r
 library(SportsAnalytics)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1718<-fetch_NBAPlayerStatistics("17-18")
 ```
 
 增加新欄位 mutate()
@@ -337,13 +509,13 @@ NBA1516<-fetch_NBAPlayerStatistics("15-16")
 
 ```r
 mutate1<-
-    mutate(NBA1516,
+    mutate(NBA1718,
            FGRate=FieldGoalsMade/FieldGoalsAttempted)
 mutate1$FGRate[1:5]
 ```
 
 ```
-[1] 0.6 0.3 0.6 0.4 0.5
+[1] 0.4 0.4 0.6 0.5 0.4
 ```
 
 計算統計值 summarise() 
@@ -352,7 +524,7 @@ mutate1$FGRate[1:5]
 - n(), n_distinct()
 
 ```r
-summarise(NBA1516,
+summarise(NBA1718,
           nPlayer=n(),
           nTeam=n_distinct(Team),
           nPos=n_distinct(Position))
@@ -360,7 +532,7 @@ summarise(NBA1516,
 
 ```
   nPlayer nTeam nPos
-1     476    31    6
+1     540    33    6
 ```
 
 計算統計值 summarise() 
@@ -369,7 +541,7 @@ summarise(NBA1516,
 - 計算**出場分鐘數大於2500分鐘**的**球員個數**、**平均投進的兩分球數**以及**平均投出的兩分球數**
 
 ```r
-filter1<-filter(NBA1516,TotalMinutesPlayed>2500)
+filter1<-filter(NBA1718,TotalMinutesPlayed>2500)
 summarise(filter1,
           nPlayer=n(),
           meanFGMade=mean(FieldGoalsMade),
@@ -378,7 +550,7 @@ summarise(filter1,
 
 ```
   nPlayer meanFGMade meanFGAtt
-1      40        512      1121
+1      33        569      1208
 ```
 
 dplyr filter()+summarise() 練習
@@ -391,7 +563,7 @@ incremental:true
 ```r
 library(SportsAnalytics)
 library(dplyr)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1718<-fetch_NBAPlayerStatistics("17-18")
 ```
 - 試著用dplyr語法篩選出所有**助攻數(Assists)超過100**且**抄截數大於20**的球員資料
 - 計算這些球員的**平均出場數GamesPlayed**，**平均出場分鐘數TotalMinutesPlayed**
@@ -401,7 +573,7 @@ pipe %>%
 - 直接用**pipe**符號`%>%`將指令串連，減少暫存物件（filter1）的生成
 
 ```r
-filter(NBA1516,TotalMinutesPlayed>2500) %>%
+filter(NBA1718,TotalMinutesPlayed>2500) %>%
     summarise(nPlayer=n(),
         meanFGMade=mean(FieldGoalsMade),
         meanFGAtt=mean(FieldGoalsAttempted))
@@ -409,7 +581,7 @@ filter(NBA1516,TotalMinutesPlayed>2500) %>%
 
 ```
   nPlayer meanFGMade meanFGAtt
-1      40        512      1121
+1      33        569      1208
 ```
 
 dplyr pipe %>% 練習
@@ -421,7 +593,7 @@ incremental:true
 
 ```r
 library(SportsAnalytics)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1718<-fetch_NBAPlayerStatistics("17-18")
 library(dplyr)
 ```
 - 試著用dplyr語法篩選出所有**助攻數(Assists)超過100**且**抄截數大於20**的球員資料
@@ -435,7 +607,7 @@ library(dplyr)
 - 計算各**隊**（以Team作為分組依據）的**球員數**、**平均投進的兩分球數**以及**平均投出的兩分球數**
 
 ```r
-group_by(NBA1516,Team)%>%
+group_by(NBA1718,Team)%>%
     summarise(nPlayer=n(),
         meanFGMade=mean(FieldGoalsMade),
         meanFGAtt=mean(FieldGoalsAttempted))
@@ -443,10 +615,10 @@ group_by(NBA1516,Team)%>%
 
 |Team | nPlayer| meanFGMade| meanFGAtt|
 |:----|-------:|----------:|---------:|
-|ATL  |      15|        215|       471|
-|BOS  |      15|        209|       475|
-|BRO  |      16|        181|       396|
-|CHA  |      14|        199|       451|
+|ATL  |      19|        140|       314|
+|BOS  |      19|        171|       377|
+|BRO  |      18|        167|       382|
+|CHA  |      17|        191|       423|
 
 分組 group_by()
 ====================================
@@ -454,7 +626,7 @@ group_by(NBA1516,Team)%>%
 - 計算各**隊**各**守備位置**（以Team和Position作為分組依據）的**球員數**、**平均投進的兩分球數**以及**平均投出的兩分球數**
 
 ```r
-group_by(NBA1516,Team,Position)%>%
+group_by(NBA1718,Team,Position)%>%
   summarise(nPlayer=n(),
         meanFGMade=mean(FieldGoalsMade),
         meanFGAtt=mean(FieldGoalsAttempted))
@@ -462,42 +634,42 @@ group_by(NBA1516,Team,Position)%>%
 
 |Team |Position | nPlayer| meanFGMade| meanFGAtt|
 |:----|:--------|-------:|----------:|---------:|
-|ATL  |C        |       1|         11|        19|
-|ATL  |PF       |       6|        247|       516|
-|ATL  |PG       |       2|        382|       884|
+|ATL  |C        |       2|        178|       328|
+|ATL  |PF       |       3|        175|       337|
+|ATL  |PG       |       4|        197|       466|
 
 排序 arrange()
 ====================================
 排序功能，預設為**遞增排序**
 
 ```r
-arrange(NBA1516,TotalMinutesPlayed)
+arrange(NBA1718,TotalMinutesPlayed)
 ```
 
 |League |Name             |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
 |:------|:----------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
-|NBA    |J.j. O'brien     |UTA  |SF       |           1|                  2|              0|                   1|          0|               0|              0|                   0|                 0|             0|       0|      0|         0|      0|             0|                 0|           0|          0|         0|             0|            0|
-|NBA    |Rakeem Christmas |IND  |PF       |           1|                  6|              2|                   2|          0|               0|              0|                   0|                 1|             1|       0|      0|         0|      0|             1|                 0|           4|          0|         0|             0|            0|
-|NBA    |Th Antetokounmpo |NYK  |SF       |           3|                  7|              3|                   4|          0|               1|              0|                   0|                 0|             1|       0|      0|         0|      0|             2|                 0|           6|          0|         0|             0|            0|
-|NBA    |Sam Dekker       |HOU  |SF       |           3|                  7|              0|                   0|          0|               0|              0|                   0|                 0|             1|       0|      1|         0|      0|             0|                 0|           0|          0|         0|             0|            0|
-|NBA    |Coty Clarke      |BOS  |NA       |           4|                  8|              2|                   4|          2|               2|              0|                   0|                 0|             1|       0|      0|         1|      0|             0|                 0|           6|          0|         0|             0|            0|
-|NBA    |Jordan Adams     |MEM  |SG       |           2|                 15|              2|                   6|          0|               1|              3|                   5|                 0|             2|       3|      3|         2|      0|             2|                 0|           7|          0|         0|             0|            0|
+|NBA    |Chris Boucher    |GSW  |PF       |           1|                  1|              0|                   1|          0|               1|              0|                   0|                 0|             1|       0|      0|         0|      0|             0|                 0|           0|          0|         0|             0|            0|
+|NBA    |Trey Mckinney    |IND  |SG       |           1|                  1|              0|                   0|          0|               0|              0|                   0|                 0|             0|       0|      0|         0|      0|             0|                 0|           0|          0|         0|             0|            0|
+|NBA    |Naza Mitrou-long |UTA  |PF       |           1|                  1|              1|                   1|          1|               1|              0|                   0|                 0|             0|       0|      0|         0|      0|             0|                 0|           3|          0|         0|             0|            0|
+|NBA    |Minda Kuzminskas |NYK  |PF       |           1|                  2|              0|                   2|          0|               0|              0|                   0|                 0|             0|       0|      0|         0|      0|             0|                 0|           0|          0|         0|             0|            0|
+|NBA    |Tyler Lydon      |DEN  |PF       |           1|                  2|              0|                   0|          0|               0|              0|                   0|                 0|             0|       0|      0|         0|      0|             0|                 0|           0|          0|         0|             0|            0|
+|NBA    |Edmond Sumner    |IND  |PG       |           1|                  2|              1|                   1|          0|               0|              0|                   0|                 0|             1|       0|      0|         0|      0|             1|                 0|           2|          0|         0|             0|            0|
 
 遞減排序 arrange()
 ====================================
 使用`desc()`將要**遞減排序**的變數包起來，就可以遞減排序
 
 ```r
-arrange(NBA1516,
+arrange(NBA1718,
         desc(TotalMinutesPlayed),
         desc(GamesPlayed))
 ```
 
-|League |Name           |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
-|:------|:--------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
-|NBA    |James Harden   |HOU  |SG       |          82|               3121|            710|                1617|        236|             656|            720|                 837|                63|           502|     612|    138|       374|     51|           229|                 1|        2376|          2|         0|             0|           82|
-|NBA    |Gordon Hayward |UTA  |SG       |          80|               2889|            521|                1202|        143|             410|            393|                 477|                61|           397|     296|     95|       202|     27|           183|                 0|        1578|          0|         0|             0|           80|
-|NBA    |Kemba Walker   |CHA  |PG       |          81|               2885|            568|                1332|        182|             490|            371|                 438|                56|           358|     421|    127|       171|     39|           111|                 0|        1689|          5|         0|             0|           81|
+|League |Name            |Team |Position | GamesPlayed| TotalMinutesPlayed| FieldGoalsMade| FieldGoalsAttempted| ThreesMade| ThreesAttempted| FreeThrowsMade| FreeThrowsAttempted| OffensiveRebounds| TotalRebounds| Assists| Steals| Turnovers| Blocks| PersonalFouls| Disqualifications| TotalPoints| Technicals| Ejections| FlagrantFouls| GamesStarted|
+|:------|:---------------|:----|:--------|-----------:|------------------:|--------------:|-------------------:|----------:|---------------:|--------------:|-------------------:|-----------------:|-------------:|-------:|------:|---------:|------:|-------------:|-----------------:|-----------:|----------:|---------:|-------------:|------------:|
+|NBA    |Lebron James    |CLE  |SF       |          82|               3024|            857|                1580|        149|             406|            388|                 531|                97|           711|     747|    117|       348|     71|           135|                 0|        2251|          6|         0|             0|           82|
+|NBA    |Khris Middleton |MIL  |SF       |          82|               2980|            593|                1271|        146|             406|            320|                 362|                45|           427|     328|    118|       191|     21|           270|                 1|        1652|          4|         0|             0|           82|
+|NBA    |Andrew Wiggins  |MIN  |SG       |          82|               2979|            569|                1300|        112|             338|            202|                 314|                81|           357|     160|     91|       138|     52|           163|                 1|        1452|          0|         0|             0|           82|
 
 dplyr綜合範例
 ====================================
@@ -505,7 +677,7 @@ dplyr綜合範例
 - 計算各**隊**各**守備**位置（以Team和Position作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數，並依平均投進的兩分球數**由大到小排序**
 
 ```r
-group_by(NBA1516,Team,Position) %>%
+group_by(NBA1718,Team,Position) %>%
   summarise(nPlayer=n(),
     meanFGMade=mean(FieldGoalsMade),
     meanFGAtt=mean(FieldGoalsAttempted)) %>%
@@ -514,9 +686,9 @@ group_by(NBA1516,Team,Position) %>%
 
 |Team |Position | nPlayer| meanFGMade| meanFGAtt|
 |:----|:--------|-------:|----------:|---------:|
-|GSW  |PG       |       2|        504|       988|
-|CLE  |SF       |       2|        440|       864|
-|ORL  |SG       |       1|        425|       969|
+|PHI  |C        |       1|        510|      1053|
+|MIA  |PG       |       1|        484|      1075|
+|MIL  |SF       |       3|        473|       954|
 
 
 修改欄位名稱 rename()
@@ -524,17 +696,17 @@ group_by(NBA1516,Team,Position) %>%
 `新名稱=舊名稱`
 
 ```r
-rename1<-rename(NBA1516,Po=Position)
+rename1<-rename(NBA1718,Po=Position)
 rename1[1:5,1:5]
 ```
 
 ```
   League          Name Team Po GamesPlayed
-1    NBA    Quincy Acy  SAC SF          59
-2    NBA  Jordan Adams  MEM SG           2
-3    NBA  Steven Adams  OKL  C          80
-4    NBA Arron Afflalo  NYK SG          71
-5    NBA Alexis Ajinca  NOR  C          59
+1    NBA  Alex Abrines  OKL SG          74
+2    NBA    Quincy Acy  BRO SF          70
+3    NBA  Steven Adams  OKL  C          76
+4    NBA   Bam Adebayo  MIA PF          69
+5    NBA Arron Afflalo  ORL SG          52
 ```
 
 dplyr 綜合練習
@@ -547,7 +719,7 @@ incremental:true
 ```r
 library(SportsAnalytics)
 library(dplyr)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1718<-fetch_NBAPlayerStatistics("17-18")
 ```
 - 試著用dplyr語法篩選出所有**助攻數(Assists)超過100**且**抄截數大於20**的球員資料
 - 依**守備位置**Position分組，計算球員的平均**出場數**GamesPlayed，平均**出場分鐘數**TotalMinutesPlayed

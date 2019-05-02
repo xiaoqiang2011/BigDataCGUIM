@@ -39,6 +39,65 @@ type:sub-section
 
 透過探索性分析來**調整分析的方向**，減少因分析方向錯誤所造成的時間浪費。
 
+
+探索式資料分析 - 快速查看
+====================================
+首先安裝`funModeling`套件
+```{r eval=F}
+install.packages("funModeling")
+```
+並載入
+```{r}
+library(funModeling)
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`df_status()`快速查看資料的完整程度，以內建的`heart_disease`資料為例：
+```{r eval=F}
+df_status(heart_disease)
+```
+```{r echo=F}
+knitr::kable(df_status(heart_disease))
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`plot_num()`快速畫直方圖，查看數值資料的分佈
+```{r}
+plot_num(heart_disease)
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`profiling_num()`快速查看資料的統計數字
+```{r eval=F}
+profiling_num(heart_disease)
+```
+```{r echo=F}
+knitr::kable(profiling_num(heart_disease))
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`cross_plot()`快速查看某欄位（類別）與某連續變項（年齡）的關係
+```{r}
+cross_plot(heart_disease, 
+           input=c("age"),
+           target="has_heart_disease")
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`plotar()`快速查看某欄位（類別）與某連續變項（年齡）的關係
+```{r}
+plotar(data=heart_disease, input = c("age"),
+       target="has_heart_disease", 
+       plot_type="boxplot")
+```
+
+
+
 探索式資料分析
 ====================================
 

@@ -39,6 +39,66 @@ type:sub-section
 
 透過探索性分析來**調整分析的方向**，減少因分析方向錯誤所造成的時間浪費。
 
+探索式資料分析 - 快速查看
+====================================
+首先安裝`funModeling`套件
+```{r eval=F}
+install.packages("funModeling")
+```
+並載入
+```{r}
+library(funModeling)
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`df_status()`快速查看資料的完整程度，以內建的`heart_disease`資料為例：
+```{r eval=F}
+df_status(heart_disease)
+```
+```{r echo=F}
+knitr::kable(df_status(heart_disease))
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`plot_num()`快速畫直方圖，查看數值資料的分佈
+```{r}
+plot_num(heart_disease)
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`profiling_num()`快速查看資料的統計數字
+```{r eval=F}
+profiling_num(heart_disease)
+```
+```{r echo=F}
+knitr::kable(profiling_num(heart_disease))
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`cross_plot()`快速查看某欄位（類別）與某連續變項（年齡）的關係
+```{r}
+cross_plot(heart_disease, 
+           input=c("age"),
+           target="has_heart_disease")
+```
+
+探索式資料分析 - 快速查看
+====================================
+用`plotar()`快速查看某欄位（類別）與某連續變項（年齡）的關係
+```{r}
+plotar(data=heart_disease, input = c("age"),
+       target="has_heart_disease", 
+       plot_type="boxplot")
+```
+
+
+
+
+
 探索式資料分析
 ====================================
 
@@ -211,7 +271,7 @@ library(dplyr) ##載入
 以NBA資料為例，首先先讀入資料
 ```{r}
 library(SportsAnalytics)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1718<-fetch_NBAPlayerStatistics("17-18")
 ```
 
 增加新欄位 mutate()
@@ -219,7 +279,7 @@ NBA1516<-fetch_NBAPlayerStatistics("15-16")
 - 新增新欄位`FGRate`，欄位值為`FieldGoalsMade/FieldGoalsAttempted`
 ```{r mutate1}
 mutate1<-
-    mutate(NBA1516,
+    mutate(NBA1718,
            FGRate=FieldGoalsMade/FieldGoalsAttempted)
 mutate1$FGRate[1:5]
 ```
@@ -229,7 +289,7 @@ mutate1$FGRate[1:5]
 - **球員個數**、**不重複的隊伍數**以及**不重複的守備位置數**等
 - n(), n_distinct()
 ```{r summarise1}
-summarise(NBA1516,
+summarise(NBA1718,
           nPlayer=n(),
           nTeam=n_distinct(Team),
           nPos=n_distinct(Position))
@@ -240,7 +300,7 @@ summarise(NBA1516,
 - 通常會與其他功能合併使用
 - 計算**出場分鐘數大於2500分鐘**的**球員個數**、**平均投進的兩分球數**以及**平均投出的兩分球數**
 ```{r summarise2}
-filter1<-filter(NBA1516,TotalMinutesPlayed>2500)
+filter1<-filter(NBA1718,TotalMinutesPlayed>2500)
 summarise(filter1,
           nPlayer=n(),
           meanFGMade=mean(FieldGoalsMade),
@@ -256,7 +316,7 @@ incremental:true
 ```{r eval=F}
 library(SportsAnalytics)
 library(dplyr)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1718<-fetch_NBAPlayerStatistics("17-18")
 ```
 - 試著用dplyr語法篩選出所有**助攻數(Assists)超過100**且**抄截數大於20**的球員資料
 - 計算這些球員的**平均出場數GamesPlayed**，**平均出場分鐘數TotalMinutesPlayed**
@@ -265,7 +325,7 @@ pipe %>%
 ====================================
 - 直接用**pipe**符號`%>%`將指令串連，減少暫存物件（filter1）的生成
 ```{r summarise3}
-filter(NBA1516,TotalMinutesPlayed>2500) %>%
+filter(NBA1718,TotalMinutesPlayed>2500) %>%
     summarise(nPlayer=n(),
         meanFGMade=mean(FieldGoalsMade),
         meanFGAtt=mean(FieldGoalsAttempted))
@@ -279,7 +339,7 @@ incremental:true
 - 讀入NBA資料
 ```{r}
 library(SportsAnalytics)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1718<-fetch_NBAPlayerStatistics("17-18")
 library(dplyr)
 ```
 - 試著用dplyr語法篩選出所有**助攻數(Assists)超過100**且**抄截數大於20**的球員資料
@@ -292,13 +352,13 @@ library(dplyr)
 - 與`summarise()`函式合併使用
 - 計算各**隊**（以Team作為分組依據）的**球員數**、**平均投進的兩分球數**以及**平均投出的兩分球數**
 ```{r group1,eval=F}
-group_by(NBA1516,Team)%>%
+group_by(NBA1718,Team)%>%
     summarise(nPlayer=n(),
         meanFGMade=mean(FieldGoalsMade),
         meanFGAtt=mean(FieldGoalsAttempted))
 ```
 ```{r group1.1,echo=F}
-group1<-group_by(NBA1516,Team)%>%
+group1<-group_by(NBA1718,Team)%>%
   summarise(nPlayer=n(),meanFGMade=mean(FieldGoalsMade),
                 meanFGAtt=mean(FieldGoalsAttempted))
 knitr::kable(head(group1,4))
@@ -309,13 +369,13 @@ knitr::kable(head(group1,4))
 - 可設定**多個**分組依據
 - 計算各**隊**各**守備位置**（以Team和Position作為分組依據）的**球員數**、**平均投進的兩分球數**以及**平均投出的兩分球數**
 ```{r group2,eval=F}
-group_by(NBA1516,Team,Position)%>%
+group_by(NBA1718,Team,Position)%>%
   summarise(nPlayer=n(),
         meanFGMade=mean(FieldGoalsMade),
         meanFGAtt=mean(FieldGoalsAttempted))
 ```
 ```{r group2.1,echo=F}
-group2<-group_by(NBA1516,Team,Position)%>%
+group2<-group_by(NBA1718,Team,Position)%>%
   summarise(nPlayer=n(),meanFGMade=mean(FieldGoalsMade),
                 meanFGAtt=mean(FieldGoalsAttempted))
 knitr::kable(head(group2,3))
@@ -325,10 +385,10 @@ knitr::kable(head(group2,3))
 ====================================
 排序功能，預設為**遞增排序**
 ```{r arrange1,eval=F}
-arrange(NBA1516,TotalMinutesPlayed)
+arrange(NBA1718,TotalMinutesPlayed)
 ```
 ```{r arrange1.1,echo=F}
-arrange1<-arrange(NBA1516,TotalMinutesPlayed)
+arrange1<-arrange(NBA1718,TotalMinutesPlayed)
 knitr::kable(head(arrange1)) 
 ```
 
@@ -336,12 +396,12 @@ knitr::kable(head(arrange1))
 ====================================
 使用`desc()`將要**遞減排序**的變數包起來，就可以遞減排序
 ```{r arrange2,eval=F}
-arrange(NBA1516,
+arrange(NBA1718,
         desc(TotalMinutesPlayed),
         desc(GamesPlayed))
 ```
 ```{r arrange2.1,echo=F}
-arrange2<-arrange(NBA1516,desc(TotalMinutesPlayed),desc(GamesPlayed))
+arrange2<-arrange(NBA1718,desc(TotalMinutesPlayed),desc(GamesPlayed))
 knitr::kable(head(arrange2,3))
 ```
 
@@ -350,14 +410,14 @@ dplyr綜合範例
 - 結合`group_by()`、`summarise()`、`arrange()`，可完成一連串的資料分析
 - 計算各**隊**各**守備**位置（以Team和Position作為分組依據）的球員數、平均投進的兩分球數以及平均投出的兩分球數，並依平均投進的兩分球數**由大到小排序**
 ```{r arrange3,eval=F}
-group_by(NBA1516,Team,Position) %>%
+group_by(NBA1718,Team,Position) %>%
   summarise(nPlayer=n(),
     meanFGMade=mean(FieldGoalsMade),
     meanFGAtt=mean(FieldGoalsAttempted)) %>%
   arrange(desc(meanFGMade))
 ```
 ```{r arrange3.1,echo=F}
-arrange3<-group_by(NBA1516,Team,Position)%>%
+arrange3<-group_by(NBA1718,Team,Position)%>%
   summarise(nPlayer=n(),meanFGMade=mean(FieldGoalsMade),
                 meanFGAtt=mean(FieldGoalsAttempted)) %>%
   arrange(desc(meanFGMade))
@@ -369,7 +429,7 @@ knitr::kable(head(arrange3,3))
 ====================================
 `新名稱=舊名稱`
 ```{r rename1}
-rename1<-rename(NBA1516,Po=Position)
+rename1<-rename(NBA1718,Po=Position)
 rename1[1:5,1:5]
 ```
 
@@ -382,7 +442,7 @@ incremental:true
 ```{r eval=F}
 library(SportsAnalytics)
 library(dplyr)
-NBA1516<-fetch_NBAPlayerStatistics("15-16")
+NBA1718<-fetch_NBAPlayerStatistics("17-18")
 ```
 - 試著用dplyr語法篩選出所有**助攻數(Assists)超過100**且**抄截數大於20**的球員資料
 - 依**守備位置**Position分組，計算球員的平均**出場數**GamesPlayed，平均**出場分鐘數**TotalMinutesPlayed
