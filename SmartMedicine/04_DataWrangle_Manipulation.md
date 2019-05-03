@@ -9,30 +9,16 @@ navigation: slide
 對應書本章節
 ========================================================
 [6 資料處理與清洗](http://yijutseng.github.io/DataScienceRBook/manipulation.html)
+
 [7 探索式資料分析](http://yijutseng.github.io/DataScienceRBook/eda.html)
 
 大綱
 ====================================
-- Tidy Data
 - 資料型別轉換處理
 - 文字字串處理
 - 子集Subset
-- 排序
-- 資料組合
 - 長表與寬表
 - 遺漏值處理
-
-Tidy Data
-====================================
-type:sub-section 
-
-Each column is a variable. Each row is an observation.
-
-- 一個欄位（Column）內只有一個數值，最好要有凡人看得懂的Column Name
-- 不同的觀察值應該要在不同列（Row）
-- 一張表裡面，有所有分析需要的資料
-- 如果一定要多張表，中間一定要有index可以把表串起來
-- One file, one table
 
 資料型別轉換處理
 ====================================

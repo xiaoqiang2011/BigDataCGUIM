@@ -60,45 +60,6 @@ library(funModeling)
 df_status(heart_disease)
 ```
 
-```
-                 variable q_zeros p_zeros q_na p_na q_inf p_inf    type
-1                     age       0    0.00    0 0.00     0     0 integer
-2                  gender       0    0.00    0 0.00     0     0  factor
-3              chest_pain       0    0.00    0 0.00     0     0  factor
-4  resting_blood_pressure       0    0.00    0 0.00     0     0 integer
-5       serum_cholestoral       0    0.00    0 0.00     0     0 integer
-6     fasting_blood_sugar     258   85.15    0 0.00     0     0  factor
-7         resting_electro     151   49.83    0 0.00     0     0  factor
-8          max_heart_rate       0    0.00    0 0.00     0     0 integer
-9             exer_angina     204   67.33    0 0.00     0     0 integer
-10                oldpeak      99   32.67    0 0.00     0     0 numeric
-11                  slope       0    0.00    0 0.00     0     0 integer
-12      num_vessels_flour     176   58.09    4 1.32     0     0 integer
-13                   thal       0    0.00    2 0.66     0     0  factor
-14 heart_disease_severity     164   54.13    0 0.00     0     0 integer
-15           exter_angina     204   67.33    0 0.00     0     0  factor
-16      has_heart_disease       0    0.00    0 0.00     0     0  factor
-   unique
-1      41
-2       2
-3       4
-4      50
-5     152
-6       2
-7       3
-8      91
-9       2
-10     40
-11      3
-12      4
-13      3
-14      5
-15      2
-16      2
-```
-
-
-
 |variable               | q_zeros| p_zeros| q_na| p_na| q_inf| p_inf|type    | unique|
 |:----------------------|-------:|-------:|----:|----:|-----:|-----:|:-------|------:|
 |age                    |       0|    0.00|    0| 0.00|     0|     0|integer |     41|
@@ -135,41 +96,6 @@ plot_num(heart_disease)
 ```r
 profiling_num(heart_disease)
 ```
-
-```
-                variable   mean std_dev variation_coef p_01 p_05 p_25
-1                    age  54.44    9.04           0.17   35   40   48
-2 resting_blood_pressure 131.69   17.60           0.13  100  108  120
-3      serum_cholestoral 246.69   51.78           0.21  149  175  211
-4         max_heart_rate 149.61   22.88           0.15   95  108  134
-5            exer_angina   0.33    0.47           1.44    0    0    0
-6                oldpeak   1.04    1.16           1.12    0    0    0
-7                  slope   1.60    0.62           0.38    1    1    1
-8      num_vessels_flour   0.67    0.94           1.39    0    0    0
-9 heart_disease_severity   0.94    1.23           1.31    0    0    0
-   p_50  p_75  p_95  p_99 skewness kurtosis  iqr        range_98
-1  56.0  61.0  68.0  71.0    -0.21      2.5 13.0        [35, 71]
-2 130.0 140.0 160.0 180.0     0.70      3.8 20.0      [100, 180]
-3 241.0 275.0 326.9 406.7     1.13      7.4 64.0   [149, 406.74]
-4 153.0 166.0 181.9 192.0    -0.53      2.9 32.5 [95.02, 191.96]
-5   0.0   1.0   1.0   1.0     0.74      1.5  1.0          [0, 1]
-6   0.8   1.6   3.4   4.2     1.26      4.5  1.6        [0, 4.2]
-7   2.0   2.0   3.0   3.0     0.51      2.4  1.0          [1, 3]
-8   0.0   1.0   3.0   3.0     1.18      3.2  1.0          [0, 3]
-9   0.0   2.0   3.0   4.0     1.05      2.8  2.0          [0, 4]
-        range_80
-1       [42, 66]
-2     [110, 152]
-3 [188.8, 308.8]
-4   [116, 176.6]
-5         [0, 1]
-6       [0, 2.8]
-7         [1, 2]
-8         [0, 2]
-9         [0, 3]
-```
-
-
 
 |variable               |   mean| std_dev| variation_coef| p_01| p_05| p_25|  p_50|  p_75|  p_95|  p_99| skewness| kurtosis|  iqr|range_98        |range_80       |
 |:----------------------|------:|-------:|--------------:|----:|----:|----:|-----:|-----:|-----:|-----:|--------:|--------:|----:|:---------------|:--------------|

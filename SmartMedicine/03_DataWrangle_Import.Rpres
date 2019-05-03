@@ -458,7 +458,7 @@ write.table() 練習
 type:alert
 incremental:true
 
-- 將剛剛擷取的**理科太太影片評論資料**存成tab分隔的.txt檔案
+- 將剛剛擷取的**DCard長庚大學版**`DCardCGU_posts`資料存成tab分隔的.txt檔案
 
 CSV檔 .csv
 ====================================
@@ -483,6 +483,6 @@ saveRDS() 練習
 type:alert
 incremental:true
 
-- 將剛剛擷取的**理科太太影片評論資料**存成R物件檔案(.rds)
+- 將剛剛擷取的**DCard長庚大學版**`DCardCGU_posts`資料存成R物件檔案(.rds)
 - 比較與txt檔案大小的差異
 
