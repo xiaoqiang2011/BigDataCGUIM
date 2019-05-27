@@ -75,11 +75,26 @@ type:sub-section
 
 -from `ggplot2` book
 
+
+ggplot2 -- 不寫程式也能畫圖？
+====================================
+esquisse：RStudio外掛（addin），圖像化的畫圖工具，安裝完後啟動addin 
+
+```r
+install.packages("esquisse")
+esquisse::esquisser()
+```
+
+
+![plot of chunk unnamed-chunk-2](https://github.com/dreamRs/esquisse/raw/master/man/figures/esquisse.gif)
+
 ggplot2簡介
 ====================================
 - [Hadley Wickham](http://hadley.nz/)開發
 - 一直是最熱門的R packages之一
 - [ggplot2 GitHub](https://github.com/tidyverse/ggplot2)
+
+
 
 ggplot2簡介
 ====================================
@@ -160,7 +175,7 @@ qplot(TotalPoints, data = NBA1516,
       fill = Position)
 ```
 
-![plot of chunk unnamed-chunk-1](10_Graphic-figure/unnamed-chunk-1-1.png)
+![plot of chunk unnamed-chunk-3](10_Graphic-figure/unnamed-chunk-3-1.png)
 
 qplot() 預設直方圖練習
 ====================================
@@ -192,7 +207,7 @@ qplot(FieldGoalsAttempted, TotalPoints,
       facets = . ~ Position)
 ```
 
-![plot of chunk unnamed-chunk-2](10_Graphic-figure/unnamed-chunk-2-1.png)
+![plot of chunk unnamed-chunk-4](10_Graphic-figure/unnamed-chunk-4-1.png)
 
 qplot() - Facets
 ====================================
@@ -205,7 +220,7 @@ qplot(FieldGoalsAttempted, TotalPoints,
       facets = Position ~ .)
 ```
 
-![plot of chunk unnamed-chunk-3](10_Graphic-figure/unnamed-chunk-3-1.png)
+![plot of chunk unnamed-chunk-5](10_Graphic-figure/unnamed-chunk-5-1.png)
 
 qplot() - 其他參數
 ====================================
@@ -218,7 +233,7 @@ qplot(TotalPoints, data = NBA1516,
       facets = Position ~ ., binwidth = 2)
 ```
 
-![plot of chunk unnamed-chunk-4](10_Graphic-figure/unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-6](10_Graphic-figure/unnamed-chunk-6-1.png)
 
 qplot() - 其他參數
 ====================================
@@ -230,7 +245,7 @@ qplot(TotalPoints, data = NBA1516,
       facets = Position ~ ., binwidth = 100)
 ```
 
-![plot of chunk unnamed-chunk-5](10_Graphic-figure/unnamed-chunk-5-1.png)
+![plot of chunk unnamed-chunk-7](10_Graphic-figure/unnamed-chunk-7-1.png)
 
 
 qplot() 綜合練習
@@ -289,7 +304,7 @@ ggplot(iris,
     geom_point()
 ```
 
-![plot of chunk unnamed-chunk-7](10_Graphic-figure/unnamed-chunk-7-1.png)
+![plot of chunk unnamed-chunk-9](10_Graphic-figure/unnamed-chunk-9-1.png)
 
 ggplot() geom_boxpolt()
 ====================================
@@ -302,7 +317,7 @@ ggplot(iris,
     geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-8](10_Graphic-figure/unnamed-chunk-8-1.png)
+![plot of chunk unnamed-chunk-10](10_Graphic-figure/unnamed-chunk-10-1.png)
 
 ggplot() Faceting
 ====================================
@@ -315,7 +330,7 @@ ggplot(iris,
     geom_point()+facet_grid(Species~.)
 ```
 
-![plot of chunk unnamed-chunk-9](10_Graphic-figure/unnamed-chunk-9-1.png)
+![plot of chunk unnamed-chunk-11](10_Graphic-figure/unnamed-chunk-11-1.png)
 
 ggplot() Faceting
 ====================================
@@ -328,7 +343,7 @@ ggplot(iris,
     geom_point()+facet_grid(.~Species)
 ```
 
-![plot of chunk unnamed-chunk-10](10_Graphic-figure/unnamed-chunk-10-1.png)
+![plot of chunk unnamed-chunk-12](10_Graphic-figure/unnamed-chunk-12-1.png)
 
 ggplot() geom_smooth()
 ====================================
@@ -342,7 +357,7 @@ ggplot(iris,
     geom_smooth()
 ```
 
-![plot of chunk unnamed-chunk-11](10_Graphic-figure/unnamed-chunk-11-1.png)
+![plot of chunk unnamed-chunk-13](10_Graphic-figure/unnamed-chunk-13-1.png)
 
 ggplot() geom_smooth()
 ====================================
@@ -356,7 +371,7 @@ ggplot(iris,
     geom_smooth(method='lm')
 ```
 
-![plot of chunk unnamed-chunk-12](10_Graphic-figure/unnamed-chunk-12-1.png)
+![plot of chunk unnamed-chunk-14](10_Graphic-figure/unnamed-chunk-14-1.png)
 
 ggplot() geom_line()
 ====================================
@@ -369,7 +384,7 @@ ggplot(iris,
     geom_line()+facet_grid(Species~.)
 ```
 
-![plot of chunk unnamed-chunk-13](10_Graphic-figure/unnamed-chunk-13-1.png)
+![plot of chunk unnamed-chunk-15](10_Graphic-figure/unnamed-chunk-15-1.png)
 
 ggplot() 顏色分組
 ====================================
@@ -383,7 +398,7 @@ ggplot(iris,
     geom_line()
 ```
 
-![plot of chunk unnamed-chunk-14](10_Graphic-figure/unnamed-chunk-14-1.png)
+![plot of chunk unnamed-chunk-16](10_Graphic-figure/unnamed-chunk-16-1.png)
 
 ggplot() 綜合練習 
 ====================================
@@ -462,7 +477,7 @@ ggplot()+geom_bar(data=airquality.mean,
 
 ggplot() geom_bar()
 ====================================
-![plot of chunk unnamed-chunk-16](10_Graphic-figure/unnamed-chunk-16-1.png)
+![plot of chunk unnamed-chunk-18](10_Graphic-figure/unnamed-chunk-18-1.png)
 
 ggplot() geom_errorbar()
 ====================================
@@ -484,7 +499,7 @@ ggplot(data=airquality.stat)+
 
 ggplot() geom_errorbar()
 ====================================
-![plot of chunk unnamed-chunk-18](10_Graphic-figure/unnamed-chunk-18-1.png)
+![plot of chunk unnamed-chunk-20](10_Graphic-figure/unnamed-chunk-20-1.png)
 
 ggplot2 參考資料
 ====================================
@@ -533,21 +548,28 @@ data(df_pop_state) #記載各州人口數的資料
 state_choropleth(df_pop_state) 
 ```
 
-![plot of chunk unnamed-chunk-21](10_Graphic-figure/unnamed-chunk-21-1.png)
+![plot of chunk unnamed-chunk-23](10_Graphic-figure/unnamed-chunk-23-1.png)
 
-choroplethr package
+choroplethr package - reference map
 ====================================
-若在將`reference_map`設定為` = TRUE`，可在面量圖的背景加上google地圖
+若將`reference_map`設定為` = TRUE`，可在面量圖的背景加上google地圖。因google地圖需要使用API key，因此須先用`register_google()`設定授權金鑰。
+
+- 使用**ggmap**套件的`register_google(key = "your key")`帶入google金鑰
+- 投影片金鑰已失效，請自行至[Google Cloud Platform](https://console.cloud.google.com/)，點選**API及服務**申請**Maps Static API**後，複製**API key**
+
+choroplethr package - reference map
+====================================
 
 ```r
 data(continental_us_states)
+library(ggmap)
+register_google(key = "AIzaSyB2KyOd-e9Tvq-0sGdrgXTd98pYBV9O9Bk")
 state_choropleth(df_pop_state,
                  reference_map = TRUE,
                  zoom= continental_us_states) 
 ```
 
-![plot of chunk unnamed-chunk-22](10_Graphic-figure/unnamed-chunk-22-1.png)
-
+![plot of chunk unnamed-chunk-24](10_Graphic-figure/unnamed-chunk-24-1.png)
 
 ggmap package
 ====================================
@@ -568,16 +590,19 @@ install.packages("ggmap")
 
 get_googlemap() + ggmap()
 ====================================
+- 使用`register_google(key = "your key")`帶入google金鑰
+- 投影片金鑰已失效，請自行至[Google Cloud Platform](https://console.cloud.google.com/)，點選**API及服務**申請**Maps Static API**後，複製**API key**
 
 ```r
 library(ggmap)
+register_google(key = "AIzaSyB2KyOd-e9Tvq-0sGdrgXTd98pYBV9O9Bk")
 twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
                   zoom = 7,
                   language = "zh-TW")
 ggmap(twmap)
 ```
 
-![plot of chunk unnamed-chunk-24](10_Graphic-figure/unnamed-chunk-24-1.png)
+![plot of chunk unnamed-chunk-26](10_Graphic-figure/unnamed-chunk-26-1.png)
 
 ggmap + open data 資料載入
 ====================================
@@ -587,7 +612,7 @@ ggmap + open data 資料載入
 ```r
 library(jsonlite)
 library(RCurl)
-WaterData<-fromJSON(getURL("http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=190796c8-7c56-42e0-8068-39242b8ec927"))
+WaterData<-fromJSON("http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=190796c8-7c56-42e0-8068-39242b8ec927")
 WaterDataFrame<-WaterData$result$results
 WaterDataFrame$longitude<-as.numeric(WaterDataFrame$longitude)
 WaterDataFrame$latitude<-as.numeric(WaterDataFrame$latitude)
@@ -597,20 +622,20 @@ head(WaterDataClean)
 ```
 
 ```
-  _id update_date update_time       qua_id                code_name
-1   1  2018-05-10  00:30:00   CS00                       雙溪淨水場
-2   2  2018-05-10  00:30:00   CS01                         衛理女中
-3   3  2018-05-10  00:30:00   CS02         雙溪國小                
-4   4  2018-05-10  00:30:00   CS03                       華興加壓站
-5   5  2018-05-10  00:30:00   CX00                       長興淨水場
-6   6  2018-05-10  00:30:00   CX02                         市政大樓
-  longitude latitude qua_cntu qua_cl qua_ph
-1  121.5609 25.11574     0.02   0.62    7.5
-2  121.5440 25.10325     0.13   0.32    7.5
-3  121.5556 25.10763     0.15   0.29    7.6
-4  121.5348 25.10356     0.11   0.31    7.4
-5  121.5404 25.01633     0.03   0.55    7.3
-6  121.5566 25.04250     0.06   0.57    7.2
+  update_date update_time qua_ph longitude       qua_id qua_cntu
+1  2019-05-28  01:15:00      7.1  121.5694 CS00             0.07
+2  2019-05-28  01:15:00      7.1  121.5523 CS01             0.03
+3  2019-05-28  01:15:00      7.2  121.5639 CS02             0.07
+4  2019-05-28  01:15:00      6.9  121.5444 CS03             0.25
+5  2019-05-28  01:15:00      7.3  121.5479 CX00             0.02
+6  2019-05-28  01:15:00      7.4  121.5640 CX02             0.03
+                 code_name latitude qua_cl _id
+1               雙溪淨水場 25.11419    0.6   1
+2                 衛理女中 25.10176   0.48   2
+3 雙溪國小                 25.10607   0.46   3
+4               華興加壓站 25.09952   0.48   4
+5               長興淨水場 25.01451   0.58   5
+6                 市政大樓 25.03753   0.57   6
 ```
 
 ggmap + open data 繪圖
@@ -624,7 +649,7 @@ TaipeiMap <- get_googlemap(
 TaipeiMapO <- ggmap(TaipeiMap)+ 
     geom_point(data=WaterDataClean, 
                aes(x=longitude, y=latitude,
-                   color=qua_cntu,size=3.5))+ 
+                   color=qua_cntu),size=3.5)+ 
     scale_color_continuous(
         low = "yellow",high = "red")+ 
     guides(size=FALSE)
@@ -633,7 +658,7 @@ TaipeiMapO
 
 ggmap + open data
 ====================================
-![plot of chunk unnamed-chunk-27](10_Graphic-figure/unnamed-chunk-27-1.png)
+![plot of chunk unnamed-chunk-29](10_Graphic-figure/unnamed-chunk-29-1.png)
 
 ggmap + 地圖型態
 ====================================
@@ -660,7 +685,7 @@ ggmap(TaipeiMap,extent = 'device')
 ggmap + extent
 ====================================
 透過設定`extent`參數可將地圖輸出樣式改為滿版
-![plot of chunk unnamed-chunk-29](10_Graphic-figure/unnamed-chunk-29-1.png)
+![plot of chunk unnamed-chunk-31](10_Graphic-figure/unnamed-chunk-31-1.png)
 
 ggmap() 練習 
 ====================================
@@ -679,7 +704,7 @@ incremental:true
 
 ggmap() 練習輸出圖檔
 ====================================
-![plot of chunk unnamed-chunk-30](10_Graphic-figure/unnamed-chunk-30-1.png)
+![plot of chunk unnamed-chunk-32](10_Graphic-figure/unnamed-chunk-32-1.png)
 
 
 Density Map
@@ -687,7 +712,7 @@ Density Map
 - 常用來表示因地理位置不同的數值差異
 - 美國人口密度圖範例 (`ggplot2` + `ggmap`)
 
-![plot of chunk unnamed-chunk-31](10_Graphic-figure/unnamed-chunk-31-1.png)
+![plot of chunk unnamed-chunk-33](10_Graphic-figure/unnamed-chunk-33-1.png)
 
 Density Map 資料載入
 ====================================
@@ -766,7 +791,7 @@ densityMap
 
 Density Map 作圖
 ====================================
-![plot of chunk unnamed-chunk-36](10_Graphic-figure/unnamed-chunk-36-1.png)
+![plot of chunk unnamed-chunk-38](10_Graphic-figure/unnamed-chunk-38-1.png)
 
 ggmap 參考資料
 ====================================
@@ -791,7 +816,7 @@ Taiwan的面量圖 範例
 ====================================
 
 
-![plot of chunk unnamed-chunk-38](figures/Taiwan.png)
+![plot of chunk unnamed-chunk-40](figures/Taiwan.png)
 
 Taiwan的面量圖 處理shapefile-1
 ====================================
@@ -929,7 +954,7 @@ twcmap
 
 Taiwan的面量圖 
 ====================================
-![plot of chunk unnamed-chunk-45](figures/Taiwan.png)
+![plot of chunk unnamed-chunk-47](figures/Taiwan.png)
 
 
 ggmap+面量圖
@@ -952,7 +977,7 @@ scale_fill_gradientn(
 
 ggmap+面量圖
 ====================================
-![plot of chunk unnamed-chunk-47](figures/ggmapTaiwan.png)
+![plot of chunk unnamed-chunk-49](figures/ggmapTaiwan.png)
 
 Heatmap
 ====================================
@@ -1016,7 +1041,7 @@ ggplot(nba.m, aes(variable, Name)) +
         low = "white",high = "steelblue") 
 ```
 
-![plot of chunk unnamed-chunk-51](10_Graphic-figure/unnamed-chunk-51-1.png)
+![plot of chunk unnamed-chunk-53](10_Graphic-figure/unnamed-chunk-53-1.png)
 
 geom_tile() + scale()
 ====================================
@@ -1049,7 +1074,7 @@ ggplot(nba.s.m, aes(variable, Name)) +
         low = "white",high = "steelblue") 
 ```
 
-![plot of chunk unnamed-chunk-54](10_Graphic-figure/unnamed-chunk-54-1.png)
+![plot of chunk unnamed-chunk-56](10_Graphic-figure/unnamed-chunk-56-1.png)
 
 [How to Make a Heatmap – a Quick and Easy Solution](http://flowingdata.com/2010/01/21/how-to-make-a-heatmap-a-quick-and-easy-solution/)
 
