@@ -587,7 +587,6 @@ install.packages("ggmap")
     - language 地圖語言
 - `ggmap()`函式將取得的圖層畫出來
 
-
 get_googlemap() + ggmap()
 ====================================
 - 使用`register_google(key = "your key")`帶入google金鑰
@@ -596,13 +595,19 @@ get_googlemap() + ggmap()
 ```r
 library(ggmap)
 register_google(key = "AIzaSyB2KyOd-e9Tvq-0sGdrgXTd98pYBV9O9Bk")
+```
+
+get_googlemap() + ggmap()
+====================================
+
+```r
 twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
                   zoom = 7,
                   language = "zh-TW")
 ggmap(twmap)
 ```
 
-![plot of chunk unnamed-chunk-26](10_Graphic-figure/unnamed-chunk-26-1.png)
+![plot of chunk unnamed-chunk-27](10_Graphic-figure/unnamed-chunk-27-1.png)
 
 ggmap + open data 資料載入
 ====================================
@@ -623,19 +628,19 @@ head(WaterDataClean)
 
 ```
   update_date update_time qua_ph longitude       qua_id qua_cntu
-1  2019-05-28  01:15:00      7.1  121.5694 CS00             0.07
-2  2019-05-28  01:15:00      7.1  121.5523 CS01             0.03
-3  2019-05-28  01:15:00      7.2  121.5639 CS02             0.07
-4  2019-05-28  01:15:00      6.9  121.5444 CS03             0.25
-5  2019-05-28  01:15:00      7.3  121.5479 CX00             0.02
-6  2019-05-28  01:15:00      7.4  121.5640 CX02             0.03
+1  2019-05-28  01:30:00      7.1  121.5694 CS00             0.07
+2  2019-05-28  01:30:00      7.1  121.5523 CS01             0.02
+3  2019-05-28  01:30:00      7.2  121.5639 CS02             0.07
+4  2019-05-28  01:30:00      6.9  121.5444 CS03             0.24
+5  2019-05-28  01:30:00      7.3  121.5479 CX00             0.02
+6  2019-05-28  01:30:00      7.4  121.5640 CX02             0.03
                  code_name latitude qua_cl _id
 1               雙溪淨水場 25.11419    0.6   1
-2                 衛理女中 25.10176   0.48   2
-3 雙溪國小                 25.10607   0.46   3
-4               華興加壓站 25.09952   0.48   4
-5               長興淨水場 25.01451   0.58   5
-6                 市政大樓 25.03753   0.57   6
+2                 衛理女中 25.10176    0.5   2
+3 雙溪國小                 25.10607   0.47   3
+4               華興加壓站 25.09952   0.51   4
+5               長興淨水場 25.01451   0.57   5
+6                 市政大樓 25.03753   0.58   6
 ```
 
 ggmap + open data 繪圖
@@ -658,7 +663,7 @@ TaipeiMapO
 
 ggmap + open data
 ====================================
-![plot of chunk unnamed-chunk-29](10_Graphic-figure/unnamed-chunk-29-1.png)
+![plot of chunk unnamed-chunk-30](10_Graphic-figure/unnamed-chunk-30-1.png)
 
 ggmap + 地圖型態
 ====================================
@@ -685,7 +690,7 @@ ggmap(TaipeiMap,extent = 'device')
 ggmap + extent
 ====================================
 透過設定`extent`參數可將地圖輸出樣式改為滿版
-![plot of chunk unnamed-chunk-31](10_Graphic-figure/unnamed-chunk-31-1.png)
+![plot of chunk unnamed-chunk-32](10_Graphic-figure/unnamed-chunk-32-1.png)
 
 ggmap() 練習 
 ====================================
@@ -704,7 +709,7 @@ incremental:true
 
 ggmap() 練習輸出圖檔
 ====================================
-![plot of chunk unnamed-chunk-32](10_Graphic-figure/unnamed-chunk-32-1.png)
+![plot of chunk unnamed-chunk-33](10_Graphic-figure/unnamed-chunk-33-1.png)
 
 
 Density Map
@@ -712,7 +717,7 @@ Density Map
 - 常用來表示因地理位置不同的數值差異
 - 美國人口密度圖範例 (`ggplot2` + `ggmap`)
 
-![plot of chunk unnamed-chunk-33](10_Graphic-figure/unnamed-chunk-33-1.png)
+![plot of chunk unnamed-chunk-34](10_Graphic-figure/unnamed-chunk-34-1.png)
 
 Density Map 資料載入
 ====================================
@@ -791,7 +796,7 @@ densityMap
 
 Density Map 作圖
 ====================================
-![plot of chunk unnamed-chunk-38](10_Graphic-figure/unnamed-chunk-38-1.png)
+![plot of chunk unnamed-chunk-39](10_Graphic-figure/unnamed-chunk-39-1.png)
 
 ggmap 參考資料
 ====================================
@@ -816,7 +821,7 @@ Taiwan的面量圖 範例
 ====================================
 
 
-![plot of chunk unnamed-chunk-40](figures/Taiwan.png)
+![plot of chunk unnamed-chunk-41](figures/Taiwan.png)
 
 Taiwan的面量圖 處理shapefile-1
 ====================================
@@ -954,7 +959,7 @@ twcmap
 
 Taiwan的面量圖 
 ====================================
-![plot of chunk unnamed-chunk-47](figures/Taiwan.png)
+![plot of chunk unnamed-chunk-48](figures/Taiwan.png)
 
 
 ggmap+面量圖
@@ -977,7 +982,7 @@ scale_fill_gradientn(
 
 ggmap+面量圖
 ====================================
-![plot of chunk unnamed-chunk-49](figures/ggmapTaiwan.png)
+![plot of chunk unnamed-chunk-50](figures/ggmapTaiwan.png)
 
 Heatmap
 ====================================
@@ -1041,7 +1046,7 @@ ggplot(nba.m, aes(variable, Name)) +
         low = "white",high = "steelblue") 
 ```
 
-![plot of chunk unnamed-chunk-53](10_Graphic-figure/unnamed-chunk-53-1.png)
+![plot of chunk unnamed-chunk-54](10_Graphic-figure/unnamed-chunk-54-1.png)
 
 geom_tile() + scale()
 ====================================
@@ -1074,7 +1079,7 @@ ggplot(nba.s.m, aes(variable, Name)) +
         low = "white",high = "steelblue") 
 ```
 
-![plot of chunk unnamed-chunk-56](10_Graphic-figure/unnamed-chunk-56-1.png)
+![plot of chunk unnamed-chunk-57](10_Graphic-figure/unnamed-chunk-57-1.png)
 
 [How to Make a Heatmap – a Quick and Easy Solution](http://flowingdata.com/2010/01/21/how-to-make-a-heatmap-a-quick-and-easy-solution/)
 

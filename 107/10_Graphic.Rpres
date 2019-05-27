@@ -547,7 +547,6 @@ install.packages("ggmap")
     - language 地圖語言
 - `ggmap()`函式將取得的圖層畫出來
 
-
 get_googlemap() + ggmap()
 ====================================
 - 使用`register_google(key = "your key")`帶入google金鑰
@@ -555,6 +554,11 @@ get_googlemap() + ggmap()
 ```{r, warning=F,message=F, fig.height=5}
 library(ggmap)
 register_google(key = "AIzaSyB2KyOd-e9Tvq-0sGdrgXTd98pYBV9O9Bk")
+```
+
+get_googlemap() + ggmap()
+====================================
+```{r, warning=F,message=F, fig.height=5}
 twmap <- get_googlemap(center = c(lon=120.58,lat=23.58), 
                   zoom = 7,
                   language = "zh-TW")
