@@ -9,6 +9,21 @@ font-family: 'Microsoft JhengHei'
 ========================================================
 [1 R語言101](http://yijutseng.github.io/DataScienceRBook/intro.html)
 
+R vs. RStudio
+========================================================
+R: 程式核心 (引擎)
+```{r echo=FALSE}
+knitr::include_graphics("https://www.teslarati.com/wp-content/uploads/2018/07/model-3-drivetrain-1.jpg")
+```
+RStudio: 操作介面 IDE (儀錶板)
+```{r echo=FALSE}
+knitr::include_graphics("https://cdn.vox-cdn.com/thumbor/BFWwKwFp8HS7IcpR8w8mzo14nBQ=/2x0:800x532/1200x800/filters:focal(2x0:800x532)/cdn.vox-cdn.com/uploads/chorus_image/image/45943830/model-s-interior_mockup5_800.0.0.jpg")
+```
+
+[圖片1來源](https://www.teslarati.com/tesla-patent-more-efficient-electric-motors/)
+[圖片2來源](https://www.theverge.com/2015/3/19/8260295/tesla-user-interface-redesign-concept)
+
+
 RStudio Interface
 ========================================================
 left: 30%
@@ -44,6 +59,20 @@ Console視窗
 - `+` : 表示前面的程式碼還沒打完
     - 鍵入完整的程式碼
     - **Esc**跳出
+
+R and R Packages
+========================================================
+R: 程式核心 (iPhone)
+```{r echo=FALSE}
+knitr::include_graphics("https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-xr-white-select-201809?wid=940&hei=1112&fmt=png-alpha&qlt=80&.v=1551226036668")
+```
+R Packages: 附加程式 (APP)
+```{r echo=FALSE}
+knitr::include_graphics("https://3c.yipee.cc/wp-content/uploads/2019/06/a7ffbaa3df50d7cafe6801a8a8d7a3bf-620x320.jpg")
+```
+
+[圖片來源](https://www.apple.com/)
+
 
 R = Base + Other Packages
 ========================================================
