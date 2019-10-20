@@ -100,15 +100,15 @@ A BMI function with 2 arguments
 ========================================================
 
 ```{r}
-bmi<-function(height,weight){
+cal_bmi<-function(height,weight){
     if(height>5){
         height <- height/100
     }
     bmi <- weight / height**2
     return(bmi)
 }
-bmi(160,50)
-bmi(1.6,50)
+cal_bmi(160,50)
+cal_bmi(1.6,50)
 ```
 
 myMean, round to hundredths  
