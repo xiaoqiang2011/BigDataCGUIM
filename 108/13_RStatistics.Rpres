@@ -1,0 +1,403 @@
+Learning Statistics with R
+========================================================
+author: 曾意儒 Yi-Ju Tseng
+autosize: true
+font-family: 'Microsoft JhengHei'
+navigation: slide
+
+
+
+Main Objective
+========================================================
+
+- Are blood pressure of diabetes patients higher than non-diabetes patients?
+- Are BMI of diabetes patients higher than non-diabetes patients?
+- Compare all the variables in the data between diabettes and non-diabetes patients.
+
+
+Data
+========================================================
+
+PimaIndiansDiabetes2: A data frame with 768 observations on 9 variables
+```{r}
+library(mlbench)
+data(PimaIndiansDiabetes2)
+dplyr::glimpse(PimaIndiansDiabetes2)
+```
+
+Data
+========================================================
+
+- Diabetes: diabetes = 'pos'
+- Non-Diabetes: diabetes = 'neg'
+```{r eval=F}
+head(PimaIndiansDiabetes2)
+```
+```{r echo=F}
+knitr::kable(head(PimaIndiansDiabetes2))  
+```
+
+
+Blood pressure: diabetes vs. non-diabetes
+========================================================
+
+Are blood pressure of diabetes patients higher than non-diabetes patients?
+```{r}
+library(dplyr)
+BPDM<-PimaIndiansDiabetes2 %>% 
+    filter(diabetes=="pos") %>% 
+    pull(pressure)
+BPNonDM<-PimaIndiansDiabetes2 %>% 
+    filter(diabetes=="neg") %>% 
+    pull(pressure)
+```
+
+
+Blood pressure: diabetes vs. non-diabetes
+========================================================
+
+Are blood pressure of diabetes patients higher than non-diabetes patients?
+
+- Central tendency: `Mean`
+- Variability: `SD`
+
+Blood pressure: Mean and SD
+========================================================
+
+```{r}
+mean(BPDM,na.rm=T)
+mean(BPNonDM,na.rm=T)
+```
+```{r}
+sd(BPDM,na.rm=T)
+sd(BPNonDM,na.rm=T)
+```
+
+Blood pressure: diabetes vs. non-diabetes
+========================================================
+
+75.32 (red) > 70.88 (black)?! Is it real? Visualization!
+```{r echo=F}
+library(ggplot2)
+ggplot()+
+    geom_density(aes(x=BPDM),color="red")+
+    geom_density(aes(x=BPNonDM),color="black")+
+    geom_vline(xintercept = 75.32,color="red")+
+    geom_vline(xintercept = 70.88,color="black")+
+    labs(x="Data",y="Density")
+```
+
+Blood pressure: diabetes vs. non-diabetes
+========================================================
+
+75.32 (red) > 70.88 (black)?! Is it real? Visualization!
+```{r echo=F}
+ggplot()+
+    geom_density(aes(x=rnorm(50, mean=75.32, sd=60)),color="red")+
+    geom_density(aes(x=rnorm(50, mean=70.88, sd=60)),color="black")+
+    geom_vline(xintercept = 75.32,color="red")+
+    geom_vline(xintercept = 70.88,color="black")+
+    labs(x="Data",y="Density")
+```
+
+Blood pressure: diabetes vs. non-diabetes
+========================================================
+Use **statistical test** to check if 75.32 (red) > 70.88 (black), **parametric test**
+
+[T-test](https://zh.wikipedia.org/zh-tw/%E5%AD%B8%E7%94%9Ft%E6%AA%A2%E9%A9%97)
+- if P<0.05: Blood pressure: diabetes and non-diabetes are different
+- if P>=0.05: No statistically significant difference bewteen diabetes and non-diabetes
+
+Blood pressure: T-test
+========================================================
+```{r}
+t.test(BPDM,BPNonDM)
+```
+
+Blood pressure: diabetes vs. non-diabetes
+========================================================
+Can we use **parametric test**? 
+
+[Shapiro–Wilk test](https://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test)
+- if P<0.05: Non-normal distribution
+- if P>=0.05: Normal distribution
+
+Blood pressure: Shapiro–Wilk test
+========================================================
+```{r}
+shapiro.test(BPDM)
+shapiro.test(BPNonDM)
+```
+
+Blood pressure: diabetes vs. non-diabetes
+========================================================
+The blood pressure of diabetes and non-diabetes patients are non-normal distribution.
+We need to use: 
+
+- Central tendency: `Median`
+- Variability: `IQR`
+
+Blood pressure: Median and IQR
+========================================================
+```{r}
+median(BPDM,na.rm=T)
+median(BPNonDM,na.rm=T)
+```
+```{r}
+IQR(BPDM,na.rm=T)
+IQR(BPNonDM,na.rm=T)
+```
+
+
+Blood pressure: diabetes vs. non-diabetes
+========================================================
+The blood pressure of diabetes and non-diabetes patients are non-normal distribution.
+We need to use **non-parametric test**! 
+
+[Mann-Whitney U test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test)
+- if P<0.05: Blood pressure: diabetes and non-diabetes are different
+- if P>=0.05: No statistically significant difference bewteen diabetes and non-diabetes
+
+Blood pressure: Mann-Whitney U test
+========================================================
+```{r}
+wilcox.test(BPDM,BPNonDM)
+```
+
+Are blood pressure of diabetes patients higher than non-diabetes patients?
+========================================================
+
+The blood pressure of diabetes patients (74.5, IQR:16) are higher than non-diabetes patients (70, IQR:16) (P<0.001).
+
+
+
+BMI: diabetes vs. non-diabetes
+========================================================
+
+Are BMI of diabetes patients higher than non-diabetes patients?
+```{r}
+library(dplyr)
+BMIDM<-PimaIndiansDiabetes2 %>% 
+    filter(diabetes=="pos") %>% 
+    pull(mass)
+BMINonDM<-PimaIndiansDiabetes2 %>% 
+    filter(diabetes=="neg") %>% 
+    pull(mass)
+```
+
+
+BMI: diabetes vs. non-diabetes
+========================================================
+
+Are BMI of diabetes patients higher than non-diabetes patients?
+
+- Central tendency: `Mean`
+- Variability: `SD`
+
+BMI: Mean and SD
+========================================================
+```{r}
+mean(BMIDM,na.rm=T)
+mean(BMINonDM,na.rm=T)
+```
+```{r}
+sd(BMIDM,na.rm=T)
+sd(BMINonDM,na.rm=T)
+```
+
+BMI: diabetes vs. non-diabetes
+========================================================
+
+35.4 (red) > 30.8 (black)?! Is it real? Visualization!
+```{r echo=F}
+library(ggplot2)
+ggplot()+
+    geom_density(aes(x=BMIDM),color="red")+
+    geom_density(aes(x=BMINonDM),color="black")+
+    geom_vline(xintercept = 35.4,color="red")+
+    geom_vline(xintercept = 30.8,color="black")+
+    labs(x="Data",y="Density")
+```
+
+BMI: diabetes vs. non-diabetes
+========================================================
+
+75.32 (red) > 70.88 (black)?! Is it real? Visualization!
+```{r echo=F}
+ggplot()+
+    geom_density(aes(x=rnorm(50, mean=35.4, sd=60)),color="red")+
+    geom_density(aes(x=rnorm(50, mean=30.8, sd=60)),color="black")+
+    geom_vline(xintercept = 35.4,color="red")+
+    geom_vline(xintercept = 30.8,color="black")+
+    labs(x="Data",y="Density")
+```
+
+BMI: diabetes vs. non-diabetes
+========================================================
+Use **statistical test** to check if 35.4 (red) > 30.8 (black), **parametric test**
+
+[T-test](https://zh.wikipedia.org/zh-tw/%E5%AD%B8%E7%94%9Ft%E6%AA%A2%E9%A9%97)
+- if P<0.05: BMI: diabetes and non-diabetes are different
+- if P>=0.05: No statistically significant difference bewteen diabetes and non-diabetes
+
+
+BMI: T-test
+========================================================
+```{r}
+t.test(BMIDM,BMINonDM)
+```
+
+BMI: diabetes vs. non-diabetes
+========================================================
+Can we use **parametric test**? 
+
+[Shapiro–Wilk test](https://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test)
+- if P<0.05: Non-normal distribution
+- if P>=0.05: Normal distribution
+
+BMI: Shapiro–Wilk test
+========================================================
+```{r}
+shapiro.test(BMIDM)
+shapiro.test(BMINonDM)
+```
+
+BMI: diabetes vs. non-diabetes
+========================================================
+The BMI of diabetes and non-diabetes patients are **non-normal distribution**.
+We need to use: 
+
+- Central tendency: `Median`
+- Variability: `IQR`
+
+BMI: Median and IQR
+========================================================
+```{r}
+median(BMIDM,na.rm=T)
+median(BMINonDM,na.rm=T)
+```
+```{r}
+IQR(BMIDM,na.rm=T)
+IQR(BMINonDM,na.rm=T)
+```
+
+BMI: diabetes vs. non-diabetes
+========================================================
+The BMI of diabetes and non-diabetes patients are non-normal distribution.
+We need to use **non-parametric test**! 
+
+[Mann-Whitney U test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test)
+- if P<0.05: BMI: diabetes and non-diabetes are different
+- if P>=0.05: No statistically significant difference bewteen diabetes and non-diabetes
+
+BMI: Mann-Whitney U test
+========================================================
+```{r}
+wilcox.test(BMIDM,BMINonDM)
+```
+
+
+Are BMI of diabetes patients higher than non-diabetes patients?
+========================================================
+
+The BMI of diabetes patients (34.3, IQR:8) are higher than non-diabetes patients (30.1, IQR:9.7) (P<0.001).
+
+
+Main Results
+========================================================
+
+- The blood pressure of diabetes patients (74.5, IQR:16) are higher than non-diabetes patients (70, IQR:16) (P<0.001).
+
+- The BMI of diabetes patients (34.3, IQR:8) are higher than non-diabetes patients (30.1, IQR:9.7) (P<0.001).
+
+All Variables: diabetes vs. non-diabetes
+========================================================
+How to compare all the variables in the data between diabettes and non-diabetes patients?
+
+Analyze the variable separately?
+
+We can use `tableone` package
+
+`tableone` package 
+========================================================
+[tableone package](https://cran.r-project.org/web/packages/tableone/vignettes/introduction.html) 
+```{r}
+#install.packages("tableone")
+library(tableone)
+```
+
+
+The First Try
+========================================================
+`CreateTableOne()`
+
+- data
+
+```{r eval=F}
+CreateTableOne(data = PimaIndiansDiabetes2)
+```
+```{r echo=F}
+knitr::kable(print(CreateTableOne(data = PimaIndiansDiabetes2),
+          printToggle = FALSE))
+```
+
+Group the Data into Diabetes and Non-Diabetes
+========================================================
+`CreateTableOne()`
+
+- data
+- strata: Stratifying (grouping) variable name(s)
+
+```{r eval=F}
+CreateTableOne(data = PimaIndiansDiabetes2,
+               strata="diabetes")
+```
+```{r echo=F}
+knitr::kable(print(CreateTableOne(data = PimaIndiansDiabetes2,
+               strata="diabetes"),
+          printToggle = FALSE))
+```
+
+Use non-parametric test
+========================================================
+`CreateTableOne()`
+
+- data
+- strata: Stratifying (grouping) variable name(s)
+- nonnormal: The variables that need to use **non-parametric test**
+```{r}
+table1<-CreateTableOne(data = PimaIndiansDiabetes2,
+               strata="diabetes")
+print(table1,
+      nonnormal=c("mass","pressure"))
+```
+
+Use non-parametric test
+========================================================
+```{r eval=F}
+print(table1,
+      nonnormal=c("mass","pressure"))
+```
+```{r echo=F}
+knitr::kable(print(table1,
+      nonnormal=c("mass","pressure"),
+          printToggle = FALSE))
+```
+
+
+Final Outputs
+========================================================
+```{r}
+table1CSV <- 
+    print(table1,
+          nonnormal = c("mass","pressure"),
+          printToggle = FALSE)
+write.csv(table1CSV, file = "myTable1.csv")
+```
+
+參考資料
+========================================================
+
+- [Statistics and R - Harvard@edX](https://www.edx.org/course/statistics-and-r)
+- [Data Analysis for the Life Sciences](https://leanpub.com/dataanalysisforthelifesciences)
+- [tableone package](https://cran.r-project.org/web/packages/tableone/vignettes/introduction.html) 
