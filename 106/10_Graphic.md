@@ -457,7 +457,7 @@ airquality.mean<-airquality%>%group_by(Month)%>%
 #stat = "identity" 直接畫數字
 ggplot()+geom_bar(data=airquality.mean,
                   aes(x=Month,y=OzoneMean),
-                  stat = "identity") 
+                  stat = "identity") ###若无stat = "identity"，则会y轴按照count来计数，而不是OzoneMean
 ```
 
 ggplot() geom_bar()
